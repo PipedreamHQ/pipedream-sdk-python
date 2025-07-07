@@ -29,7 +29,6 @@ class AccountsClient:
 
     def list(
         self,
-        project_id: str,
         *,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
@@ -43,9 +42,6 @@ class AccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -79,13 +75,12 @@ class AccountsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.accounts.list(
-            project_id="project_id",
-        )
+        response = client.accounts.list()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -93,7 +88,6 @@ class AccountsClient:
             yield page
         """
         return self._raw_client.list(
-            project_id,
             app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
@@ -106,7 +100,6 @@ class AccountsClient:
 
     def create(
         self,
-        project_id: str,
         *,
         app_slug: str,
         cfmap_json: str,
@@ -120,9 +113,6 @@ class AccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_slug : str
             The app slug for the account
 
@@ -156,19 +146,18 @@ class AccountsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.create(
-            project_id="project_id",
             app_slug="app_slug",
             cfmap_json="cfmap_json",
             connect_token="connect_token",
         )
         """
         _response = self._raw_client.create(
-            project_id,
             app_slug=app_slug,
             cfmap_json=cfmap_json,
             connect_token=connect_token,
@@ -182,7 +171,6 @@ class AccountsClient:
 
     def retrieve(
         self,
-        project_id: str,
         account_id: str,
         *,
         include_credentials: typing.Optional[bool] = None,
@@ -191,9 +179,6 @@ class AccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         include_credentials : typing.Optional[bool]
@@ -212,29 +197,24 @@ class AccountsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.retrieve(
-            project_id="project_id",
             account_id="account_id",
         )
         """
         _response = self._raw_client.retrieve(
-            project_id, account_id, include_credentials=include_credentials, request_options=request_options
+            account_id, include_credentials=include_credentials, request_options=request_options
         )
         return _response.data
 
-    def delete(
-        self, project_id: str, account_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
+    def delete(self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -249,27 +229,22 @@ class AccountsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.delete(
-            project_id="project_id",
             account_id="account_id",
         )
         """
-        _response = self._raw_client.delete(project_id, account_id, request_options=request_options)
+        _response = self._raw_client.delete(account_id, request_options=request_options)
         return _response.data
 
-    def delete_by_app(
-        self, project_id: str, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
+    def delete_by_app(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -284,16 +259,16 @@ class AccountsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.delete_by_app(
-            project_id="project_id",
             app_id="app_id",
         )
         """
-        _response = self._raw_client.delete_by_app(project_id, app_id, request_options=request_options)
+        _response = self._raw_client.delete_by_app(app_id, request_options=request_options)
         return _response.data
 
 
@@ -314,7 +289,6 @@ class AsyncAccountsClient:
 
     async def list(
         self,
-        project_id: str,
         *,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
@@ -328,9 +302,6 @@ class AsyncAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -366,6 +337,7 @@ class AsyncAccountsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -373,9 +345,7 @@ class AsyncAccountsClient:
 
 
         async def main() -> None:
-            response = await client.accounts.list(
-                project_id="project_id",
-            )
+            response = await client.accounts.list()
             async for item in response:
                 yield item
 
@@ -387,7 +357,6 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            project_id,
             app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
@@ -400,7 +369,6 @@ class AsyncAccountsClient:
 
     async def create(
         self,
-        project_id: str,
         *,
         app_slug: str,
         cfmap_json: str,
@@ -414,9 +382,6 @@ class AsyncAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_slug : str
             The app slug for the account
 
@@ -452,6 +417,7 @@ class AsyncAccountsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -460,7 +426,6 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.create(
-                project_id="project_id",
                 app_slug="app_slug",
                 cfmap_json="cfmap_json",
                 connect_token="connect_token",
@@ -470,7 +435,6 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            project_id,
             app_slug=app_slug,
             cfmap_json=cfmap_json,
             connect_token=connect_token,
@@ -484,7 +448,6 @@ class AsyncAccountsClient:
 
     async def retrieve(
         self,
-        project_id: str,
         account_id: str,
         *,
         include_credentials: typing.Optional[bool] = None,
@@ -493,9 +456,6 @@ class AsyncAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         include_credentials : typing.Optional[bool]
@@ -516,6 +476,7 @@ class AsyncAccountsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -524,7 +485,6 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.retrieve(
-                project_id="project_id",
                 account_id="account_id",
             )
 
@@ -532,19 +492,14 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.retrieve(
-            project_id, account_id, include_credentials=include_credentials, request_options=request_options
+            account_id, include_credentials=include_credentials, request_options=request_options
         )
         return _response.data
 
-    async def delete(
-        self, project_id: str, account_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
+    async def delete(self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -561,6 +516,7 @@ class AsyncAccountsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -569,25 +525,19 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.delete(
-                project_id="project_id",
                 account_id="account_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete(project_id, account_id, request_options=request_options)
+        _response = await self._raw_client.delete(account_id, request_options=request_options)
         return _response.data
 
-    async def delete_by_app(
-        self, project_id: str, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> None:
+    async def delete_by_app(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -604,6 +554,7 @@ class AsyncAccountsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -612,12 +563,11 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.delete_by_app(
-                project_id="project_id",
                 app_id="app_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete_by_app(project_id, app_id, request_options=request_options)
+        _response = await self._raw_client.delete_by_app(app_id, request_options=request_options)
         return _response.data

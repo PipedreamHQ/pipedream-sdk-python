@@ -23,12 +23,12 @@ Instantiate and use the client with the following:
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.accounts.create(
-    project_id="project_id",
     app_slug="app_slug",
     cfmap_json="cfmap_json",
     connect_token="connect_token",
@@ -45,6 +45,7 @@ import asyncio
 from pipedream import AsyncPipedream
 
 client = AsyncPipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
@@ -53,7 +54,6 @@ client = AsyncPipedream(
 
 async def main() -> None:
     await client.accounts.create(
-        project_id="project_id",
         app_slug="app_slug",
         cfmap_json="cfmap_json",
         connect_token="connect_token",
@@ -86,6 +86,7 @@ Paginated requests will return a `SyncPager` or `AsyncPager`, which can be used 
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",

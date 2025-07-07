@@ -31,7 +31,6 @@ class ComponentsClient:
 
     def list(
         self,
-        project_id: str,
         *,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
@@ -43,9 +42,6 @@ class ComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         after : typing.Optional[str]
             The cursor to start from for pagination
 
@@ -74,13 +70,12 @@ class ComponentsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.components.list(
-            project_id="project_id",
-        )
+        response = client.components.list()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -88,18 +83,13 @@ class ComponentsClient:
             yield page
         """
         return self._raw_client.list(
-            project_id, after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
+            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
         )
 
-    def retrieve(
-        self, project_id: str, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> Component:
+    def retrieve(self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Component:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
 
@@ -116,21 +106,20 @@ class ComponentsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.components.retrieve(
-            project_id="project_id",
             component_id="component_id",
         )
         """
-        _response = self._raw_client.retrieve(project_id, component_id, request_options=request_options)
+        _response = self._raw_client.retrieve(component_id, request_options=request_options)
         return _response.data
 
     def configure_prop(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -148,9 +137,6 @@ class ComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -196,19 +182,18 @@ class ComponentsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.components.configure_prop(
-            project_id="project_id",
             id="id",
             external_user_id="external_user_id",
             prop_name="prop_name",
         )
         """
         _response = self._raw_client.configure_prop(
-            project_id,
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
@@ -226,7 +211,6 @@ class ComponentsClient:
 
     def reload_props(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -240,9 +224,6 @@ class ComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -276,18 +257,17 @@ class ComponentsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.components.reload_props(
-            project_id="project_id",
             id="id",
             external_user_id="external_user_id",
         )
         """
         _response = self._raw_client.reload_props(
-            project_id,
             id=id,
             external_user_id=external_user_id,
             async_handle=async_handle,
@@ -317,7 +297,6 @@ class AsyncComponentsClient:
 
     async def list(
         self,
-        project_id: str,
         *,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
@@ -329,9 +308,6 @@ class AsyncComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         after : typing.Optional[str]
             The cursor to start from for pagination
 
@@ -362,6 +338,7 @@ class AsyncComponentsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -369,9 +346,7 @@ class AsyncComponentsClient:
 
 
         async def main() -> None:
-            response = await client.components.list(
-                project_id="project_id",
-            )
+            response = await client.components.list()
             async for item in response:
                 yield item
 
@@ -383,18 +358,15 @@ class AsyncComponentsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            project_id, after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
+            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
         )
 
     async def retrieve(
-        self, project_id: str, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> Component:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
 
@@ -413,6 +385,7 @@ class AsyncComponentsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -421,19 +394,17 @@ class AsyncComponentsClient:
 
         async def main() -> None:
             await client.components.retrieve(
-                project_id="project_id",
                 component_id="component_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.retrieve(project_id, component_id, request_options=request_options)
+        _response = await self._raw_client.retrieve(component_id, request_options=request_options)
         return _response.data
 
     async def configure_prop(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -451,9 +422,6 @@ class AsyncComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -501,6 +469,7 @@ class AsyncComponentsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -509,7 +478,6 @@ class AsyncComponentsClient:
 
         async def main() -> None:
             await client.components.configure_prop(
-                project_id="project_id",
                 id="id",
                 external_user_id="external_user_id",
                 prop_name="prop_name",
@@ -519,7 +487,6 @@ class AsyncComponentsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.configure_prop(
-            project_id,
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
@@ -537,7 +504,6 @@ class AsyncComponentsClient:
 
     async def reload_props(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -551,9 +517,6 @@ class AsyncComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -589,6 +552,7 @@ class AsyncComponentsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -597,7 +561,6 @@ class AsyncComponentsClient:
 
         async def main() -> None:
             await client.components.reload_props(
-                project_id="project_id",
                 id="id",
                 external_user_id="external_user_id",
             )
@@ -606,7 +569,6 @@ class AsyncComponentsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.reload_props(
-            project_id,
             id=id,
             external_user_id=external_user_id,
             async_handle=async_handle,

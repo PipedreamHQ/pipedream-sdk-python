@@ -27,7 +27,6 @@ class ProxyClient:
 
     def get(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -37,9 +36,6 @@ class ProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -62,29 +58,24 @@ class ProxyClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.proxy.get(
-            project_id="project_id",
             url_64="url_64",
             external_user_id="external_user_id",
             account_id="account_id",
         )
         """
         _response = self._raw_client.get(
-            project_id,
-            url_64,
-            external_user_id=external_user_id,
-            account_id=account_id,
-            request_options=request_options,
+            url_64, external_user_id=external_user_id, account_id=account_id, request_options=request_options
         )
         return _response.data
 
     def post(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -95,9 +86,6 @@ class ProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -122,12 +110,12 @@ class ProxyClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.proxy.post(
-            project_id="project_id",
             url_64="url_64",
             external_user_id="external_user_id",
             account_id="account_id",
@@ -135,7 +123,6 @@ class ProxyClient:
         )
         """
         _response = self._raw_client.post(
-            project_id,
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
@@ -146,7 +133,6 @@ class ProxyClient:
 
     def put(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -157,9 +143,6 @@ class ProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -184,12 +167,12 @@ class ProxyClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.proxy.put(
-            project_id="project_id",
             url_64="url_64",
             external_user_id="external_user_id",
             account_id="account_id",
@@ -197,7 +180,6 @@ class ProxyClient:
         )
         """
         _response = self._raw_client.put(
-            project_id,
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
@@ -208,7 +190,6 @@ class ProxyClient:
 
     def delete(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -218,9 +199,6 @@ class ProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -243,29 +221,24 @@ class ProxyClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.proxy.delete(
-            project_id="project_id",
             url_64="url_64",
             external_user_id="external_user_id",
             account_id="account_id",
         )
         """
         _response = self._raw_client.delete(
-            project_id,
-            url_64,
-            external_user_id=external_user_id,
-            account_id=account_id,
-            request_options=request_options,
+            url_64, external_user_id=external_user_id, account_id=account_id, request_options=request_options
         )
         return _response.data
 
     def patch(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -276,9 +249,6 @@ class ProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -303,12 +273,12 @@ class ProxyClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.proxy.patch(
-            project_id="project_id",
             url_64="url_64",
             external_user_id="external_user_id",
             account_id="account_id",
@@ -316,7 +286,6 @@ class ProxyClient:
         )
         """
         _response = self._raw_client.patch(
-            project_id,
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
@@ -343,7 +312,6 @@ class AsyncProxyClient:
 
     async def get(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -353,9 +321,6 @@ class AsyncProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -380,6 +345,7 @@ class AsyncProxyClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -388,7 +354,6 @@ class AsyncProxyClient:
 
         async def main() -> None:
             await client.proxy.get(
-                project_id="project_id",
                 url_64="url_64",
                 external_user_id="external_user_id",
                 account_id="account_id",
@@ -398,17 +363,12 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get(
-            project_id,
-            url_64,
-            external_user_id=external_user_id,
-            account_id=account_id,
-            request_options=request_options,
+            url_64, external_user_id=external_user_id, account_id=account_id, request_options=request_options
         )
         return _response.data
 
     async def post(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -419,9 +379,6 @@ class AsyncProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -448,6 +405,7 @@ class AsyncProxyClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -456,7 +414,6 @@ class AsyncProxyClient:
 
         async def main() -> None:
             await client.proxy.post(
-                project_id="project_id",
                 url_64="url_64",
                 external_user_id="external_user_id",
                 account_id="account_id",
@@ -467,7 +424,6 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.post(
-            project_id,
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
@@ -478,7 +434,6 @@ class AsyncProxyClient:
 
     async def put(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -489,9 +444,6 @@ class AsyncProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -518,6 +470,7 @@ class AsyncProxyClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -526,7 +479,6 @@ class AsyncProxyClient:
 
         async def main() -> None:
             await client.proxy.put(
-                project_id="project_id",
                 url_64="url_64",
                 external_user_id="external_user_id",
                 account_id="account_id",
@@ -537,7 +489,6 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.put(
-            project_id,
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
@@ -548,7 +499,6 @@ class AsyncProxyClient:
 
     async def delete(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -558,9 +508,6 @@ class AsyncProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -585,6 +532,7 @@ class AsyncProxyClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -593,7 +541,6 @@ class AsyncProxyClient:
 
         async def main() -> None:
             await client.proxy.delete(
-                project_id="project_id",
                 url_64="url_64",
                 external_user_id="external_user_id",
                 account_id="account_id",
@@ -603,17 +550,12 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(
-            project_id,
-            url_64,
-            external_user_id=external_user_id,
-            account_id=account_id,
-            request_options=request_options,
+            url_64, external_user_id=external_user_id, account_id=account_id, request_options=request_options
         )
         return _response.data
 
     async def patch(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -624,9 +566,6 @@ class AsyncProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -653,6 +592,7 @@ class AsyncProxyClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -661,7 +601,6 @@ class AsyncProxyClient:
 
         async def main() -> None:
             await client.proxy.patch(
-                project_id="project_id",
                 url_64="url_64",
                 external_user_id="external_user_id",
                 account_id="account_id",
@@ -672,7 +611,6 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.patch(
-            project_id,
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,

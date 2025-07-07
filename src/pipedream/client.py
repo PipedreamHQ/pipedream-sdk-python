@@ -38,6 +38,7 @@ class Client:
 
 
 
+    project_id : str
     x_pd_environment : typing.Optional[str]
     client_id : str
     client_secret : str
@@ -56,6 +57,7 @@ class Client:
     from pipedream import Pipedream
 
     client = Pipedream(
+        project_id="YOUR_PROJECT_ID",
         x_pd_environment="YOUR_X_PD_ENVIRONMENT",
         client_id="YOUR_CLIENT_ID",
         client_secret="YOUR_CLIENT_SECRET",
@@ -67,6 +69,7 @@ class Client:
         *,
         base_url: typing.Optional[str] = None,
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_id: str,
         x_pd_environment: typing.Optional[str] = None,
         client_id: str,
         client_secret: str,
@@ -83,6 +86,7 @@ class Client:
             client_secret=client_secret,
             client_wrapper=SyncClientWrapper(
                 base_url=_get_base_url(base_url=base_url, environment=environment),
+                project_id=project_id,
                 x_pd_environment=x_pd_environment,
                 httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                 if follow_redirects is not None
@@ -92,6 +96,7 @@ class Client:
         )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
+            project_id=project_id,
             x_pd_environment=x_pd_environment,
             token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
             httpx_client=httpx_client
@@ -133,6 +138,7 @@ class AsyncClient:
 
 
 
+    project_id : str
     x_pd_environment : typing.Optional[str]
     client_id : str
     client_secret : str
@@ -151,6 +157,7 @@ class AsyncClient:
     from pipedream import AsyncPipedream
 
     client = AsyncPipedream(
+        project_id="YOUR_PROJECT_ID",
         x_pd_environment="YOUR_X_PD_ENVIRONMENT",
         client_id="YOUR_CLIENT_ID",
         client_secret="YOUR_CLIENT_SECRET",
@@ -162,6 +169,7 @@ class AsyncClient:
         *,
         base_url: typing.Optional[str] = None,
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_id: str,
         x_pd_environment: typing.Optional[str] = None,
         client_id: str,
         client_secret: str,
@@ -178,6 +186,7 @@ class AsyncClient:
             client_secret=client_secret,
             client_wrapper=SyncClientWrapper(
                 base_url=_get_base_url(base_url=base_url, environment=environment),
+                project_id=project_id,
                 x_pd_environment=x_pd_environment,
                 httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                 if follow_redirects is not None
@@ -187,6 +196,7 @@ class AsyncClient:
         )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
+            project_id=project_id,
             x_pd_environment=x_pd_environment,
             token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
             httpx_client=httpx_client

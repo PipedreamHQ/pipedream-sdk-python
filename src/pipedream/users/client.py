@@ -23,14 +23,11 @@ class UsersClient:
         return self._raw_client
 
     def delete_external_user(
-        self, project_id: str, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -45,16 +42,16 @@ class UsersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.users.delete_external_user(
-            project_id="project_id",
             external_user_id="external_user_id",
         )
         """
-        _response = self._raw_client.delete_external_user(project_id, external_user_id, request_options=request_options)
+        _response = self._raw_client.delete_external_user(external_user_id, request_options=request_options)
         return _response.data
 
 
@@ -74,14 +71,11 @@ class AsyncUsersClient:
         return self._raw_client
 
     async def delete_external_user(
-        self, project_id: str, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -98,6 +92,7 @@ class AsyncUsersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -106,14 +101,11 @@ class AsyncUsersClient:
 
         async def main() -> None:
             await client.users.delete_external_user(
-                project_id="project_id",
                 external_user_id="external_user_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.delete_external_user(
-            project_id, external_user_id, request_options=request_options
-        )
+        _response = await self._raw_client.delete_external_user(external_user_id, request_options=request_options)
         return _response.data

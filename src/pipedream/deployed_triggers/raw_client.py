@@ -28,7 +28,6 @@ class RawDeployedTriggersClient:
 
     def list(
         self,
-        project_id: str,
         *,
         external_user_id: str,
         after: typing.Optional[str] = None,
@@ -39,9 +38,6 @@ class RawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
             Your end user ID, for whom you deployed the trigger
 
@@ -63,7 +59,7 @@ class RawDeployedTriggersClient:
             deployed triggers listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers",
             method="GET",
             params={
                 "after": after,
@@ -89,7 +85,6 @@ class RawDeployedTriggersClient:
                     _parsed_next = _parsed_response.page_info.end_cursor
                     _has_next = _parsed_next is not None and _parsed_next != ""
                     _get_next = lambda: self.list(
-                        project_id,
                         external_user_id=external_user_id,
                         after=_parsed_next,
                         before=before,
@@ -105,19 +100,11 @@ class RawDeployedTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[DeployedComponent]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -132,7 +119,7 @@ class RawDeployedTriggersClient:
             deployed trigger retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -157,7 +144,6 @@ class RawDeployedTriggersClient:
 
     def update(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -169,9 +155,6 @@ class RawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -195,7 +178,7 @@ class RawDeployedTriggersClient:
             deployed trigger updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -229,7 +212,6 @@ class RawDeployedTriggersClient:
 
     def delete(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -239,9 +221,6 @@ class RawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -258,7 +237,7 @@ class RawDeployedTriggersClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
             method="DELETE",
             params={
                 "external_user_id": external_user_id,
@@ -276,7 +255,6 @@ class RawDeployedTriggersClient:
 
     def list_events(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -286,9 +264,6 @@ class RawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -306,7 +281,7 @@ class RawDeployedTriggersClient:
             trigger events retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/events",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/events",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -331,19 +306,11 @@ class RawDeployedTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def list_workflows(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetTriggerWorkflowsResponse]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -358,7 +325,7 @@ class RawDeployedTriggersClient:
             trigger workflows retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -382,7 +349,6 @@ class RawDeployedTriggersClient:
 
     def update_workflows(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -392,9 +358,6 @@ class RawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -412,7 +375,7 @@ class RawDeployedTriggersClient:
             trigger workflows updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -442,19 +405,11 @@ class RawDeployedTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def list_webhooks(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetTriggerWebhooksResponse]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -469,7 +424,7 @@ class RawDeployedTriggersClient:
             trigger webhooks retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -493,7 +448,6 @@ class RawDeployedTriggersClient:
 
     def update_webhooks(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -503,9 +457,6 @@ class RawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -523,7 +474,7 @@ class RawDeployedTriggersClient:
             trigger webhooks updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -559,7 +510,6 @@ class AsyncRawDeployedTriggersClient:
 
     async def list(
         self,
-        project_id: str,
         *,
         external_user_id: str,
         after: typing.Optional[str] = None,
@@ -570,9 +520,6 @@ class AsyncRawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
             Your end user ID, for whom you deployed the trigger
 
@@ -594,7 +541,7 @@ class AsyncRawDeployedTriggersClient:
             deployed triggers listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers",
             method="GET",
             params={
                 "after": after,
@@ -622,7 +569,6 @@ class AsyncRawDeployedTriggersClient:
 
                     async def _get_next():
                         return await self.list(
-                            project_id,
                             external_user_id=external_user_id,
                             after=_parsed_next,
                             before=before,
@@ -639,19 +585,11 @@ class AsyncRawDeployedTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[DeployedComponent]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -666,7 +604,7 @@ class AsyncRawDeployedTriggersClient:
             deployed trigger retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -691,7 +629,6 @@ class AsyncRawDeployedTriggersClient:
 
     async def update(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -703,9 +640,6 @@ class AsyncRawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -729,7 +663,7 @@ class AsyncRawDeployedTriggersClient:
             deployed trigger updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -763,7 +697,6 @@ class AsyncRawDeployedTriggersClient:
 
     async def delete(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -773,9 +706,6 @@ class AsyncRawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -792,7 +722,7 @@ class AsyncRawDeployedTriggersClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
             method="DELETE",
             params={
                 "external_user_id": external_user_id,
@@ -810,7 +740,6 @@ class AsyncRawDeployedTriggersClient:
 
     async def list_events(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -820,9 +749,6 @@ class AsyncRawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -840,7 +766,7 @@ class AsyncRawDeployedTriggersClient:
             trigger events retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/events",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/events",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -865,19 +791,11 @@ class AsyncRawDeployedTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def list_workflows(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetTriggerWorkflowsResponse]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -892,7 +810,7 @@ class AsyncRawDeployedTriggersClient:
             trigger workflows retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -916,7 +834,6 @@ class AsyncRawDeployedTriggersClient:
 
     async def update_workflows(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -926,9 +843,6 @@ class AsyncRawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -946,7 +860,7 @@ class AsyncRawDeployedTriggersClient:
             trigger workflows updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -976,19 +890,11 @@ class AsyncRawDeployedTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def list_webhooks(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetTriggerWebhooksResponse]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -1003,7 +909,7 @@ class AsyncRawDeployedTriggersClient:
             trigger webhooks retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -1027,7 +933,6 @@ class AsyncRawDeployedTriggersClient:
 
     async def update_webhooks(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -1037,9 +942,6 @@ class AsyncRawDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -1057,7 +959,7 @@ class AsyncRawDeployedTriggersClient:
             trigger webhooks updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
             method="PUT",
             params={
                 "external_user_id": external_user_id,

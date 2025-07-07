@@ -26,7 +26,6 @@ class RawComponentsClient:
 
     def list(
         self,
-        project_id: str,
         *,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
@@ -38,9 +37,6 @@ class RawComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         after : typing.Optional[str]
             The cursor to start from for pagination
 
@@ -65,7 +61,7 @@ class RawComponentsClient:
             components listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
             method="GET",
             params={
                 "after": after,
@@ -92,7 +88,6 @@ class RawComponentsClient:
                     _parsed_next = _parsed_response.page_info.end_cursor
                     _has_next = _parsed_next is not None and _parsed_next != ""
                     _get_next = lambda: self.list(
-                        project_id,
                         after=_parsed_next,
                         before=before,
                         limit=limit,
@@ -109,14 +104,11 @@ class RawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
-        self, project_id: str, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[Component]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
 
@@ -129,7 +121,7 @@ class RawComponentsClient:
             component retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components/{jsonable_encoder(component_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/{jsonable_encoder(component_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -151,7 +143,6 @@ class RawComponentsClient:
 
     def configure_prop(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -169,9 +160,6 @@ class RawComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -213,7 +201,7 @@ class RawComponentsClient:
             component configuration started
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components/configure",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/configure",
             method="POST",
             json={
                 "id": id,
@@ -251,7 +239,6 @@ class RawComponentsClient:
 
     def reload_props(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -265,9 +252,6 @@ class RawComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -297,7 +281,7 @@ class RawComponentsClient:
             component props reloaded
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components/props",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/props",
             method="POST",
             json={
                 "id": id,
@@ -336,7 +320,6 @@ class AsyncRawComponentsClient:
 
     async def list(
         self,
-        project_id: str,
         *,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
@@ -348,9 +331,6 @@ class AsyncRawComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         after : typing.Optional[str]
             The cursor to start from for pagination
 
@@ -375,7 +355,7 @@ class AsyncRawComponentsClient:
             components listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
             method="GET",
             params={
                 "after": after,
@@ -404,7 +384,6 @@ class AsyncRawComponentsClient:
 
                     async def _get_next():
                         return await self.list(
-                            project_id,
                             after=_parsed_next,
                             before=before,
                             limit=limit,
@@ -422,14 +401,11 @@ class AsyncRawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
-        self, project_id: str, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Component]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
 
@@ -442,7 +418,7 @@ class AsyncRawComponentsClient:
             component retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components/{jsonable_encoder(component_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/{jsonable_encoder(component_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -464,7 +440,6 @@ class AsyncRawComponentsClient:
 
     async def configure_prop(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -482,9 +457,6 @@ class AsyncRawComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -526,7 +498,7 @@ class AsyncRawComponentsClient:
             component configuration started
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components/configure",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/configure",
             method="POST",
             json={
                 "id": id,
@@ -564,7 +536,6 @@ class AsyncRawComponentsClient:
 
     async def reload_props(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -578,9 +549,6 @@ class AsyncRawComponentsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -610,7 +578,7 @@ class AsyncRawComponentsClient:
             component props reloaded
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/components/props",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/props",
             method="POST",
             json={
                 "id": id,

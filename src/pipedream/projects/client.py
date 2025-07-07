@@ -23,15 +23,10 @@ class ProjectsClient:
         """
         return self._raw_client
 
-    def retrieve_info(
-        self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> ProjectInfoResponse:
+    def retrieve_info(self, *, request_options: typing.Optional[RequestOptions] = None) -> ProjectInfoResponse:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -45,15 +40,14 @@ class ProjectsClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.projects.retrieve_info(
-            project_id="project_id",
-        )
+        client.projects.retrieve_info()
         """
-        _response = self._raw_client.retrieve_info(project_id, request_options=request_options)
+        _response = self._raw_client.retrieve_info(request_options=request_options)
         return _response.data
 
 
@@ -72,15 +66,10 @@ class AsyncProjectsClient:
         """
         return self._raw_client
 
-    async def retrieve_info(
-        self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> ProjectInfoResponse:
+    async def retrieve_info(self, *, request_options: typing.Optional[RequestOptions] = None) -> ProjectInfoResponse:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -96,6 +85,7 @@ class AsyncProjectsClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -103,12 +93,10 @@ class AsyncProjectsClient:
 
 
         async def main() -> None:
-            await client.projects.retrieve_info(
-                project_id="project_id",
-            )
+            await client.projects.retrieve_info()
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.retrieve_info(project_id, request_options=request_options)
+        _response = await self._raw_client.retrieve_info(request_options=request_options)
         return _response.data

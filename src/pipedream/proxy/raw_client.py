@@ -20,7 +20,6 @@ class RawProxyClient:
 
     def get(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -30,9 +29,6 @@ class RawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -51,7 +47,7 @@ class RawProxyClient:
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -76,7 +72,6 @@ class RawProxyClient:
 
     def post(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -87,9 +82,6 @@ class RawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -110,7 +102,7 @@ class RawProxyClient:
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="POST",
             params={
                 "external_user_id": external_user_id,
@@ -140,7 +132,6 @@ class RawProxyClient:
 
     def put(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -151,9 +142,6 @@ class RawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -174,7 +162,7 @@ class RawProxyClient:
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -204,7 +192,6 @@ class RawProxyClient:
 
     def delete(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -214,9 +201,6 @@ class RawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -235,7 +219,7 @@ class RawProxyClient:
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="DELETE",
             params={
                 "external_user_id": external_user_id,
@@ -260,7 +244,6 @@ class RawProxyClient:
 
     def patch(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -271,9 +254,6 @@ class RawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -294,7 +274,7 @@ class RawProxyClient:
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="PATCH",
             params={
                 "external_user_id": external_user_id,
@@ -329,7 +309,6 @@ class AsyncRawProxyClient:
 
     async def get(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -339,9 +318,6 @@ class AsyncRawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -360,7 +336,7 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -385,7 +361,6 @@ class AsyncRawProxyClient:
 
     async def post(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -396,9 +371,6 @@ class AsyncRawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -419,7 +391,7 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="POST",
             params={
                 "external_user_id": external_user_id,
@@ -449,7 +421,6 @@ class AsyncRawProxyClient:
 
     async def put(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -460,9 +431,6 @@ class AsyncRawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -483,7 +451,7 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -513,7 +481,6 @@ class AsyncRawProxyClient:
 
     async def delete(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -523,9 +490,6 @@ class AsyncRawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -544,7 +508,7 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="DELETE",
             params={
                 "external_user_id": external_user_id,
@@ -569,7 +533,6 @@ class AsyncRawProxyClient:
 
     async def patch(
         self,
-        project_id: str,
         url_64: str,
         *,
         external_user_id: str,
@@ -580,9 +543,6 @@ class AsyncRawProxyClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         url_64 : str
             Base64-encoded target URL
 
@@ -603,7 +563,7 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/proxy/{jsonable_encoder(url_64)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
             method="PATCH",
             params={
                 "external_user_id": external_user_id,
