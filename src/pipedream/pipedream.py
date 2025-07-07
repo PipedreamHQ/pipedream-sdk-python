@@ -18,12 +18,8 @@ class OAuthCredentials:
         client_id: Optional[str] = None,
         client_secret: Optional[str] = None,
     ):
-        self.client_id = client_id or os.getenv("PIPEDREAM_CLIENT_ID")
-        self.client_secret = client_secret or os.getenv(
-            "PIPEDREAM_CLIENT_SECRET")
-
-        if not self.client_id or not self.client_secret:
-            raise ValueError("OAuth client ID and secret are required")
+        self.client_id = client_id
+        self.client_secret = client_secret
 
 
 class Pipedream(Client):
@@ -40,9 +36,6 @@ class Pipedream(Client):
         project_id = project_id or os.getenv("PIPEDREAM_PROJECT_ID")
         if not project_id:
             raise ValueError("Project ID is required")
-
-        if not credentials.client_id or not credentials.client_secret:
-            raise ValueError("OAuth client ID and secret are required")
 
         super().__init__(
             client_id=credentials.client_id,
@@ -68,9 +61,6 @@ class AsyncPipedream(AsyncClient):
         project_id = project_id or os.getenv("PIPEDREAM_PROJECT_ID")
         if not project_id:
             raise ValueError("Project ID is required")
-
-        if not credentials.client_id or not credentials.client_secret:
-            raise ValueError("OAuth client ID and secret are required")
 
         super().__init__(
             client_id=credentials.client_id,
