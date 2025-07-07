@@ -32,7 +32,6 @@ class DeployedTriggersClient:
 
     def list(
         self,
-        project_id: str,
         *,
         external_user_id: str,
         after: typing.Optional[str] = None,
@@ -43,9 +42,6 @@ class DeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
             Your end user ID, for whom you deployed the trigger
 
@@ -71,12 +67,12 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.deployed_triggers.list(
-            project_id="project_id",
             external_user_id="external_user_id",
         )
         for item in response:
@@ -86,28 +82,15 @@ class DeployedTriggersClient:
             yield page
         """
         return self._raw_client.list(
-            project_id,
-            external_user_id=external_user_id,
-            after=after,
-            before=before,
-            limit=limit,
-            request_options=request_options,
+            external_user_id=external_user_id, after=after, before=before, limit=limit, request_options=request_options
         )
 
     def retrieve(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> DeployedComponent:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -126,24 +109,23 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.retrieve(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
         )
         """
         _response = self._raw_client.retrieve(
-            project_id, trigger_id, external_user_id=external_user_id, request_options=request_options
+            trigger_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
 
     def update(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -155,9 +137,6 @@ class DeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -185,18 +164,17 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.update(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
         )
         """
         _response = self._raw_client.update(
-            project_id,
             trigger_id,
             external_user_id=external_user_id,
             active=active,
@@ -208,7 +186,6 @@ class DeployedTriggersClient:
 
     def delete(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -218,9 +195,6 @@ class DeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -241,18 +215,17 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.delete(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
         )
         """
         _response = self._raw_client.delete(
-            project_id,
             trigger_id,
             external_user_id=external_user_id,
             ignore_hook_errors=ignore_hook_errors,
@@ -262,7 +235,6 @@ class DeployedTriggersClient:
 
     def list_events(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -272,9 +244,6 @@ class DeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -296,35 +265,27 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.list_events(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
         )
         """
         _response = self._raw_client.list_events(
-            project_id, trigger_id, external_user_id=external_user_id, n=n, request_options=request_options
+            trigger_id, external_user_id=external_user_id, n=n, request_options=request_options
         )
         return _response.data
 
     def list_workflows(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetTriggerWorkflowsResponse:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -343,24 +304,23 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.list_workflows(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
         )
         """
         _response = self._raw_client.list_workflows(
-            project_id, trigger_id, external_user_id=external_user_id, request_options=request_options
+            trigger_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
 
     def update_workflows(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -370,9 +330,6 @@ class DeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -394,40 +351,28 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.update_workflows(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
             workflow_ids=["workflow_ids"],
         )
         """
         _response = self._raw_client.update_workflows(
-            project_id,
-            trigger_id,
-            external_user_id=external_user_id,
-            workflow_ids=workflow_ids,
-            request_options=request_options,
+            trigger_id, external_user_id=external_user_id, workflow_ids=workflow_ids, request_options=request_options
         )
         return _response.data
 
     def list_webhooks(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetTriggerWebhooksResponse:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -446,24 +391,23 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.list_webhooks(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
         )
         """
         _response = self._raw_client.list_webhooks(
-            project_id, trigger_id, external_user_id=external_user_id, request_options=request_options
+            trigger_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
 
     def update_webhooks(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -473,9 +417,6 @@ class DeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -497,23 +438,19 @@ class DeployedTriggersClient:
         from pipedream import Pipedream
 
         client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.deployed_triggers.update_webhooks(
-            project_id="project_id",
             trigger_id="trigger_id",
             external_user_id="external_user_id",
             webhook_urls=["webhook_urls"],
         )
         """
         _response = self._raw_client.update_webhooks(
-            project_id,
-            trigger_id,
-            external_user_id=external_user_id,
-            webhook_urls=webhook_urls,
-            request_options=request_options,
+            trigger_id, external_user_id=external_user_id, webhook_urls=webhook_urls, request_options=request_options
         )
         return _response.data
 
@@ -535,7 +472,6 @@ class AsyncDeployedTriggersClient:
 
     async def list(
         self,
-        project_id: str,
         *,
         external_user_id: str,
         after: typing.Optional[str] = None,
@@ -546,9 +482,6 @@ class AsyncDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
             Your end user ID, for whom you deployed the trigger
 
@@ -576,6 +509,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -584,7 +518,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             response = await client.deployed_triggers.list(
-                project_id="project_id",
                 external_user_id="external_user_id",
             )
             async for item in response:
@@ -598,28 +531,15 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            project_id,
-            external_user_id=external_user_id,
-            after=after,
-            before=before,
-            limit=limit,
-            request_options=request_options,
+            external_user_id=external_user_id, after=after, before=before, limit=limit, request_options=request_options
         )
 
     async def retrieve(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> DeployedComponent:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -640,6 +560,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -648,7 +569,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.retrieve(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
             )
@@ -657,13 +577,12 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.retrieve(
-            project_id, trigger_id, external_user_id=external_user_id, request_options=request_options
+            trigger_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
 
     async def update(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -675,9 +594,6 @@ class AsyncDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -707,6 +623,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -715,7 +632,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.update(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
             )
@@ -724,7 +640,6 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update(
-            project_id,
             trigger_id,
             external_user_id=external_user_id,
             active=active,
@@ -736,7 +651,6 @@ class AsyncDeployedTriggersClient:
 
     async def delete(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -746,9 +660,6 @@ class AsyncDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -771,6 +682,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -779,7 +691,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.delete(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
             )
@@ -788,7 +699,6 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(
-            project_id,
             trigger_id,
             external_user_id=external_user_id,
             ignore_hook_errors=ignore_hook_errors,
@@ -798,7 +708,6 @@ class AsyncDeployedTriggersClient:
 
     async def list_events(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -808,9 +717,6 @@ class AsyncDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -834,6 +740,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -842,7 +749,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.list_events(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
             )
@@ -851,24 +757,16 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.list_events(
-            project_id, trigger_id, external_user_id=external_user_id, n=n, request_options=request_options
+            trigger_id, external_user_id=external_user_id, n=n, request_options=request_options
         )
         return _response.data
 
     async def list_workflows(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetTriggerWorkflowsResponse:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -889,6 +787,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -897,7 +796,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.list_workflows(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
             )
@@ -906,13 +804,12 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.list_workflows(
-            project_id, trigger_id, external_user_id=external_user_id, request_options=request_options
+            trigger_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
 
     async def update_workflows(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -922,9 +819,6 @@ class AsyncDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -948,6 +842,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -956,7 +851,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.update_workflows(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
                 workflow_ids=["workflow_ids"],
@@ -966,28 +860,16 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_workflows(
-            project_id,
-            trigger_id,
-            external_user_id=external_user_id,
-            workflow_ids=workflow_ids,
-            request_options=request_options,
+            trigger_id, external_user_id=external_user_id, workflow_ids=workflow_ids, request_options=request_options
         )
         return _response.data
 
     async def list_webhooks(
-        self,
-        project_id: str,
-        trigger_id: str,
-        *,
-        external_user_id: str,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> GetTriggerWebhooksResponse:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -1008,6 +890,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -1016,7 +899,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.list_webhooks(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
             )
@@ -1025,13 +907,12 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.list_webhooks(
-            project_id, trigger_id, external_user_id=external_user_id, request_options=request_options
+            trigger_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
 
     async def update_webhooks(
         self,
-        project_id: str,
         trigger_id: str,
         *,
         external_user_id: str,
@@ -1041,9 +922,6 @@ class AsyncDeployedTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         trigger_id : str
 
         external_user_id : str
@@ -1067,6 +945,7 @@ class AsyncDeployedTriggersClient:
         from pipedream import AsyncPipedream
 
         client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
             x_pd_environment="YOUR_X_PD_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
@@ -1075,7 +954,6 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             await client.deployed_triggers.update_webhooks(
-                project_id="project_id",
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
                 webhook_urls=["webhook_urls"],
@@ -1085,10 +963,6 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update_webhooks(
-            project_id,
-            trigger_id,
-            external_user_id=external_user_id,
-            webhook_urls=webhook_urls,
-            request_options=request_options,
+            trigger_id, external_user_id=external_user_id, webhook_urls=webhook_urls, request_options=request_options
         )
         return _response.data

@@ -10,12 +10,14 @@ class BaseClientWrapper:
     def __init__(
         self,
         *,
+        project_id: str,
         x_pd_environment: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
     ):
+        self._project_id = project_id
         self._x_pd_environment = x_pd_environment
         self._token = token
         self._headers = headers
@@ -57,6 +59,7 @@ class SyncClientWrapper(BaseClientWrapper):
     def __init__(
         self,
         *,
+        project_id: str,
         x_pd_environment: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
@@ -65,7 +68,12 @@ class SyncClientWrapper(BaseClientWrapper):
         httpx_client: httpx.Client,
     ):
         super().__init__(
-            x_pd_environment=x_pd_environment, token=token, headers=headers, base_url=base_url, timeout=timeout
+            project_id=project_id,
+            x_pd_environment=x_pd_environment,
+            token=token,
+            headers=headers,
+            base_url=base_url,
+            timeout=timeout,
         )
         self.httpx_client = HttpClient(
             httpx_client=httpx_client,
@@ -79,6 +87,7 @@ class AsyncClientWrapper(BaseClientWrapper):
     def __init__(
         self,
         *,
+        project_id: str,
         x_pd_environment: typing.Optional[str] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
@@ -87,7 +96,12 @@ class AsyncClientWrapper(BaseClientWrapper):
         httpx_client: httpx.AsyncClient,
     ):
         super().__init__(
-            x_pd_environment=x_pd_environment, token=token, headers=headers, base_url=base_url, timeout=timeout
+            project_id=project_id,
+            x_pd_environment=x_pd_environment,
+            token=token,
+            headers=headers,
+            base_url=base_url,
+            timeout=timeout,
         )
         self.httpx_client = AsyncHttpClient(
             httpx_client=httpx_client,

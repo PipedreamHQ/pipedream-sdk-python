@@ -28,7 +28,6 @@ class RawTriggersClient:
 
     def list(
         self,
-        project_id: str,
         *,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
@@ -40,9 +39,6 @@ class RawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         after : typing.Optional[str]
             The cursor to start from for pagination
 
@@ -67,7 +63,7 @@ class RawTriggersClient:
             triggers listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers",
             method="GET",
             params={
                 "after": after,
@@ -94,7 +90,6 @@ class RawTriggersClient:
                     _parsed_next = _parsed_response.page_info.end_cursor
                     _has_next = _parsed_next is not None and _parsed_next != ""
                     _get_next = lambda: self.list(
-                        project_id,
                         after=_parsed_next,
                         before=before,
                         limit=limit,
@@ -111,14 +106,11 @@ class RawTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
-        self, project_id: str, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[Component]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
 
@@ -131,7 +123,7 @@ class RawTriggersClient:
             trigger retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/{jsonable_encoder(component_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/{jsonable_encoder(component_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -153,7 +145,6 @@ class RawTriggersClient:
 
     def configure_prop(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -171,9 +162,6 @@ class RawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -215,7 +203,7 @@ class RawTriggersClient:
             trigger configuration started
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/configure",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/configure",
             method="POST",
             json={
                 "id": id,
@@ -253,7 +241,6 @@ class RawTriggersClient:
 
     def reload_props(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -267,9 +254,6 @@ class RawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -299,7 +283,7 @@ class RawTriggersClient:
             trigger props reloaded
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/props",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/props",
             method="POST",
             json={
                 "id": id,
@@ -333,7 +317,6 @@ class RawTriggersClient:
 
     def deploy(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -345,9 +328,6 @@ class RawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The trigger component ID
 
@@ -372,7 +352,7 @@ class RawTriggersClient:
             trigger deployed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/deploy",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/deploy",
             method="POST",
             json={
                 "id": id,
@@ -410,7 +390,6 @@ class AsyncRawTriggersClient:
 
     async def list(
         self,
-        project_id: str,
         *,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
@@ -422,9 +401,6 @@ class AsyncRawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         after : typing.Optional[str]
             The cursor to start from for pagination
 
@@ -449,7 +425,7 @@ class AsyncRawTriggersClient:
             triggers listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers",
             method="GET",
             params={
                 "after": after,
@@ -478,7 +454,6 @@ class AsyncRawTriggersClient:
 
                     async def _get_next():
                         return await self.list(
-                            project_id,
                             after=_parsed_next,
                             before=before,
                             limit=limit,
@@ -496,14 +471,11 @@ class AsyncRawTriggersClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
-        self, project_id: str, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Component]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
 
@@ -516,7 +488,7 @@ class AsyncRawTriggersClient:
             trigger retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/{jsonable_encoder(component_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/{jsonable_encoder(component_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -538,7 +510,6 @@ class AsyncRawTriggersClient:
 
     async def configure_prop(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -556,9 +527,6 @@ class AsyncRawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -600,7 +568,7 @@ class AsyncRawTriggersClient:
             trigger configuration started
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/configure",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/configure",
             method="POST",
             json={
                 "id": id,
@@ -638,7 +606,6 @@ class AsyncRawTriggersClient:
 
     async def reload_props(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -652,9 +619,6 @@ class AsyncRawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The component ID
 
@@ -684,7 +648,7 @@ class AsyncRawTriggersClient:
             trigger props reloaded
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/props",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/props",
             method="POST",
             json={
                 "id": id,
@@ -718,7 +682,6 @@ class AsyncRawTriggersClient:
 
     async def deploy(
         self,
-        project_id: str,
         *,
         id: str,
         external_user_id: str,
@@ -730,9 +693,6 @@ class AsyncRawTriggersClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         id : str
             The trigger component ID
 
@@ -757,7 +717,7 @@ class AsyncRawTriggersClient:
             trigger deployed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/triggers/deploy",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers/deploy",
             method="POST",
             json={
                 "id": id,

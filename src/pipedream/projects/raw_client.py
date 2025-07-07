@@ -17,14 +17,11 @@ class RawProjectsClient:
         self._client_wrapper = client_wrapper
 
     def retrieve_info(
-        self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ProjectInfoResponse]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -34,7 +31,7 @@ class RawProjectsClient:
             project info retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/projects/info",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/projects/info",
             method="GET",
             request_options=request_options,
         )
@@ -59,14 +56,11 @@ class AsyncRawProjectsClient:
         self._client_wrapper = client_wrapper
 
     async def retrieve_info(
-        self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ProjectInfoResponse]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -76,7 +70,7 @@ class AsyncRawProjectsClient:
             project info retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/projects/info",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/projects/info",
             method="GET",
             request_options=request_options,
         )

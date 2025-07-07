@@ -23,7 +23,6 @@ class RawAccountsClient:
 
     def list(
         self,
-        project_id: str,
         *,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
@@ -37,9 +36,6 @@ class RawAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -69,7 +65,7 @@ class RawAccountsClient:
             accounts listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="GET",
             params={
                 "app_id": app_id,
@@ -98,7 +94,6 @@ class RawAccountsClient:
                     _parsed_next = _parsed_response.page_info.end_cursor
                     _has_next = _parsed_next is not None and _parsed_next != ""
                     _get_next = lambda: self.list(
-                        project_id,
                         app_id=app_id,
                         external_user_id=external_user_id,
                         oauth_app_id=oauth_app_id,
@@ -118,7 +113,6 @@ class RawAccountsClient:
 
     def create(
         self,
-        project_id: str,
         *,
         app_slug: str,
         cfmap_json: str,
@@ -132,9 +126,6 @@ class RawAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_slug : str
             The app slug for the account
 
@@ -164,7 +155,7 @@ class RawAccountsClient:
             account created
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="POST",
             params={
                 "app_id": app_id,
@@ -200,7 +191,6 @@ class RawAccountsClient:
 
     def retrieve(
         self,
-        project_id: str,
         account_id: str,
         *,
         include_credentials: typing.Optional[bool] = None,
@@ -209,9 +199,6 @@ class RawAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         include_credentials : typing.Optional[bool]
@@ -226,7 +213,7 @@ class RawAccountsClient:
             account retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
             method="GET",
             params={
                 "include_credentials": include_credentials,
@@ -248,15 +235,10 @@ class RawAccountsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def delete(
-        self, project_id: str, account_id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[None]:
+    def delete(self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -267,7 +249,7 @@ class RawAccountsClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -280,14 +262,11 @@ class RawAccountsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete_by_app(
-        self, project_id: str, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[None]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -298,7 +277,7 @@ class RawAccountsClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/apps/{jsonable_encoder(app_id)}/accounts",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/apps/{jsonable_encoder(app_id)}/accounts",
             method="DELETE",
             request_options=request_options,
         )
@@ -317,7 +296,6 @@ class AsyncRawAccountsClient:
 
     async def list(
         self,
-        project_id: str,
         *,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
@@ -331,9 +309,6 @@ class AsyncRawAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -363,7 +338,7 @@ class AsyncRawAccountsClient:
             accounts listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="GET",
             params={
                 "app_id": app_id,
@@ -394,7 +369,6 @@ class AsyncRawAccountsClient:
 
                     async def _get_next():
                         return await self.list(
-                            project_id,
                             app_id=app_id,
                             external_user_id=external_user_id,
                             oauth_app_id=oauth_app_id,
@@ -415,7 +389,6 @@ class AsyncRawAccountsClient:
 
     async def create(
         self,
-        project_id: str,
         *,
         app_slug: str,
         cfmap_json: str,
@@ -429,9 +402,6 @@ class AsyncRawAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_slug : str
             The app slug for the account
 
@@ -461,7 +431,7 @@ class AsyncRawAccountsClient:
             account created
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="POST",
             params={
                 "app_id": app_id,
@@ -497,7 +467,6 @@ class AsyncRawAccountsClient:
 
     async def retrieve(
         self,
-        project_id: str,
         account_id: str,
         *,
         include_credentials: typing.Optional[bool] = None,
@@ -506,9 +475,6 @@ class AsyncRawAccountsClient:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         include_credentials : typing.Optional[bool]
@@ -523,7 +489,7 @@ class AsyncRawAccountsClient:
             account retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
             method="GET",
             params={
                 "include_credentials": include_credentials,
@@ -546,14 +512,11 @@ class AsyncRawAccountsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete(
-        self, project_id: str, account_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[None]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         account_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -564,7 +527,7 @@ class AsyncRawAccountsClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -577,14 +540,11 @@ class AsyncRawAccountsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete_by_app(
-        self, project_id: str, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[None]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         app_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -595,7 +555,7 @@ class AsyncRawAccountsClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/apps/{jsonable_encoder(app_id)}/accounts",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/apps/{jsonable_encoder(app_id)}/accounts",
             method="DELETE",
             request_options=request_options,
         )

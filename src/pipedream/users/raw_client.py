@@ -15,14 +15,11 @@ class RawUsersClient:
         self._client_wrapper = client_wrapper
 
     def delete_external_user(
-        self, project_id: str, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[None]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -33,7 +30,7 @@ class RawUsersClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/users/{jsonable_encoder(external_user_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users/{jsonable_encoder(external_user_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -51,14 +48,11 @@ class AsyncRawUsersClient:
         self._client_wrapper = client_wrapper
 
     async def delete_external_user(
-        self, project_id: str, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[None]:
         """
         Parameters
         ----------
-        project_id : str
-            The project ID, which starts with 'proj_'.
-
         external_user_id : str
 
         request_options : typing.Optional[RequestOptions]
@@ -69,7 +63,7 @@ class AsyncRawUsersClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(project_id)}/users/{jsonable_encoder(external_user_id)}",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users/{jsonable_encoder(external_user_id)}",
             method="DELETE",
             request_options=request_options,
         )

@@ -16,6 +16,7 @@
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
@@ -64,6 +65,7 @@ client.app_categories.list()
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
@@ -123,6 +125,7 @@ client.app_categories.retrieve(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
@@ -232,6 +235,7 @@ for page in response.iter_pages():
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
@@ -291,13 +295,12 @@ client.apps.retrieve(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.accounts.list(
-    project_id="project_id",
-)
+response = client.accounts.list()
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
@@ -314,14 +317,6 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -410,12 +405,12 @@ for page in response.iter_pages():
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.accounts.create(
-    project_id="project_id",
     app_slug="app_slug",
     cfmap_json="cfmap_json",
     connect_token="connect_token",
@@ -431,14 +426,6 @@ client.accounts.create(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -527,12 +514,12 @@ client.accounts.create(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.accounts.retrieve(
-    project_id="project_id",
     account_id="account_id",
 )
 
@@ -546,14 +533,6 @@ client.accounts.retrieve(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -602,12 +581,12 @@ client.accounts.retrieve(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.accounts.delete(
-    project_id="project_id",
     account_id="account_id",
 )
 
@@ -621,14 +600,6 @@ client.accounts.delete(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -669,12 +640,12 @@ client.accounts.delete(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.accounts.delete_by_app(
-    project_id="project_id",
     app_id="app_id",
 )
 
@@ -688,14 +659,6 @@ client.accounts.delete_by_app(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -737,12 +700,12 @@ client.accounts.delete_by_app(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.users.delete_external_user(
-    project_id="project_id",
     external_user_id="external_user_id",
 )
 
@@ -756,14 +719,6 @@ client.users.delete_external_user(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -805,13 +760,12 @@ client.users.delete_external_user(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.components.list(
-    project_id="project_id",
-)
+response = client.components.list()
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
@@ -828,14 +782,6 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -908,12 +854,12 @@ for page in response.iter_pages():
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.components.retrieve(
-    project_id="project_id",
     component_id="component_id",
 )
 
@@ -927,14 +873,6 @@ client.components.retrieve(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -975,12 +913,12 @@ client.components.retrieve(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.components.configure_prop(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
     prop_name="prop_name",
@@ -996,14 +934,6 @@ client.components.configure_prop(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1124,12 +1054,12 @@ client.components.configure_prop(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.components.reload_props(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
 )
@@ -1144,14 +1074,6 @@ client.components.reload_props(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1241,13 +1163,12 @@ client.components.reload_props(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.actions.list(
-    project_id="project_id",
-)
+response = client.actions.list()
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
@@ -1264,14 +1185,6 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1344,12 +1257,12 @@ for page in response.iter_pages():
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.actions.retrieve(
-    project_id="project_id",
     component_id="component_id",
 )
 
@@ -1363,14 +1276,6 @@ client.actions.retrieve(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1411,12 +1316,12 @@ client.actions.retrieve(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.actions.configure_prop(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
     prop_name="prop_name",
@@ -1432,14 +1337,6 @@ client.actions.configure_prop(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1560,12 +1457,12 @@ client.actions.configure_prop(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.actions.reload_props(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
 )
@@ -1580,14 +1477,6 @@ client.actions.reload_props(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1676,12 +1565,12 @@ client.actions.reload_props(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.actions.run(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
 )
@@ -1696,14 +1585,6 @@ client.actions.run(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1777,13 +1658,12 @@ client.actions.run(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.triggers.list(
-    project_id="project_id",
-)
+response = client.triggers.list()
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
@@ -1800,14 +1680,6 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1880,12 +1752,12 @@ for page in response.iter_pages():
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.triggers.retrieve(
-    project_id="project_id",
     component_id="component_id",
 )
 
@@ -1899,14 +1771,6 @@ client.triggers.retrieve(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -1947,12 +1811,12 @@ client.triggers.retrieve(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.triggers.configure_prop(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
     prop_name="prop_name",
@@ -1968,14 +1832,6 @@ client.triggers.configure_prop(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2096,12 +1952,12 @@ client.triggers.configure_prop(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.triggers.reload_props(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
 )
@@ -2116,14 +1972,6 @@ client.triggers.reload_props(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2212,12 +2060,12 @@ client.triggers.reload_props(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.triggers.deploy(
-    project_id="project_id",
     id="id",
     external_user_id="external_user_id",
 )
@@ -2232,14 +2080,6 @@ client.triggers.deploy(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2313,12 +2153,12 @@ client.triggers.deploy(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 response = client.deployed_triggers.list(
-    project_id="project_id",
     external_user_id="external_user_id",
 )
 for item in response:
@@ -2337,14 +2177,6 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2409,12 +2241,12 @@ for page in response.iter_pages():
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.retrieve(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
 )
@@ -2429,14 +2261,6 @@ client.deployed_triggers.retrieve(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2485,12 +2309,12 @@ client.deployed_triggers.retrieve(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.update(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
 )
@@ -2505,14 +2329,6 @@ client.deployed_triggers.update(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2585,12 +2401,12 @@ client.deployed_triggers.update(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.delete(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
 )
@@ -2605,14 +2421,6 @@ client.deployed_triggers.delete(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2669,12 +2477,12 @@ client.deployed_triggers.delete(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.list_events(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
 )
@@ -2689,14 +2497,6 @@ client.deployed_triggers.list_events(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2753,12 +2553,12 @@ client.deployed_triggers.list_events(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.list_workflows(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
 )
@@ -2773,14 +2573,6 @@ client.deployed_triggers.list_workflows(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2829,12 +2621,12 @@ client.deployed_triggers.list_workflows(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.update_workflows(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
     workflow_ids=["workflow_ids"],
@@ -2850,14 +2642,6 @@ client.deployed_triggers.update_workflows(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2914,12 +2698,12 @@ client.deployed_triggers.update_workflows(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.list_webhooks(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
 )
@@ -2934,14 +2718,6 @@ client.deployed_triggers.list_webhooks(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -2990,12 +2766,12 @@ client.deployed_triggers.list_webhooks(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.deployed_triggers.update_webhooks(
-    project_id="project_id",
     trigger_id="trigger_id",
     external_user_id="external_user_id",
     webhook_urls=["webhook_urls"],
@@ -3011,14 +2787,6 @@ client.deployed_triggers.update_webhooks(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3060,7 +2828,7 @@ client.deployed_triggers.update_webhooks(
 </details>
 
 ## Projects
-<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">retrieve_info</a>(...)</code></summary>
+<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">retrieve_info</a>()</code></summary>
 <dl>
 <dd>
 
@@ -3076,13 +2844,12 @@ client.deployed_triggers.update_webhooks(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-client.projects.retrieve_info(
-    project_id="project_id",
-)
+client.projects.retrieve_info()
 
 ```
 </dd>
@@ -3094,14 +2861,6 @@ client.projects.retrieve_info(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3135,12 +2894,12 @@ client.projects.retrieve_info(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.proxy.get(
-    project_id="project_id",
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
@@ -3156,14 +2915,6 @@ client.proxy.get(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3220,12 +2971,12 @@ client.proxy.get(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.proxy.post(
-    project_id="project_id",
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
@@ -3242,14 +2993,6 @@ client.proxy.post(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3314,12 +3057,12 @@ client.proxy.post(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.proxy.put(
-    project_id="project_id",
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
@@ -3336,14 +3079,6 @@ client.proxy.put(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3408,12 +3143,12 @@ client.proxy.put(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.proxy.delete(
-    project_id="project_id",
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
@@ -3429,14 +3164,6 @@ client.proxy.delete(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3493,12 +3220,12 @@ client.proxy.delete(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
 client.proxy.patch(
-    project_id="project_id",
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
@@ -3515,14 +3242,6 @@ client.proxy.patch(
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The project ID, which starts with 'proj_'.
-    
-</dd>
-</dl>
 
 <dl>
 <dd>
@@ -3588,6 +3307,7 @@ client.proxy.patch(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
@@ -3687,6 +3407,7 @@ client.tokens.create(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
@@ -3754,6 +3475,7 @@ client.tokens.validate(
 from pipedream import Pipedream
 
 client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
     x_pd_environment="YOUR_X_PD_ENVIRONMENT",
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
