@@ -18,8 +18,9 @@ class OAuthCredentials:
         client_id: Optional[str] = None,
         client_secret: Optional[str] = None,
     ):
-        self.client_id = client_id
-        self.client_secret = client_secret
+        self.client_id = client_id or os.getenv("PIPEDREAM_CLIENT_ID")
+        self.client_secret = client_secret or os.getenv(
+            "PIPEDREAM_CLIENT_SECRET")
 
 
 class Pipedream(Client):
@@ -38,9 +39,9 @@ class Pipedream(Client):
             raise ValueError("Project ID is required")
 
         super().__init__(
+            base_url=_get_base_url(api_environment),
             client_id=credentials.client_id,
             client_secret=credentials.client_secret,
-            environment=api_environment,
             project_id=project_id,
             x_pd_environment=environment,
             **kwargs,
@@ -63,10 +64,17 @@ class AsyncPipedream(AsyncClient):
             raise ValueError("Project ID is required")
 
         super().__init__(
+            base_url=_get_base_url(api_environment),
             client_id=credentials.client_id,
             client_secret=credentials.client_secret,
-            environment=api_environment,
             project_id=project_id,
             x_pd_environment=environment,
             **kwargs,
         )
+
+
+def _get_base_url(environment: PipedreamEnvironment) -> str:
+    """
+    Returns the base URL for the given environment.
+    """
+    return os.path.expandvars(environment.value)
