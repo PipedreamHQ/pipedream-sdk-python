@@ -12,14 +12,14 @@ class BaseClientWrapper:
         *,
         project_id: str,
         x_pd_environment: typing.Optional[str] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        access_token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
     ):
         self._project_id = project_id
         self._x_pd_environment = x_pd_environment
-        self._token = token
+        self._access_token = access_token
         self._headers = headers
         self._base_url = base_url
         self._timeout = timeout
@@ -34,16 +34,16 @@ class BaseClientWrapper:
         }
         if self._x_pd_environment is not None:
             headers["x-pd-environment"] = self._x_pd_environment
-        token = self._get_token()
-        if token is not None:
-            headers["Authorization"] = f"Bearer {token}"
+        access_token = self._get_access_token()
+        if access_token is not None:
+            headers["Authorization"] = f"Bearer {access_token}"
         return headers
 
-    def _get_token(self) -> typing.Optional[str]:
-        if isinstance(self._token, str) or self._token is None:
-            return self._token
+    def _get_access_token(self) -> typing.Optional[str]:
+        if isinstance(self._access_token, str) or self._access_token is None:
+            return self._access_token
         else:
-            return self._token()
+            return self._access_token()
 
     def get_custom_headers(self) -> typing.Optional[typing.Dict[str, str]]:
         return self._headers
@@ -61,7 +61,7 @@ class SyncClientWrapper(BaseClientWrapper):
         *,
         project_id: str,
         x_pd_environment: typing.Optional[str] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        access_token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
@@ -70,7 +70,7 @@ class SyncClientWrapper(BaseClientWrapper):
         super().__init__(
             project_id=project_id,
             x_pd_environment=x_pd_environment,
-            token=token,
+            access_token=access_token,
             headers=headers,
             base_url=base_url,
             timeout=timeout,
@@ -89,7 +89,7 @@ class AsyncClientWrapper(BaseClientWrapper):
         *,
         project_id: str,
         x_pd_environment: typing.Optional[str] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        access_token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
@@ -98,7 +98,7 @@ class AsyncClientWrapper(BaseClientWrapper):
         super().__init__(
             project_id=project_id,
             x_pd_environment=x_pd_environment,
-            token=token,
+            access_token=access_token,
             headers=headers,
             base_url=base_url,
             timeout=timeout,
