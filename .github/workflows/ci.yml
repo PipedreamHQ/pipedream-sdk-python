@@ -40,6 +40,8 @@ jobs:
     needs: [compile, test]
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -52,10 +54,7 @@ jobs:
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
       - name: Install dependencies
         run: poetry install
-      - name: Publish to pypi
-        env:
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
-        run: |
-          poetry config repositories.remote https://upload.pypi.org/legacy/
-          poetry config pypi-token.pypi ${PYPI_TOKEN}
-          poetry --no-interaction -v publish --build --repository remote
+      - name: Build package
+        run: poetry --no-interaction -v build
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1
