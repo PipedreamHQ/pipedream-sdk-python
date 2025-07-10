@@ -1,5 +1,6 @@
 # Specify files that shouldn't be modified by Fern
 .github/workflows/auto-close-empty-prs.yml
+.github/workflows/ci.yml
 .gitignore
 LICENSE
 
