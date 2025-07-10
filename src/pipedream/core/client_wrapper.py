@@ -26,10 +26,10 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "pipedream/0.3.1",
+            "User-Agent": "pipedream/0.3.2",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "pipedream",
-            "X-Fern-SDK-Version": "0.3.1",
+            "X-Fern-SDK-Version": "0.3.2",
             **(self.get_custom_headers() or {}),
         }
         if self._x_pd_environment is not None:
