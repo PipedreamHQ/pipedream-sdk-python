@@ -3,7 +3,7 @@
 import typing
 
 import httpx
-from ..types.project_environment import ProjectEnvironment
+from .._.types.project_environment import ProjectEnvironment
 from .http_client import AsyncHttpClient, HttpClient
 
 
