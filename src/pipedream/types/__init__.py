@@ -48,6 +48,7 @@ from .list_accounts_response import ListAccountsResponse
 from .list_app_categories_response import ListAppCategoriesResponse
 from .list_apps_response import ListAppsResponse
 from .page_info import PageInfo
+from .project_environment import ProjectEnvironment
 from .project_info_response import ProjectInfoResponse
 from .project_info_response_apps_item import ProjectInfoResponseAppsItem
 from .prop_option import PropOption
@@ -106,6 +107,7 @@ __all__ = [
     "ListAppCategoriesResponse",
     "ListAppsResponse",
     "PageInfo",
+    "ProjectEnvironment",
     "ProjectInfoResponse",
     "ProjectInfoResponseAppsItem",
     "PropOption",

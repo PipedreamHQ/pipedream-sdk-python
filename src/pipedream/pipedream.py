@@ -1,14 +1,12 @@
 import os
-from typing import (
-    Literal,
-    Optional,
-)
+from typing import Optional
 
 from .client import (
     AsyncClient,
     Client,
 )
 from .environment import PipedreamEnvironment
+from .types.project_environment import ProjectEnvironment
 
 
 class OAuthCredentials:
@@ -30,8 +28,8 @@ class Pipedream(Client):
         *,
         credentials: OAuthCredentials = OAuthCredentials(),
         project_id: Optional[str] = None,
-        environment: Literal["production", "development"] = "production",
-        api_environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_environment: ProjectEnvironment = "production",
+        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         **kwargs,
     ):
         project_id = project_id or os.getenv("PIPEDREAM_PROJECT_ID")
@@ -39,11 +37,11 @@ class Pipedream(Client):
             raise ValueError("Project ID is required")
 
         super().__init__(
-            base_url=_get_base_url(api_environment),
+            base_url=_get_base_url(environment),
             client_id=credentials.client_id,
             client_secret=credentials.client_secret,
             project_id=project_id,
-            x_pd_environment=environment,
+            project_environment=project_environment,
             **kwargs,
         )
 
@@ -55,8 +53,8 @@ class AsyncPipedream(AsyncClient):
         *,
         credentials: OAuthCredentials = OAuthCredentials(),
         project_id: Optional[str] = None,
-        environment: Literal["production", "development"] = "production",
-        api_environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_environment: ProjectEnvironment = "production",
+        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         **kwargs,
     ):
         project_id = project_id or os.getenv("PIPEDREAM_PROJECT_ID")
@@ -64,11 +62,11 @@ class AsyncPipedream(AsyncClient):
             raise ValueError("Project ID is required")
 
         super().__init__(
-            base_url=_get_base_url(api_environment),
+            base_url=_get_base_url(environment),
             client_id=credentials.client_id,
             client_secret=credentials.client_secret,
             project_id=project_id,
-            x_pd_environment=environment,
+            project_environment=project_environment,
             **kwargs,
         )
 

@@ -3,6 +3,7 @@
 import typing
 
 import httpx
+from ..types.project_environment import ProjectEnvironment
 from .http_client import AsyncHttpClient, HttpClient
 
 
@@ -11,14 +12,14 @@ class BaseClientWrapper:
         self,
         *,
         project_id: str,
-        x_pd_environment: typing.Optional[str] = None,
+        project_environment: typing.Optional[ProjectEnvironment] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
     ):
         self._project_id = project_id
-        self._x_pd_environment = x_pd_environment
+        self._project_environment = project_environment
         self._token = token
         self._headers = headers
         self._base_url = base_url
@@ -26,14 +27,14 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "pipedream/0.3.1",
+            "User-Agent": "pipedream/0.3.2",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "pipedream",
-            "X-Fern-SDK-Version": "0.3.1",
+            "X-Fern-SDK-Version": "0.3.2",
             **(self.get_custom_headers() or {}),
         }
-        if self._x_pd_environment is not None:
-            headers["x-pd-environment"] = self._x_pd_environment
+        if self._project_environment is not None:
+            headers["x-pd-environment"] = self._project_environment
         token = self._get_token()
         if token is not None:
             headers["Authorization"] = f"Bearer {token}"
@@ -60,7 +61,7 @@ class SyncClientWrapper(BaseClientWrapper):
         self,
         *,
         project_id: str,
-        x_pd_environment: typing.Optional[str] = None,
+        project_environment: typing.Optional[ProjectEnvironment] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
@@ -69,7 +70,7 @@ class SyncClientWrapper(BaseClientWrapper):
     ):
         super().__init__(
             project_id=project_id,
-            x_pd_environment=x_pd_environment,
+            project_environment=project_environment,
             token=token,
             headers=headers,
             base_url=base_url,
@@ -88,7 +89,7 @@ class AsyncClientWrapper(BaseClientWrapper):
         self,
         *,
         project_id: str,
-        x_pd_environment: typing.Optional[str] = None,
+        project_environment: typing.Optional[ProjectEnvironment] = None,
         token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
@@ -97,7 +98,7 @@ class AsyncClientWrapper(BaseClientWrapper):
     ):
         super().__init__(
             project_id=project_id,
-            x_pd_environment=x_pd_environment,
+            project_environment=project_environment,
             token=token,
             headers=headers,
             base_url=base_url,
