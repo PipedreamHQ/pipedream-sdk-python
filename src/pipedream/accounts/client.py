@@ -76,7 +76,7 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -147,7 +147,7 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -198,7 +198,7 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -230,7 +230,7 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -260,7 +260,7 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -338,7 +338,7 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -418,7 +418,7 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -477,7 +477,7 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -517,7 +517,7 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -555,7 +555,7 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            x_pd_environment="YOUR_X_PD_ENVIRONMENT",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
