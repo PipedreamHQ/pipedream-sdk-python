@@ -9,28 +9,16 @@ from .environment import PipedreamEnvironment
 from .types.project_environment import ProjectEnvironment
 
 
-class OAuthCredentials:
-
-    def __init__(
-        self,
-        client_id: Optional[str] = None,
-        client_secret: Optional[str] = None,
-    ):
-        self.client_id = client_id or os.getenv("PIPEDREAM_CLIENT_ID")
-        self.client_secret = client_secret or os.getenv(
-            "PIPEDREAM_CLIENT_SECRET")
-
-
 class Pipedream(Client):
 
     def __init__(
         self,
         *,
-        credentials: OAuthCredentials = OAuthCredentials(),
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
         project_id: Optional[str] = None,
         project_environment: ProjectEnvironment = "production",
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
-        **kwargs,
     ):
         project_id = project_id or os.getenv("PIPEDREAM_PROJECT_ID")
         if not project_id:
@@ -38,11 +26,10 @@ class Pipedream(Client):
 
         super().__init__(
             base_url=_get_base_url(environment),
-            client_id=credentials.client_id,
-            client_secret=credentials.client_secret,
+            client_id=client_id,
+            client_secret=client_secret,
             project_id=project_id,
             project_environment=project_environment,
-            **kwargs,
         )
 
 
@@ -51,7 +38,8 @@ class AsyncPipedream(AsyncClient):
     def __init__(
         self,
         *,
-        credentials: OAuthCredentials = OAuthCredentials(),
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
         project_id: Optional[str] = None,
         project_environment: ProjectEnvironment = "production",
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
@@ -63,8 +51,8 @@ class AsyncPipedream(AsyncClient):
 
         super().__init__(
             base_url=_get_base_url(environment),
-            client_id=credentials.client_id,
-            client_secret=credentials.client_secret,
+            client_id=client_id,
+            client_secret=client_secret,
             project_id=project_id,
             project_environment=project_environment,
             **kwargs,
