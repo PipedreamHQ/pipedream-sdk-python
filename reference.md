@@ -412,8 +412,6 @@ client = Pipedream(
 )
 client.accounts.create(
     app_slug="app_slug",
-    cfmap_json="cfmap_json",
-    connect_token="connect_token",
 )
 
 ```
@@ -438,22 +436,6 @@ client.accounts.create(
 <dl>
 <dd>
 
-**cfmap_json:** `str` — JSON string containing the custom fields mapping
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**connect_token:** `str` — The connect token for authentication
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **app_id:** `typing.Optional[str]` — The app slug or ID to filter accounts by.
     
 </dd>
@@ -471,6 +453,14 @@ client.accounts.create(
 <dd>
 
 **oauth_app_id:** `typing.Optional[str]` — The OAuth app ID to filter by, if applicable
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**cfmap_json:** `typing.Optional[str]` — JSON string containing the custom fields mapping
     
 </dd>
 </dl>

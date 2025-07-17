@@ -102,11 +102,10 @@ class AccountsClient:
         self,
         *,
         app_slug: str,
-        cfmap_json: str,
-        connect_token: str,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
+        cfmap_json: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
@@ -116,12 +115,6 @@ class AccountsClient:
         app_slug : str
             The app slug for the account
 
-        cfmap_json : str
-            JSON string containing the custom fields mapping
-
-        connect_token : str
-            The connect token for authentication
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -129,6 +122,9 @@ class AccountsClient:
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to filter by, if applicable
+
+        cfmap_json : typing.Optional[str]
+            JSON string containing the custom fields mapping
 
         name : typing.Optional[str]
             Optional name for the account
@@ -153,17 +149,14 @@ class AccountsClient:
         )
         client.accounts.create(
             app_slug="app_slug",
-            cfmap_json="cfmap_json",
-            connect_token="connect_token",
         )
         """
         _response = self._raw_client.create(
             app_slug=app_slug,
-            cfmap_json=cfmap_json,
-            connect_token=connect_token,
             app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
+            cfmap_json=cfmap_json,
             name=name,
             request_options=request_options,
         )
@@ -371,11 +364,10 @@ class AsyncAccountsClient:
         self,
         *,
         app_slug: str,
-        cfmap_json: str,
-        connect_token: str,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
+        cfmap_json: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
@@ -385,12 +377,6 @@ class AsyncAccountsClient:
         app_slug : str
             The app slug for the account
 
-        cfmap_json : str
-            JSON string containing the custom fields mapping
-
-        connect_token : str
-            The connect token for authentication
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -398,6 +384,9 @@ class AsyncAccountsClient:
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to filter by, if applicable
+
+        cfmap_json : typing.Optional[str]
+            JSON string containing the custom fields mapping
 
         name : typing.Optional[str]
             Optional name for the account
@@ -427,8 +416,6 @@ class AsyncAccountsClient:
         async def main() -> None:
             await client.accounts.create(
                 app_slug="app_slug",
-                cfmap_json="cfmap_json",
-                connect_token="connect_token",
             )
 
 
@@ -436,11 +423,10 @@ class AsyncAccountsClient:
         """
         _response = await self._raw_client.create(
             app_slug=app_slug,
-            cfmap_json=cfmap_json,
-            connect_token=connect_token,
             app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
+            cfmap_json=cfmap_json,
             name=name,
             request_options=request_options,
         )
