@@ -115,11 +115,10 @@ class RawAccountsClient:
         self,
         *,
         app_slug: str,
-        cfmap_json: str,
-        connect_token: str,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
+        cfmap_json: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Account]:
@@ -129,12 +128,6 @@ class RawAccountsClient:
         app_slug : str
             The app slug for the account
 
-        cfmap_json : str
-            JSON string containing the custom fields mapping
-
-        connect_token : str
-            The connect token for authentication
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -142,6 +135,9 @@ class RawAccountsClient:
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to filter by, if applicable
+
+        cfmap_json : typing.Optional[str]
+            JSON string containing the custom fields mapping
 
         name : typing.Optional[str]
             Optional name for the account
@@ -165,7 +161,6 @@ class RawAccountsClient:
             json={
                 "app_slug": app_slug,
                 "cfmap_json": cfmap_json,
-                "connect_token": connect_token,
                 "name": name,
             },
             headers={
@@ -391,11 +386,10 @@ class AsyncRawAccountsClient:
         self,
         *,
         app_slug: str,
-        cfmap_json: str,
-        connect_token: str,
         app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
+        cfmap_json: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Account]:
@@ -405,12 +399,6 @@ class AsyncRawAccountsClient:
         app_slug : str
             The app slug for the account
 
-        cfmap_json : str
-            JSON string containing the custom fields mapping
-
-        connect_token : str
-            The connect token for authentication
-
         app_id : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
@@ -418,6 +406,9 @@ class AsyncRawAccountsClient:
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to filter by, if applicable
+
+        cfmap_json : typing.Optional[str]
+            JSON string containing the custom fields mapping
 
         name : typing.Optional[str]
             Optional name for the account
@@ -441,7 +432,6 @@ class AsyncRawAccountsClient:
             json={
                 "app_slug": app_slug,
                 "cfmap_json": cfmap_json,
-                "connect_token": connect_token,
                 "name": name,
             },
             headers={

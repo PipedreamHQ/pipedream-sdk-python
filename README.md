@@ -30,8 +30,6 @@ client = Pipedream(
 )
 client.accounts.create(
     app_slug="app_slug",
-    cfmap_json="cfmap_json",
-    connect_token="connect_token",
 )
 ```
 
@@ -55,8 +53,6 @@ client = AsyncPipedream(
 async def main() -> None:
     await client.accounts.create(
         app_slug="app_slug",
-        cfmap_json="cfmap_json",
-        connect_token="connect_token",
     )
 
 
