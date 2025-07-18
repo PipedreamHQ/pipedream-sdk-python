@@ -73,8 +73,7 @@ class TriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         response = client.triggers.list()
         for item in response:
@@ -109,8 +108,7 @@ class TriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.triggers.retrieve(
             component_id="component_id",
@@ -185,8 +183,7 @@ class TriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.triggers.configure_prop(
             id="id",
@@ -260,8 +257,7 @@ class TriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.triggers.reload_props(
             id="id",
@@ -323,8 +319,7 @@ class TriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.triggers.deploy(
             id="id",
@@ -402,8 +397,7 @@ class AsyncTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -449,8 +443,7 @@ class AsyncTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -533,8 +526,7 @@ class AsyncTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -616,8 +608,7 @@ class AsyncTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -687,8 +678,7 @@ class AsyncTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 

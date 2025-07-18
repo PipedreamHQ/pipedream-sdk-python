@@ -3,7 +3,7 @@
 import typing
 
 import httpx
-from ..types.project_environment import ProjectEnvironment
+from .._.types.project_environment import ProjectEnvironment
 from .http_client import AsyncHttpClient, HttpClient
 
 
@@ -13,38 +13,38 @@ class BaseClientWrapper:
         *,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        access_token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
     ):
         self._project_id = project_id
         self._project_environment = project_environment
-        self._token = token
+        self._access_token = access_token
         self._headers = headers
         self._base_url = base_url
         self._timeout = timeout
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "pipedream/0.3.2",
+            "User-Agent": "pipedream/0.3.3",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "pipedream",
-            "X-Fern-SDK-Version": "0.3.2",
+            "X-Fern-SDK-Version": "0.3.3",
             **(self.get_custom_headers() or {}),
         }
         if self._project_environment is not None:
             headers["x-pd-environment"] = self._project_environment
-        token = self._get_token()
-        if token is not None:
-            headers["Authorization"] = f"Bearer {token}"
+        access_token = self._get_access_token()
+        if access_token is not None:
+            headers["Authorization"] = f"Bearer {access_token}"
         return headers
 
-    def _get_token(self) -> typing.Optional[str]:
-        if isinstance(self._token, str) or self._token is None:
-            return self._token
+    def _get_access_token(self) -> typing.Optional[str]:
+        if isinstance(self._access_token, str) or self._access_token is None:
+            return self._access_token
         else:
-            return self._token()
+            return self._access_token()
 
     def get_custom_headers(self) -> typing.Optional[typing.Dict[str, str]]:
         return self._headers
@@ -62,7 +62,7 @@ class SyncClientWrapper(BaseClientWrapper):
         *,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        access_token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
@@ -71,7 +71,7 @@ class SyncClientWrapper(BaseClientWrapper):
         super().__init__(
             project_id=project_id,
             project_environment=project_environment,
-            token=token,
+            access_token=access_token,
             headers=headers,
             base_url=base_url,
             timeout=timeout,
@@ -90,7 +90,7 @@ class AsyncClientWrapper(BaseClientWrapper):
         *,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        access_token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
@@ -99,7 +99,7 @@ class AsyncClientWrapper(BaseClientWrapper):
         super().__init__(
             project_id=project_id,
             project_environment=project_environment,
-            token=token,
+            access_token=access_token,
             headers=headers,
             base_url=base_url,
             timeout=timeout,

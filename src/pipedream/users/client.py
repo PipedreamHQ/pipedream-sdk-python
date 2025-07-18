@@ -44,8 +44,7 @@ class UsersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.users.delete_external_user(
             external_user_id="external_user_id",
@@ -94,8 +93,7 @@ class AsyncUsersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 

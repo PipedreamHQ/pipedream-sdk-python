@@ -25,13 +25,10 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    access_token="YOUR_ACCESS_TOKEN",
 )
 client.accounts.create(
     app_slug="app_slug",
-    cfmap_json="cfmap_json",
-    connect_token="connect_token",
 )
 ```
 
@@ -47,16 +44,13 @@ from pipedream import AsyncPipedream
 client = AsyncPipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    access_token="YOUR_ACCESS_TOKEN",
 )
 
 
 async def main() -> None:
     await client.accounts.create(
         app_slug="app_slug",
-        cfmap_json="cfmap_json",
-        connect_token="connect_token",
     )
 
 
@@ -88,8 +82,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    access_token="YOUR_ACCESS_TOKEN",
 )
 response = client.apps.list()
 for item in response:

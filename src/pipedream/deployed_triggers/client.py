@@ -69,8 +69,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         response = client.deployed_triggers.list(
             external_user_id="external_user_id",
@@ -111,8 +110,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.retrieve(
             trigger_id="trigger_id",
@@ -166,8 +164,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.update(
             trigger_id="trigger_id",
@@ -217,8 +214,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.delete(
             trigger_id="trigger_id",
@@ -267,8 +263,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.list_events(
             trigger_id="trigger_id",
@@ -306,8 +301,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.list_workflows(
             trigger_id="trigger_id",
@@ -353,8 +347,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.update_workflows(
             trigger_id="trigger_id",
@@ -393,8 +386,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.list_webhooks(
             trigger_id="trigger_id",
@@ -440,8 +432,7 @@ class DeployedTriggersClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.deployed_triggers.update_webhooks(
             trigger_id="trigger_id",
@@ -511,8 +502,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -562,8 +552,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -625,8 +614,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -684,8 +672,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -742,8 +729,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -789,8 +775,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -844,8 +829,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -892,8 +876,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -947,8 +930,7 @@ class AsyncDeployedTriggersClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 

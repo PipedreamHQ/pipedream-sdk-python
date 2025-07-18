@@ -72,8 +72,7 @@ class ComponentsClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         response = client.components.list()
         for item in response:
@@ -108,8 +107,7 @@ class ComponentsClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.components.retrieve(
             component_id="component_id",
@@ -184,8 +182,7 @@ class ComponentsClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.components.configure_prop(
             id="id",
@@ -259,8 +256,7 @@ class ComponentsClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.components.reload_props(
             id="id",
@@ -340,8 +336,7 @@ class AsyncComponentsClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -387,8 +382,7 @@ class AsyncComponentsClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -471,8 +465,7 @@ class AsyncComponentsClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -554,8 +547,7 @@ class AsyncComponentsClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 

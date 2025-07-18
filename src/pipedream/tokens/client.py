@@ -75,8 +75,7 @@ class TokensClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.tokens.create(
             external_user_id="external_user_id",
@@ -123,8 +122,7 @@ class TokensClient:
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
         client.tokens.validate(
             ctok="ctok",
@@ -198,8 +196,7 @@ class AsyncTokensClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
@@ -254,8 +251,7 @@ class AsyncTokensClient:
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
+            access_token="YOUR_ACCESS_TOKEN",
         )
 
 
