@@ -18,8 +18,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.app_categories.list()
 
@@ -67,8 +66,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.app_categories.retrieve(
     id="id",
@@ -127,8 +125,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 response = client.apps.list()
 for item in response:
@@ -237,8 +234,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.apps.retrieve(
     app_id="app_id",
@@ -297,8 +293,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 response = client.accounts.list()
 for item in response:
@@ -407,8 +402,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.accounts.create(
     app_slug="app_slug",
@@ -516,8 +510,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.accounts.retrieve(
     account_id="account_id",
@@ -583,8 +576,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.accounts.delete(
     account_id="account_id",
@@ -642,8 +634,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.accounts.delete_by_app(
     app_id="app_id",
@@ -702,8 +693,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.users.delete_external_user(
     external_user_id="external_user_id",
@@ -762,8 +752,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 response = client.components.list()
 for item in response:
@@ -856,8 +845,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.components.retrieve(
     component_id="component_id",
@@ -915,8 +903,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.components.configure_prop(
     id="id",
@@ -1056,8 +1043,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.components.reload_props(
     id="id",
@@ -1165,8 +1151,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 response = client.actions.list()
 for item in response:
@@ -1259,8 +1244,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.actions.retrieve(
     component_id="component_id",
@@ -1318,8 +1302,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.actions.configure_prop(
     id="id",
@@ -1459,8 +1442,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.actions.reload_props(
     id="id",
@@ -1567,8 +1549,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.actions.run(
     id="id",
@@ -1660,8 +1641,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 response = client.triggers.list()
 for item in response:
@@ -1754,8 +1734,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.triggers.retrieve(
     component_id="component_id",
@@ -1813,8 +1792,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.triggers.configure_prop(
     id="id",
@@ -1954,8 +1932,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.triggers.reload_props(
     id="id",
@@ -2062,8 +2039,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.triggers.deploy(
     id="id",
@@ -2155,8 +2131,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 response = client.deployed_triggers.list(
     external_user_id="external_user_id",
@@ -2243,8 +2218,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.retrieve(
     trigger_id="trigger_id",
@@ -2311,8 +2285,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.update(
     trigger_id="trigger_id",
@@ -2403,8 +2376,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.delete(
     trigger_id="trigger_id",
@@ -2479,8 +2451,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.list_events(
     trigger_id="trigger_id",
@@ -2555,8 +2526,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.list_workflows(
     trigger_id="trigger_id",
@@ -2623,8 +2593,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.update_workflows(
     trigger_id="trigger_id",
@@ -2700,8 +2669,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.list_webhooks(
     trigger_id="trigger_id",
@@ -2768,8 +2736,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.deployed_triggers.update_webhooks(
     trigger_id="trigger_id",
@@ -2846,8 +2813,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.projects.retrieve_info()
 
@@ -2896,8 +2862,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.proxy.get(
     url_64="url_64",
@@ -2973,8 +2938,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.proxy.post(
     url_64="url_64",
@@ -3059,8 +3023,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.proxy.put(
     url_64="url_64",
@@ -3145,8 +3108,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.proxy.delete(
     url_64="url_64",
@@ -3222,8 +3184,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.proxy.patch(
     url_64="url_64",
@@ -3309,8 +3270,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.tokens.create(
     external_user_id="external_user_id",
@@ -3409,8 +3369,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.tokens.validate(
     ctok="ctok",
@@ -3477,8 +3436,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.oauth_tokens.create(
     client_id="client_id",

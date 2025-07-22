@@ -25,8 +25,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 client.accounts.create(
     app_slug="app_slug",
@@ -47,8 +46,7 @@ from pipedream import AsyncPipedream
 client = AsyncPipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 
 
@@ -88,8 +86,7 @@ from pipedream import Pipedream
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
     project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    token="YOUR_TOKEN",
 )
 response = client.apps.list()
 for item in response:
