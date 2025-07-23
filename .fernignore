@@ -5,3 +5,4 @@
 LICENSE
 
 src/pipedream/pipedream.py
+src/pipedream/proxy/client.py

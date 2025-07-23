@@ -9,6 +9,7 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..types.proxy_response import ProxyResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -25,7 +26,7 @@ class RawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> HttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -43,7 +44,7 @@ class RawProxyClient:
 
         Returns
         -------
-        HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        HttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -56,11 +57,13 @@ class RawProxyClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -78,7 +81,7 @@ class RawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> HttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -98,7 +101,7 @@ class RawProxyClient:
 
         Returns
         -------
-        HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        HttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -116,11 +119,13 @@ class RawProxyClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -138,7 +143,7 @@ class RawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> HttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -158,7 +163,7 @@ class RawProxyClient:
 
         Returns
         -------
-        HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        HttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -176,11 +181,13 @@ class RawProxyClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -197,7 +204,7 @@ class RawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> HttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -215,7 +222,7 @@ class RawProxyClient:
 
         Returns
         -------
-        HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        HttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -228,11 +235,13 @@ class RawProxyClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -250,7 +259,7 @@ class RawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> HttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -270,7 +279,7 @@ class RawProxyClient:
 
         Returns
         -------
-        HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        HttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -288,11 +297,13 @@ class RawProxyClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return HttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -314,7 +325,7 @@ class AsyncRawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> AsyncHttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -332,7 +343,7 @@ class AsyncRawProxyClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        AsyncHttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -345,11 +356,13 @@ class AsyncRawProxyClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -367,7 +380,7 @@ class AsyncRawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> AsyncHttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -387,7 +400,7 @@ class AsyncRawProxyClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        AsyncHttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -405,11 +418,13 @@ class AsyncRawProxyClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -427,7 +442,7 @@ class AsyncRawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> AsyncHttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -447,7 +462,7 @@ class AsyncRawProxyClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        AsyncHttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -465,11 +480,13 @@ class AsyncRawProxyClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -486,7 +503,7 @@ class AsyncRawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> AsyncHttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -504,7 +521,7 @@ class AsyncRawProxyClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        AsyncHttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -517,11 +534,13 @@ class AsyncRawProxyClient:
             request_options=request_options,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -539,7 +558,7 @@ class AsyncRawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+    ) -> AsyncHttpResponse[ProxyResponse]:
         """
         Parameters
         ----------
@@ -559,7 +578,7 @@ class AsyncRawProxyClient:
 
         Returns
         -------
-        AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+        AsyncHttpResponse[ProxyResponse]
             proxy request successful
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -577,11 +596,13 @@ class AsyncRawProxyClient:
             omit=OMIT,
         )
         try:
+            if _response is None or not _response.text.strip():
+                return AsyncHttpResponse(response=_response, data=None)
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    typing.Dict[str, typing.Optional[typing.Any]],
+                    ProxyResponse,
                     parse_obj_as(
-                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        type_=ProxyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
