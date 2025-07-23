@@ -75,7 +75,7 @@ class ProxyClient:
             url="https://example.com/api/endpoint",
             external_user_id="external_user_id",
             account_id="account_id",
-            headers={"Authorization": "Bearer token"},
+            headers={"Extra-Downstream-Header": "some value"}
             params={"limit": 10},
         )
         """
@@ -292,7 +292,7 @@ class ProxyClient:
             url="https://example.com/api/endpoint",
             external_user_id="external_user_id",
             account_id="account_id",
-            headers={"Authorization": "Bearer token"},
+            headers={"Extra-Downstream-Header": "some value"}
         )
         """
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
@@ -456,7 +456,7 @@ class AsyncProxyClient:
                 url="https://example.com/api/endpoint",
                 external_user_id="external_user_id",
                 account_id="account_id",
-                headers={"Authorization": "Bearer token"},
+                headers={"Extra-Downstream-Header": "some value"}
                 params={"limit": 10},
             )
 
@@ -696,7 +696,7 @@ class AsyncProxyClient:
                 url="https://example.com/api/endpoint",
                 external_user_id="external_user_id",
                 account_id="account_id",
-                headers={"Authorization": "Bearer token"},
+                headers={"Extra-Downstream-Header": "some value"}
             )
 
 
