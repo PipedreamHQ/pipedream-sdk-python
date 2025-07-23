@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.proxy_response import ProxyResponse
 from .raw_client import AsyncRawProxyClient, RawProxyClient
 
 # this is used as the default value for optional parameters
@@ -32,7 +33,7 @@ class ProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -50,7 +51,7 @@ class ProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -82,7 +83,7 @@ class ProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -102,7 +103,7 @@ class ProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -139,7 +140,7 @@ class ProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -159,7 +160,7 @@ class ProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -195,7 +196,7 @@ class ProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -213,7 +214,7 @@ class ProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -245,7 +246,7 @@ class ProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -265,7 +266,7 @@ class ProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -317,7 +318,7 @@ class AsyncProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -335,7 +336,7 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -375,7 +376,7 @@ class AsyncProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -395,7 +396,7 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -440,7 +441,7 @@ class AsyncProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -460,7 +461,7 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -504,7 +505,7 @@ class AsyncProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -522,7 +523,7 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
@@ -562,7 +563,7 @@ class AsyncProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+    ) -> ProxyResponse:
         """
         Parameters
         ----------
@@ -582,7 +583,7 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Dict[str, typing.Optional[typing.Any]]
+        ProxyResponse
             proxy request successful
 
         Examples
