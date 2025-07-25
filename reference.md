@@ -3314,7 +3314,6 @@ client = Pipedream(
 )
 client.tokens.create(
     external_user_id="external_user_id",
-    project_id="project_id",
 )
 
 ```
@@ -3332,14 +3331,6 @@ client.tokens.create(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you're creating the token
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**project_id:** `str` — The ID of the project
     
 </dd>
 </dl>
