@@ -4,7 +4,7 @@ import os
 import typing
 
 import httpx
-from .types.project_environment import ProjectEnvironment
+from ._.types.project_environment import ProjectEnvironment
 from .accounts.client import AccountsClient, AsyncAccountsClient
 from .actions.client import ActionsClient, AsyncActionsClient
 from .app_categories.client import AppCategoriesClient, AsyncAppCategoriesClient

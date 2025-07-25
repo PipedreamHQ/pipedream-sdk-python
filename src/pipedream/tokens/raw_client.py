@@ -26,7 +26,7 @@ class RawTokensClient:
         self,
         *,
         external_user_id: str,
-        project_id: str,
+        create_token_request_project_id: str,
         allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
         error_redirect_uri: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
@@ -39,7 +39,7 @@ class RawTokensClient:
         external_user_id : str
             Your end user ID, for whom you're creating the token
 
-        project_id : str
+        create_token_request_project_id : str
             The ID of the project
 
         allowed_origins : typing.Optional[typing.Sequence[str]]
@@ -63,13 +63,13 @@ class RawTokensClient:
             connect token created
         """
         _response = self._client_wrapper.httpx_client.request(
-            "v1/connect/tokens",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens",
             method="POST",
             json={
                 "allowed_origins": allowed_origins,
                 "error_redirect_uri": error_redirect_uri,
                 "external_user_id": external_user_id,
-                "project_id": project_id,
+                "project_id": create_token_request_project_id,
                 "success_redirect_uri": success_redirect_uri,
                 "webhook_uri": webhook_uri,
             },
@@ -117,7 +117,7 @@ class RawTokensClient:
             connect token validated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens/{jsonable_encoder(ctok)}/validate",
             method="GET",
             params={
                 "params": convert_and_respect_annotation_metadata(
@@ -150,7 +150,7 @@ class AsyncRawTokensClient:
         self,
         *,
         external_user_id: str,
-        project_id: str,
+        create_token_request_project_id: str,
         allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
         error_redirect_uri: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
@@ -163,7 +163,7 @@ class AsyncRawTokensClient:
         external_user_id : str
             Your end user ID, for whom you're creating the token
 
-        project_id : str
+        create_token_request_project_id : str
             The ID of the project
 
         allowed_origins : typing.Optional[typing.Sequence[str]]
@@ -187,13 +187,13 @@ class AsyncRawTokensClient:
             connect token created
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "v1/connect/tokens",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens",
             method="POST",
             json={
                 "allowed_origins": allowed_origins,
                 "error_redirect_uri": error_redirect_uri,
                 "external_user_id": external_user_id,
-                "project_id": project_id,
+                "project_id": create_token_request_project_id,
                 "success_redirect_uri": success_redirect_uri,
                 "webhook_uri": webhook_uri,
             },
@@ -241,7 +241,7 @@ class AsyncRawTokensClient:
             connect token validated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens/{jsonable_encoder(ctok)}/validate",
             method="GET",
             params={
                 "params": convert_and_respect_annotation_metadata(

@@ -32,7 +32,7 @@ class TokensClient:
         self,
         *,
         external_user_id: str,
-        project_id: str,
+        create_token_request_project_id: str,
         allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
         error_redirect_uri: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
@@ -45,7 +45,7 @@ class TokensClient:
         external_user_id : str
             Your end user ID, for whom you're creating the token
 
-        project_id : str
+        create_token_request_project_id : str
             The ID of the project
 
         allowed_origins : typing.Optional[typing.Sequence[str]]
@@ -80,12 +80,12 @@ class TokensClient:
         )
         client.tokens.create(
             external_user_id="external_user_id",
-            project_id="project_id",
+            create_token_request_project_id="project_id",
         )
         """
         _response = self._raw_client.create(
             external_user_id=external_user_id,
-            project_id=project_id,
+            create_token_request_project_id=create_token_request_project_id,
             allowed_origins=allowed_origins,
             error_redirect_uri=error_redirect_uri,
             success_redirect_uri=success_redirect_uri,
@@ -153,7 +153,7 @@ class AsyncTokensClient:
         self,
         *,
         external_user_id: str,
-        project_id: str,
+        create_token_request_project_id: str,
         allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
         error_redirect_uri: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
@@ -166,7 +166,7 @@ class AsyncTokensClient:
         external_user_id : str
             Your end user ID, for whom you're creating the token
 
-        project_id : str
+        create_token_request_project_id : str
             The ID of the project
 
         allowed_origins : typing.Optional[typing.Sequence[str]]
@@ -206,7 +206,7 @@ class AsyncTokensClient:
         async def main() -> None:
             await client.tokens.create(
                 external_user_id="external_user_id",
-                project_id="project_id",
+                create_token_request_project_id="project_id",
             )
 
 
@@ -214,7 +214,7 @@ class AsyncTokensClient:
         """
         _response = await self._raw_client.create(
             external_user_id=external_user_id,
-            project_id=project_id,
+            create_token_request_project_id=create_token_request_project_id,
             allowed_origins=allowed_origins,
             error_redirect_uri=error_redirect_uri,
             success_redirect_uri=success_redirect_uri,
