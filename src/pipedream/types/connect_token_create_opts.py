@@ -16,11 +16,6 @@ class ConnectTokenCreateOpts(UniversalBaseModel):
     Your end user ID, for whom you're creating the token
     """
 
-    project_id: str = pydantic.Field()
-    """
-    The ID of the project
-    """
-
     allowed_origins: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     List of allowed origins for CORS
