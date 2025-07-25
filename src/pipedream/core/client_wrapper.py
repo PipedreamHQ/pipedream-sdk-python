@@ -3,7 +3,7 @@
 import typing
 
 import httpx
-from ..types.project_environment import ProjectEnvironment
+from .._.types.project_environment import ProjectEnvironment
 from .http_client import AsyncHttpClient, HttpClient
 
 
@@ -27,10 +27,10 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "pipedream/0.3.3",
+            "User-Agent": "pipedream/0.3.4",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "pipedream",
-            "X-Fern-SDK-Version": "0.3.3",
+            "X-Fern-SDK-Version": "0.3.4",
             **(self.get_custom_headers() or {}),
         }
         if self._project_environment is not None:
