@@ -7,6 +7,10 @@ from .client import (
 )
 from .environment import PipedreamEnvironment
 from .types.project_environment import ProjectEnvironment
+from .workflows.client import (
+    AsyncWorkflowsClient,
+    WorkflowsClient,
+)
 
 
 class Pipedream(Client):
@@ -23,6 +27,7 @@ class Pipedream(Client):
             "production",
         ),
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        workflow_domain: Optional[str] = None,
     ):
         if not project_id:
             raise ValueError("Project ID is required")
@@ -34,6 +39,14 @@ class Pipedream(Client):
             client_secret=client_secret,
             project_id=project_id,
             project_environment=project_environment,
+        )
+
+        if not workflow_domain:
+            workflow_domain = _get_default_workflow_domain(environment)
+
+        self.workflows = WorkflowsClient(
+            client_wrapper=self._client_wrapper,
+            workflow_domain=workflow_domain,
         )
 
 
@@ -51,6 +64,7 @@ class AsyncPipedream(AsyncClient):
             "production",
         ),
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        workflow_domain: Optional[str] = None,
     ):
         project_id = project_id
         if not project_id:
@@ -65,12 +79,29 @@ class AsyncPipedream(AsyncClient):
             project_environment=project_environment,
         )
 
+        if not workflow_domain:
+            workflow_domain = _get_default_workflow_domain(environment)
+
+        self.workflows = AsyncWorkflowsClient(
+            client_wrapper=self._client_wrapper,
+            workflow_domain=workflow_domain,
+        )
+
 
 def _get_base_url(environment: PipedreamEnvironment) -> str:
     """
     Returns the base URL for the given environment.
     """
     return os.path.expandvars(environment.value)
+
+
+def _get_default_workflow_domain(environment: PipedreamEnvironment) -> str:
+    """
+    Returns the default workflow domain.
+    """
+    if environment == PipedreamEnvironment.DEV:
+        return "m.d.pipedream.net"
+    return "m.pipedream.net"
 
 
 def _new_token_getter(access_token: Optional[str] = None):

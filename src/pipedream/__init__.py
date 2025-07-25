@@ -74,6 +74,7 @@ from . import (
     tokens,
     triggers,
     users,
+    workflows,
 )
 from .apps import AppsListRequestSortDirection, AppsListRequestSortKey
 from .environment import PipedreamEnvironment
@@ -156,4 +157,5 @@ __all__ = [
     "tokens",
     "triggers",
     "users",
+    "workflows",
 ]
