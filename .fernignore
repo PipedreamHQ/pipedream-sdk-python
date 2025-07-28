@@ -4,5 +4,7 @@
 .gitignore
 LICENSE
 
+src/pipedream/__init__.py
 src/pipedream/pipedream.py
 src/pipedream/proxy/client.py
+src/pipedream/workflows/**/*
