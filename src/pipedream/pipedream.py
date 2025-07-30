@@ -49,6 +49,13 @@ class Pipedream(Client):
             workflow_domain=workflow_domain,
         )
 
+    @property
+    def raw_access_token(self) -> Optional[str]:
+        """
+        Returns an access token that can be used to authenticate API requests
+        """
+        return self._client_wrapper._get_token()
+
 
 class AsyncPipedream(AsyncClient):
 
@@ -86,6 +93,13 @@ class AsyncPipedream(AsyncClient):
             client_wrapper=self._client_wrapper,
             workflow_domain=workflow_domain,
         )
+
+    @property
+    def raw_access_token(self) -> Optional[str]:
+        """
+        Returns an access token that can be used to authenticate API requests
+        """
+        return self._client_wrapper._get_token()
 
 
 def _get_base_url(environment: PipedreamEnvironment) -> str:
