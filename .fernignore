@@ -1,10 +1,23 @@
 # Specify files that shouldn't be modified by Fern
+
+# Custom CI/CD
 .github/workflows/auto-close-empty-prs.yml
 .github/workflows/ci.yml
+
 .gitignore
+
+# Our own license
 LICENSE
 
+# References doc (we have additional use cases)
+reference.md
+
+# Custom Pipedream client files
 src/pipedream/__init__.py
 src/pipedream/pipedream.py
+
+# Custom Proxy files
 src/pipedream/proxy/client.py
+
+# Custom Workflow files
 src/pipedream/workflows/**/*
