@@ -28,10 +28,9 @@ client = Pipedream(
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-client.accounts.create(
-    app_slug="app_slug",
-    cfmap_json="cfmap_json",
-    connect_token="connect_token",
+client.actions.run(
+    id="id",
+    external_user_id="external_user_id",
 )
 ```
 
@@ -53,10 +52,9 @@ client = AsyncPipedream(
 
 
 async def main() -> None:
-    await client.accounts.create(
-        app_slug="app_slug",
-        cfmap_json="cfmap_json",
-        connect_token="connect_token",
+    await client.actions.run(
+        id="id",
+        external_user_id="external_user_id",
     )
 
 
@@ -72,7 +70,7 @@ will be thrown.
 from pipedream.core.api_error import ApiError
 
 try:
-    client.accounts.create(...)
+    client.actions.run(...)
 except ApiError as e:
     print(e.status_code)
     print(e.body)
@@ -112,7 +110,7 @@ from pipedream import Pipedream
 client = Pipedream(
     ...,
 )
-response = client.accounts.with_raw_response.create(...)
+response = client.actions.with_raw_response.run(...)
 print(response.headers)  # access the response headers
 print(response.data)  # access the underlying object
 pager = client.apps.list(...)
@@ -140,7 +138,7 @@ A request is deemed retryable when any of the following HTTP status codes is ret
 Use the `max_retries` request option to configure this behavior.
 
 ```python
-client.accounts.create(..., request_options={
+client.actions.run(..., request_options={
     "max_retries": 1
 })
 ```
@@ -160,7 +158,7 @@ client = Pipedream(
 
 
 # Override timeout for a specific method
-client.accounts.create(..., request_options={
+client.actions.run(..., request_options={
     "timeout_in_seconds": 1
 })
 ```

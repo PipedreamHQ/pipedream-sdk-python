@@ -20,4 +20,5 @@ src/pipedream/pipedream.py
 src/pipedream/proxy/client.py
 
 # Custom Workflow files
-src/pipedream/workflows/**/*
+src/pipedream/workflows/__init__.py
+src/pipedream/workflows/client.py
