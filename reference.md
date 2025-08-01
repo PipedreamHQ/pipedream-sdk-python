@@ -38,7 +38,7 @@ client.app_categories.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -89,7 +89,7 @@ client.app_categories.retrieve(
 <dd>
 
 **id:** `str` — The ID of the app category to retrieve
-
+    
 </dd>
 </dl>
 
@@ -97,7 +97,7 @@ client.app_categories.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -152,7 +152,7 @@ for page in response.iter_pages():
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-
+    
 </dd>
 </dl>
 
@@ -160,7 +160,7 @@ for page in response.iter_pages():
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-
+    
 </dd>
 </dl>
 
@@ -168,7 +168,7 @@ for page in response.iter_pages():
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-
+    
 </dd>
 </dl>
 
@@ -176,7 +176,7 @@ for page in response.iter_pages():
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the apps
-
+    
 </dd>
 </dl>
 
@@ -184,7 +184,7 @@ for page in response.iter_pages():
 <dd>
 
 **sort_key:** `typing.Optional[AppsListRequestSortKey]` — The key to sort the apps by
-
+    
 </dd>
 </dl>
 
@@ -192,7 +192,7 @@ for page in response.iter_pages():
 <dd>
 
 **sort_direction:** `typing.Optional[AppsListRequestSortDirection]` — The direction to sort the apps
-
+    
 </dd>
 </dl>
 
@@ -200,7 +200,7 @@ for page in response.iter_pages():
 <dd>
 
 **category_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Only return apps in these categories
-
+    
 </dd>
 </dl>
 
@@ -208,7 +208,7 @@ for page in response.iter_pages():
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -259,7 +259,7 @@ client.apps.retrieve(
 <dd>
 
 **app_id:** `str` — The name slug or ID of the app (e.g., 'slack', 'github')
-
+    
 </dd>
 </dl>
 
@@ -267,7 +267,7 @@ client.apps.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -322,15 +322,15 @@ for page in response.iter_pages():
 <dd>
 
 **app_id:** `typing.Optional[str]` — The app slug or ID to filter accounts by.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**external_user_id:** `typing.Optional[str]`
-
+**external_user_id:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -338,7 +338,7 @@ for page in response.iter_pages():
 <dd>
 
 **oauth_app_id:** `typing.Optional[str]` — The OAuth app ID to filter by, if applicable
-
+    
 </dd>
 </dl>
 
@@ -346,7 +346,7 @@ for page in response.iter_pages():
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-
+    
 </dd>
 </dl>
 
@@ -354,7 +354,7 @@ for page in response.iter_pages():
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-
+    
 </dd>
 </dl>
 
@@ -362,7 +362,7 @@ for page in response.iter_pages():
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-
+    
 </dd>
 </dl>
 
@@ -370,7 +370,7 @@ for page in response.iter_pages():
 <dd>
 
 **include_credentials:** `typing.Optional[bool]` — Whether to retrieve the account's credentials or not
-
+    
 </dd>
 </dl>
 
@@ -378,7 +378,7 @@ for page in response.iter_pages():
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -431,7 +431,7 @@ client.accounts.create(
 <dd>
 
 **app_slug:** `str` — The app slug for the account
-
+    
 </dd>
 </dl>
 
@@ -439,7 +439,7 @@ client.accounts.create(
 <dd>
 
 **cfmap_json:** `str` — JSON string containing the custom fields mapping
-
+    
 </dd>
 </dl>
 
@@ -447,7 +447,7 @@ client.accounts.create(
 <dd>
 
 **connect_token:** `str` — The connect token for authentication
-
+    
 </dd>
 </dl>
 
@@ -455,15 +455,15 @@ client.accounts.create(
 <dd>
 
 **app_id:** `typing.Optional[str]` — The app slug or ID to filter accounts by.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**external_user_id:** `typing.Optional[str]`
-
+**external_user_id:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -471,7 +471,7 @@ client.accounts.create(
 <dd>
 
 **oauth_app_id:** `typing.Optional[str]` — The OAuth app ID to filter by, if applicable
-
+    
 </dd>
 </dl>
 
@@ -479,7 +479,7 @@ client.accounts.create(
 <dd>
 
 **name:** `typing.Optional[str]` — Optional name for the account
-
+    
 </dd>
 </dl>
 
@@ -487,7 +487,7 @@ client.accounts.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -537,8 +537,8 @@ client.accounts.retrieve(
 <dl>
 <dd>
 
-**account_id:** `str`
-
+**account_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -546,7 +546,7 @@ client.accounts.retrieve(
 <dd>
 
 **include_credentials:** `typing.Optional[bool]` — Whether to retrieve the account's credentials or not
-
+    
 </dd>
 </dl>
 
@@ -554,7 +554,7 @@ client.accounts.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -604,8 +604,8 @@ client.accounts.delete(
 <dl>
 <dd>
 
-**account_id:** `str`
-
+**account_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -613,7 +613,7 @@ client.accounts.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -663,8 +663,8 @@ client.accounts.delete_by_app(
 <dl>
 <dd>
 
-**app_id:** `str`
-
+**app_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -672,7 +672,7 @@ client.accounts.delete_by_app(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -723,8 +723,8 @@ client.users.delete_external_user(
 <dl>
 <dd>
 
-**external_user_id:** `str`
-
+**external_user_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -732,7 +732,7 @@ client.users.delete_external_user(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -787,7 +787,7 @@ for page in response.iter_pages():
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-
+    
 </dd>
 </dl>
 
@@ -795,7 +795,7 @@ for page in response.iter_pages():
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-
+    
 </dd>
 </dl>
 
@@ -803,7 +803,7 @@ for page in response.iter_pages():
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-
+    
 </dd>
 </dl>
 
@@ -811,7 +811,7 @@ for page in response.iter_pages():
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the components
-
+    
 </dd>
 </dl>
 
@@ -819,7 +819,7 @@ for page in response.iter_pages():
 <dd>
 
 **app:** `typing.Optional[str]` — The ID or name slug of the app to filter the components
-
+    
 </dd>
 </dl>
 
@@ -827,7 +827,7 @@ for page in response.iter_pages():
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -878,7 +878,7 @@ client.components.retrieve(
 <dd>
 
 **component_id:** `str` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-
+    
 </dd>
 </dl>
 
@@ -886,7 +886,7 @@ client.components.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -939,7 +939,7 @@ client.components.configure_prop(
 <dd>
 
 **id:** `str` — The component ID
-
+    
 </dd>
 </dl>
 
@@ -947,7 +947,7 @@ client.components.configure_prop(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
@@ -955,15 +955,15 @@ client.components.configure_prop(
 <dd>
 
 **prop_name:** `str` — The name of the prop to configure
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**async_handle:** `typing.Optional[str]`
-
+**async_handle:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -971,7 +971,7 @@ client.components.configure_prop(
 <dd>
 
 **blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-
+    
 </dd>
 </dl>
 
@@ -979,7 +979,7 @@ client.components.configure_prop(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the component
-
+    
 </dd>
 </dl>
 
@@ -987,7 +987,7 @@ client.components.configure_prop(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -995,7 +995,7 @@ client.components.configure_prop(
 <dd>
 
 **configure_prop_opts_async_handle:** `typing.Optional[str]` — Handle for async operations
-
+    
 </dd>
 </dl>
 
@@ -1003,7 +1003,7 @@ client.components.configure_prop(
 <dd>
 
 **page:** `typing.Optional[float]` — Page number for paginated results
-
+    
 </dd>
 </dl>
 
@@ -1011,7 +1011,7 @@ client.components.configure_prop(
 <dd>
 
 **prev_context:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Previous context for pagination
-
+    
 </dd>
 </dl>
 
@@ -1019,7 +1019,7 @@ client.components.configure_prop(
 <dd>
 
 **query:** `typing.Optional[str]` — Search query for filtering options
-
+    
 </dd>
 </dl>
 
@@ -1027,7 +1027,7 @@ client.components.configure_prop(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1079,7 +1079,7 @@ client.components.reload_props(
 <dd>
 
 **id:** `str` — The component ID
-
+    
 </dd>
 </dl>
 
@@ -1087,15 +1087,15 @@ client.components.reload_props(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**async_handle:** `typing.Optional[str]`
-
+**async_handle:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -1103,7 +1103,7 @@ client.components.reload_props(
 <dd>
 
 **blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-
+    
 </dd>
 </dl>
 
@@ -1111,7 +1111,7 @@ client.components.reload_props(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the component
-
+    
 </dd>
 </dl>
 
@@ -1119,7 +1119,7 @@ client.components.reload_props(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -1127,7 +1127,7 @@ client.components.reload_props(
 <dd>
 
 **reload_props_opts_async_handle:** `typing.Optional[str]` — Handle for async operations
-
+    
 </dd>
 </dl>
 
@@ -1135,7 +1135,7 @@ client.components.reload_props(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1190,7 +1190,7 @@ for page in response.iter_pages():
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-
+    
 </dd>
 </dl>
 
@@ -1198,7 +1198,7 @@ for page in response.iter_pages():
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-
+    
 </dd>
 </dl>
 
@@ -1206,7 +1206,7 @@ for page in response.iter_pages():
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-
+    
 </dd>
 </dl>
 
@@ -1214,7 +1214,7 @@ for page in response.iter_pages():
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the actions
-
+    
 </dd>
 </dl>
 
@@ -1222,7 +1222,7 @@ for page in response.iter_pages():
 <dd>
 
 **app:** `typing.Optional[str]` — The ID or name slug of the app to filter the actions
-
+    
 </dd>
 </dl>
 
@@ -1230,7 +1230,7 @@ for page in response.iter_pages():
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1281,7 +1281,7 @@ client.actions.retrieve(
 <dd>
 
 **component_id:** `str` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-
+    
 </dd>
 </dl>
 
@@ -1289,7 +1289,7 @@ client.actions.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1342,7 +1342,7 @@ client.actions.configure_prop(
 <dd>
 
 **id:** `str` — The component ID
-
+    
 </dd>
 </dl>
 
@@ -1350,7 +1350,7 @@ client.actions.configure_prop(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
@@ -1358,15 +1358,15 @@ client.actions.configure_prop(
 <dd>
 
 **prop_name:** `str` — The name of the prop to configure
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**async_handle:** `typing.Optional[str]`
-
+**async_handle:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -1374,7 +1374,7 @@ client.actions.configure_prop(
 <dd>
 
 **blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-
+    
 </dd>
 </dl>
 
@@ -1382,7 +1382,7 @@ client.actions.configure_prop(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the component
-
+    
 </dd>
 </dl>
 
@@ -1390,7 +1390,7 @@ client.actions.configure_prop(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -1398,7 +1398,7 @@ client.actions.configure_prop(
 <dd>
 
 **configure_prop_opts_async_handle:** `typing.Optional[str]` — Handle for async operations
-
+    
 </dd>
 </dl>
 
@@ -1406,7 +1406,7 @@ client.actions.configure_prop(
 <dd>
 
 **page:** `typing.Optional[float]` — Page number for paginated results
-
+    
 </dd>
 </dl>
 
@@ -1414,7 +1414,7 @@ client.actions.configure_prop(
 <dd>
 
 **prev_context:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Previous context for pagination
-
+    
 </dd>
 </dl>
 
@@ -1422,7 +1422,7 @@ client.actions.configure_prop(
 <dd>
 
 **query:** `typing.Optional[str]` — Search query for filtering options
-
+    
 </dd>
 </dl>
 
@@ -1430,7 +1430,7 @@ client.actions.configure_prop(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1482,7 +1482,7 @@ client.actions.reload_props(
 <dd>
 
 **id:** `str` — The component ID
-
+    
 </dd>
 </dl>
 
@@ -1490,15 +1490,15 @@ client.actions.reload_props(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**async_handle:** `typing.Optional[str]`
-
+**async_handle:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -1506,7 +1506,7 @@ client.actions.reload_props(
 <dd>
 
 **blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-
+    
 </dd>
 </dl>
 
@@ -1514,7 +1514,7 @@ client.actions.reload_props(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the component
-
+    
 </dd>
 </dl>
 
@@ -1522,7 +1522,7 @@ client.actions.reload_props(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -1530,7 +1530,7 @@ client.actions.reload_props(
 <dd>
 
 **reload_props_opts_async_handle:** `typing.Optional[str]` — Handle for async operations
-
+    
 </dd>
 </dl>
 
@@ -1538,7 +1538,7 @@ client.actions.reload_props(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1590,7 +1590,7 @@ client.actions.run(
 <dd>
 
 **id:** `str` — The action component ID
-
+    
 </dd>
 </dl>
 
@@ -1598,15 +1598,15 @@ client.actions.run(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**async_handle:** `typing.Optional[str]`
-
+**async_handle:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -1614,7 +1614,7 @@ client.actions.run(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the action
-
+    
 </dd>
 </dl>
 
@@ -1622,7 +1622,7 @@ client.actions.run(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -1630,7 +1630,7 @@ client.actions.run(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1685,7 +1685,7 @@ for page in response.iter_pages():
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-
+    
 </dd>
 </dl>
 
@@ -1693,7 +1693,7 @@ for page in response.iter_pages():
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-
+    
 </dd>
 </dl>
 
@@ -1701,7 +1701,7 @@ for page in response.iter_pages():
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-
+    
 </dd>
 </dl>
 
@@ -1709,7 +1709,7 @@ for page in response.iter_pages():
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the triggers
-
+    
 </dd>
 </dl>
 
@@ -1717,7 +1717,7 @@ for page in response.iter_pages():
 <dd>
 
 **app:** `typing.Optional[str]` — The ID or name slug of the app to filter the triggers
-
+    
 </dd>
 </dl>
 
@@ -1725,7 +1725,7 @@ for page in response.iter_pages():
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1776,7 +1776,7 @@ client.triggers.retrieve(
 <dd>
 
 **component_id:** `str` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-
+    
 </dd>
 </dl>
 
@@ -1784,7 +1784,7 @@ client.triggers.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1837,7 +1837,7 @@ client.triggers.configure_prop(
 <dd>
 
 **id:** `str` — The component ID
-
+    
 </dd>
 </dl>
 
@@ -1845,7 +1845,7 @@ client.triggers.configure_prop(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
@@ -1853,15 +1853,15 @@ client.triggers.configure_prop(
 <dd>
 
 **prop_name:** `str` — The name of the prop to configure
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**async_handle:** `typing.Optional[str]`
-
+**async_handle:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -1869,7 +1869,7 @@ client.triggers.configure_prop(
 <dd>
 
 **blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-
+    
 </dd>
 </dl>
 
@@ -1877,7 +1877,7 @@ client.triggers.configure_prop(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the component
-
+    
 </dd>
 </dl>
 
@@ -1885,7 +1885,7 @@ client.triggers.configure_prop(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -1893,7 +1893,7 @@ client.triggers.configure_prop(
 <dd>
 
 **configure_prop_opts_async_handle:** `typing.Optional[str]` — Handle for async operations
-
+    
 </dd>
 </dl>
 
@@ -1901,7 +1901,7 @@ client.triggers.configure_prop(
 <dd>
 
 **page:** `typing.Optional[float]` — Page number for paginated results
-
+    
 </dd>
 </dl>
 
@@ -1909,7 +1909,7 @@ client.triggers.configure_prop(
 <dd>
 
 **prev_context:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Previous context for pagination
-
+    
 </dd>
 </dl>
 
@@ -1917,7 +1917,7 @@ client.triggers.configure_prop(
 <dd>
 
 **query:** `typing.Optional[str]` — Search query for filtering options
-
+    
 </dd>
 </dl>
 
@@ -1925,7 +1925,7 @@ client.triggers.configure_prop(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -1977,7 +1977,7 @@ client.triggers.reload_props(
 <dd>
 
 **id:** `str` — The component ID
-
+    
 </dd>
 </dl>
 
@@ -1985,15 +1985,15 @@ client.triggers.reload_props(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**async_handle:** `typing.Optional[str]`
-
+**async_handle:** `typing.Optional[str]` 
+    
 </dd>
 </dl>
 
@@ -2001,7 +2001,7 @@ client.triggers.reload_props(
 <dd>
 
 **blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-
+    
 </dd>
 </dl>
 
@@ -2009,7 +2009,7 @@ client.triggers.reload_props(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the component
-
+    
 </dd>
 </dl>
 
@@ -2017,7 +2017,7 @@ client.triggers.reload_props(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -2025,7 +2025,7 @@ client.triggers.reload_props(
 <dd>
 
 **reload_props_opts_async_handle:** `typing.Optional[str]` — Handle for async operations
-
+    
 </dd>
 </dl>
 
@@ -2033,7 +2033,7 @@ client.triggers.reload_props(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2085,7 +2085,7 @@ client.triggers.deploy(
 <dd>
 
 **id:** `str` — The trigger component ID
-
+    
 </dd>
 </dl>
 
@@ -2093,7 +2093,7 @@ client.triggers.deploy(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-
+    
 </dd>
 </dl>
 
@@ -2101,7 +2101,7 @@ client.triggers.deploy(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the trigger
-
+    
 </dd>
 </dl>
 
@@ -2109,7 +2109,7 @@ client.triggers.deploy(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-
+    
 </dd>
 </dl>
 
@@ -2117,7 +2117,7 @@ client.triggers.deploy(
 <dd>
 
 **webhook_url:** `typing.Optional[str]` — Optional webhook URL to receive trigger events
-
+    
 </dd>
 </dl>
 
@@ -2125,7 +2125,7 @@ client.triggers.deploy(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2182,7 +2182,7 @@ for page in response.iter_pages():
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you deployed the trigger
-
+    
 </dd>
 </dl>
 
@@ -2190,7 +2190,7 @@ for page in response.iter_pages():
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-
+    
 </dd>
 </dl>
 
@@ -2198,7 +2198,7 @@ for page in response.iter_pages():
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-
+    
 </dd>
 </dl>
 
@@ -2206,7 +2206,7 @@ for page in response.iter_pages():
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-
+    
 </dd>
 </dl>
 
@@ -2214,7 +2214,7 @@ for page in response.iter_pages():
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2265,8 +2265,8 @@ client.deployed_triggers.retrieve(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2274,7 +2274,7 @@ client.deployed_triggers.retrieve(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you deployed the trigger
-
+    
 </dd>
 </dl>
 
@@ -2282,7 +2282,7 @@ client.deployed_triggers.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2333,8 +2333,8 @@ client.deployed_triggers.update(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2342,7 +2342,7 @@ client.deployed_triggers.update(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-
+    
 </dd>
 </dl>
 
@@ -2350,7 +2350,7 @@ client.deployed_triggers.update(
 <dd>
 
 **active:** `typing.Optional[bool]` — Whether the trigger should be active
-
+    
 </dd>
 </dl>
 
@@ -2358,7 +2358,7 @@ client.deployed_triggers.update(
 <dd>
 
 **configured_props:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — The configured properties for the trigger
-
+    
 </dd>
 </dl>
 
@@ -2366,7 +2366,7 @@ client.deployed_triggers.update(
 <dd>
 
 **name:** `typing.Optional[str]` — The name of the trigger
-
+    
 </dd>
 </dl>
 
@@ -2374,7 +2374,7 @@ client.deployed_triggers.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2425,8 +2425,8 @@ client.deployed_triggers.delete(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2434,7 +2434,7 @@ client.deployed_triggers.delete(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-
+    
 </dd>
 </dl>
 
@@ -2442,7 +2442,7 @@ client.deployed_triggers.delete(
 <dd>
 
 **ignore_hook_errors:** `typing.Optional[bool]` — Whether to ignore errors during deactivation hook
-
+    
 </dd>
 </dl>
 
@@ -2450,7 +2450,7 @@ client.deployed_triggers.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2501,8 +2501,8 @@ client.deployed_triggers.list_events(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2510,7 +2510,7 @@ client.deployed_triggers.list_events(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you deployed the trigger
-
+    
 </dd>
 </dl>
 
@@ -2518,7 +2518,7 @@ client.deployed_triggers.list_events(
 <dd>
 
 **n:** `typing.Optional[int]` — The number of events to retrieve (defaults to 20 if not provided)
-
+    
 </dd>
 </dl>
 
@@ -2526,7 +2526,7 @@ client.deployed_triggers.list_events(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2577,8 +2577,8 @@ client.deployed_triggers.list_workflows(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2586,7 +2586,7 @@ client.deployed_triggers.list_workflows(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-
+    
 </dd>
 </dl>
 
@@ -2594,7 +2594,7 @@ client.deployed_triggers.list_workflows(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2646,8 +2646,8 @@ client.deployed_triggers.update_workflows(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2655,7 +2655,7 @@ client.deployed_triggers.update_workflows(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-
+    
 </dd>
 </dl>
 
@@ -2663,7 +2663,7 @@ client.deployed_triggers.update_workflows(
 <dd>
 
 **workflow_ids:** `typing.Sequence[str]` — Array of workflow IDs to set
-
+    
 </dd>
 </dl>
 
@@ -2671,7 +2671,7 @@ client.deployed_triggers.update_workflows(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2722,8 +2722,8 @@ client.deployed_triggers.list_webhooks(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2731,7 +2731,7 @@ client.deployed_triggers.list_webhooks(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-
+    
 </dd>
 </dl>
 
@@ -2739,7 +2739,7 @@ client.deployed_triggers.list_webhooks(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2791,8 +2791,8 @@ client.deployed_triggers.update_webhooks(
 <dl>
 <dd>
 
-**trigger_id:** `str`
-
+**trigger_id:** `str` 
+    
 </dd>
 </dl>
 
@@ -2800,7 +2800,7 @@ client.deployed_triggers.update_webhooks(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-
+    
 </dd>
 </dl>
 
@@ -2808,7 +2808,7 @@ client.deployed_triggers.update_webhooks(
 <dd>
 
 **webhook_urls:** `typing.Sequence[str]` — Array of webhook URLs to set
-
+    
 </dd>
 </dl>
 
@@ -2816,7 +2816,7 @@ client.deployed_triggers.update_webhooks(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2866,7 +2866,7 @@ client.projects.retrieve_info()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2920,7 +2920,7 @@ client.proxy.get(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-
+    
 </dd>
 </dl>
 
@@ -2928,7 +2928,7 @@ client.proxy.get(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-
+    
 </dd>
 </dl>
 
@@ -2936,7 +2936,7 @@ client.proxy.get(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-
+    
 </dd>
 </dl>
 
@@ -2944,7 +2944,7 @@ client.proxy.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -2998,7 +2998,7 @@ client.proxy.post(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-
+    
 </dd>
 </dl>
 
@@ -3006,7 +3006,7 @@ client.proxy.post(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-
+    
 </dd>
 </dl>
 
@@ -3014,15 +3014,15 @@ client.proxy.post(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `typing.Dict[str, typing.Optional[typing.Any]]`
-
+**request:** `typing.Dict[str, typing.Optional[typing.Any]]` 
+    
 </dd>
 </dl>
 
@@ -3030,7 +3030,7 @@ client.proxy.post(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -3084,7 +3084,7 @@ client.proxy.put(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-
+    
 </dd>
 </dl>
 
@@ -3092,7 +3092,7 @@ client.proxy.put(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-
+    
 </dd>
 </dl>
 
@@ -3100,15 +3100,15 @@ client.proxy.put(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `typing.Dict[str, typing.Optional[typing.Any]]`
-
+**request:** `typing.Dict[str, typing.Optional[typing.Any]]` 
+    
 </dd>
 </dl>
 
@@ -3116,7 +3116,7 @@ client.proxy.put(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -3169,7 +3169,7 @@ client.proxy.delete(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-
+    
 </dd>
 </dl>
 
@@ -3177,7 +3177,7 @@ client.proxy.delete(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-
+    
 </dd>
 </dl>
 
@@ -3185,7 +3185,7 @@ client.proxy.delete(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-
+    
 </dd>
 </dl>
 
@@ -3193,7 +3193,7 @@ client.proxy.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -3247,7 +3247,7 @@ client.proxy.patch(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-
+    
 </dd>
 </dl>
 
@@ -3255,7 +3255,7 @@ client.proxy.patch(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-
+    
 </dd>
 </dl>
 
@@ -3263,15 +3263,15 @@ client.proxy.patch(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `typing.Dict[str, typing.Optional[typing.Any]]`
-
+**request:** `typing.Dict[str, typing.Optional[typing.Any]]` 
+    
 </dd>
 </dl>
 
@@ -3279,7 +3279,7 @@ client.proxy.patch(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -3331,7 +3331,7 @@ client.tokens.create(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you're creating the token
-
+    
 </dd>
 </dl>
 
@@ -3339,7 +3339,7 @@ client.tokens.create(
 <dd>
 
 **allowed_origins:** `typing.Optional[typing.Sequence[str]]` — List of allowed origins for CORS
-
+    
 </dd>
 </dl>
 
@@ -3347,7 +3347,7 @@ client.tokens.create(
 <dd>
 
 **error_redirect_uri:** `typing.Optional[str]` — URI to redirect to on error
-
+    
 </dd>
 </dl>
 
@@ -3355,7 +3355,7 @@ client.tokens.create(
 <dd>
 
 **success_redirect_uri:** `typing.Optional[str]` — URI to redirect to on success
-
+    
 </dd>
 </dl>
 
@@ -3363,7 +3363,7 @@ client.tokens.create(
 <dd>
 
 **webhook_uri:** `typing.Optional[str]` — Webhook URI for notifications
-
+    
 </dd>
 </dl>
 
@@ -3371,7 +3371,7 @@ client.tokens.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -3421,16 +3421,16 @@ client.tokens.validate(
 <dl>
 <dd>
 
-**ctok:** `str`
-
+**ctok:** `str` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**params:** `typing.Optional[ValidateTokenParams]`
-
+**params:** `typing.Optional[ValidateTokenParams]` 
+    
 </dd>
 </dl>
 
@@ -3438,7 +3438,7 @@ client.tokens.validate(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
@@ -3490,114 +3490,16 @@ client.oauth_tokens.create(
 <dl>
 <dd>
 
-**client_id:** `str`
-
+**client_id:** `str` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**client_secret:** `str`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-
-## Workflows
-<details><summary><code>client.workflows.<a href="src/pipedream/workflows/client.py">invoke</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from pipedream import Pipedream
-from pipedream.workflows.client import HTTPAuthType
-
-client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-)
-response = client.workflows.invoke(
-    url_or_endpoint="https://your-workflow.m.pipedream.net",
-    method="POST",
-    body={"key": "value"},
-    headers={"Content-Type": "application/json"},
-    auth_type=HTTPAuthType.NONE,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**url_or_endpoint:** `str` — The URL of the workflow's HTTP interface or the ID of the endpoint
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**method:** `str` — HTTP method to use (default: "POST")
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**body:** `typing.Optional[typing.Any]` — Request body data
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**headers:** `typing.Optional[typing.Dict[str, str]]` — HTTP headers to include
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auth_type:** `HTTPAuthType` — Type of authorization (default: HTTPAuthType.NONE)
-
+**client_secret:** `str` 
+    
 </dd>
 </dl>
 
@@ -3605,102 +3507,7 @@ response = client.workflows.invoke(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.<a href="src/pipedream/workflows/client.py">invoke_for_external_user</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from pipedream import Pipedream
-
-client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-)
-response = client.workflows.invoke_for_external_user(
-    url_or_endpoint="en2r1n8a98np7",
-    external_user_id="user_123",
-    method="POST",
-    body={"message": "Hello from external user"},
-    headers={"Content-Type": "application/json"},
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**url_or_endpoint:** `str` — The URL of the workflow's HTTP interface or the ID of the endpoint
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**external_user_id:** `str` — The external user ID for whom the workflow is being invoked
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**method:** `str` — HTTP method to use (default: "POST")
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**body:** `typing.Optional[typing.Any]` — Request body data
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**headers:** `typing.Optional[typing.Dict[str, str]]` — HTTP headers to include
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
+    
 </dd>
 </dl>
 </dd>
