@@ -2,6 +2,6 @@
 
 # isort: skip_file
 
-from .types import RunActionOptsStashId
+from .run_action_opts_stash_id import RunActionOptsStashId
 
 __all__ = ["RunActionOptsStashId"]
