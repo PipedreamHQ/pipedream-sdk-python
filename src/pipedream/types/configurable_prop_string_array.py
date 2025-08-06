@@ -15,7 +15,7 @@ class ConfigurablePropStringArray(UniversalBaseModel):
     If true, this prop is a secret and should not be displayed in plain text.
     """
 
-    name: typing.Optional[str] = pydantic.Field(default=None)
+    name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
     """

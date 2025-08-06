@@ -10,7 +10,7 @@ from ..core.serialization import FieldMetadata
 
 class ConfigurablePropAny(UniversalBaseModel):
     type: typing.Optional[typing.Literal["any"]] = None
-    name: typing.Optional[str] = pydantic.Field(default=None)
+    name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
     """
