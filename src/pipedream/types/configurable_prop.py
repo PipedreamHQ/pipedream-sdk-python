@@ -13,7 +13,7 @@ class ConfigurableProp(UniversalBaseModel):
     A configuration or input field for a component.
     """
 
-    name: typing.Optional[str] = pydantic.Field(default=None)
+    name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
     """
