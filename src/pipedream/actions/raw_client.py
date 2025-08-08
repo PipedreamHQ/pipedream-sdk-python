@@ -16,8 +16,8 @@ from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
+from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
-from .types.run_action_opts_stash_id import RunActionOptsStashId
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -345,7 +345,6 @@ class RawActionsClient:
             The ID for dynamic props
 
         stash_id : typing.Optional[RunActionOptsStashId]
-            The ID of the File Stash to use for syncing the action's /tmp directory
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -715,7 +714,6 @@ class AsyncRawActionsClient:
             The ID for dynamic props
 
         stash_id : typing.Optional[RunActionOptsStashId]
-            The ID of the File Stash to use for syncing the action's /tmp directory
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

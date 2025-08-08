@@ -12,7 +12,7 @@ from .component import Component
 from .component_stash import ComponentStash
 from .configurable_prop import ConfigurableProp
 from .configurable_prop_alert import ConfigurablePropAlert
-from .configurable_prop_alert_alert_type import ConfigurablePropAlertAlertType
+from .configurable_prop_alert_type import ConfigurablePropAlertType
 from .configurable_prop_any import ConfigurablePropAny
 from .configurable_prop_app import ConfigurablePropApp
 from .configurable_prop_boolean import ConfigurablePropBoolean
@@ -23,9 +23,7 @@ from .configurable_prop_string import ConfigurablePropString
 from .configurable_prop_string_array import ConfigurablePropStringArray
 from .configure_prop_opts import ConfigurePropOpts
 from .configure_prop_response import ConfigurePropResponse
-from .connect_token_create_opts import ConnectTokenCreateOpts
-from .connect_token_response import ConnectTokenResponse
-from .create_browser_client_opts import CreateBrowserClientOpts
+from .connect_token import ConnectToken
 from .create_o_auth_token_response import CreateOAuthTokenResponse
 from .create_token_response import CreateTokenResponse
 from .delete_trigger_opts import DeleteTriggerOpts
@@ -50,13 +48,15 @@ from .list_apps_response import ListAppsResponse
 from .page_info import PageInfo
 from .project_environment import ProjectEnvironment
 from .project_info_response import ProjectInfoResponse
-from .project_info_response_apps_item import ProjectInfoResponseAppsItem
+from .project_info_response_app import ProjectInfoResponseApp
 from .prop_option import PropOption
 from .proxy_response import ProxyResponse
 from .reload_props_opts import ReloadPropsOpts
 from .reload_props_response import ReloadPropsResponse
+from .run_action_opts_stash_id import RunActionOptsStashId
 from .run_action_response import RunActionResponse
 from .start_connect_opts import StartConnectOpts
+from .stash_id import StashId
 from .validate_token_params import ValidateTokenParams
 from .validate_token_response import ValidateTokenResponse
 
@@ -71,7 +71,7 @@ __all__ = [
     "ComponentStash",
     "ConfigurableProp",
     "ConfigurablePropAlert",
-    "ConfigurablePropAlertAlertType",
+    "ConfigurablePropAlertType",
     "ConfigurablePropAny",
     "ConfigurablePropApp",
     "ConfigurablePropBoolean",
@@ -82,9 +82,7 @@ __all__ = [
     "ConfigurablePropStringArray",
     "ConfigurePropOpts",
     "ConfigurePropResponse",
-    "ConnectTokenCreateOpts",
-    "ConnectTokenResponse",
-    "CreateBrowserClientOpts",
+    "ConnectToken",
     "CreateOAuthTokenResponse",
     "CreateTokenResponse",
     "DeleteTriggerOpts",
@@ -109,13 +107,15 @@ __all__ = [
     "PageInfo",
     "ProjectEnvironment",
     "ProjectInfoResponse",
-    "ProjectInfoResponseAppsItem",
+    "ProjectInfoResponseApp",
     "PropOption",
     "ProxyResponse",
     "ReloadPropsOpts",
     "ReloadPropsResponse",
+    "RunActionOptsStashId",
     "RunActionResponse",
     "StartConnectOpts",
+    "StashId",
     "ValidateTokenParams",
     "ValidateTokenResponse",
 ]
