@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .project_info_response_apps_item import ProjectInfoResponseAppsItem
+from .project_info_response_app import ProjectInfoResponseApp
 
 
 class ProjectInfoResponse(UniversalBaseModel):
@@ -12,7 +12,7 @@ class ProjectInfoResponse(UniversalBaseModel):
     Response received when retrieving project info
     """
 
-    apps: typing.List[ProjectInfoResponseAppsItem]
+    apps: typing.List[ProjectInfoResponseApp]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

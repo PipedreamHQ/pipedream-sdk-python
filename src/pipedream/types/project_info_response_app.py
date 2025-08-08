@@ -6,14 +6,15 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class CreateBrowserClientOpts(UniversalBaseModel):
+class ProjectInfoResponseApp(UniversalBaseModel):
+    id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Options for creating a browser-side client
+    ID of the app. Only applies for OAuth apps.
     """
 
-    api_url: typing.Optional[str] = pydantic.Field(default=None)
+    name_slug: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The API URL to use
+    The name slug of the target app
     """
 
     if IS_PYDANTIC_V2:

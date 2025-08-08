@@ -2,4 +2,6 @@
 
 import typing
 
-RunActionOptsStashId = typing.Union[str, bool]
+from ...types.stash_id import StashId
+
+RunActionOptsStashId = typing.Union[typing.Optional[StashId], typing.Literal["NEW"], bool]
