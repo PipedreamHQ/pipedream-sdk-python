@@ -10,6 +10,7 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..types.connect_token import ConnectToken
 from ..types.create_token_response import CreateTokenResponse
 from ..types.validate_token_params import ValidateTokenParams
 from ..types.validate_token_response import ValidateTokenResponse
@@ -91,7 +92,7 @@ class RawTokensClient:
 
     def validate(
         self,
-        ctok: str,
+        ctok: ConnectToken,
         *,
         params: typing.Optional[ValidateTokenParams] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -99,7 +100,7 @@ class RawTokensClient:
         """
         Parameters
         ----------
-        ctok : str
+        ctok : ConnectToken
 
         params : typing.Optional[ValidateTokenParams]
 
@@ -112,7 +113,7 @@ class RawTokensClient:
             connect token validated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens/{jsonable_encoder(ctok)}/validate",
+            f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
             method="GET",
             params={
                 "params": convert_and_respect_annotation_metadata(
@@ -210,7 +211,7 @@ class AsyncRawTokensClient:
 
     async def validate(
         self,
-        ctok: str,
+        ctok: ConnectToken,
         *,
         params: typing.Optional[ValidateTokenParams] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -218,7 +219,7 @@ class AsyncRawTokensClient:
         """
         Parameters
         ----------
-        ctok : str
+        ctok : ConnectToken
 
         params : typing.Optional[ValidateTokenParams]
 
@@ -231,7 +232,7 @@ class AsyncRawTokensClient:
             connect token validated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens/{jsonable_encoder(ctok)}/validate",
+            f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
             method="GET",
             params={
                 "params": convert_and_respect_annotation_metadata(

@@ -6,24 +6,20 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
-from .configurable_prop_alert_alert_type import ConfigurablePropAlertAlertType
+from .configurable_prop_alert_type import ConfigurablePropAlertType
 
 
 class ConfigurablePropAlert(UniversalBaseModel):
     type: typing.Optional[typing.Literal["alert"]] = None
     alert_type: typing_extensions.Annotated[
-        typing.Optional[ConfigurablePropAlertAlertType], FieldMetadata(alias="alertType")
-    ] = pydantic.Field(default=None)
-    """
-    The severity level of the alert.
-    """
-
+        typing.Optional[ConfigurablePropAlertType], FieldMetadata(alias="alertType")
+    ] = None
     content: typing.Optional[str] = pydantic.Field(default=None)
     """
     The content of the alert, which can include HTML or plain text.
     """
 
-    name: str = pydantic.Field()
+    name: typing.Optional[str] = pydantic.Field(default=None)
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
     """
