@@ -35,10 +35,7 @@ class Component(UniversalBaseModel):
     The type of component (trigger or action)
     """
 
-    stash: typing.Optional[ComponentStash] = pydantic.Field(default=None)
-    """
-    Indicates if a File Stash ID is optional or required to run the component
-    """
+    stash: typing.Optional[ComponentStash] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
