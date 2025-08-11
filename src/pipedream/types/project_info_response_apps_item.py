@@ -4,15 +4,18 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .project_info_response_apps_item import ProjectInfoResponseAppsItem
 
 
-class ProjectInfoResponse(UniversalBaseModel):
+class ProjectInfoResponseAppsItem(UniversalBaseModel):
+    id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Response received when retrieving project info
+    ID of the app. Only applies for OAuth apps.
     """
 
-    apps: typing.List[ProjectInfoResponseAppsItem]
+    name_slug: str = pydantic.Field()
+    """
+    The name slug of the target app
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -4,7 +4,6 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.connect_token import ConnectToken
 from ..types.create_token_response import CreateTokenResponse
 from ..types.validate_token_params import ValidateTokenParams
 from ..types.validate_token_response import ValidateTokenResponse
@@ -91,7 +90,7 @@ class TokensClient:
 
     def validate(
         self,
-        ctok: ConnectToken,
+        ctok: str,
         *,
         params: typing.Optional[ValidateTokenParams] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -99,7 +98,7 @@ class TokensClient:
         """
         Parameters
         ----------
-        ctok : ConnectToken
+        ctok : str
 
         params : typing.Optional[ValidateTokenParams]
 
@@ -214,7 +213,7 @@ class AsyncTokensClient:
 
     async def validate(
         self,
-        ctok: ConnectToken,
+        ctok: str,
         *,
         params: typing.Optional[ValidateTokenParams] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -222,7 +221,7 @@ class AsyncTokensClient:
         """
         Parameters
         ----------
-        ctok : ConnectToken
+        ctok : str
 
         params : typing.Optional[ValidateTokenParams]
 

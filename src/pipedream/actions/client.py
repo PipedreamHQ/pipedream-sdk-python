@@ -8,7 +8,6 @@ from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.reload_props_response import ReloadPropsResponse
-from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
 from .raw_client import AsyncRawActionsClient, RawActionsClient
 
@@ -289,7 +288,6 @@ class ActionsClient:
         async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
@@ -308,8 +306,6 @@ class ActionsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        stash_id : typing.Optional[RunActionOptsStashId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -340,7 +336,6 @@ class ActionsClient:
             async_handle=async_handle,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            stash_id=stash_id,
             request_options=request_options,
         )
         return _response.data
@@ -654,7 +649,6 @@ class AsyncActionsClient:
         async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
@@ -673,8 +667,6 @@ class AsyncActionsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        stash_id : typing.Optional[RunActionOptsStashId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -713,7 +705,6 @@ class AsyncActionsClient:
             async_handle=async_handle,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            stash_id=stash_id,
             request_options=request_options,
         )
         return _response.data
