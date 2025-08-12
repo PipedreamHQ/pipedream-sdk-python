@@ -3,22 +3,19 @@
 import typing
 
 import pydantic
+import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
 
 
-class ValidateTokenParams(UniversalBaseModel):
+class TimerInterval(UniversalBaseModel):
     """
-    Parameters for token validation
-    """
-
-    app_id: str = pydantic.Field()
-    """
-    The app ID to validate against
+    Timer configuration using interval in seconds
     """
 
-    oauth_app_id: typing.Optional[str] = pydantic.Field(default=None)
+    interval_seconds: typing_extensions.Annotated[int, FieldMetadata(alias="intervalSeconds")] = pydantic.Field()
     """
-    The OAuth app ID
+    Interval in seconds for timer execution
     """
 
     if IS_PYDANTIC_V2:

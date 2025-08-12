@@ -9,10 +9,8 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
 from ..types.connect_token import ConnectToken
 from ..types.create_token_response import CreateTokenResponse
-from ..types.validate_token_params import ValidateTokenParams
 from ..types.validate_token_response import ValidateTokenResponse
 
 # this is used as the default value for optional parameters
@@ -94,7 +92,8 @@ class RawTokensClient:
         self,
         ctok: ConnectToken,
         *,
-        params: typing.Optional[ValidateTokenParams] = None,
+        app_id: str,
+        oauth_app_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ValidateTokenResponse]:
         """
@@ -102,7 +101,11 @@ class RawTokensClient:
         ----------
         ctok : ConnectToken
 
-        params : typing.Optional[ValidateTokenParams]
+        app_id : str
+            The app ID to validate against
+
+        oauth_app_id : typing.Optional[str]
+            The OAuth app ID to validate against (if the token is for an OAuth app)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -116,9 +119,8 @@ class RawTokensClient:
             f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
             method="GET",
             params={
-                "params": convert_and_respect_annotation_metadata(
-                    object_=params, annotation=ValidateTokenParams, direction="write"
-                ),
+                "app_id": app_id,
+                "oauth_app_id": oauth_app_id,
             },
             request_options=request_options,
         )
@@ -213,7 +215,8 @@ class AsyncRawTokensClient:
         self,
         ctok: ConnectToken,
         *,
-        params: typing.Optional[ValidateTokenParams] = None,
+        app_id: str,
+        oauth_app_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ValidateTokenResponse]:
         """
@@ -221,7 +224,11 @@ class AsyncRawTokensClient:
         ----------
         ctok : ConnectToken
 
-        params : typing.Optional[ValidateTokenParams]
+        app_id : str
+            The app ID to validate against
+
+        oauth_app_id : typing.Optional[str]
+            The OAuth app ID to validate against (if the token is for an OAuth app)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -235,9 +242,8 @@ class AsyncRawTokensClient:
             f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
             method="GET",
             params={
-                "params": convert_and_respect_annotation_metadata(
-                    object_=params, annotation=ValidateTokenParams, direction="write"
-                ),
+                "app_id": app_id,
+                "oauth_app_id": oauth_app_id,
             },
             request_options=request_options,
         )

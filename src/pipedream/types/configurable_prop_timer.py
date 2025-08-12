@@ -6,28 +6,26 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_timer_default import ConfigurablePropTimerDefault
+from .configurable_prop_timer_options_item import ConfigurablePropTimerOptionsItem
+from .configurable_prop_timer_static import ConfigurablePropTimerStatic
 
 
-class ConfigurablePropInteger(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["integer"]] = None
-    min: typing.Optional[int] = pydantic.Field(default=None)
+class ConfigurablePropTimer(UniversalBaseModel):
+    type: typing.Optional[typing.Literal["$.interface.timer"]] = None
+    static: typing.Optional[ConfigurablePropTimerStatic] = pydantic.Field(default=None)
     """
-    The minimum value for this integer prop.
-    """
-
-    max: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    The maximum value for this integer prop.
+    Static timer configuration
     """
 
-    default: typing.Optional[int] = pydantic.Field(default=None)
+    default: typing.Optional[ConfigurablePropTimerDefault] = pydantic.Field(default=None)
     """
-    Default integer value
+    Default timer configuration
     """
 
-    options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
+    options: typing.Optional[typing.List[ConfigurablePropTimerOptionsItem]] = pydantic.Field(default=None)
     """
-    Available integer options
+    Available timer configuration options
     """
 
     name: str = pydantic.Field()

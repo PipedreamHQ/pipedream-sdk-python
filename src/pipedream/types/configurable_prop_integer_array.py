@@ -8,26 +8,26 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 
 
-class ConfigurablePropInteger(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["integer"]] = None
+class ConfigurablePropIntegerArray(UniversalBaseModel):
+    type: typing.Optional[typing.Literal["integer[]"]] = None
     min: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The minimum value for this integer prop.
+    The minimum value for integers in this array
     """
 
     max: typing.Optional[int] = pydantic.Field(default=None)
     """
-    The maximum value for this integer prop.
+    The maximum value for integers in this array
     """
 
-    default: typing.Optional[int] = pydantic.Field(default=None)
+    default: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
     """
-    Default integer value
+    Default array of integers
     """
 
     options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
     """
-    Available integer options
+    Available options for the integer array
     """
 
     name: str = pydantic.Field()
