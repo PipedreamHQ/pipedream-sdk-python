@@ -8,26 +8,30 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 
 
-class ConfigurablePropInteger(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["integer"]] = None
-    min: typing.Optional[int] = pydantic.Field(default=None)
+class ConfigurablePropApphook(UniversalBaseModel):
+    type: typing.Optional[typing.Literal["$.interface.apphook"]] = None
+    app_prop: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="appProp")] = pydantic.Field(
+        default=None
+    )
     """
-    The minimum value for this integer prop.
-    """
-
-    max: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    The maximum value for this integer prop.
+    The name of the app prop that this apphook depends on
     """
 
-    default: typing.Optional[int] = pydantic.Field(default=None)
+    event_names: typing_extensions.Annotated[typing.Optional[typing.List[str]], FieldMetadata(alias="eventNames")] = (
+        pydantic.Field(default=None)
+    )
     """
-    Default integer value
+    List of event names to listen for
     """
 
-    options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
+    remote: typing.Optional[bool] = pydantic.Field(default=None)
     """
-    Available integer options
+    Whether this apphook is remote
+    """
+
+    static: typing.Optional[typing.List[typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    """
+    Static configuration for the apphook
     """
 
     name: str = pydantic.Field()
