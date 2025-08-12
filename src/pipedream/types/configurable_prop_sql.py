@@ -6,28 +6,15 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_sql_auth import ConfigurablePropSqlAuth
 
 
-class ConfigurablePropInteger(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["integer"]] = None
-    min: typing.Optional[int] = pydantic.Field(default=None)
+class ConfigurablePropSql(UniversalBaseModel):
+    type: typing.Optional[typing.Literal["sql"]] = None
+    auth: typing.Optional[ConfigurablePropSqlAuth] = None
+    default: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The minimum value for this integer prop.
-    """
-
-    max: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    The maximum value for this integer prop.
-    """
-
-    default: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Default integer value
-    """
-
-    options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
-    """
-    Available integer options
+    Default SQL query
     """
 
     name: str = pydantic.Field()

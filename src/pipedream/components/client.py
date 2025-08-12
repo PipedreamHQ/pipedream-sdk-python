@@ -124,11 +124,10 @@ class ComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -146,8 +145,6 @@ class ComponentsClient:
         prop_name : str
             The name of the prop to configure
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -157,7 +154,7 @@ class ComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        configure_prop_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -197,11 +194,10 @@ class ComponentsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            configure_prop_opts_async_handle=configure_prop_opts_async_handle,
+            async_handle=async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -214,11 +210,10 @@ class ComponentsClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -230,8 +225,6 @@ class ComponentsClient:
         external_user_id : str
             The external user ID
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -241,7 +234,7 @@ class ComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        reload_props_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -270,11 +263,10 @@ class ComponentsClient:
         _response = self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            reload_props_opts_async_handle=reload_props_opts_async_handle,
+            async_handle=async_handle,
             request_options=request_options,
         )
         return _response.data
@@ -409,11 +401,10 @@ class AsyncComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -431,8 +422,6 @@ class AsyncComponentsClient:
         prop_name : str
             The name of the prop to configure
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -442,7 +431,7 @@ class AsyncComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        configure_prop_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -490,11 +479,10 @@ class AsyncComponentsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            configure_prop_opts_async_handle=configure_prop_opts_async_handle,
+            async_handle=async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -507,11 +495,10 @@ class AsyncComponentsClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -523,8 +510,6 @@ class AsyncComponentsClient:
         external_user_id : str
             The external user ID
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -534,7 +519,7 @@ class AsyncComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        reload_props_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -571,11 +556,10 @@ class AsyncComponentsClient:
         _response = await self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            reload_props_opts_async_handle=reload_props_opts_async_handle,
+            async_handle=async_handle,
             request_options=request_options,
         )
         return _response.data
