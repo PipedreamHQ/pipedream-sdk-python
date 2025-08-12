@@ -4,7 +4,6 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .stash_id import StashId
 
 
 class RunActionResponse(UniversalBaseModel):
@@ -15,7 +14,10 @@ class RunActionResponse(UniversalBaseModel):
     exports: typing.Optional[typing.Optional[typing.Any]] = None
     os: typing.Optional[typing.Optional[typing.Any]] = None
     ret: typing.Optional[typing.Optional[typing.Any]] = None
-    stash_id: typing.Optional[StashId] = None
+    stash_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The ID of the File Stash that was used to sync the action's /tmp directory
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
