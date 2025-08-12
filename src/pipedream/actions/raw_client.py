@@ -150,11 +150,10 @@ class RawActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -172,8 +171,6 @@ class RawActionsClient:
         prop_name : str
             The name of the prop to configure
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -183,7 +180,7 @@ class RawActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        configure_prop_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -220,7 +217,6 @@ class RawActionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -245,11 +241,10 @@ class RawActionsClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
@@ -261,8 +256,6 @@ class RawActionsClient:
         external_user_id : str
             The external user ID
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -272,7 +265,7 @@ class RawActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        reload_props_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -296,7 +289,6 @@ class RawActionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -321,7 +313,6 @@ class RawActionsClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
@@ -335,8 +326,6 @@ class RawActionsClient:
 
         external_user_id : str
             The external user ID
-
-        async_handle : typing.Optional[str]
 
         configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             The configured properties for the action
@@ -368,7 +357,6 @@ class RawActionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -519,11 +507,10 @@ class AsyncRawActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -541,8 +528,6 @@ class AsyncRawActionsClient:
         prop_name : str
             The name of the prop to configure
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -552,7 +537,7 @@ class AsyncRawActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        configure_prop_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -589,7 +574,6 @@ class AsyncRawActionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -614,11 +598,10 @@ class AsyncRawActionsClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
@@ -630,8 +613,6 @@ class AsyncRawActionsClient:
         external_user_id : str
             The external user ID
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -641,7 +622,7 @@ class AsyncRawActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        reload_props_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -665,7 +646,6 @@ class AsyncRawActionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -690,7 +670,6 @@ class AsyncRawActionsClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
@@ -704,8 +683,6 @@ class AsyncRawActionsClient:
 
         external_user_id : str
             The external user ID
-
-        async_handle : typing.Optional[str]
 
         configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             The configured properties for the action
@@ -737,7 +714,6 @@ class AsyncRawActionsClient:
             },
             headers={
                 "content-type": "application/json",
-                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,

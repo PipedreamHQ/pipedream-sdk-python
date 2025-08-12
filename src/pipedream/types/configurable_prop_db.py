@@ -8,28 +8,8 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 
 
-class ConfigurablePropInteger(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["integer"]] = None
-    min: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    The minimum value for this integer prop.
-    """
-
-    max: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    The maximum value for this integer prop.
-    """
-
-    default: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Default integer value
-    """
-
-    options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
-    """
-    Available integer options
-    """
-
+class ConfigurablePropDb(UniversalBaseModel):
+    type: typing.Optional[typing.Literal["$.service.db"]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value

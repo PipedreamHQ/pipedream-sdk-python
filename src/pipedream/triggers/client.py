@@ -125,11 +125,10 @@ class TriggersClient:
         id: str,
         external_user_id: str,
         prop_name: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -147,8 +146,6 @@ class TriggersClient:
         prop_name : str
             The name of the prop to configure
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -158,7 +155,7 @@ class TriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        configure_prop_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -198,11 +195,10 @@ class TriggersClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            configure_prop_opts_async_handle=configure_prop_opts_async_handle,
+            async_handle=async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -215,11 +211,10 @@ class TriggersClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -231,8 +226,6 @@ class TriggersClient:
         external_user_id : str
             The external user ID
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -242,7 +235,7 @@ class TriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        reload_props_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -271,11 +264,10 @@ class TriggersClient:
         _response = self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            reload_props_opts_async_handle=reload_props_opts_async_handle,
+            async_handle=async_handle,
             request_options=request_options,
         )
         return _response.data
@@ -471,11 +463,10 @@ class AsyncTriggersClient:
         id: str,
         external_user_id: str,
         prop_name: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -493,8 +484,6 @@ class AsyncTriggersClient:
         prop_name : str
             The name of the prop to configure
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -504,7 +493,7 @@ class AsyncTriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        configure_prop_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -552,11 +541,10 @@ class AsyncTriggersClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            configure_prop_opts_async_handle=configure_prop_opts_async_handle,
+            async_handle=async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -569,11 +557,10 @@ class AsyncTriggersClient:
         *,
         id: str,
         external_user_id: str,
-        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
+        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -585,8 +572,6 @@ class AsyncTriggersClient:
         external_user_id : str
             The external user ID
 
-        async_handle : typing.Optional[str]
-
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -596,7 +581,7 @@ class AsyncTriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        reload_props_opts_async_handle : typing.Optional[str]
+        async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -633,11 +618,10 @@ class AsyncTriggersClient:
         _response = await self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
-            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            reload_props_opts_async_handle=reload_props_opts_async_handle,
+            async_handle=async_handle,
             request_options=request_options,
         )
         return _response.data
