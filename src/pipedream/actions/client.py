@@ -8,7 +8,6 @@ from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.reload_props_response import ReloadPropsResponse
-from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
 from .raw_client import AsyncRawActionsClient, RawActionsClient
 
@@ -126,10 +125,11 @@ class ActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -147,6 +147,8 @@ class ActionsClient:
         prop_name : str
             The name of the prop to configure
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -156,7 +158,7 @@ class ActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        configure_prop_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -196,10 +198,11 @@ class ActionsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
+            configure_prop_opts_async_handle=configure_prop_opts_async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -212,10 +215,11 @@ class ActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -227,6 +231,8 @@ class ActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -236,7 +242,7 @@ class ActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        reload_props_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -265,10 +271,11 @@ class ActionsClient:
         _response = self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
+            reload_props_opts_async_handle=reload_props_opts_async_handle,
             request_options=request_options,
         )
         return _response.data
@@ -278,9 +285,9 @@ class ActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
@@ -292,13 +299,13 @@ class ActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             The configured properties for the action
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        stash_id : typing.Optional[RunActionOptsStashId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -326,9 +333,9 @@ class ActionsClient:
         _response = self._raw_client.run(
             id=id,
             external_user_id=external_user_id,
+            async_handle=async_handle,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            stash_id=stash_id,
             request_options=request_options,
         )
         return _response.data
@@ -463,10 +470,11 @@ class AsyncActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -484,6 +492,8 @@ class AsyncActionsClient:
         prop_name : str
             The name of the prop to configure
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -493,7 +503,7 @@ class AsyncActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        configure_prop_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -541,10 +551,11 @@ class AsyncActionsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
+            configure_prop_opts_async_handle=configure_prop_opts_async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -557,10 +568,11 @@ class AsyncActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -572,6 +584,8 @@ class AsyncActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -581,7 +595,7 @@ class AsyncActionsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        reload_props_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -618,10 +632,11 @@ class AsyncActionsClient:
         _response = await self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            async_handle=async_handle,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
+            reload_props_opts_async_handle=reload_props_opts_async_handle,
             request_options=request_options,
         )
         return _response.data
@@ -631,9 +646,9 @@ class AsyncActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
@@ -645,13 +660,13 @@ class AsyncActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             The configured properties for the action
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        stash_id : typing.Optional[RunActionOptsStashId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -687,9 +702,9 @@ class AsyncActionsClient:
         _response = await self._raw_client.run(
             id=id,
             external_user_id=external_user_id,
+            async_handle=async_handle,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            stash_id=stash_id,
             request_options=request_options,
         )
         return _response.data
