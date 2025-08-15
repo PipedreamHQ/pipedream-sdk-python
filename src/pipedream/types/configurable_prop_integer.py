@@ -20,17 +20,7 @@ class ConfigurablePropInteger(UniversalBaseModel):
     The maximum value for this integer prop.
     """
 
-    default: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Default integer value
-    """
-
-    options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
-    """
-    Available integer options
-    """
-
-    name: str = pydantic.Field()
+    name: typing.Optional[str] = pydantic.Field(default=None)
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
     """
