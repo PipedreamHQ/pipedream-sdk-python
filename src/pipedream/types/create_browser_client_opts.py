@@ -3,19 +3,17 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ..core.serialization import FieldMetadata
 
 
-class TimerInterval(UniversalBaseModel):
+class CreateBrowserClientOpts(UniversalBaseModel):
     """
-    Timer configuration using interval in seconds
+    Options for creating a browser-side client
     """
 
-    interval_seconds: typing_extensions.Annotated[int, FieldMetadata(alias="intervalSeconds")] = pydantic.Field()
+    api_url: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Interval in seconds for timer execution
+    The API URL to use
     """
 
     if IS_PYDANTIC_V2:

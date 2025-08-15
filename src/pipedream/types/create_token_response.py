@@ -5,7 +5,6 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .connect_token import ConnectToken
 
 
 class CreateTokenResponse(UniversalBaseModel):
@@ -23,7 +22,10 @@ class CreateTokenResponse(UniversalBaseModel):
     The expiration time of the token in ISO 8601 format
     """
 
-    token: ConnectToken
+    token: str = pydantic.Field()
+    """
+    The generated token
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
