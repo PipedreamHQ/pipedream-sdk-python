@@ -147,10 +147,11 @@ class RawComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -168,6 +169,8 @@ class RawComponentsClient:
         prop_name : str
             The name of the prop to configure
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -177,7 +180,7 @@ class RawComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        configure_prop_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -214,6 +217,7 @@ class RawComponentsClient:
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -238,10 +242,11 @@ class RawComponentsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
@@ -253,6 +258,8 @@ class RawComponentsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -262,7 +269,7 @@ class RawComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        reload_props_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -286,6 +293,7 @@ class RawComponentsClient:
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -436,10 +444,11 @@ class AsyncRawComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -457,6 +466,8 @@ class AsyncRawComponentsClient:
         prop_name : str
             The name of the prop to configure
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -466,7 +477,7 @@ class AsyncRawComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        configure_prop_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         page : typing.Optional[float]
@@ -503,6 +514,7 @@ class AsyncRawComponentsClient:
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -527,10 +539,11 @@ class AsyncRawComponentsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
+        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
@@ -542,6 +555,8 @@ class AsyncRawComponentsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -551,7 +566,7 @@ class AsyncRawComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
+        reload_props_opts_async_handle : typing.Optional[str]
             Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
@@ -575,6 +590,7 @@ class AsyncRawComponentsClient:
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
