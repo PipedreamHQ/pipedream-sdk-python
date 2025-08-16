@@ -13,7 +13,7 @@ class Account(UniversalBaseModel):
     End user account data, returned from the API.
     """
 
-    id: str = pydantic.Field()
+    id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The unique ID of the account.
     """

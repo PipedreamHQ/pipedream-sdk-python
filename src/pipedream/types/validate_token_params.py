@@ -6,14 +6,19 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class TimerCron(UniversalBaseModel):
+class ValidateTokenParams(UniversalBaseModel):
     """
-    Timer configuration using cron expression
+    Parameters for token validation
     """
 
-    cron: str = pydantic.Field()
+    app_id: str = pydantic.Field()
     """
-    Cron expression for timer execution
+    The app ID to validate against
+    """
+
+    oauth_app_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The OAuth app ID
     """
 
     if IS_PYDANTIC_V2:

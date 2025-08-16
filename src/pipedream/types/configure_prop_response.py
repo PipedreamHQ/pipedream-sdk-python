@@ -14,22 +14,7 @@ class ConfigurePropResponse(UniversalBaseModel):
 
     options: typing.Optional[typing.List[PropOption]] = pydantic.Field(default=None)
     """
-    Available options (with labels) for the configured prop
-    """
-
-    string_options: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
     Available options for the configured prop
-    """
-
-    observations: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    Any logs produced during the configuration of the prop
-    """
-
-    context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    New context after configuring the prop
     """
 
     errors: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
