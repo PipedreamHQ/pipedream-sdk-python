@@ -6,10 +6,15 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class ConfigurablePropSqlAuth(UniversalBaseModel):
-    app: typing.Optional[str] = pydantic.Field(default=None)
+class ProjectInfoResponseAppsItem(UniversalBaseModel):
+    id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The app that provides SQL authentication
+    ID of the app. Only applies for OAuth apps.
+    """
+
+    name_slug: str = pydantic.Field()
+    """
+    The name slug of the target app
     """
 
     if IS_PYDANTIC_V2:

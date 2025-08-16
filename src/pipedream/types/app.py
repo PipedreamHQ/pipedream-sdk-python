@@ -27,7 +27,11 @@ class App(UniversalBaseModel):
     The human-readable name of the app
     """
 
-    auth_type: typing.Optional[AppAuthType] = None
+    auth_type: typing.Optional[AppAuthType] = pydantic.Field(default=None)
+    """
+    The authentication type used by the app
+    """
+
     description: typing.Optional[str] = pydantic.Field(default=None)
     """
     A short description of the app

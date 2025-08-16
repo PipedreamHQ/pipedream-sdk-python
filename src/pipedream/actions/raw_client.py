@@ -10,13 +10,11 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
-from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
 
 # this is used as the default value for optional parameters
@@ -150,9 +148,11 @@ class RawActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -170,6 +170,8 @@ class RawActionsClient:
         prop_name : str
             The name of the prop to configure
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -178,6 +180,9 @@ class RawActionsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        configure_prop_opts_async_handle : typing.Optional[str]
+            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -206,12 +211,14 @@ class RawActionsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
+                "async_handle": async_handle,
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -236,9 +243,11 @@ class RawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
@@ -250,6 +259,8 @@ class RawActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -258,6 +269,9 @@ class RawActionsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        reload_props_opts_async_handle : typing.Optional[str]
+            Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -276,9 +290,11 @@ class RawActionsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
+                "async_handle": async_handle,
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -303,9 +319,9 @@ class RawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[RunActionResponse]:
         """
@@ -317,13 +333,13 @@ class RawActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             The configured properties for the action
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        stash_id : typing.Optional[RunActionOptsStashId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -341,12 +357,10 @@ class RawActionsClient:
                 "external_user_id": external_user_id,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "stash_id": convert_and_respect_annotation_metadata(
-                    object_=stash_id, annotation=RunActionOptsStashId, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -497,9 +511,11 @@ class AsyncRawActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        configure_prop_opts_async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -517,6 +533,8 @@ class AsyncRawActionsClient:
         prop_name : str
             The name of the prop to configure
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -525,6 +543,9 @@ class AsyncRawActionsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        configure_prop_opts_async_handle : typing.Optional[str]
+            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -553,12 +574,14 @@ class AsyncRawActionsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
+                "async_handle": async_handle,
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -583,9 +606,11 @@ class AsyncRawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        reload_props_opts_async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
@@ -597,6 +622,8 @@ class AsyncRawActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
@@ -605,6 +632,9 @@ class AsyncRawActionsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        reload_props_opts_async_handle : typing.Optional[str]
+            Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -623,9 +653,11 @@ class AsyncRawActionsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
+                "async_handle": async_handle,
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,
@@ -650,9 +682,9 @@ class AsyncRawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        async_handle: typing.Optional[str] = None,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[RunActionResponse]:
         """
@@ -664,13 +696,13 @@ class AsyncRawActionsClient:
         external_user_id : str
             The external user ID
 
+        async_handle : typing.Optional[str]
+
         configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             The configured properties for the action
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        stash_id : typing.Optional[RunActionOptsStashId]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -688,12 +720,10 @@ class AsyncRawActionsClient:
                 "external_user_id": external_user_id,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "stash_id": convert_and_respect_annotation_metadata(
-                    object_=stash_id, annotation=RunActionOptsStashId, direction="write"
-                ),
             },
             headers={
                 "content-type": "application/json",
+                "x-async-handle": str(async_handle) if async_handle is not None else None,
             },
             request_options=request_options,
             omit=OMIT,

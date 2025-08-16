@@ -4,8 +4,8 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.connect_token import ConnectToken
 from ..types.create_token_response import CreateTokenResponse
+from ..types.validate_token_params import ValidateTokenParams
 from ..types.validate_token_response import ValidateTokenResponse
 from .raw_client import AsyncRawTokensClient, RawTokensClient
 
@@ -90,22 +90,17 @@ class TokensClient:
 
     def validate(
         self,
-        ctok: ConnectToken,
+        ctok: str,
         *,
-        app_id: str,
-        oauth_app_id: typing.Optional[str] = None,
+        params: typing.Optional[ValidateTokenParams] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ValidateTokenResponse:
         """
         Parameters
         ----------
-        ctok : ConnectToken
+        ctok : str
 
-        app_id : str
-            The app ID to validate against
-
-        oauth_app_id : typing.Optional[str]
-            The OAuth app ID to validate against (if the token is for an OAuth app)
+        params : typing.Optional[ValidateTokenParams]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -127,12 +122,9 @@ class TokensClient:
         )
         client.tokens.validate(
             ctok="ctok",
-            app_id="app_id",
         )
         """
-        _response = self._raw_client.validate(
-            ctok, app_id=app_id, oauth_app_id=oauth_app_id, request_options=request_options
-        )
+        _response = self._raw_client.validate(ctok, params=params, request_options=request_options)
         return _response.data
 
 
@@ -221,22 +213,17 @@ class AsyncTokensClient:
 
     async def validate(
         self,
-        ctok: ConnectToken,
+        ctok: str,
         *,
-        app_id: str,
-        oauth_app_id: typing.Optional[str] = None,
+        params: typing.Optional[ValidateTokenParams] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ValidateTokenResponse:
         """
         Parameters
         ----------
-        ctok : ConnectToken
+        ctok : str
 
-        app_id : str
-            The app ID to validate against
-
-        oauth_app_id : typing.Optional[str]
-            The OAuth app ID to validate against (if the token is for an OAuth app)
+        params : typing.Optional[ValidateTokenParams]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -263,13 +250,10 @@ class AsyncTokensClient:
         async def main() -> None:
             await client.tokens.validate(
                 ctok="ctok",
-                app_id="app_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.validate(
-            ctok, app_id=app_id, oauth_app_id=oauth_app_id, request_options=request_options
-        )
+        _response = await self._raw_client.validate(ctok, params=params, request_options=request_options)
         return _response.data
