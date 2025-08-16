@@ -41,11 +41,6 @@ class ConfigurePropOpts(UniversalBaseModel):
     The ID for dynamic props
     """
 
-    async_handle: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Handle for async operations
-    """
-
     page: typing.Optional[float] = pydantic.Field(default=None)
     """
     Page number for paginated results

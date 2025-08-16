@@ -152,7 +152,6 @@ class RawTriggersClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -178,9 +177,6 @@ class RawTriggersClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -209,7 +205,6 @@ class RawTriggersClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
@@ -243,7 +238,6 @@ class RawTriggersClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
@@ -264,9 +258,6 @@ class RawTriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
-            Handle for async operations
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -284,7 +275,6 @@ class RawTriggersClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
             },
             headers={
                 "content-type": "application/json",
@@ -509,7 +499,6 @@ class AsyncRawTriggersClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -535,9 +524,6 @@ class AsyncRawTriggersClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -566,7 +552,6 @@ class AsyncRawTriggersClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
@@ -600,7 +585,6 @@ class AsyncRawTriggersClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
@@ -621,9 +605,6 @@ class AsyncRawTriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
-            Handle for async operations
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -641,7 +622,6 @@ class AsyncRawTriggersClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
             },
             headers={
                 "content-type": "application/json",

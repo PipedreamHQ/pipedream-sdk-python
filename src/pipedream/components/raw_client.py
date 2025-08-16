@@ -150,7 +150,6 @@ class RawComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -176,9 +175,6 @@ class RawComponentsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -207,7 +203,6 @@ class RawComponentsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
@@ -241,7 +236,6 @@ class RawComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
@@ -262,9 +256,6 @@ class RawComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
-            Handle for async operations
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -282,7 +273,6 @@ class RawComponentsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
             },
             headers={
                 "content-type": "application/json",
@@ -439,7 +429,6 @@ class AsyncRawComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -465,9 +454,6 @@ class AsyncRawComponentsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -496,7 +482,6 @@ class AsyncRawComponentsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
@@ -530,7 +515,6 @@ class AsyncRawComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
@@ -551,9 +535,6 @@ class AsyncRawComponentsClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
-        async_handle : typing.Optional[str]
-            Handle for async operations
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -571,7 +552,6 @@ class AsyncRawComponentsClient:
                 "blocking": blocking,
                 "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
-                "async_handle": async_handle,
             },
             headers={
                 "content-type": "application/json",
