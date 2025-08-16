@@ -36,11 +36,6 @@ class ReloadPropsOpts(UniversalBaseModel):
     The ID for dynamic props
     """
 
-    async_handle: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Handle for async operations
-    """
-
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

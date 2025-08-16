@@ -127,7 +127,6 @@ class ComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -153,9 +152,6 @@ class ComponentsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -197,7 +193,6 @@ class ComponentsClient:
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -213,7 +208,6 @@ class ComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -233,9 +227,6 @@ class ComponentsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -266,7 +257,6 @@ class ComponentsClient:
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
             request_options=request_options,
         )
         return _response.data
@@ -404,7 +394,6 @@ class AsyncComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         query: typing.Optional[str] = OMIT,
@@ -430,9 +419,6 @@ class AsyncComponentsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         page : typing.Optional[float]
             Page number for paginated results
@@ -482,7 +468,6 @@ class AsyncComponentsClient:
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
             page=page,
             prev_context=prev_context,
             query=query,
@@ -498,7 +483,6 @@ class AsyncComponentsClient:
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
-        async_handle: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
@@ -518,9 +502,6 @@ class AsyncComponentsClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
-
-        async_handle : typing.Optional[str]
-            Handle for async operations
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -559,7 +540,6 @@ class AsyncComponentsClient:
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
-            async_handle=async_handle,
             request_options=request_options,
         )
         return _response.data

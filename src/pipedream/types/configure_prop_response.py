@@ -27,11 +27,6 @@ class ConfigurePropResponse(UniversalBaseModel):
     Any logs produced during the configuration of the prop
     """
 
-    async_handle: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Handle for async operations
-    """
-
     context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
     """
     New context after configuring the prop
