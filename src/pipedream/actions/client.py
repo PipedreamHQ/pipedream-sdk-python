@@ -42,6 +42,8 @@ class ActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
+        Retrieve available actions with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -90,6 +92,8 @@ class ActionsClient:
 
     def retrieve(self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Component:
         """
+        Get detailed configuration for a specific action by its key
+
         Parameters
         ----------
         component_id : str
@@ -135,6 +139,8 @@ class ActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
         """
+        Retrieve remote options for a given prop for a action
+
         Parameters
         ----------
         id : str
@@ -213,6 +219,8 @@ class ActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -274,6 +282,8 @@ class ActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
+        Execute an action with the provided configuration and return results
+
         Parameters
         ----------
         id : str
@@ -350,6 +360,8 @@ class AsyncActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
+        Retrieve available actions with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -409,6 +421,8 @@ class AsyncActionsClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> Component:
         """
+        Get detailed configuration for a specific action by its key
+
         Parameters
         ----------
         component_id : str
@@ -462,6 +476,8 @@ class AsyncActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
         """
+        Retrieve remote options for a given prop for a action
+
         Parameters
         ----------
         id : str
@@ -548,6 +564,8 @@ class AsyncActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -617,6 +635,8 @@ class AsyncActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
+        Execute an action with the provided configuration and return results
+
         Parameters
         ----------
         id : str

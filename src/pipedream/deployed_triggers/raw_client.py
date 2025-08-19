@@ -36,6 +36,8 @@ class RawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[DeployedComponent]:
         """
+        Retrieve all deployed triggers for a specific external user
+
         Parameters
         ----------
         external_user_id : str
@@ -103,6 +105,8 @@ class RawDeployedTriggersClient:
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[DeployedComponent]:
         """
+        Get details of a specific deployed trigger by its ID
+
         Parameters
         ----------
         trigger_id : str
@@ -153,6 +157,8 @@ class RawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[DeployedComponent]:
         """
+        Modify the configuration of a deployed trigger, including active status
+
         Parameters
         ----------
         trigger_id : str
@@ -219,6 +225,8 @@ class RawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[None]:
         """
+        Remove a deployed trigger and stop receiving events
+
         Parameters
         ----------
         trigger_id : str
@@ -262,6 +270,8 @@ class RawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[typing.List[EmittedEvent]]:
         """
+        Retrieve recent events emitted by a deployed trigger
+
         Parameters
         ----------
         trigger_id : str
@@ -309,6 +319,8 @@ class RawDeployedTriggersClient:
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetTriggerWorkflowsResponse]:
         """
+        Get workflows connected to receive events from this trigger
+
         Parameters
         ----------
         trigger_id : str
@@ -356,6 +368,8 @@ class RawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetTriggerWorkflowsResponse]:
         """
+        Connect or disconnect workflows to receive trigger events
+
         Parameters
         ----------
         trigger_id : str
@@ -408,6 +422,8 @@ class RawDeployedTriggersClient:
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetTriggerWebhooksResponse]:
         """
+        Get webhook URLs configured to receive trigger events
+
         Parameters
         ----------
         trigger_id : str
@@ -455,6 +471,8 @@ class RawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[GetTriggerWebhooksResponse]:
         """
+        Configure webhook URLs to receive trigger events
+
         Parameters
         ----------
         trigger_id : str
@@ -518,6 +536,8 @@ class AsyncRawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[DeployedComponent]:
         """
+        Retrieve all deployed triggers for a specific external user
+
         Parameters
         ----------
         external_user_id : str
@@ -588,6 +608,8 @@ class AsyncRawDeployedTriggersClient:
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[DeployedComponent]:
         """
+        Get details of a specific deployed trigger by its ID
+
         Parameters
         ----------
         trigger_id : str
@@ -638,6 +660,8 @@ class AsyncRawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[DeployedComponent]:
         """
+        Modify the configuration of a deployed trigger, including active status
+
         Parameters
         ----------
         trigger_id : str
@@ -704,6 +728,8 @@ class AsyncRawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[None]:
         """
+        Remove a deployed trigger and stop receiving events
+
         Parameters
         ----------
         trigger_id : str
@@ -747,6 +773,8 @@ class AsyncRawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[typing.List[EmittedEvent]]:
         """
+        Retrieve recent events emitted by a deployed trigger
+
         Parameters
         ----------
         trigger_id : str
@@ -794,6 +822,8 @@ class AsyncRawDeployedTriggersClient:
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetTriggerWorkflowsResponse]:
         """
+        Get workflows connected to receive events from this trigger
+
         Parameters
         ----------
         trigger_id : str
@@ -841,6 +871,8 @@ class AsyncRawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetTriggerWorkflowsResponse]:
         """
+        Connect or disconnect workflows to receive trigger events
+
         Parameters
         ----------
         trigger_id : str
@@ -893,6 +925,8 @@ class AsyncRawDeployedTriggersClient:
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetTriggerWebhooksResponse]:
         """
+        Get webhook URLs configured to receive trigger events
+
         Parameters
         ----------
         trigger_id : str
@@ -940,6 +974,8 @@ class AsyncRawDeployedTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[GetTriggerWebhooksResponse]:
         """
+        Configure webhook URLs to receive trigger events
+
         Parameters
         ----------
         trigger_id : str

@@ -26,6 +26,8 @@ class UsersClient:
         self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
+        Remove an external user and all their associated accounts and resources
+
         Parameters
         ----------
         external_user_id : str
@@ -74,6 +76,8 @@ class AsyncUsersClient:
         self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> None:
         """
+        Remove an external user and all their associated accounts and resources
+
         Parameters
         ----------
         external_user_id : str

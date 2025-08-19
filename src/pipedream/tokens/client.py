@@ -39,6 +39,8 @@ class TokensClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateTokenResponse:
         """
+        Generate a Connect token to use for client-side authentication
+
         Parameters
         ----------
         external_user_id : str
@@ -97,6 +99,8 @@ class TokensClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ValidateTokenResponse:
         """
+        Confirm the validity of a Connect token
+
         Parameters
         ----------
         ctok : ConnectToken
@@ -162,6 +166,8 @@ class AsyncTokensClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateTokenResponse:
         """
+        Generate a Connect token to use for client-side authentication
+
         Parameters
         ----------
         external_user_id : str
@@ -228,6 +234,8 @@ class AsyncTokensClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ValidateTokenResponse:
         """
+        Confirm the validity of a Connect token
+
         Parameters
         ----------
         ctok : ConnectToken

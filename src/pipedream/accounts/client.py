@@ -40,6 +40,8 @@ class AccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Account]:
         """
+        Retrieve all connected accounts for the project with optional filtering
+
         Parameters
         ----------
         app_id : typing.Optional[str]
@@ -111,6 +113,8 @@ class AccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
+        Connect a new account for an external user in the project
+
         Parameters
         ----------
         app_slug : str
@@ -177,6 +181,8 @@ class AccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
+        Get the details for a specific connected account
+
         Parameters
         ----------
         account_id : str
@@ -213,6 +219,8 @@ class AccountsClient:
 
     def delete(self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Remove a connected account and its associated credentials
+
         Parameters
         ----------
         account_id : str
@@ -243,6 +251,8 @@ class AccountsClient:
 
     def delete_by_app(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Remove all connected accounts for a specific app
+
         Parameters
         ----------
         app_id : str
@@ -300,6 +310,8 @@ class AsyncAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Account]:
         """
+        Retrieve all connected accounts for the project with optional filtering
+
         Parameters
         ----------
         app_id : typing.Optional[str]
@@ -380,6 +392,8 @@ class AsyncAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
+        Connect a new account for an external user in the project
+
         Parameters
         ----------
         app_slug : str
@@ -454,6 +468,8 @@ class AsyncAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
+        Get the details for a specific connected account
+
         Parameters
         ----------
         account_id : str
@@ -498,6 +514,8 @@ class AsyncAccountsClient:
 
     async def delete(self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Remove a connected account and its associated credentials
+
         Parameters
         ----------
         account_id : str
@@ -536,6 +554,8 @@ class AsyncAccountsClient:
 
     async def delete_by_app(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
         """
+        Remove all connected accounts for a specific app
+
         Parameters
         ----------
         app_id : str

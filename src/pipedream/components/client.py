@@ -40,6 +40,8 @@ class ComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
+        Retrieve available components with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -88,6 +90,8 @@ class ComponentsClient:
 
     def retrieve(self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Component:
         """
+        Get detailed configuration for a specific component by its key
+
         Parameters
         ----------
         component_id : str
@@ -133,6 +137,8 @@ class ComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
         """
+        Retrieve remote options for a given prop for a component
+
         Parameters
         ----------
         id : str
@@ -211,6 +217,8 @@ class ComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -288,6 +296,8 @@ class AsyncComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
+        Retrieve available components with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -347,6 +357,8 @@ class AsyncComponentsClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> Component:
         """
+        Get detailed configuration for a specific component by its key
+
         Parameters
         ----------
         component_id : str
@@ -400,6 +412,8 @@ class AsyncComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
         """
+        Retrieve remote options for a given prop for a component
+
         Parameters
         ----------
         id : str
@@ -486,6 +500,8 @@ class AsyncComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str

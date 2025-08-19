@@ -38,6 +38,8 @@ class RawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
+        Retrieve available actions with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -110,6 +112,8 @@ class RawActionsClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[Component]:
         """
+        Get detailed configuration for a specific action by its key
+
         Parameters
         ----------
         component_id : str
@@ -159,6 +163,8 @@ class RawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConfigurePropResponse]:
         """
+        Retrieve remote options for a given prop for a action
+
         Parameters
         ----------
         id : str
@@ -242,6 +248,8 @@ class RawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -309,6 +317,8 @@ class RawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[RunActionResponse]:
         """
+        Execute an action with the provided configuration and return results
+
         Parameters
         ----------
         id : str
@@ -382,6 +392,8 @@ class AsyncRawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
+        Retrieve available actions with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -457,6 +469,8 @@ class AsyncRawActionsClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Component]:
         """
+        Get detailed configuration for a specific action by its key
+
         Parameters
         ----------
         component_id : str
@@ -506,6 +520,8 @@ class AsyncRawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConfigurePropResponse]:
         """
+        Retrieve remote options for a given prop for a action
+
         Parameters
         ----------
         id : str
@@ -589,6 +605,8 @@ class AsyncRawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -656,6 +674,8 @@ class AsyncRawActionsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[RunActionResponse]:
         """
+        Execute an action with the provided configuration and return results
+
         Parameters
         ----------
         id : str

@@ -34,6 +34,8 @@ class RawAppsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[App]:
         """
+        Retrieve all available apps with optional filtering and sorting
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -116,6 +118,8 @@ class RawAppsClient:
         self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetAppResponse]:
         """
+        Get detailed information about a specific app by ID or name slug
+
         Parameters
         ----------
         app_id : str
@@ -167,6 +171,8 @@ class AsyncRawAppsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[App]:
         """
+        Retrieve all available apps with optional filtering and sorting
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -252,6 +258,8 @@ class AsyncRawAppsClient:
         self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetAppResponse]:
         """
+        Get detailed information about a specific app by ID or name slug
+
         Parameters
         ----------
         app_id : str
