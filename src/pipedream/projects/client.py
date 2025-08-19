@@ -25,6 +25,8 @@ class ProjectsClient:
 
     def retrieve_info(self, *, request_options: typing.Optional[RequestOptions] = None) -> ProjectInfoResponse:
         """
+        Retrieve project configuration and environment details
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]
@@ -68,6 +70,8 @@ class AsyncProjectsClient:
 
     async def retrieve_info(self, *, request_options: typing.Optional[RequestOptions] = None) -> ProjectInfoResponse:
         """
+        Retrieve project configuration and environment details
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]
