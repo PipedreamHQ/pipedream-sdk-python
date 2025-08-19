@@ -45,6 +45,7 @@ from .create_token_response import CreateTokenResponse
 from .delete_trigger_opts import DeleteTriggerOpts
 from .deploy_trigger_response import DeployTriggerResponse
 from .deployed_component import DeployedComponent
+from .dynamic_props import DynamicProps
 from .emitted_event import EmittedEvent
 from .error_response import ErrorResponse
 from .get_accounts_response import GetAccountsResponse
@@ -121,6 +122,7 @@ __all__ = [
     "DeleteTriggerOpts",
     "DeployTriggerResponse",
     "DeployedComponent",
+    "DynamicProps",
     "EmittedEvent",
     "ErrorResponse",
     "GetAccountsResponse",

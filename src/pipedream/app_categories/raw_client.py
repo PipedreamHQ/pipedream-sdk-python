@@ -21,6 +21,8 @@ class RawAppCategoriesClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ListAppCategoriesResponse]:
         """
+        Retrieve all available categories for integrated apps
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]
@@ -55,6 +57,8 @@ class RawAppCategoriesClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[GetAppCategoryResponse]:
         """
+        Get details of a specific app category by its ID
+
         Parameters
         ----------
         id : str
@@ -97,6 +101,8 @@ class AsyncRawAppCategoriesClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ListAppCategoriesResponse]:
         """
+        Retrieve all available categories for integrated apps
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]
@@ -131,6 +137,8 @@ class AsyncRawAppCategoriesClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[GetAppCategoryResponse]:
         """
+        Get details of a specific app category by its ID
+
         Parameters
         ----------
         id : str

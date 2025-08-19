@@ -28,6 +28,8 @@ class RawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ProxyResponse]:
         """
+        Forward an authenticated GET request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -83,6 +85,8 @@ class RawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ProxyResponse]:
         """
+        Forward an authenticated POST request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -145,6 +149,8 @@ class RawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ProxyResponse]:
         """
+        Forward an authenticated PUT request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -206,6 +212,8 @@ class RawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ProxyResponse]:
         """
+        Forward an authenticated DELETE request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -261,6 +269,8 @@ class RawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ProxyResponse]:
         """
+        Forward an authenticated PATCH request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -327,6 +337,8 @@ class AsyncRawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ProxyResponse]:
         """
+        Forward an authenticated GET request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -382,6 +394,8 @@ class AsyncRawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ProxyResponse]:
         """
+        Forward an authenticated POST request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -444,6 +458,8 @@ class AsyncRawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ProxyResponse]:
         """
+        Forward an authenticated PUT request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -505,6 +521,8 @@ class AsyncRawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ProxyResponse]:
         """
+        Forward an authenticated DELETE request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str
@@ -560,6 +578,8 @@ class AsyncRawProxyClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ProxyResponse]:
         """
+        Forward an authenticated PATCH request to an external API using an external user's account credentials
+
         Parameters
         ----------
         url_64 : str

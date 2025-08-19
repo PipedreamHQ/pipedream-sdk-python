@@ -26,6 +26,8 @@ class AppCategoriesClient:
 
     def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListAppCategoriesResponse:
         """
+        Retrieve all available categories for integrated apps
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]
@@ -53,6 +55,8 @@ class AppCategoriesClient:
 
     def retrieve(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetAppCategoryResponse:
         """
+        Get details of a specific app category by its ID
+
         Parameters
         ----------
         id : str
@@ -101,6 +105,8 @@ class AsyncAppCategoriesClient:
 
     async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> ListAppCategoriesResponse:
         """
+        Retrieve all available categories for integrated apps
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]
@@ -138,6 +144,8 @@ class AsyncAppCategoriesClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> GetAppCategoryResponse:
         """
+        Get details of a specific app category by its ID
+
         Parameters
         ----------
         id : str

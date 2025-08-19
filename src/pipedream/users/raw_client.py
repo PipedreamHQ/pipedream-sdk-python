@@ -18,6 +18,8 @@ class RawUsersClient:
         self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[None]:
         """
+        Remove an external user and all their associated accounts and resources
+
         Parameters
         ----------
         external_user_id : str
@@ -51,6 +53,8 @@ class AsyncRawUsersClient:
         self, external_user_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[None]:
         """
+        Remove an external user and all their associated accounts and resources
+
         Parameters
         ----------
         external_user_id : str

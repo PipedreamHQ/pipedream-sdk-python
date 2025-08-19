@@ -34,6 +34,8 @@ class RawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Account]:
         """
+        Retrieve all connected accounts for the project with optional filtering
+
         Parameters
         ----------
         app_id : typing.Optional[str]
@@ -124,6 +126,8 @@ class RawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Account]:
         """
+        Connect a new account for an external user in the project
+
         Parameters
         ----------
         app_slug : str
@@ -197,6 +201,8 @@ class RawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Account]:
         """
+        Get the details for a specific connected account
+
         Parameters
         ----------
         account_id : str
@@ -237,6 +243,8 @@ class RawAccountsClient:
 
     def delete(self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
         """
+        Remove a connected account and its associated credentials
+
         Parameters
         ----------
         account_id : str
@@ -265,6 +273,8 @@ class RawAccountsClient:
         self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[None]:
         """
+        Remove all connected accounts for a specific app
+
         Parameters
         ----------
         app_id : str
@@ -307,6 +317,8 @@ class AsyncRawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Account]:
         """
+        Retrieve all connected accounts for the project with optional filtering
+
         Parameters
         ----------
         app_id : typing.Optional[str]
@@ -400,6 +412,8 @@ class AsyncRawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Account]:
         """
+        Connect a new account for an external user in the project
+
         Parameters
         ----------
         app_slug : str
@@ -473,6 +487,8 @@ class AsyncRawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Account]:
         """
+        Get the details for a specific connected account
+
         Parameters
         ----------
         account_id : str
@@ -515,6 +531,8 @@ class AsyncRawAccountsClient:
         self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[None]:
         """
+        Remove a connected account and its associated credentials
+
         Parameters
         ----------
         account_id : str
@@ -543,6 +561,8 @@ class AsyncRawAccountsClient:
         self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[None]:
         """
+        Remove all connected accounts for a specific app
+
         Parameters
         ----------
         app_id : str
