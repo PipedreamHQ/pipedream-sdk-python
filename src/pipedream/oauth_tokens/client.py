@@ -30,6 +30,8 @@ class OauthTokensClient:
         self, *, client_id: str, client_secret: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateOAuthTokenResponse:
         """
+        Exchange OAuth credentials for an access token
+
         Parameters
         ----------
         client_id : str
@@ -84,6 +86,8 @@ class AsyncOauthTokensClient:
         self, *, client_id: str, client_secret: str, request_options: typing.Optional[RequestOptions] = None
     ) -> CreateOAuthTokenResponse:
         """
+        Exchange OAuth credentials for an access token
+
         Parameters
         ----------
         client_id : str

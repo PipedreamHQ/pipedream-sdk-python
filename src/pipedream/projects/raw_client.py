@@ -20,6 +20,8 @@ class RawProjectsClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ProjectInfoResponse]:
         """
+        Retrieve project configuration and environment details
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]
@@ -59,6 +61,8 @@ class AsyncRawProjectsClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ProjectInfoResponse]:
         """
+        Retrieve project configuration and environment details
+
         Parameters
         ----------
         request_options : typing.Optional[RequestOptions]

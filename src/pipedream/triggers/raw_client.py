@@ -37,6 +37,8 @@ class RawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
+        Retrieve available triggers with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -109,6 +111,8 @@ class RawTriggersClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[Component]:
         """
+        Get detailed configuration for a specific trigger by its key
+
         Parameters
         ----------
         component_id : str
@@ -158,6 +162,8 @@ class RawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConfigurePropResponse]:
         """
+        Retrieve remote options for a given prop for a trigger
+
         Parameters
         ----------
         id : str
@@ -241,6 +247,8 @@ class RawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -308,6 +316,8 @@ class RawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[DeployedComponent]:
         """
+        Deploy a trigger to listen for and emit events
+
         Parameters
         ----------
         id : str
@@ -381,6 +391,8 @@ class AsyncRawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
+        Retrieve available triggers with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -456,6 +468,8 @@ class AsyncRawTriggersClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Component]:
         """
+        Get detailed configuration for a specific trigger by its key
+
         Parameters
         ----------
         component_id : str
@@ -505,6 +519,8 @@ class AsyncRawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConfigurePropResponse]:
         """
+        Retrieve remote options for a given prop for a trigger
+
         Parameters
         ----------
         id : str
@@ -588,6 +604,8 @@ class AsyncRawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -655,6 +673,8 @@ class AsyncRawTriggersClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[DeployedComponent]:
         """
+        Deploy a trigger to listen for and emit events
+
         Parameters
         ----------
         id : str

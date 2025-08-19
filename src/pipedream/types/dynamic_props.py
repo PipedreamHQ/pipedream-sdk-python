@@ -6,27 +6,25 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
-from .dynamic_props import DynamicProps
+from .configurable_prop import ConfigurableProp
 
 
-class ReloadPropsResponse(UniversalBaseModel):
+class DynamicProps(UniversalBaseModel):
     """
-    Response from reloading component props
-    """
-
-    observations: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    Any logs produced during the configuration of the prop
+    Dynamic properties of a saved component
     """
 
-    errors: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Any errors that occurred during configuration
+    The unique ID of the dynamic prop
     """
 
-    dynamic_props: typing_extensions.Annotated[typing.Optional[DynamicProps], FieldMetadata(alias="dynamicProps")] = (
-        None
-    )
+    configurable_props: typing_extensions.Annotated[
+        typing.Optional[typing.List[ConfigurableProp]], FieldMetadata(alias="configurableProps")
+    ] = pydantic.Field(default=None)
+    """
+    The updated configurable properties
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

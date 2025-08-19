@@ -40,6 +40,8 @@ class AppsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[App]:
         """
+        Retrieve all available apps with optional filtering and sorting
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -101,6 +103,8 @@ class AppsClient:
 
     def retrieve(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetAppResponse:
         """
+        Get detailed information about a specific app by ID or name slug
+
         Parameters
         ----------
         app_id : str
@@ -160,6 +164,8 @@ class AsyncAppsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[App]:
         """
+        Retrieve all available apps with optional filtering and sorting
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -230,6 +236,8 @@ class AsyncAppsClient:
 
     async def retrieve(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetAppResponse:
         """
+        Get detailed information about a specific app by ID or name slug
+
         Parameters
         ----------
         app_id : str

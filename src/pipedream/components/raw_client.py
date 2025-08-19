@@ -35,6 +35,8 @@ class RawComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
+        Retrieve available components with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -107,6 +109,8 @@ class RawComponentsClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[Component]:
         """
+        Get detailed configuration for a specific component by its key
+
         Parameters
         ----------
         component_id : str
@@ -156,6 +160,8 @@ class RawComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConfigurePropResponse]:
         """
+        Retrieve remote options for a given prop for a component
+
         Parameters
         ----------
         id : str
@@ -239,6 +245,8 @@ class RawComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
@@ -311,6 +319,8 @@ class AsyncRawComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
+        Retrieve available components with optional search and app filtering
+
         Parameters
         ----------
         after : typing.Optional[str]
@@ -386,6 +396,8 @@ class AsyncRawComponentsClient:
         self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[Component]:
         """
+        Get detailed configuration for a specific component by its key
+
         Parameters
         ----------
         component_id : str
@@ -435,6 +447,8 @@ class AsyncRawComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConfigurePropResponse]:
         """
+        Retrieve remote options for a given prop for a component
+
         Parameters
         ----------
         id : str
@@ -518,6 +532,8 @@ class AsyncRawComponentsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
         """
+        Reload the prop definition based on the currently configured props
+
         Parameters
         ----------
         id : str
