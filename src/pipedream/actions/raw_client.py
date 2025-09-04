@@ -12,6 +12,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..types.component import Component
+from ..types.configure_prop_opts_configured_props_value import ConfigurePropOptsConfiguredPropsValue
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
@@ -155,7 +156,7 @@ class RawActionsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -179,7 +180,7 @@ class RawActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        configured_props : typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]]
             The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
@@ -210,7 +211,11 @@ class RawActionsClient:
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props,
+                    annotation=typing.Dict[str, ConfigurePropOptsConfiguredPropsValue],
+                    direction="write",
+                ),
                 "dynamic_props_id": dynamic_props_id,
                 "page": page,
                 "prev_context": prev_context,
@@ -512,7 +517,7 @@ class AsyncRawActionsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -536,7 +541,7 @@ class AsyncRawActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        configured_props : typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]]
             The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
@@ -567,7 +572,11 @@ class AsyncRawActionsClient:
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props,
+                    annotation=typing.Dict[str, ConfigurePropOptsConfiguredPropsValue],
+                    direction="write",
+                ),
                 "dynamic_props_id": dynamic_props_id,
                 "page": page,
                 "prev_context": prev_context,

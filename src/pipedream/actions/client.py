@@ -6,6 +6,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.component import Component
+from ..types.configure_prop_opts_configured_props_value import ConfigurePropOptsConfiguredPropsValue
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.reload_props_response import ReloadPropsResponse
 from ..types.run_action_opts_stash_id import RunActionOptsStashId
@@ -131,7 +132,7 @@ class ActionsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -155,7 +156,7 @@ class ActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        configured_props : typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]]
             The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
@@ -468,7 +469,7 @@ class AsyncActionsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -492,7 +493,7 @@ class AsyncActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        configured_props : typing.Optional[typing.Dict[str, ConfigurePropOptsConfiguredPropsValue]]
             The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]

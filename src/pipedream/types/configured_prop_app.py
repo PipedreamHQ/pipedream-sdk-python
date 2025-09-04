@@ -6,24 +6,13 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
-from .dynamic_props import DynamicProps
-from .observation import Observation
+from .account_id import AccountId
 
 
-class ReloadPropsResponse(UniversalBaseModel):
-    """
-    Response from reloading component props
-    """
-
-    observations: typing.Optional[typing.List[Observation]] = None
-    errors: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
-    Any errors that occurred during configuration
-    """
-
-    dynamic_props: typing_extensions.Annotated[typing.Optional[DynamicProps], FieldMetadata(alias="dynamicProps")] = (
-        None
-    )
+class ConfiguredPropApp(UniversalBaseModel):
+    auth_provision_id: typing_extensions.Annotated[
+        typing.Optional[AccountId], FieldMetadata(alias="authProvisionId")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
