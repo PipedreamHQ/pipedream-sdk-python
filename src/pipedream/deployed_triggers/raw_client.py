@@ -10,6 +10,8 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.serialization import convert_and_respect_annotation_metadata
+from ..types.configured_prop import ConfiguredProp
 from ..types.deployed_component import DeployedComponent
 from ..types.emitted_event import EmittedEvent
 from ..types.get_trigger_events_response import GetTriggerEventsResponse
@@ -152,7 +154,7 @@ class RawDeployedTriggersClient:
         *,
         external_user_id: str,
         active: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProp] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[DeployedComponent]:
@@ -169,8 +171,7 @@ class RawDeployedTriggersClient:
         active : typing.Optional[bool]
             Whether the trigger should be active
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the trigger
+        configured_props : typing.Optional[ConfiguredProp]
 
         name : typing.Optional[str]
             The name of the trigger
@@ -191,7 +192,9 @@ class RawDeployedTriggersClient:
             },
             json={
                 "active": active,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProp, direction="write"
+                ),
                 "name": name,
             },
             headers={
@@ -655,7 +658,7 @@ class AsyncRawDeployedTriggersClient:
         *,
         external_user_id: str,
         active: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProp] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[DeployedComponent]:
@@ -672,8 +675,7 @@ class AsyncRawDeployedTriggersClient:
         active : typing.Optional[bool]
             Whether the trigger should be active
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the trigger
+        configured_props : typing.Optional[ConfiguredProp]
 
         name : typing.Optional[str]
             The name of the trigger
@@ -694,7 +696,9 @@ class AsyncRawDeployedTriggersClient:
             },
             json={
                 "active": active,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProp, direction="write"
+                ),
                 "name": name,
             },
             headers={

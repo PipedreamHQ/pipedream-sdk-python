@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .configurable_prop import ConfigurableProp
+from .configured_prop import ConfiguredProp
 
 
 class DeployedComponent(UniversalBaseModel):
@@ -32,11 +33,7 @@ class DeployedComponent(UniversalBaseModel):
     The configurable properties of the component
     """
 
-    configured_props: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
-    """
-    The configured properties of the component
-    """
-
+    configured_props: ConfiguredProp
     active: bool = pydantic.Field()
     """
     Whether the deployed component is active
