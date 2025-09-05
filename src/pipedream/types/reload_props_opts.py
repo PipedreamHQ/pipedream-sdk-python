@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .configured_props import ConfiguredProps
 
 
 class ReloadPropsOpts(UniversalBaseModel):
@@ -26,11 +27,7 @@ class ReloadPropsOpts(UniversalBaseModel):
     Whether this operation should block until completion
     """
 
-    configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    The configured properties for the component
-    """
-
+    configured_props: typing.Optional[ConfiguredProps] = None
     dynamic_props_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The ID for dynamic props
