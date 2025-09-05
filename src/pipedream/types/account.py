@@ -5,6 +5,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .account_id import AccountId
 from .app import App
 
 
@@ -13,11 +14,7 @@ class Account(UniversalBaseModel):
     End user account data, returned from the API.
     """
 
-    id: str = pydantic.Field()
-    """
-    The unique ID of the account.
-    """
-
+    id: AccountId
     name: typing.Optional[str] = pydantic.Field(default=None)
     """
     The custom name of the account if set.

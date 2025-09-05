@@ -6,24 +6,15 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
-from .dynamic_props import DynamicProps
-from .observation import Observation
+from .prop_option import PropOption
 
 
-class ReloadPropsResponse(UniversalBaseModel):
+class PropOptionNested(UniversalBaseModel):
     """
-    Response from reloading component props
-    """
-
-    observations: typing.Optional[typing.List[Observation]] = None
-    errors: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
-    Any errors that occurred during configuration
+    A configuration option for a component's prop (nested under `__lv`)
     """
 
-    dynamic_props: typing_extensions.Annotated[typing.Optional[DynamicProps], FieldMetadata(alias="dynamicProps")] = (
-        None
-    )
+    lv: typing_extensions.Annotated[PropOption, FieldMetadata(alias="__lv")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
