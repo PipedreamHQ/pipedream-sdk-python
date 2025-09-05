@@ -9,10 +9,8 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropAirtableFieldId(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["$.airtable.fieldId"]] = None
-    table_id_prop: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="tableIdProp")] = (
-        pydantic.Field(default=None)
-    )
+    type: typing.Literal["$.airtable.fieldId"] = "$.airtable.fieldId"
+    table_id_prop: typing_extensions.Annotated[str, FieldMetadata(alias="tableIdProp")] = pydantic.Field()
     """
     The name of the prop that provides the Airtable table ID
     """
