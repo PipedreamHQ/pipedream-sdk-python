@@ -7,6 +7,7 @@ from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
+from ..types.configured_props import ConfiguredProps
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawComponentsClient, RawComponentsClient
 
@@ -129,7 +130,7 @@ class ComponentsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -153,8 +154,7 @@ class ComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -212,7 +212,7 @@ class ComponentsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
@@ -230,8 +230,7 @@ class ComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -404,7 +403,7 @@ class AsyncComponentsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -428,8 +427,7 @@ class AsyncComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -495,7 +493,7 @@ class AsyncComponentsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
@@ -513,8 +511,7 @@ class AsyncComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props

@@ -5,6 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.configured_props import ConfiguredProps
 from ..types.deployed_component import DeployedComponent
 from ..types.emitted_event import EmittedEvent
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
@@ -134,7 +135,7 @@ class DeployedTriggersClient:
         *,
         external_user_id: str,
         active: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> DeployedComponent:
@@ -151,8 +152,7 @@ class DeployedTriggersClient:
         active : typing.Optional[bool]
             Whether the trigger should be active
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the trigger
+        configured_props : typing.Optional[ConfiguredProps]
 
         name : typing.Optional[str]
             The name of the trigger
@@ -609,7 +609,7 @@ class AsyncDeployedTriggersClient:
         *,
         external_user_id: str,
         active: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> DeployedComponent:
@@ -626,8 +626,7 @@ class AsyncDeployedTriggersClient:
         active : typing.Optional[bool]
             Whether the trigger should be active
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the trigger
+        configured_props : typing.Optional[ConfiguredProps]
 
         name : typing.Optional[str]
             The name of the trigger
