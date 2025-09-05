@@ -3,6 +3,7 @@
 # isort: skip_file
 
 from .account import Account
+from .account_id import AccountId
 from .app import App
 from .app_auth_type import AppAuthType
 from .app_category import AppCategory
@@ -37,8 +38,21 @@ from .configurable_prop_timer import ConfigurablePropTimer
 from .configurable_prop_timer_default import ConfigurablePropTimerDefault
 from .configurable_prop_timer_option import ConfigurablePropTimerOption
 from .configurable_prop_timer_static import ConfigurablePropTimerStatic
+from .configurable_prop_type import ConfigurablePropType
+from .configure_prop_options import ConfigurePropOptions
+from .configure_prop_options_item import ConfigurePropOptionsItem
 from .configure_prop_opts import ConfigurePropOpts
 from .configure_prop_response import ConfigurePropResponse
+from .configured_prop_value import ConfiguredPropValue
+from .configured_prop_value_any import ConfiguredPropValueAny
+from .configured_prop_value_app import ConfiguredPropValueApp
+from .configured_prop_value_boolean import ConfiguredPropValueBoolean
+from .configured_prop_value_integer import ConfiguredPropValueInteger
+from .configured_prop_value_object import ConfiguredPropValueObject
+from .configured_prop_value_sql import ConfiguredPropValueSql
+from .configured_prop_value_string import ConfiguredPropValueString
+from .configured_prop_value_string_array import ConfiguredPropValueStringArray
+from .configured_props import ConfiguredProps
 from .connect_token import ConnectToken
 from .create_o_auth_token_response import CreateOAuthTokenResponse
 from .create_token_response import CreateTokenResponse
@@ -62,11 +76,14 @@ from .get_triggers_response import GetTriggersResponse
 from .list_accounts_response import ListAccountsResponse
 from .list_app_categories_response import ListAppCategoriesResponse
 from .list_apps_response import ListAppsResponse
+from .observation import Observation
+from .observation_error import ObservationError
 from .page_info import PageInfo
 from .project_environment import ProjectEnvironment
 from .project_info_response import ProjectInfoResponse
 from .project_info_response_app import ProjectInfoResponseApp
 from .prop_option import PropOption
+from .prop_option_nested import PropOptionNested
 from .proxy_response import ProxyResponse
 from .reload_props_opts import ReloadPropsOpts
 from .reload_props_response import ReloadPropsResponse
@@ -80,6 +97,7 @@ from .validate_token_response import ValidateTokenResponse
 
 __all__ = [
     "Account",
+    "AccountId",
     "App",
     "AppAuthType",
     "AppCategory",
@@ -114,8 +132,21 @@ __all__ = [
     "ConfigurablePropTimerDefault",
     "ConfigurablePropTimerOption",
     "ConfigurablePropTimerStatic",
+    "ConfigurablePropType",
+    "ConfigurePropOptions",
+    "ConfigurePropOptionsItem",
     "ConfigurePropOpts",
     "ConfigurePropResponse",
+    "ConfiguredPropValue",
+    "ConfiguredPropValueAny",
+    "ConfiguredPropValueApp",
+    "ConfiguredPropValueBoolean",
+    "ConfiguredPropValueInteger",
+    "ConfiguredPropValueObject",
+    "ConfiguredPropValueSql",
+    "ConfiguredPropValueString",
+    "ConfiguredPropValueStringArray",
+    "ConfiguredProps",
     "ConnectToken",
     "CreateOAuthTokenResponse",
     "CreateTokenResponse",
@@ -139,11 +170,14 @@ __all__ = [
     "ListAccountsResponse",
     "ListAppCategoriesResponse",
     "ListAppsResponse",
+    "Observation",
+    "ObservationError",
     "PageInfo",
     "ProjectEnvironment",
     "ProjectInfoResponse",
     "ProjectInfoResponseApp",
     "PropOption",
+    "PropOptionNested",
     "ProxyResponse",
     "ReloadPropsOpts",
     "ReloadPropsResponse",
