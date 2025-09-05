@@ -9,7 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropDiscordChannelArray(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["$.discord.channel[]"]] = None
+    type: typing.Literal["$.discord.channel[]"] = "$.discord.channel[]"
     app_prop: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="appProp")] = pydantic.Field(
         default=None
     )

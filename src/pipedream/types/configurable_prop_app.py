@@ -9,7 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropApp(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["app"]] = None
+    type: typing.Literal["app"] = "app"
     app: typing.Optional[str] = pydantic.Field(default=None)
     """
     The name slug of the app, e.g. 'github', 'slack', etc. This is used to identify the app for which the account is being configured.

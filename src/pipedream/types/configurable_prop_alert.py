@@ -10,7 +10,7 @@ from .configurable_prop_alert_type import ConfigurablePropAlertType
 
 
 class ConfigurablePropAlert(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["alert"]] = None
+    type: typing.Literal["alert"] = "alert"
     alert_type: typing_extensions.Annotated[
         typing.Optional[ConfigurablePropAlertType], FieldMetadata(alias="alertType")
     ] = None
