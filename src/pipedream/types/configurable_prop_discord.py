@@ -9,7 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropDiscord(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["$.discord.channel"]] = None
+    type: typing.Literal["$.discord.channel"] = "$.discord.channel"
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value

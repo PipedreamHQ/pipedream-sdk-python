@@ -9,7 +9,12 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropString(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["string"]] = None
+    type: typing.Literal["string"] = "string"
+    default: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The default value for this prop
+    """
+
     secret: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If true, this prop is a secret and should not be displayed in plain text.
