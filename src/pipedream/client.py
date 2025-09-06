@@ -6,7 +6,7 @@ import os
 import typing
 
 import httpx
-from ._.types.project_environment import ProjectEnvironment
+from .types.project_environment import ProjectEnvironment
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.oauth_token_provider import OAuthTokenProvider
