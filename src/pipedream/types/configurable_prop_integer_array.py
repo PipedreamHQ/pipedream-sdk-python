@@ -9,7 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropIntegerArray(UniversalBaseModel):
-    type: typing.Optional[typing.Literal["integer[]"]] = None
+    type: typing.Literal["integer[]"] = "integer[]"
     min: typing.Optional[int] = pydantic.Field(default=None)
     """
     The minimum value for integers in this array
