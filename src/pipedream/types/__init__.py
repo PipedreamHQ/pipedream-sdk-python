@@ -2,84 +2,222 @@
 
 # isort: skip_file
 
-from .account import Account
-from .app import App
-from .app_auth_type import AppAuthType
-from .app_category import AppCategory
-from .backend_client_opts import BackendClientOpts
-from .client_opts import ClientOpts
-from .component import Component
-from .component_stash import ComponentStash
-from .configurable_prop import ConfigurableProp
-from .configurable_prop_airtable_base_id import ConfigurablePropAirtableBaseId
-from .configurable_prop_airtable_field_id import ConfigurablePropAirtableFieldId
-from .configurable_prop_airtable_table_id import ConfigurablePropAirtableTableId
-from .configurable_prop_airtable_view_id import ConfigurablePropAirtableViewId
-from .configurable_prop_alert import ConfigurablePropAlert
-from .configurable_prop_alert_type import ConfigurablePropAlertType
-from .configurable_prop_any import ConfigurablePropAny
-from .configurable_prop_app import ConfigurablePropApp
-from .configurable_prop_apphook import ConfigurablePropApphook
-from .configurable_prop_boolean import ConfigurablePropBoolean
-from .configurable_prop_db import ConfigurablePropDb
-from .configurable_prop_discord import ConfigurablePropDiscord
-from .configurable_prop_discord_channel import ConfigurablePropDiscordChannel
-from .configurable_prop_discord_channel_array import ConfigurablePropDiscordChannelArray
-from .configurable_prop_http import ConfigurablePropHttp
-from .configurable_prop_integer import ConfigurablePropInteger
-from .configurable_prop_integer_array import ConfigurablePropIntegerArray
-from .configurable_prop_object import ConfigurablePropObject
-from .configurable_prop_sql import ConfigurablePropSql
-from .configurable_prop_sql_auth import ConfigurablePropSqlAuth
-from .configurable_prop_string import ConfigurablePropString
-from .configurable_prop_string_array import ConfigurablePropStringArray
-from .configurable_prop_timer import ConfigurablePropTimer
-from .configurable_prop_timer_default import ConfigurablePropTimerDefault
-from .configurable_prop_timer_option import ConfigurablePropTimerOption
-from .configurable_prop_timer_static import ConfigurablePropTimerStatic
-from .configure_prop_opts import ConfigurePropOpts
-from .configure_prop_response import ConfigurePropResponse
-from .connect_token import ConnectToken
-from .create_o_auth_token_response import CreateOAuthTokenResponse
-from .create_token_response import CreateTokenResponse
-from .delete_trigger_opts import DeleteTriggerOpts
-from .deploy_trigger_response import DeployTriggerResponse
-from .deployed_component import DeployedComponent
-from .dynamic_props import DynamicProps
-from .emitted_event import EmittedEvent
-from .error_response import ErrorResponse
-from .get_accounts_response import GetAccountsResponse
-from .get_app_category_response import GetAppCategoryResponse
-from .get_app_response import GetAppResponse
-from .get_apps_response import GetAppsResponse
-from .get_component_response import GetComponentResponse
-from .get_components_response import GetComponentsResponse
-from .get_trigger_events_response import GetTriggerEventsResponse
-from .get_trigger_response import GetTriggerResponse
-from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
-from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
-from .get_triggers_response import GetTriggersResponse
-from .list_accounts_response import ListAccountsResponse
-from .list_app_categories_response import ListAppCategoriesResponse
-from .list_apps_response import ListAppsResponse
-from .page_info import PageInfo
-from .project_environment import ProjectEnvironment
-from .project_info_response import ProjectInfoResponse
-from .project_info_response_app import ProjectInfoResponseApp
-from .prop_option import PropOption
-from .proxy_response import ProxyResponse
-from .reload_props_opts import ReloadPropsOpts
-from .reload_props_response import ReloadPropsResponse
-from .run_action_opts_stash_id import RunActionOptsStashId
-from .run_action_response import RunActionResponse
-from .start_connect_opts import StartConnectOpts
-from .stash_id import StashId
-from .timer_cron import TimerCron
-from .timer_interval import TimerInterval
-from .validate_token_response import ValidateTokenResponse
+import typing
+from importlib import import_module
+
+if typing.TYPE_CHECKING:
+    from .account import Account
+    from .account_id import AccountId
+    from .app import App
+    from .app_auth_type import AppAuthType
+    from .app_category import AppCategory
+    from .backend_client_opts import BackendClientOpts
+    from .client_opts import ClientOpts
+    from .component import Component
+    from .component_stash import ComponentStash
+    from .component_type import ComponentType
+    from .configurable_prop import ConfigurableProp
+    from .configurable_prop_airtable_base_id import ConfigurablePropAirtableBaseId
+    from .configurable_prop_airtable_field_id import ConfigurablePropAirtableFieldId
+    from .configurable_prop_airtable_table_id import ConfigurablePropAirtableTableId
+    from .configurable_prop_airtable_view_id import ConfigurablePropAirtableViewId
+    from .configurable_prop_alert import ConfigurablePropAlert
+    from .configurable_prop_alert_type import ConfigurablePropAlertType
+    from .configurable_prop_any import ConfigurablePropAny
+    from .configurable_prop_app import ConfigurablePropApp
+    from .configurable_prop_apphook import ConfigurablePropApphook
+    from .configurable_prop_boolean import ConfigurablePropBoolean
+    from .configurable_prop_db import ConfigurablePropDb
+    from .configurable_prop_discord import ConfigurablePropDiscord
+    from .configurable_prop_discord_channel import ConfigurablePropDiscordChannel
+    from .configurable_prop_discord_channel_array import ConfigurablePropDiscordChannelArray
+    from .configurable_prop_http import ConfigurablePropHttp
+    from .configurable_prop_integer import ConfigurablePropInteger
+    from .configurable_prop_integer_array import ConfigurablePropIntegerArray
+    from .configurable_prop_object import ConfigurablePropObject
+    from .configurable_prop_sql import ConfigurablePropSql
+    from .configurable_prop_sql_auth import ConfigurablePropSqlAuth
+    from .configurable_prop_string import ConfigurablePropString
+    from .configurable_prop_string_array import ConfigurablePropStringArray
+    from .configurable_prop_timer import ConfigurablePropTimer
+    from .configurable_prop_timer_default import ConfigurablePropTimerDefault
+    from .configurable_prop_timer_option import ConfigurablePropTimerOption
+    from .configurable_prop_timer_static import ConfigurablePropTimerStatic
+    from .configurable_prop_type import ConfigurablePropType
+    from .configure_prop_options import ConfigurePropOptions
+    from .configure_prop_options_item import ConfigurePropOptionsItem
+    from .configure_prop_opts import ConfigurePropOpts
+    from .configure_prop_response import ConfigurePropResponse
+    from .configured_prop_value import ConfiguredPropValue
+    from .configured_prop_value_any import ConfiguredPropValueAny
+    from .configured_prop_value_app import ConfiguredPropValueApp
+    from .configured_prop_value_boolean import ConfiguredPropValueBoolean
+    from .configured_prop_value_integer import ConfiguredPropValueInteger
+    from .configured_prop_value_object import ConfiguredPropValueObject
+    from .configured_prop_value_sql import ConfiguredPropValueSql
+    from .configured_prop_value_string import ConfiguredPropValueString
+    from .configured_prop_value_string_array import ConfiguredPropValueStringArray
+    from .configured_props import ConfiguredProps
+    from .connect_token import ConnectToken
+    from .create_o_auth_token_response import CreateOAuthTokenResponse
+    from .create_token_response import CreateTokenResponse
+    from .delete_trigger_opts import DeleteTriggerOpts
+    from .deploy_trigger_response import DeployTriggerResponse
+    from .deployed_component import DeployedComponent
+    from .dynamic_props import DynamicProps
+    from .emitted_event import EmittedEvent
+    from .error_response import ErrorResponse
+    from .get_accounts_response import GetAccountsResponse
+    from .get_app_category_response import GetAppCategoryResponse
+    from .get_app_response import GetAppResponse
+    from .get_apps_response import GetAppsResponse
+    from .get_component_response import GetComponentResponse
+    from .get_components_response import GetComponentsResponse
+    from .get_trigger_events_response import GetTriggerEventsResponse
+    from .get_trigger_response import GetTriggerResponse
+    from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
+    from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
+    from .get_triggers_response import GetTriggersResponse
+    from .list_accounts_response import ListAccountsResponse
+    from .list_app_categories_response import ListAppCategoriesResponse
+    from .list_apps_response import ListAppsResponse
+    from .observation import Observation
+    from .observation_error import ObservationError
+    from .page_info import PageInfo
+    from .project_environment import ProjectEnvironment
+    from .project_info_response import ProjectInfoResponse
+    from .project_info_response_app import ProjectInfoResponseApp
+    from .prop_option import PropOption
+    from .prop_option_nested import PropOptionNested
+    from .proxy_response import ProxyResponse
+    from .reload_props_opts import ReloadPropsOpts
+    from .reload_props_response import ReloadPropsResponse
+    from .run_action_opts_stash_id import RunActionOptsStashId
+    from .run_action_response import RunActionResponse
+    from .start_connect_opts import StartConnectOpts
+    from .stash_id import StashId
+    from .timer_cron import TimerCron
+    from .timer_interval import TimerInterval
+    from .validate_token_response import ValidateTokenResponse
+_dynamic_imports: typing.Dict[str, str] = {
+    "Account": ".account",
+    "AccountId": ".account_id",
+    "App": ".app",
+    "AppAuthType": ".app_auth_type",
+    "AppCategory": ".app_category",
+    "BackendClientOpts": ".backend_client_opts",
+    "ClientOpts": ".client_opts",
+    "Component": ".component",
+    "ComponentStash": ".component_stash",
+    "ComponentType": ".component_type",
+    "ConfigurableProp": ".configurable_prop",
+    "ConfigurablePropAirtableBaseId": ".configurable_prop_airtable_base_id",
+    "ConfigurablePropAirtableFieldId": ".configurable_prop_airtable_field_id",
+    "ConfigurablePropAirtableTableId": ".configurable_prop_airtable_table_id",
+    "ConfigurablePropAirtableViewId": ".configurable_prop_airtable_view_id",
+    "ConfigurablePropAlert": ".configurable_prop_alert",
+    "ConfigurablePropAlertType": ".configurable_prop_alert_type",
+    "ConfigurablePropAny": ".configurable_prop_any",
+    "ConfigurablePropApp": ".configurable_prop_app",
+    "ConfigurablePropApphook": ".configurable_prop_apphook",
+    "ConfigurablePropBoolean": ".configurable_prop_boolean",
+    "ConfigurablePropDb": ".configurable_prop_db",
+    "ConfigurablePropDiscord": ".configurable_prop_discord",
+    "ConfigurablePropDiscordChannel": ".configurable_prop_discord_channel",
+    "ConfigurablePropDiscordChannelArray": ".configurable_prop_discord_channel_array",
+    "ConfigurablePropHttp": ".configurable_prop_http",
+    "ConfigurablePropInteger": ".configurable_prop_integer",
+    "ConfigurablePropIntegerArray": ".configurable_prop_integer_array",
+    "ConfigurablePropObject": ".configurable_prop_object",
+    "ConfigurablePropSql": ".configurable_prop_sql",
+    "ConfigurablePropSqlAuth": ".configurable_prop_sql_auth",
+    "ConfigurablePropString": ".configurable_prop_string",
+    "ConfigurablePropStringArray": ".configurable_prop_string_array",
+    "ConfigurablePropTimer": ".configurable_prop_timer",
+    "ConfigurablePropTimerDefault": ".configurable_prop_timer_default",
+    "ConfigurablePropTimerOption": ".configurable_prop_timer_option",
+    "ConfigurablePropTimerStatic": ".configurable_prop_timer_static",
+    "ConfigurablePropType": ".configurable_prop_type",
+    "ConfigurePropOptions": ".configure_prop_options",
+    "ConfigurePropOptionsItem": ".configure_prop_options_item",
+    "ConfigurePropOpts": ".configure_prop_opts",
+    "ConfigurePropResponse": ".configure_prop_response",
+    "ConfiguredPropValue": ".configured_prop_value",
+    "ConfiguredPropValueAny": ".configured_prop_value_any",
+    "ConfiguredPropValueApp": ".configured_prop_value_app",
+    "ConfiguredPropValueBoolean": ".configured_prop_value_boolean",
+    "ConfiguredPropValueInteger": ".configured_prop_value_integer",
+    "ConfiguredPropValueObject": ".configured_prop_value_object",
+    "ConfiguredPropValueSql": ".configured_prop_value_sql",
+    "ConfiguredPropValueString": ".configured_prop_value_string",
+    "ConfiguredPropValueStringArray": ".configured_prop_value_string_array",
+    "ConfiguredProps": ".configured_props",
+    "ConnectToken": ".connect_token",
+    "CreateOAuthTokenResponse": ".create_o_auth_token_response",
+    "CreateTokenResponse": ".create_token_response",
+    "DeleteTriggerOpts": ".delete_trigger_opts",
+    "DeployTriggerResponse": ".deploy_trigger_response",
+    "DeployedComponent": ".deployed_component",
+    "DynamicProps": ".dynamic_props",
+    "EmittedEvent": ".emitted_event",
+    "ErrorResponse": ".error_response",
+    "GetAccountsResponse": ".get_accounts_response",
+    "GetAppCategoryResponse": ".get_app_category_response",
+    "GetAppResponse": ".get_app_response",
+    "GetAppsResponse": ".get_apps_response",
+    "GetComponentResponse": ".get_component_response",
+    "GetComponentsResponse": ".get_components_response",
+    "GetTriggerEventsResponse": ".get_trigger_events_response",
+    "GetTriggerResponse": ".get_trigger_response",
+    "GetTriggerWebhooksResponse": ".get_trigger_webhooks_response",
+    "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
+    "GetTriggersResponse": ".get_triggers_response",
+    "ListAccountsResponse": ".list_accounts_response",
+    "ListAppCategoriesResponse": ".list_app_categories_response",
+    "ListAppsResponse": ".list_apps_response",
+    "Observation": ".observation",
+    "ObservationError": ".observation_error",
+    "PageInfo": ".page_info",
+    "ProjectEnvironment": ".project_environment",
+    "ProjectInfoResponse": ".project_info_response",
+    "ProjectInfoResponseApp": ".project_info_response_app",
+    "PropOption": ".prop_option",
+    "PropOptionNested": ".prop_option_nested",
+    "ProxyResponse": ".proxy_response",
+    "ReloadPropsOpts": ".reload_props_opts",
+    "ReloadPropsResponse": ".reload_props_response",
+    "RunActionOptsStashId": ".run_action_opts_stash_id",
+    "RunActionResponse": ".run_action_response",
+    "StartConnectOpts": ".start_connect_opts",
+    "StashId": ".stash_id",
+    "TimerCron": ".timer_cron",
+    "TimerInterval": ".timer_interval",
+    "ValidateTokenResponse": ".validate_token_response",
+}
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    module_name = _dynamic_imports.get(attr_name)
+    if module_name is None:
+        raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
+    try:
+        module = import_module(module_name, __package__)
+        result = getattr(module, attr_name)
+        return result
+    except ImportError as e:
+        raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
+    except AttributeError as e:
+        raise AttributeError(f"Failed to get {attr_name} from {module_name}: {e}") from e
+
+
+def __dir__():
+    lazy_attrs = list(_dynamic_imports.keys())
+    return sorted(lazy_attrs)
+
 
 __all__ = [
     "Account",
+    "AccountId",
     "App",
     "AppAuthType",
     "AppCategory",
@@ -87,6 +225,7 @@ __all__ = [
     "ClientOpts",
     "Component",
     "ComponentStash",
+    "ComponentType",
     "ConfigurableProp",
     "ConfigurablePropAirtableBaseId",
     "ConfigurablePropAirtableFieldId",
@@ -114,8 +253,21 @@ __all__ = [
     "ConfigurablePropTimerDefault",
     "ConfigurablePropTimerOption",
     "ConfigurablePropTimerStatic",
+    "ConfigurablePropType",
+    "ConfigurePropOptions",
+    "ConfigurePropOptionsItem",
     "ConfigurePropOpts",
     "ConfigurePropResponse",
+    "ConfiguredPropValue",
+    "ConfiguredPropValueAny",
+    "ConfiguredPropValueApp",
+    "ConfiguredPropValueBoolean",
+    "ConfiguredPropValueInteger",
+    "ConfiguredPropValueObject",
+    "ConfiguredPropValueSql",
+    "ConfiguredPropValueString",
+    "ConfiguredPropValueStringArray",
+    "ConfiguredProps",
     "ConnectToken",
     "CreateOAuthTokenResponse",
     "CreateTokenResponse",
@@ -139,11 +291,14 @@ __all__ = [
     "ListAccountsResponse",
     "ListAppCategoriesResponse",
     "ListAppsResponse",
+    "Observation",
+    "ObservationError",
     "PageInfo",
     "ProjectEnvironment",
     "ProjectInfoResponse",
     "ProjectInfoResponseApp",
     "PropOption",
+    "PropOptionNested",
     "ProxyResponse",
     "ReloadPropsOpts",
     "ReloadPropsResponse",

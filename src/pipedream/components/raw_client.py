@@ -10,8 +10,11 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.serialization import convert_and_respect_annotation_metadata
 from ..types.component import Component
+from ..types.component_type import ComponentType
 from ..types.configure_prop_response import ConfigurePropResponse
+from ..types.configured_props import ConfiguredProps
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
@@ -32,6 +35,7 @@ class RawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
@@ -54,6 +58,9 @@ class RawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        component_type : typing.Optional[ComponentType]
+            The type of the component to filter the components
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -71,6 +78,7 @@ class RawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "component_type": component_type,
             },
             request_options=request_options,
         )
@@ -95,6 +103,7 @@ class RawComponentsClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        component_type=component_type,
                         request_options=request_options,
                     )
                 return SyncPager(
@@ -152,7 +161,7 @@ class RawComponentsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -176,8 +185,7 @@ class RawComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -207,7 +215,9 @@ class RawComponentsClient:
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProps, direction="write"
+                ),
                 "dynamic_props_id": dynamic_props_id,
                 "page": page,
                 "prev_context": prev_context,
@@ -240,7 +250,7 @@ class RawComponentsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
@@ -258,8 +268,7 @@ class RawComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -279,7 +288,9 @@ class RawComponentsClient:
                 "id": id,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProps, direction="write"
+                ),
                 "dynamic_props_id": dynamic_props_id,
             },
             headers={
@@ -316,6 +327,7 @@ class AsyncRawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
@@ -338,6 +350,9 @@ class AsyncRawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        component_type : typing.Optional[ComponentType]
+            The type of the component to filter the components
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -355,6 +370,7 @@ class AsyncRawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "component_type": component_type,
             },
             request_options=request_options,
         )
@@ -381,6 +397,7 @@ class AsyncRawComponentsClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            component_type=component_type,
                             request_options=request_options,
                         )
 
@@ -439,7 +456,7 @@ class AsyncRawComponentsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -463,8 +480,7 @@ class AsyncRawComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -494,7 +510,9 @@ class AsyncRawComponentsClient:
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProps, direction="write"
+                ),
                 "dynamic_props_id": dynamic_props_id,
                 "page": page,
                 "prev_context": prev_context,
@@ -527,7 +545,7 @@ class AsyncRawComponentsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
@@ -545,8 +563,7 @@ class AsyncRawComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            The configured properties for the component
+        configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -566,7 +583,9 @@ class AsyncRawComponentsClient:
                 "id": id,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
-                "configured_props": configured_props,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProps, direction="write"
+                ),
                 "dynamic_props_id": dynamic_props_id,
             },
             headers={
