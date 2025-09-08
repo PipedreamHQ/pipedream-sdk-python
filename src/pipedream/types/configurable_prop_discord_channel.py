@@ -9,8 +9,10 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropDiscordChannel(UniversalBaseModel):
-    type: typing.Literal["$.discord.channel"] = "$.discord.channel"
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")] = pydantic.Field()
+    type: typing.Optional[typing.Literal["$.discord.channel"]] = None
+    app_prop: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="appProp")] = pydantic.Field(
+        default=None
+    )
     """
     The name of the app prop that provides Discord authentication
     """
