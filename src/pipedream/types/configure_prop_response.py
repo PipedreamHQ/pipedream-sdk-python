@@ -4,8 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .configure_prop_options import ConfigurePropOptions
-from .observation import Observation
+from .prop_option import PropOption
 
 
 class ConfigurePropResponse(UniversalBaseModel):
@@ -13,13 +12,21 @@ class ConfigurePropResponse(UniversalBaseModel):
     Response received after configuring a component's prop
     """
 
-    options: typing.Optional[ConfigurePropOptions] = None
+    options: typing.Optional[typing.List[PropOption]] = pydantic.Field(default=None)
+    """
+    Available options (with labels) for the configured prop
+    """
+
     string_options: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Available options for the configured prop
     """
 
-    observations: typing.Optional[typing.List[Observation]] = None
+    observations: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    """
+    Any logs produced during the configuration of the prop
+    """
+
     context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
     """
     New context after configuring the prop
