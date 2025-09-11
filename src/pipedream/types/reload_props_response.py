@@ -7,7 +7,6 @@ import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 from .dynamic_props import DynamicProps
-from .observation import Observation
 
 
 class ReloadPropsResponse(UniversalBaseModel):
@@ -15,7 +14,11 @@ class ReloadPropsResponse(UniversalBaseModel):
     Response from reloading component props
     """
 
-    observations: typing.Optional[typing.List[Observation]] = None
+    observations: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    """
+    Any logs produced during the configuration of the prop
+    """
+
     errors: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
     Any errors that occurred during configuration
