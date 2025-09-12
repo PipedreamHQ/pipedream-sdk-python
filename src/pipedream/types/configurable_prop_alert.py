@@ -10,11 +10,11 @@ from .configurable_prop_alert_type import ConfigurablePropAlertType
 
 
 class ConfigurablePropAlert(UniversalBaseModel):
-    type: typing.Literal["alert"] = "alert"
+    type: typing.Optional[typing.Literal["alert"]] = None
     alert_type: typing_extensions.Annotated[
         typing.Optional[ConfigurablePropAlertType], FieldMetadata(alias="alertType")
     ] = None
-    content: str = pydantic.Field()
+    content: typing.Optional[str] = pydantic.Field(default=None)
     """
     The content of the alert, which can include HTML or plain text.
     """
