@@ -9,8 +9,10 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropApphook(UniversalBaseModel):
-    type: typing.Literal["$.interface.apphook"] = "$.interface.apphook"
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")] = pydantic.Field()
+    type: typing.Optional[typing.Literal["$.interface.apphook"]] = None
+    app_prop: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="appProp")] = pydantic.Field(
+        default=None
+    )
     """
     The name of the app prop that this apphook depends on
     """

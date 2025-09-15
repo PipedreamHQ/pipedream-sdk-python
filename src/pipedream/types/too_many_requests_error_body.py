@@ -6,25 +6,8 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class ObservationError(UniversalBaseModel):
-    """
-    Details about an observed error message
-    """
-
-    name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The name of the error/exception
-    """
-
-    message: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The error message
-    """
-
-    stack: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The stack trace of the error
-    """
+class TooManyRequestsErrorBody(UniversalBaseModel):
+    error: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
