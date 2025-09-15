@@ -98,6 +98,7 @@ if typing.TYPE_CHECKING:
     from .stash_id import StashId
     from .timer_cron import TimerCron
     from .timer_interval import TimerInterval
+    from .too_many_requests_error_body import TooManyRequestsErrorBody
     from .validate_token_response import ValidateTokenResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
@@ -192,6 +193,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "StashId": ".stash_id",
     "TimerCron": ".timer_cron",
     "TimerInterval": ".timer_interval",
+    "TooManyRequestsErrorBody": ".too_many_requests_error_body",
     "ValidateTokenResponse": ".validate_token_response",
 }
 
@@ -308,5 +310,6 @@ __all__ = [
     "StashId",
     "TimerCron",
     "TimerInterval",
+    "TooManyRequestsErrorBody",
     "ValidateTokenResponse",
 ]
