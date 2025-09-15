@@ -10,10 +10,9 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
+from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
-from ..types.configured_props import ConfiguredProps
 from ..types.deploy_trigger_response import DeployTriggerResponse
 from ..types.deployed_component import DeployedComponent
 from ..types.get_component_response import GetComponentResponse
@@ -104,6 +103,17 @@ class RawTriggersClient:
                 return SyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
                 )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -144,6 +154,17 @@ class RawTriggersClient:
                 )
                 _data = _parsed_response.data
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -156,7 +177,7 @@ class RawTriggersClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -180,7 +201,8 @@ class RawTriggersClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -210,9 +232,7 @@ class RawTriggersClient:
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
+                "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
                 "page": page,
                 "prev_context": prev_context,
@@ -234,6 +254,17 @@ class RawTriggersClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -245,7 +276,7 @@ class RawTriggersClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ReloadPropsResponse]:
@@ -263,7 +294,8 @@ class RawTriggersClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -283,9 +315,7 @@ class RawTriggersClient:
                 "id": id,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
+                "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
             },
             headers={
@@ -304,6 +334,17 @@ class RawTriggersClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -314,7 +355,7 @@ class RawTriggersClient:
         *,
         id: str,
         external_user_id: str,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -330,7 +371,8 @@ class RawTriggersClient:
         external_user_id : str
             The external user ID
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the trigger
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -352,9 +394,7 @@ class RawTriggersClient:
             json={
                 "id": id,
                 "external_user_id": external_user_id,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
+                "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
                 "webhook_url": webhook_url,
             },
@@ -375,6 +415,17 @@ class RawTriggersClient:
                 )
                 _data = _parsed_response.data
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -464,6 +515,17 @@ class AsyncRawTriggersClient:
                 return AsyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
                 )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -504,6 +566,17 @@ class AsyncRawTriggersClient:
                 )
                 _data = _parsed_response.data
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -516,7 +589,7 @@ class AsyncRawTriggersClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -540,7 +613,8 @@ class AsyncRawTriggersClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -570,9 +644,7 @@ class AsyncRawTriggersClient:
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
+                "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
                 "page": page,
                 "prev_context": prev_context,
@@ -594,6 +666,17 @@ class AsyncRawTriggersClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -605,7 +688,7 @@ class AsyncRawTriggersClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ReloadPropsResponse]:
@@ -623,7 +706,8 @@ class AsyncRawTriggersClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -643,9 +727,7 @@ class AsyncRawTriggersClient:
                 "id": id,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
+                "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
             },
             headers={
@@ -664,6 +746,17 @@ class AsyncRawTriggersClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -674,7 +767,7 @@ class AsyncRawTriggersClient:
         *,
         id: str,
         external_user_id: str,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -690,7 +783,8 @@ class AsyncRawTriggersClient:
         external_user_id : str
             The external user ID
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the trigger
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -712,9 +806,7 @@ class AsyncRawTriggersClient:
             json={
                 "id": id,
                 "external_user_id": external_user_id,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
+                "configured_props": configured_props,
                 "dynamic_props_id": dynamic_props_id,
                 "webhook_url": webhook_url,
             },
@@ -735,6 +827,17 @@ class AsyncRawTriggersClient:
                 )
                 _data = _parsed_response.data
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        parse_obj_as(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
