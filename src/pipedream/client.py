@@ -19,6 +19,7 @@ if typing.TYPE_CHECKING:
     from .apps.client import AppsClient, AsyncAppsClient
     from .components.client import AsyncComponentsClient, ComponentsClient
     from .deployed_triggers.client import AsyncDeployedTriggersClient, DeployedTriggersClient
+    from .file_stash.client import AsyncFileStashClient, FileStashClient
     from .oauth_tokens.client import AsyncOauthTokensClient, OauthTokensClient
     from .projects.client import AsyncProjectsClient, ProjectsClient
     from .proxy.client import AsyncProxyClient, ProxyClient
@@ -130,6 +131,7 @@ class Client:
         self._triggers: typing.Optional[TriggersClient] = None
         self._deployed_triggers: typing.Optional[DeployedTriggersClient] = None
         self._projects: typing.Optional[ProjectsClient] = None
+        self._file_stash: typing.Optional[FileStashClient] = None
         self._proxy: typing.Optional[ProxyClient] = None
         self._tokens: typing.Optional[TokensClient] = None
         self._oauth_tokens: typing.Optional[OauthTokensClient] = None
@@ -205,6 +207,14 @@ class Client:
 
             self._projects = ProjectsClient(client_wrapper=self._client_wrapper)
         return self._projects
+
+    @property
+    def file_stash(self):
+        if self._file_stash is None:
+            from .file_stash.client import FileStashClient  # noqa: E402
+
+            self._file_stash = FileStashClient(client_wrapper=self._client_wrapper)
+        return self._file_stash
 
     @property
     def proxy(self):
@@ -334,6 +344,7 @@ class AsyncClient:
         self._triggers: typing.Optional[AsyncTriggersClient] = None
         self._deployed_triggers: typing.Optional[AsyncDeployedTriggersClient] = None
         self._projects: typing.Optional[AsyncProjectsClient] = None
+        self._file_stash: typing.Optional[AsyncFileStashClient] = None
         self._proxy: typing.Optional[AsyncProxyClient] = None
         self._tokens: typing.Optional[AsyncTokensClient] = None
         self._oauth_tokens: typing.Optional[AsyncOauthTokensClient] = None
@@ -409,6 +420,14 @@ class AsyncClient:
 
             self._projects = AsyncProjectsClient(client_wrapper=self._client_wrapper)
         return self._projects
+
+    @property
+    def file_stash(self):
+        if self._file_stash is None:
+            from .file_stash.client import AsyncFileStashClient  # noqa: E402
+
+            self._file_stash = AsyncFileStashClient(client_wrapper=self._client_wrapper)
+        return self._file_stash
 
     @property
     def proxy(self):
