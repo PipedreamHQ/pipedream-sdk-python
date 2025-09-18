@@ -89,6 +89,7 @@ if typing.TYPE_CHECKING:
     from .project_info_response_app import ProjectInfoResponseApp
     from .prop_option import PropOption
     from .prop_option_nested import PropOptionNested
+    from .prop_option_value import PropOptionValue
     from .proxy_response import ProxyResponse
     from .reload_props_opts import ReloadPropsOpts
     from .reload_props_response import ReloadPropsResponse
@@ -184,6 +185,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ProjectInfoResponseApp": ".project_info_response_app",
     "PropOption": ".prop_option",
     "PropOptionNested": ".prop_option_nested",
+    "PropOptionValue": ".prop_option_value",
     "ProxyResponse": ".proxy_response",
     "ReloadPropsOpts": ".reload_props_opts",
     "ReloadPropsResponse": ".reload_props_response",
@@ -301,6 +303,7 @@ __all__ = [
     "ProjectInfoResponseApp",
     "PropOption",
     "PropOptionNested",
+    "PropOptionValue",
     "ProxyResponse",
     "ReloadPropsOpts",
     "ReloadPropsResponse",
