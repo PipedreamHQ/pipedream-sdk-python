@@ -6,9 +6,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.component import Component
-from ..types.component_type import ComponentType
 from ..types.configure_prop_response import ConfigurePropResponse
-from ..types.configured_props import ConfiguredProps
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawComponentsClient, RawComponentsClient
 
@@ -39,7 +37,6 @@ class ComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
-        component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
@@ -61,9 +58,6 @@ class ComponentsClient:
 
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
-
-        component_type : typing.Optional[ComponentType]
-            The type of the component to filter the components
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -91,13 +85,7 @@ class ComponentsClient:
             yield page
         """
         return self._raw_client.list(
-            after=after,
-            before=before,
-            limit=limit,
-            q=q,
-            app=app,
-            component_type=component_type,
-            request_options=request_options,
+            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
         )
 
     def retrieve(self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Component:
@@ -141,7 +129,7 @@ class ComponentsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -165,7 +153,8 @@ class ComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -223,7 +212,7 @@ class ComponentsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
@@ -241,7 +230,8 @@ class ComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -303,7 +293,6 @@ class AsyncComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
-        component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
@@ -325,9 +314,6 @@ class AsyncComponentsClient:
 
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
-
-        component_type : typing.Optional[ComponentType]
-            The type of the component to filter the components
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -364,13 +350,7 @@ class AsyncComponentsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            after=after,
-            before=before,
-            limit=limit,
-            q=q,
-            app=app,
-            component_type=component_type,
-            request_options=request_options,
+            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
         )
 
     async def retrieve(
@@ -424,7 +404,7 @@ class AsyncComponentsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -448,7 +428,8 @@ class AsyncComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -514,7 +495,7 @@ class AsyncComponentsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
@@ -532,7 +513,8 @@ class AsyncComponentsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
