@@ -9,12 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropBoolean(UniversalBaseModel):
-    type: typing.Literal["boolean"] = "boolean"
-    default: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    The default value for this prop
-    """
-
+    type: typing.Optional[typing.Literal["boolean"]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
