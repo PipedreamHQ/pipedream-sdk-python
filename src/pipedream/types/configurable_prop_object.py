@@ -9,7 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropObject(UniversalBaseModel):
-    type: typing.Literal["object"] = "object"
+    type: typing.Optional[typing.Literal["object"]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
