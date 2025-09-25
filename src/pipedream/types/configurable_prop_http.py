@@ -9,7 +9,7 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropHttp(UniversalBaseModel):
-    type: typing.Literal["$.interface.http"] = "$.interface.http"
+    type: typing.Optional[typing.Literal["$.interface.http"]] = None
     custom_response: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="customResponse")] = (
         pydantic.Field(default=None)
     )
