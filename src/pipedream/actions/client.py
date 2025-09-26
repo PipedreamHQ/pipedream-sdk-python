@@ -7,7 +7,6 @@ from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
-from ..types.configured_props import ConfiguredProps
 from ..types.reload_props_response import ReloadPropsResponse
 from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
@@ -132,7 +131,7 @@ class ActionsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -156,7 +155,8 @@ class ActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -214,7 +214,7 @@ class ActionsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
@@ -232,7 +232,8 @@ class ActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -275,7 +276,7 @@ class ActionsClient:
         *,
         id: str,
         external_user_id: str,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -291,7 +292,8 @@ class ActionsClient:
         external_user_id : str
             The external user ID
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the action
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -466,7 +468,7 @@ class AsyncActionsClient:
         external_user_id: str,
         prop_name: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
         prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
@@ -490,7 +492,8 @@ class AsyncActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -556,7 +559,7 @@ class AsyncActionsClient:
         id: str,
         external_user_id: str,
         blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ReloadPropsResponse:
@@ -574,7 +577,8 @@ class AsyncActionsClient:
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the component
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
@@ -625,7 +629,7 @@ class AsyncActionsClient:
         *,
         id: str,
         external_user_id: str,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -641,7 +645,8 @@ class AsyncActionsClient:
         external_user_id : str
             The external user ID
 
-        configured_props : typing.Optional[ConfiguredProps]
+        configured_props : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            The configured properties for the action
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
