@@ -25,7 +25,7 @@ class RawAccountsClient:
     def list(
         self,
         *,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         after: typing.Optional[str] = None,
@@ -39,7 +39,7 @@ class RawAccountsClient:
 
         Parameters
         ----------
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -71,7 +71,7 @@ class RawAccountsClient:
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="GET",
             params={
-                "app_id": app_id,
+                "app": app,
                 "external_user_id": external_user_id,
                 "oauth_app_id": oauth_app_id,
                 "after": after,
@@ -97,7 +97,7 @@ class RawAccountsClient:
                     _parsed_next = _parsed_response.page_info.end_cursor
                     _has_next = _parsed_next is not None and _parsed_next != ""
                     _get_next = lambda: self.list(
-                        app_id=app_id,
+                        app=app,
                         external_user_id=external_user_id,
                         oauth_app_id=oauth_app_id,
                         after=_parsed_next,
@@ -131,7 +131,7 @@ class RawAccountsClient:
         app_slug: str,
         cfmap_json: str,
         connect_token: str,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
@@ -151,7 +151,7 @@ class RawAccountsClient:
         connect_token : str
             The connect token for authentication
 
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -174,7 +174,7 @@ class RawAccountsClient:
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="POST",
             params={
-                "app_id": app_id,
+                "app": app,
                 "external_user_id": external_user_id,
                 "oauth_app_id": oauth_app_id,
             },
@@ -363,7 +363,7 @@ class AsyncRawAccountsClient:
     async def list(
         self,
         *,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         after: typing.Optional[str] = None,
@@ -377,7 +377,7 @@ class AsyncRawAccountsClient:
 
         Parameters
         ----------
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -409,7 +409,7 @@ class AsyncRawAccountsClient:
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="GET",
             params={
-                "app_id": app_id,
+                "app": app,
                 "external_user_id": external_user_id,
                 "oauth_app_id": oauth_app_id,
                 "after": after,
@@ -437,7 +437,7 @@ class AsyncRawAccountsClient:
 
                     async def _get_next():
                         return await self.list(
-                            app_id=app_id,
+                            app=app,
                             external_user_id=external_user_id,
                             oauth_app_id=oauth_app_id,
                             after=_parsed_next,
@@ -472,7 +472,7 @@ class AsyncRawAccountsClient:
         app_slug: str,
         cfmap_json: str,
         connect_token: str,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
@@ -492,7 +492,7 @@ class AsyncRawAccountsClient:
         connect_token : str
             The connect token for authentication
 
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -515,7 +515,7 @@ class AsyncRawAccountsClient:
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
             method="POST",
             params={
-                "app_id": app_id,
+                "app": app,
                 "external_user_id": external_user_id,
                 "oauth_app_id": oauth_app_id,
             },

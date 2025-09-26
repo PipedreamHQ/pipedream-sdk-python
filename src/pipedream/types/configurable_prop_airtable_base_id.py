@@ -9,8 +9,10 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfigurablePropAirtableBaseId(UniversalBaseModel):
-    type: typing.Literal["$.airtable.baseId"] = "$.airtable.baseId"
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")] = pydantic.Field()
+    type: typing.Optional[typing.Literal["$.airtable.baseId"]] = None
+    app_prop: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="appProp")] = pydantic.Field(
+        default=None
+    )
     """
     The name of the app prop that provides Airtable authentication
     """

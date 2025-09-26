@@ -10,7 +10,7 @@ from .configurable_prop_sql_auth import ConfigurablePropSqlAuth
 
 
 class ConfigurablePropSql(UniversalBaseModel):
-    type: typing.Literal["sql"] = "sql"
+    type: typing.Optional[typing.Literal["sql"]] = None
     auth: typing.Optional[ConfigurablePropSqlAuth] = None
     default: typing.Optional[str] = pydantic.Field(default=None)
     """
