@@ -4,7 +4,6 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .configured_props import ConfiguredProps
 
 
 class ConfigurePropOpts(UniversalBaseModel):
@@ -32,7 +31,11 @@ class ConfigurePropOpts(UniversalBaseModel):
     Whether this operation should block until completion
     """
 
-    configured_props: typing.Optional[ConfiguredProps] = None
+    configured_props: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    """
+    The configured properties for the component
+    """
+
     dynamic_props_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The ID for dynamic props
