@@ -30,7 +30,7 @@ class AccountsClient:
     def list(
         self,
         *,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         after: typing.Optional[str] = None,
@@ -44,7 +44,7 @@ class AccountsClient:
 
         Parameters
         ----------
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -90,7 +90,7 @@ class AccountsClient:
             yield page
         """
         return self._raw_client.list(
-            app_id=app_id,
+            app=app,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             after=after,
@@ -106,7 +106,7 @@ class AccountsClient:
         app_slug: str,
         cfmap_json: str,
         connect_token: str,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
@@ -126,7 +126,7 @@ class AccountsClient:
         connect_token : str
             The connect token for authentication
 
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -165,7 +165,7 @@ class AccountsClient:
             app_slug=app_slug,
             cfmap_json=cfmap_json,
             connect_token=connect_token,
-            app_id=app_id,
+            app=app,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             name=name,
@@ -300,7 +300,7 @@ class AsyncAccountsClient:
     async def list(
         self,
         *,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         after: typing.Optional[str] = None,
@@ -314,7 +314,7 @@ class AsyncAccountsClient:
 
         Parameters
         ----------
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -369,7 +369,7 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            app_id=app_id,
+            app=app,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             after=after,
@@ -385,7 +385,7 @@ class AsyncAccountsClient:
         app_slug: str,
         cfmap_json: str,
         connect_token: str,
-        app_id: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
@@ -405,7 +405,7 @@ class AsyncAccountsClient:
         connect_token : str
             The connect token for authentication
 
-        app_id : typing.Optional[str]
+        app : typing.Optional[str]
             The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
@@ -452,7 +452,7 @@ class AsyncAccountsClient:
             app_slug=app_slug,
             cfmap_json=cfmap_json,
             connect_token=connect_token,
-            app_id=app_id,
+            app=app,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             name=name,
