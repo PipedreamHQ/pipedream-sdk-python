@@ -30,12 +30,12 @@ class AccountsClient:
     def list(
         self,
         *,
-        app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
+        app: typing.Optional[str] = None,
         include_credentials: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Account]:
@@ -44,9 +44,6 @@ class AccountsClient:
 
         Parameters
         ----------
-        app_id : typing.Optional[str]
-            The app slug or ID to filter accounts by.
-
         external_user_id : typing.Optional[str]
 
         oauth_app_id : typing.Optional[str]
@@ -60,6 +57,9 @@ class AccountsClient:
 
         limit : typing.Optional[int]
             The maximum number of results to return
+
+        app : typing.Optional[str]
+            The app slug or ID to filter accounts by.
 
         include_credentials : typing.Optional[bool]
             Whether to retrieve the account's credentials or not
@@ -90,12 +90,12 @@ class AccountsClient:
             yield page
         """
         return self._raw_client.list(
-            app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             after=after,
             before=before,
             limit=limit,
+            app=app,
             include_credentials=include_credentials,
             request_options=request_options,
         )
@@ -106,7 +106,6 @@ class AccountsClient:
         app_slug: str,
         cfmap_json: str,
         connect_token: str,
-        app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
@@ -125,9 +124,6 @@ class AccountsClient:
 
         connect_token : str
             The connect token for authentication
-
-        app_id : typing.Optional[str]
-            The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
 
@@ -165,7 +161,6 @@ class AccountsClient:
             app_slug=app_slug,
             cfmap_json=cfmap_json,
             connect_token=connect_token,
-            app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             name=name,
@@ -300,12 +295,12 @@ class AsyncAccountsClient:
     async def list(
         self,
         *,
-        app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
+        app: typing.Optional[str] = None,
         include_credentials: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Account]:
@@ -314,9 +309,6 @@ class AsyncAccountsClient:
 
         Parameters
         ----------
-        app_id : typing.Optional[str]
-            The app slug or ID to filter accounts by.
-
         external_user_id : typing.Optional[str]
 
         oauth_app_id : typing.Optional[str]
@@ -330,6 +322,9 @@ class AsyncAccountsClient:
 
         limit : typing.Optional[int]
             The maximum number of results to return
+
+        app : typing.Optional[str]
+            The app slug or ID to filter accounts by.
 
         include_credentials : typing.Optional[bool]
             Whether to retrieve the account's credentials or not
@@ -369,12 +364,12 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             after=after,
             before=before,
             limit=limit,
+            app=app,
             include_credentials=include_credentials,
             request_options=request_options,
         )
@@ -385,7 +380,6 @@ class AsyncAccountsClient:
         app_slug: str,
         cfmap_json: str,
         connect_token: str,
-        app_id: typing.Optional[str] = None,
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
@@ -404,9 +398,6 @@ class AsyncAccountsClient:
 
         connect_token : str
             The connect token for authentication
-
-        app_id : typing.Optional[str]
-            The app slug or ID to filter accounts by.
 
         external_user_id : typing.Optional[str]
 
@@ -452,7 +443,6 @@ class AsyncAccountsClient:
             app_slug=app_slug,
             cfmap_json=cfmap_json,
             connect_token=connect_token,
-            app_id=app_id,
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             name=name,
