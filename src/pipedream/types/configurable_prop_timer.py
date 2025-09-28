@@ -12,7 +12,7 @@ from .configurable_prop_timer_static import ConfigurablePropTimerStatic
 
 
 class ConfigurablePropTimer(UniversalBaseModel):
-    type: typing.Literal["$.interface.timer"] = "$.interface.timer"
+    type: typing.Optional[typing.Literal["$.interface.timer"]] = None
     static: typing.Optional[ConfigurablePropTimerStatic] = None
     default: typing.Optional[ConfigurablePropTimerDefault] = None
     options: typing.Optional[typing.List[typing.Optional[ConfigurablePropTimerOption]]] = pydantic.Field(default=None)
