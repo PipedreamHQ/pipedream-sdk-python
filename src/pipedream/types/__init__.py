@@ -63,6 +63,7 @@ if typing.TYPE_CHECKING:
     from .create_token_response import CreateTokenResponse
     from .delete_trigger_opts import DeleteTriggerOpts
     from .deploy_trigger_response import DeployTriggerResponse
+    from .deploy_trigger_response_data import DeployTriggerResponseData
     from .deployed_component import DeployedComponent
     from .dynamic_props import DynamicProps
     from .emitted_event import EmittedEvent
@@ -78,6 +79,7 @@ if typing.TYPE_CHECKING:
     from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
     from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
     from .get_triggers_response import GetTriggersResponse
+    from .http_interface import HttpInterface
     from .list_accounts_response import ListAccountsResponse
     from .list_app_categories_response import ListAppCategoriesResponse
     from .list_apps_response import ListAppsResponse
@@ -98,6 +100,7 @@ if typing.TYPE_CHECKING:
     from .start_connect_opts import StartConnectOpts
     from .stash_id import StashId
     from .timer_cron import TimerCron
+    from .timer_interface import TimerInterface
     from .timer_interval import TimerInterval
     from .too_many_requests_error_body import TooManyRequestsErrorBody
     from .validate_token_response import ValidateTokenResponse
@@ -159,6 +162,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateTokenResponse": ".create_token_response",
     "DeleteTriggerOpts": ".delete_trigger_opts",
     "DeployTriggerResponse": ".deploy_trigger_response",
+    "DeployTriggerResponseData": ".deploy_trigger_response_data",
     "DeployedComponent": ".deployed_component",
     "DynamicProps": ".dynamic_props",
     "EmittedEvent": ".emitted_event",
@@ -174,6 +178,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetTriggerWebhooksResponse": ".get_trigger_webhooks_response",
     "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
     "GetTriggersResponse": ".get_triggers_response",
+    "HttpInterface": ".http_interface",
     "ListAccountsResponse": ".list_accounts_response",
     "ListAppCategoriesResponse": ".list_app_categories_response",
     "ListAppsResponse": ".list_apps_response",
@@ -194,6 +199,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "StartConnectOpts": ".start_connect_opts",
     "StashId": ".stash_id",
     "TimerCron": ".timer_cron",
+    "TimerInterface": ".timer_interface",
     "TimerInterval": ".timer_interval",
     "TooManyRequestsErrorBody": ".too_many_requests_error_body",
     "ValidateTokenResponse": ".validate_token_response",
@@ -206,8 +212,10 @@ def __getattr__(attr_name: str) -> typing.Any:
         raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
     try:
         module = import_module(module_name, __package__)
-        result = getattr(module, attr_name)
-        return result
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
     except ImportError as e:
         raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
     except AttributeError as e:
@@ -277,6 +285,7 @@ __all__ = [
     "CreateTokenResponse",
     "DeleteTriggerOpts",
     "DeployTriggerResponse",
+    "DeployTriggerResponseData",
     "DeployedComponent",
     "DynamicProps",
     "EmittedEvent",
@@ -292,6 +301,7 @@ __all__ = [
     "GetTriggerWebhooksResponse",
     "GetTriggerWorkflowsResponse",
     "GetTriggersResponse",
+    "HttpInterface",
     "ListAccountsResponse",
     "ListAppCategoriesResponse",
     "ListAppsResponse",
@@ -312,6 +322,7 @@ __all__ = [
     "StartConnectOpts",
     "StashId",
     "TimerCron",
+    "TimerInterface",
     "TimerInterval",
     "TooManyRequestsErrorBody",
     "ValidateTokenResponse",
