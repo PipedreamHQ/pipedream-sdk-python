@@ -6,24 +6,27 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
-class ObservationError(UniversalBaseModel):
+class HttpInterface(UniversalBaseModel):
     """
-    Details about an observed error message
-    """
-
-    name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The name of the error/exception
+    An HTTP interface instance
     """
 
-    message: typing.Optional[str] = pydantic.Field(default=None)
+    id: str = pydantic.Field()
     """
-    The error message
+    The unique ID of the HTTP interface
     """
 
-    stack: typing.Optional[str] = pydantic.Field(default=None)
+    key: str
+    endpoint_url: str
+    custom_response: bool
+    created_at: int = pydantic.Field()
     """
-    The stack trace of the error
+    The timestamp when the HTTP interface was created (epoch milliseconds)
+    """
+
+    updated_at: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    The timestamp when the HTTP interface was last updated (epoch milliseconds)
     """
 
     if IS_PYDANTIC_V2:
