@@ -7,7 +7,6 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .account import Account
-    from .account_id import AccountId
     from .app import App
     from .app_auth_type import AppAuthType
     from .app_category import AppCategory
@@ -15,7 +14,6 @@ if typing.TYPE_CHECKING:
     from .client_opts import ClientOpts
     from .component import Component
     from .component_stash import ComponentStash
-    from .component_type import ComponentType
     from .configurable_prop import ConfigurableProp
     from .configurable_prop_airtable_base_id import ConfigurablePropAirtableBaseId
     from .configurable_prop_airtable_field_id import ConfigurablePropAirtableFieldId
@@ -43,26 +41,14 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_timer_default import ConfigurablePropTimerDefault
     from .configurable_prop_timer_option import ConfigurablePropTimerOption
     from .configurable_prop_timer_static import ConfigurablePropTimerStatic
-    from .configurable_prop_type import ConfigurablePropType
-    from .configure_prop_options import ConfigurePropOptions
-    from .configure_prop_options_item import ConfigurePropOptionsItem
     from .configure_prop_opts import ConfigurePropOpts
     from .configure_prop_response import ConfigurePropResponse
-    from .configured_prop_value import ConfiguredPropValue
-    from .configured_prop_value_any import ConfiguredPropValueAny
-    from .configured_prop_value_app import ConfiguredPropValueApp
-    from .configured_prop_value_boolean import ConfiguredPropValueBoolean
-    from .configured_prop_value_integer import ConfiguredPropValueInteger
-    from .configured_prop_value_object import ConfiguredPropValueObject
-    from .configured_prop_value_sql import ConfiguredPropValueSql
-    from .configured_prop_value_string import ConfiguredPropValueString
-    from .configured_prop_value_string_array import ConfiguredPropValueStringArray
-    from .configured_props import ConfiguredProps
     from .connect_token import ConnectToken
     from .create_o_auth_token_response import CreateOAuthTokenResponse
     from .create_token_response import CreateTokenResponse
     from .delete_trigger_opts import DeleteTriggerOpts
     from .deploy_trigger_response import DeployTriggerResponse
+    from .deploy_trigger_response_data import DeployTriggerResponseData
     from .deployed_component import DeployedComponent
     from .dynamic_props import DynamicProps
     from .emitted_event import EmittedEvent
@@ -78,18 +64,15 @@ if typing.TYPE_CHECKING:
     from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
     from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
     from .get_triggers_response import GetTriggersResponse
+    from .http_interface import HttpInterface
     from .list_accounts_response import ListAccountsResponse
     from .list_app_categories_response import ListAppCategoriesResponse
     from .list_apps_response import ListAppsResponse
-    from .observation import Observation
-    from .observation_error import ObservationError
     from .page_info import PageInfo
     from .project_environment import ProjectEnvironment
     from .project_info_response import ProjectInfoResponse
     from .project_info_response_app import ProjectInfoResponseApp
     from .prop_option import PropOption
-    from .prop_option_nested import PropOptionNested
-    from .prop_option_value import PropOptionValue
     from .proxy_response import ProxyResponse
     from .reload_props_opts import ReloadPropsOpts
     from .reload_props_response import ReloadPropsResponse
@@ -98,12 +81,13 @@ if typing.TYPE_CHECKING:
     from .start_connect_opts import StartConnectOpts
     from .stash_id import StashId
     from .timer_cron import TimerCron
+    from .timer_interface import TimerInterface
     from .timer_interval import TimerInterval
     from .too_many_requests_error_body import TooManyRequestsErrorBody
+    from .tool_annotations import ToolAnnotations
     from .validate_token_response import ValidateTokenResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
-    "AccountId": ".account_id",
     "App": ".app",
     "AppAuthType": ".app_auth_type",
     "AppCategory": ".app_category",
@@ -111,7 +95,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ClientOpts": ".client_opts",
     "Component": ".component",
     "ComponentStash": ".component_stash",
-    "ComponentType": ".component_type",
     "ConfigurableProp": ".configurable_prop",
     "ConfigurablePropAirtableBaseId": ".configurable_prop_airtable_base_id",
     "ConfigurablePropAirtableFieldId": ".configurable_prop_airtable_field_id",
@@ -139,26 +122,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropTimerDefault": ".configurable_prop_timer_default",
     "ConfigurablePropTimerOption": ".configurable_prop_timer_option",
     "ConfigurablePropTimerStatic": ".configurable_prop_timer_static",
-    "ConfigurablePropType": ".configurable_prop_type",
-    "ConfigurePropOptions": ".configure_prop_options",
-    "ConfigurePropOptionsItem": ".configure_prop_options_item",
     "ConfigurePropOpts": ".configure_prop_opts",
     "ConfigurePropResponse": ".configure_prop_response",
-    "ConfiguredPropValue": ".configured_prop_value",
-    "ConfiguredPropValueAny": ".configured_prop_value_any",
-    "ConfiguredPropValueApp": ".configured_prop_value_app",
-    "ConfiguredPropValueBoolean": ".configured_prop_value_boolean",
-    "ConfiguredPropValueInteger": ".configured_prop_value_integer",
-    "ConfiguredPropValueObject": ".configured_prop_value_object",
-    "ConfiguredPropValueSql": ".configured_prop_value_sql",
-    "ConfiguredPropValueString": ".configured_prop_value_string",
-    "ConfiguredPropValueStringArray": ".configured_prop_value_string_array",
-    "ConfiguredProps": ".configured_props",
     "ConnectToken": ".connect_token",
     "CreateOAuthTokenResponse": ".create_o_auth_token_response",
     "CreateTokenResponse": ".create_token_response",
     "DeleteTriggerOpts": ".delete_trigger_opts",
     "DeployTriggerResponse": ".deploy_trigger_response",
+    "DeployTriggerResponseData": ".deploy_trigger_response_data",
     "DeployedComponent": ".deployed_component",
     "DynamicProps": ".dynamic_props",
     "EmittedEvent": ".emitted_event",
@@ -174,18 +145,15 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetTriggerWebhooksResponse": ".get_trigger_webhooks_response",
     "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
     "GetTriggersResponse": ".get_triggers_response",
+    "HttpInterface": ".http_interface",
     "ListAccountsResponse": ".list_accounts_response",
     "ListAppCategoriesResponse": ".list_app_categories_response",
     "ListAppsResponse": ".list_apps_response",
-    "Observation": ".observation",
-    "ObservationError": ".observation_error",
     "PageInfo": ".page_info",
     "ProjectEnvironment": ".project_environment",
     "ProjectInfoResponse": ".project_info_response",
     "ProjectInfoResponseApp": ".project_info_response_app",
     "PropOption": ".prop_option",
-    "PropOptionNested": ".prop_option_nested",
-    "PropOptionValue": ".prop_option_value",
     "ProxyResponse": ".proxy_response",
     "ReloadPropsOpts": ".reload_props_opts",
     "ReloadPropsResponse": ".reload_props_response",
@@ -194,8 +162,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "StartConnectOpts": ".start_connect_opts",
     "StashId": ".stash_id",
     "TimerCron": ".timer_cron",
+    "TimerInterface": ".timer_interface",
     "TimerInterval": ".timer_interval",
     "TooManyRequestsErrorBody": ".too_many_requests_error_body",
+    "ToolAnnotations": ".tool_annotations",
     "ValidateTokenResponse": ".validate_token_response",
 }
 
@@ -221,7 +191,6 @@ def __dir__():
 
 __all__ = [
     "Account",
-    "AccountId",
     "App",
     "AppAuthType",
     "AppCategory",
@@ -229,7 +198,6 @@ __all__ = [
     "ClientOpts",
     "Component",
     "ComponentStash",
-    "ComponentType",
     "ConfigurableProp",
     "ConfigurablePropAirtableBaseId",
     "ConfigurablePropAirtableFieldId",
@@ -257,26 +225,14 @@ __all__ = [
     "ConfigurablePropTimerDefault",
     "ConfigurablePropTimerOption",
     "ConfigurablePropTimerStatic",
-    "ConfigurablePropType",
-    "ConfigurePropOptions",
-    "ConfigurePropOptionsItem",
     "ConfigurePropOpts",
     "ConfigurePropResponse",
-    "ConfiguredPropValue",
-    "ConfiguredPropValueAny",
-    "ConfiguredPropValueApp",
-    "ConfiguredPropValueBoolean",
-    "ConfiguredPropValueInteger",
-    "ConfiguredPropValueObject",
-    "ConfiguredPropValueSql",
-    "ConfiguredPropValueString",
-    "ConfiguredPropValueStringArray",
-    "ConfiguredProps",
     "ConnectToken",
     "CreateOAuthTokenResponse",
     "CreateTokenResponse",
     "DeleteTriggerOpts",
     "DeployTriggerResponse",
+    "DeployTriggerResponseData",
     "DeployedComponent",
     "DynamicProps",
     "EmittedEvent",
@@ -292,18 +248,15 @@ __all__ = [
     "GetTriggerWebhooksResponse",
     "GetTriggerWorkflowsResponse",
     "GetTriggersResponse",
+    "HttpInterface",
     "ListAccountsResponse",
     "ListAppCategoriesResponse",
     "ListAppsResponse",
-    "Observation",
-    "ObservationError",
     "PageInfo",
     "ProjectEnvironment",
     "ProjectInfoResponse",
     "ProjectInfoResponseApp",
     "PropOption",
-    "PropOptionNested",
-    "PropOptionValue",
     "ProxyResponse",
     "ReloadPropsOpts",
     "ReloadPropsResponse",
@@ -312,7 +265,9 @@ __all__ = [
     "StartConnectOpts",
     "StashId",
     "TimerCron",
+    "TimerInterface",
     "TimerInterval",
     "TooManyRequestsErrorBody",
+    "ToolAnnotations",
     "ValidateTokenResponse",
 ]
