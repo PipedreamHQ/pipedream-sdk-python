@@ -76,6 +76,9 @@ class DeployedTriggersClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.deployed_triggers.list(
+            after="after",
+            before="before",
+            limit=1,
             external_user_id="external_user_id",
         )
         for item in response:
@@ -231,6 +234,7 @@ class DeployedTriggersClient:
         client.deployed_triggers.delete(
             trigger_id="trigger_id",
             external_user_id="external_user_id",
+            ignore_hook_errors=True,
         )
         """
         _response = self._raw_client.delete(
@@ -283,6 +287,7 @@ class DeployedTriggersClient:
         client.deployed_triggers.list_events(
             trigger_id="trigger_id",
             external_user_id="external_user_id",
+            n=1,
         )
         """
         _response = self._raw_client.list_events(
@@ -538,6 +543,9 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             response = await client.deployed_triggers.list(
+                after="after",
+                before="before",
+                limit=1,
                 external_user_id="external_user_id",
             )
             async for item in response:
@@ -718,6 +726,7 @@ class AsyncDeployedTriggersClient:
             await client.deployed_triggers.delete(
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
+                ignore_hook_errors=True,
             )
 
 
@@ -778,6 +787,7 @@ class AsyncDeployedTriggersClient:
             await client.deployed_triggers.list_events(
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
+                n=1,
             )
 
 
