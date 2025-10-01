@@ -4,7 +4,6 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .prop_option_value import PropOptionValue
 
 
 class PropOption(UniversalBaseModel):
@@ -17,7 +16,7 @@ class PropOption(UniversalBaseModel):
     The human-readable label for the option
     """
 
-    value: typing.Optional[PropOptionValue] = None
+    value: typing.Optional[typing.Any] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
