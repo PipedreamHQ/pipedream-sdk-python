@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .component_stash import ComponentStash
 from .configurable_prop import ConfigurableProp
+from .tool_annotations import ToolAnnotations
 
 
 class Component(UniversalBaseModel):
@@ -36,6 +37,7 @@ class Component(UniversalBaseModel):
     """
 
     stash: typing.Optional[ComponentStash] = None
+    annotations: typing.Optional[ToolAnnotations] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
