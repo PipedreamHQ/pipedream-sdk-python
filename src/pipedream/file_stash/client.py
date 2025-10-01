@@ -22,7 +22,9 @@ class FileStashClient:
         """
         return self._raw_client
 
-    def download_file(self, *, s_3_key: str, request_options: typing.Optional[RequestOptions] = None) -> None:
+    def download_file(
+        self, *, s_3_key: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Iterator[bytes]:
         """
         Download a file from File Stash
 
@@ -31,11 +33,12 @@ class FileStashClient:
         s_3_key : str
 
         request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        None
+        typing.Iterator[bytes]
+            file contents
 
         Examples
         --------
@@ -51,8 +54,8 @@ class FileStashClient:
             s_3_key="s3_key",
         )
         """
-        _response = self._raw_client.download_file(s_3_key=s_3_key, request_options=request_options)
-        return _response.data
+        with self._raw_client.download_file(s_3_key=s_3_key, request_options=request_options) as r:
+            yield from r.data
 
 
 class AsyncFileStashClient:
@@ -70,7 +73,9 @@ class AsyncFileStashClient:
         """
         return self._raw_client
 
-    async def download_file(self, *, s_3_key: str, request_options: typing.Optional[RequestOptions] = None) -> None:
+    async def download_file(
+        self, *, s_3_key: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.AsyncIterator[bytes]:
         """
         Download a file from File Stash
 
@@ -79,11 +84,12 @@ class AsyncFileStashClient:
         s_3_key : str
 
         request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
+            Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        None
+        typing.AsyncIterator[bytes]
+            file contents
 
         Examples
         --------
@@ -107,5 +113,6 @@ class AsyncFileStashClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.download_file(s_3_key=s_3_key, request_options=request_options)
-        return _response.data
+        async with self._raw_client.download_file(s_3_key=s_3_key, request_options=request_options) as r:
+            async for _chunk in r.data:
+                yield _chunk
