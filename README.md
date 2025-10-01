@@ -36,7 +36,7 @@ client.actions.run(
 
 ## Async Client
 
-The SDK also exports an `async` client so that you can make non-blocking calls to our API.
+The SDK also exports an `async` client so that you can make non-blocking calls to our API. Note that if you are constructing an Async httpx client class to pass into this client, use `httpx.AsyncClient()` instead of `httpx.Client()` (e.g. for the `httpx_client` parameter of this client).
 
 ```python
 import asyncio
@@ -89,7 +89,14 @@ client = Pipedream(
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.apps.list()
+response = client.apps.list(
+    after="after",
+    before="before",
+    limit=1,
+    q="q",
+    sort_key="name",
+    sort_direction="asc",
+)
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
