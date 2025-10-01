@@ -6,10 +6,14 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_any_options_item import ConfigurablePropAnyOptionsItem
+from .configured_prop_value_any import ConfiguredPropValueAny
 
 
 class ConfigurablePropAny(UniversalBaseModel):
     type: typing.Literal["any"] = "any"
+    default: typing.Optional[ConfiguredPropValueAny] = None
+    options: typing.Optional[typing.List[ConfigurablePropAnyOptionsItem]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
