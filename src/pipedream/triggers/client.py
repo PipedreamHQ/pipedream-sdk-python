@@ -8,7 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
-from ..types.deployed_component import DeployedComponent
+from ..types.deploy_trigger_response_data import DeployTriggerResponseData
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawTriggersClient, RawTriggersClient
 
@@ -79,7 +79,13 @@ class TriggersClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.triggers.list()
+        response = client.triggers.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+            app="app",
+        )
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -278,7 +284,7 @@ class TriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployedComponent:
+    ) -> DeployTriggerResponseData:
         """
         Deploy a trigger to listen for and emit events
 
@@ -303,7 +309,7 @@ class TriggersClient:
 
         Returns
         -------
-        DeployedComponent
+        DeployTriggerResponseData
             trigger deployed
 
         Examples
@@ -400,7 +406,13 @@ class AsyncTriggersClient:
 
 
         async def main() -> None:
-            response = await client.triggers.list()
+            response = await client.triggers.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+                app="app",
+            )
             async for item in response:
                 yield item
 
@@ -629,7 +641,7 @@ class AsyncTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployedComponent:
+    ) -> DeployTriggerResponseData:
         """
         Deploy a trigger to listen for and emit events
 
@@ -654,7 +666,7 @@ class AsyncTriggersClient:
 
         Returns
         -------
-        DeployedComponent
+        DeployTriggerResponseData
             trigger deployed
 
         Examples
