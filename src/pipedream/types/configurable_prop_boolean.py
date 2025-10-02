@@ -6,15 +6,14 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_boolean_options_item import ConfigurablePropBooleanOptionsItem
+from .configured_prop_value_boolean import ConfiguredPropValueBoolean
 
 
 class ConfigurablePropBoolean(UniversalBaseModel):
     type: typing.Literal["boolean"] = "boolean"
-    default: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    The default value for this prop
-    """
-
+    default: typing.Optional[ConfiguredPropValueBoolean] = None
+    options: typing.Optional[typing.List[ConfigurablePropBooleanOptionsItem]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
