@@ -16,7 +16,7 @@ from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
 from ..types.deploy_trigger_response import DeployTriggerResponse
-from ..types.deployed_component import DeployedComponent
+from ..types.deploy_trigger_response_data import DeployTriggerResponseData
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
@@ -363,7 +363,7 @@ class RawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[DeployedComponent]:
+    ) -> HttpResponse[DeployTriggerResponseData]:
         """
         Deploy a trigger to listen for and emit events
 
@@ -388,7 +388,7 @@ class RawTriggersClient:
 
         Returns
         -------
-        HttpResponse[DeployedComponent]
+        HttpResponse[DeployTriggerResponseData]
             trigger deployed
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -778,7 +778,7 @@ class AsyncRawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[DeployedComponent]:
+    ) -> AsyncHttpResponse[DeployTriggerResponseData]:
         """
         Deploy a trigger to listen for and emit events
 
@@ -803,7 +803,7 @@ class AsyncRawTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[DeployedComponent]
+        AsyncHttpResponse[DeployTriggerResponseData]
             trigger deployed
         """
         _response = await self._client_wrapper.httpx_client.request(

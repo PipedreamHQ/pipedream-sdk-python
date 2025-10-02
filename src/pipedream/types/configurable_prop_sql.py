@@ -7,16 +7,15 @@ import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
 from .configurable_prop_sql_auth import ConfigurablePropSqlAuth
+from .configurable_prop_sql_options_item import ConfigurablePropSqlOptionsItem
+from .configured_prop_value_sql import ConfiguredPropValueSql
 
 
 class ConfigurablePropSql(UniversalBaseModel):
     type: typing.Literal["sql"] = "sql"
     auth: typing.Optional[ConfigurablePropSqlAuth] = None
-    default: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Default SQL query
-    """
-
+    default: typing.Optional[ConfiguredPropValueSql] = None
+    options: typing.Optional[typing.List[ConfigurablePropSqlOptionsItem]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value

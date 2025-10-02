@@ -6,10 +6,14 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_object_options_item import ConfigurablePropObjectOptionsItem
+from .configured_prop_value_object import ConfiguredPropValueObject
 
 
 class ConfigurablePropObject(UniversalBaseModel):
     type: typing.Literal["object"] = "object"
+    default: typing.Optional[ConfiguredPropValueObject] = None
+    options: typing.Optional[typing.List[ConfigurablePropObjectOptionsItem]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
