@@ -8,6 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.configured_props import ConfiguredProps
 from ..types.deployed_component import DeployedComponent
 from ..types.emitted_event import EmittedEvent
+from ..types.get_trigger_response_data import GetTriggerResponseData
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
 from .raw_client import AsyncRawDeployedTriggersClient, RawDeployedTriggersClient
@@ -76,6 +77,9 @@ class DeployedTriggersClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.deployed_triggers.list(
+            after="after",
+            before="before",
+            limit=1,
             external_user_id="external_user_id",
         )
         for item in response:
@@ -90,7 +94,7 @@ class DeployedTriggersClient:
 
     def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeployedComponent:
+    ) -> GetTriggerResponseData:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -106,7 +110,7 @@ class DeployedTriggersClient:
 
         Returns
         -------
-        DeployedComponent
+        GetTriggerResponseData
             deployed trigger retrieved
 
         Examples
@@ -138,7 +142,7 @@ class DeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployedComponent:
+    ) -> GetTriggerResponseData:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -162,7 +166,7 @@ class DeployedTriggersClient:
 
         Returns
         -------
-        DeployedComponent
+        GetTriggerResponseData
             deployed trigger updated
 
         Examples
@@ -231,6 +235,7 @@ class DeployedTriggersClient:
         client.deployed_triggers.delete(
             trigger_id="trigger_id",
             external_user_id="external_user_id",
+            ignore_hook_errors=True,
         )
         """
         _response = self._raw_client.delete(
@@ -283,6 +288,7 @@ class DeployedTriggersClient:
         client.deployed_triggers.list_events(
             trigger_id="trigger_id",
             external_user_id="external_user_id",
+            n=1,
         )
         """
         _response = self._raw_client.list_events(
@@ -538,6 +544,9 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             response = await client.deployed_triggers.list(
+                after="after",
+                before="before",
+                limit=1,
                 external_user_id="external_user_id",
             )
             async for item in response:
@@ -556,7 +565,7 @@ class AsyncDeployedTriggersClient:
 
     async def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> DeployedComponent:
+    ) -> GetTriggerResponseData:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -572,7 +581,7 @@ class AsyncDeployedTriggersClient:
 
         Returns
         -------
-        DeployedComponent
+        GetTriggerResponseData
             deployed trigger retrieved
 
         Examples
@@ -612,7 +621,7 @@ class AsyncDeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployedComponent:
+    ) -> GetTriggerResponseData:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -636,7 +645,7 @@ class AsyncDeployedTriggersClient:
 
         Returns
         -------
-        DeployedComponent
+        GetTriggerResponseData
             deployed trigger updated
 
         Examples
@@ -718,6 +727,7 @@ class AsyncDeployedTriggersClient:
             await client.deployed_triggers.delete(
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
+                ignore_hook_errors=True,
             )
 
 
@@ -778,6 +788,7 @@ class AsyncDeployedTriggersClient:
             await client.deployed_triggers.list_events(
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
+                n=1,
             )
 
 
