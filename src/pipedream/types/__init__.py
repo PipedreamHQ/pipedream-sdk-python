@@ -24,9 +24,11 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_alert import ConfigurablePropAlert
     from .configurable_prop_alert_type import ConfigurablePropAlertType
     from .configurable_prop_any import ConfigurablePropAny
+    from .configurable_prop_any_options_item import ConfigurablePropAnyOptionsItem
     from .configurable_prop_app import ConfigurablePropApp
     from .configurable_prop_apphook import ConfigurablePropApphook
     from .configurable_prop_boolean import ConfigurablePropBoolean
+    from .configurable_prop_boolean_options_item import ConfigurablePropBooleanOptionsItem
     from .configurable_prop_db import ConfigurablePropDb
     from .configurable_prop_discord import ConfigurablePropDiscord
     from .configurable_prop_discord_channel import ConfigurablePropDiscordChannel
@@ -34,11 +36,17 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_http import ConfigurablePropHttp
     from .configurable_prop_integer import ConfigurablePropInteger
     from .configurable_prop_integer_array import ConfigurablePropIntegerArray
+    from .configurable_prop_integer_array_options_item import ConfigurablePropIntegerArrayOptionsItem
+    from .configurable_prop_integer_options_item import ConfigurablePropIntegerOptionsItem
     from .configurable_prop_object import ConfigurablePropObject
+    from .configurable_prop_object_options_item import ConfigurablePropObjectOptionsItem
     from .configurable_prop_sql import ConfigurablePropSql
     from .configurable_prop_sql_auth import ConfigurablePropSqlAuth
+    from .configurable_prop_sql_options_item import ConfigurablePropSqlOptionsItem
     from .configurable_prop_string import ConfigurablePropString
     from .configurable_prop_string_array import ConfigurablePropStringArray
+    from .configurable_prop_string_array_options_item import ConfigurablePropStringArrayOptionsItem
+    from .configurable_prop_string_options_item import ConfigurablePropStringOptionsItem
     from .configurable_prop_timer import ConfigurablePropTimer
     from .configurable_prop_timer_default import ConfigurablePropTimerDefault
     from .configurable_prop_timer_option import ConfigurablePropTimerOption
@@ -63,6 +71,7 @@ if typing.TYPE_CHECKING:
     from .create_token_response import CreateTokenResponse
     from .delete_trigger_opts import DeleteTriggerOpts
     from .deploy_trigger_response import DeployTriggerResponse
+    from .deploy_trigger_response_data import DeployTriggerResponseData
     from .deployed_component import DeployedComponent
     from .dynamic_props import DynamicProps
     from .emitted_event import EmittedEvent
@@ -75,9 +84,11 @@ if typing.TYPE_CHECKING:
     from .get_components_response import GetComponentsResponse
     from .get_trigger_events_response import GetTriggerEventsResponse
     from .get_trigger_response import GetTriggerResponse
+    from .get_trigger_response_data import GetTriggerResponseData
     from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
     from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
     from .get_triggers_response import GetTriggersResponse
+    from .http_interface import HttpInterface
     from .list_accounts_response import ListAccountsResponse
     from .list_app_categories_response import ListAppCategoriesResponse
     from .list_apps_response import ListAppsResponse
@@ -98,8 +109,10 @@ if typing.TYPE_CHECKING:
     from .start_connect_opts import StartConnectOpts
     from .stash_id import StashId
     from .timer_cron import TimerCron
+    from .timer_interface import TimerInterface
     from .timer_interval import TimerInterval
     from .too_many_requests_error_body import TooManyRequestsErrorBody
+    from .tool_annotations import ToolAnnotations
     from .validate_token_response import ValidateTokenResponse
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
@@ -120,9 +133,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropAlert": ".configurable_prop_alert",
     "ConfigurablePropAlertType": ".configurable_prop_alert_type",
     "ConfigurablePropAny": ".configurable_prop_any",
+    "ConfigurablePropAnyOptionsItem": ".configurable_prop_any_options_item",
     "ConfigurablePropApp": ".configurable_prop_app",
     "ConfigurablePropApphook": ".configurable_prop_apphook",
     "ConfigurablePropBoolean": ".configurable_prop_boolean",
+    "ConfigurablePropBooleanOptionsItem": ".configurable_prop_boolean_options_item",
     "ConfigurablePropDb": ".configurable_prop_db",
     "ConfigurablePropDiscord": ".configurable_prop_discord",
     "ConfigurablePropDiscordChannel": ".configurable_prop_discord_channel",
@@ -130,11 +145,17 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropHttp": ".configurable_prop_http",
     "ConfigurablePropInteger": ".configurable_prop_integer",
     "ConfigurablePropIntegerArray": ".configurable_prop_integer_array",
+    "ConfigurablePropIntegerArrayOptionsItem": ".configurable_prop_integer_array_options_item",
+    "ConfigurablePropIntegerOptionsItem": ".configurable_prop_integer_options_item",
     "ConfigurablePropObject": ".configurable_prop_object",
+    "ConfigurablePropObjectOptionsItem": ".configurable_prop_object_options_item",
     "ConfigurablePropSql": ".configurable_prop_sql",
     "ConfigurablePropSqlAuth": ".configurable_prop_sql_auth",
+    "ConfigurablePropSqlOptionsItem": ".configurable_prop_sql_options_item",
     "ConfigurablePropString": ".configurable_prop_string",
     "ConfigurablePropStringArray": ".configurable_prop_string_array",
+    "ConfigurablePropStringArrayOptionsItem": ".configurable_prop_string_array_options_item",
+    "ConfigurablePropStringOptionsItem": ".configurable_prop_string_options_item",
     "ConfigurablePropTimer": ".configurable_prop_timer",
     "ConfigurablePropTimerDefault": ".configurable_prop_timer_default",
     "ConfigurablePropTimerOption": ".configurable_prop_timer_option",
@@ -159,6 +180,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateTokenResponse": ".create_token_response",
     "DeleteTriggerOpts": ".delete_trigger_opts",
     "DeployTriggerResponse": ".deploy_trigger_response",
+    "DeployTriggerResponseData": ".deploy_trigger_response_data",
     "DeployedComponent": ".deployed_component",
     "DynamicProps": ".dynamic_props",
     "EmittedEvent": ".emitted_event",
@@ -171,9 +193,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetComponentsResponse": ".get_components_response",
     "GetTriggerEventsResponse": ".get_trigger_events_response",
     "GetTriggerResponse": ".get_trigger_response",
+    "GetTriggerResponseData": ".get_trigger_response_data",
     "GetTriggerWebhooksResponse": ".get_trigger_webhooks_response",
     "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
     "GetTriggersResponse": ".get_triggers_response",
+    "HttpInterface": ".http_interface",
     "ListAccountsResponse": ".list_accounts_response",
     "ListAppCategoriesResponse": ".list_app_categories_response",
     "ListAppsResponse": ".list_apps_response",
@@ -194,8 +218,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "StartConnectOpts": ".start_connect_opts",
     "StashId": ".stash_id",
     "TimerCron": ".timer_cron",
+    "TimerInterface": ".timer_interface",
     "TimerInterval": ".timer_interval",
     "TooManyRequestsErrorBody": ".too_many_requests_error_body",
+    "ToolAnnotations": ".tool_annotations",
     "ValidateTokenResponse": ".validate_token_response",
 }
 
@@ -206,8 +232,10 @@ def __getattr__(attr_name: str) -> typing.Any:
         raise AttributeError(f"No {attr_name} found in _dynamic_imports for module name -> {__name__}")
     try:
         module = import_module(module_name, __package__)
-        result = getattr(module, attr_name)
-        return result
+        if module_name == f".{attr_name}":
+            return module
+        else:
+            return getattr(module, attr_name)
     except ImportError as e:
         raise ImportError(f"Failed to import {attr_name} from {module_name}: {e}") from e
     except AttributeError as e:
@@ -238,9 +266,11 @@ __all__ = [
     "ConfigurablePropAlert",
     "ConfigurablePropAlertType",
     "ConfigurablePropAny",
+    "ConfigurablePropAnyOptionsItem",
     "ConfigurablePropApp",
     "ConfigurablePropApphook",
     "ConfigurablePropBoolean",
+    "ConfigurablePropBooleanOptionsItem",
     "ConfigurablePropDb",
     "ConfigurablePropDiscord",
     "ConfigurablePropDiscordChannel",
@@ -248,11 +278,17 @@ __all__ = [
     "ConfigurablePropHttp",
     "ConfigurablePropInteger",
     "ConfigurablePropIntegerArray",
+    "ConfigurablePropIntegerArrayOptionsItem",
+    "ConfigurablePropIntegerOptionsItem",
     "ConfigurablePropObject",
+    "ConfigurablePropObjectOptionsItem",
     "ConfigurablePropSql",
     "ConfigurablePropSqlAuth",
+    "ConfigurablePropSqlOptionsItem",
     "ConfigurablePropString",
     "ConfigurablePropStringArray",
+    "ConfigurablePropStringArrayOptionsItem",
+    "ConfigurablePropStringOptionsItem",
     "ConfigurablePropTimer",
     "ConfigurablePropTimerDefault",
     "ConfigurablePropTimerOption",
@@ -277,6 +313,7 @@ __all__ = [
     "CreateTokenResponse",
     "DeleteTriggerOpts",
     "DeployTriggerResponse",
+    "DeployTriggerResponseData",
     "DeployedComponent",
     "DynamicProps",
     "EmittedEvent",
@@ -289,9 +326,11 @@ __all__ = [
     "GetComponentsResponse",
     "GetTriggerEventsResponse",
     "GetTriggerResponse",
+    "GetTriggerResponseData",
     "GetTriggerWebhooksResponse",
     "GetTriggerWorkflowsResponse",
     "GetTriggersResponse",
+    "HttpInterface",
     "ListAccountsResponse",
     "ListAppCategoriesResponse",
     "ListAppsResponse",
@@ -312,7 +351,9 @@ __all__ = [
     "StartConnectOpts",
     "StashId",
     "TimerCron",
+    "TimerInterface",
     "TimerInterval",
     "TooManyRequestsErrorBody",
+    "ToolAnnotations",
     "ValidateTokenResponse",
 ]

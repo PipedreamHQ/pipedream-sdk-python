@@ -6,6 +6,8 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_integer_options_item import ConfigurablePropIntegerOptionsItem
+from .configured_prop_value_integer import ConfiguredPropValueInteger
 
 
 class ConfigurablePropInteger(UniversalBaseModel):
@@ -20,12 +22,8 @@ class ConfigurablePropInteger(UniversalBaseModel):
     The maximum value for this integer prop.
     """
 
-    default: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Default integer value
-    """
-
-    options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
+    default: typing.Optional[ConfiguredPropValueInteger] = None
+    options: typing.Optional[typing.List[ConfigurablePropIntegerOptionsItem]] = pydantic.Field(default=None)
     """
     Available integer options
     """
