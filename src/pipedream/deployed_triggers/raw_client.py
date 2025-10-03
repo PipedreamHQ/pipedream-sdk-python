@@ -17,6 +17,7 @@ from ..types.deployed_component import DeployedComponent
 from ..types.emitted_event import EmittedEvent
 from ..types.get_trigger_events_response import GetTriggerEventsResponse
 from ..types.get_trigger_response import GetTriggerResponse
+from ..types.get_trigger_response_data import GetTriggerResponseData
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
 from ..types.get_triggers_response import GetTriggersResponse
@@ -117,7 +118,7 @@ class RawDeployedTriggersClient:
 
     def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[DeployedComponent]:
+    ) -> HttpResponse[GetTriggerResponseData]:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -133,7 +134,7 @@ class RawDeployedTriggersClient:
 
         Returns
         -------
-        HttpResponse[DeployedComponent]
+        HttpResponse[GetTriggerResponseData]
             deployed trigger retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -180,7 +181,7 @@ class RawDeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[DeployedComponent]:
+    ) -> HttpResponse[GetTriggerResponseData]:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -204,7 +205,7 @@ class RawDeployedTriggersClient:
 
         Returns
         -------
-        HttpResponse[DeployedComponent]
+        HttpResponse[GetTriggerResponseData]
             deployed trigger updated
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -720,7 +721,7 @@ class AsyncRawDeployedTriggersClient:
 
     async def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[DeployedComponent]:
+    ) -> AsyncHttpResponse[GetTriggerResponseData]:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -736,7 +737,7 @@ class AsyncRawDeployedTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[DeployedComponent]
+        AsyncHttpResponse[GetTriggerResponseData]
             deployed trigger retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -783,7 +784,7 @@ class AsyncRawDeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[DeployedComponent]:
+    ) -> AsyncHttpResponse[GetTriggerResponseData]:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -807,7 +808,7 @@ class AsyncRawDeployedTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[DeployedComponent]
+        AsyncHttpResponse[GetTriggerResponseData]
             deployed trigger updated
         """
         _response = await self._client_wrapper.httpx_client.request(

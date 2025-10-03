@@ -83,7 +83,14 @@ class ComponentsClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.components.list()
+        response = client.components.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+            app="app",
+            component_type="trigger",
+        )
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -352,7 +359,14 @@ class AsyncComponentsClient:
 
 
         async def main() -> None:
-            response = await client.components.list()
+            response = await client.components.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+                app="app",
+                component_type="trigger",
+            )
             async for item in response:
                 yield item
 
