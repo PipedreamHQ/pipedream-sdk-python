@@ -80,7 +80,13 @@ class ActionsClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.actions.list()
+        response = client.actions.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+            app="app",
+        )
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -400,7 +406,13 @@ class AsyncActionsClient:
 
 
         async def main() -> None:
-            response = await client.actions.list()
+            response = await client.actions.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+                app="app",
+            )
             async for item in response:
                 yield item
 
