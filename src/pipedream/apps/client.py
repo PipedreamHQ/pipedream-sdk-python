@@ -83,7 +83,14 @@ class AppsClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.apps.list()
+        response = client.apps.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+            sort_key="name",
+            sort_direction="asc",
+        )
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -212,7 +219,14 @@ class AsyncAppsClient:
 
 
         async def main() -> None:
-            response = await client.apps.list()
+            response = await client.apps.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+                sort_key="name",
+                sort_direction="asc",
+            )
             async for item in response:
                 yield item
 

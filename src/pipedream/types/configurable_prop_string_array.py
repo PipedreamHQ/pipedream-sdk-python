@@ -6,20 +6,23 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_string_array_options_item import ConfigurablePropStringArrayOptionsItem
+from .configured_prop_value_string import ConfiguredPropValueString
 
 
 class ConfigurablePropStringArray(UniversalBaseModel):
     type: typing.Literal["string[]"] = "string[]"
-    default: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
-    The default value for this prop
-    """
-
     secret: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If true, this prop is a secret and should not be displayed in plain text.
     """
 
+    default: typing.Optional[typing.List[ConfiguredPropValueString]] = pydantic.Field(default=None)
+    """
+    The default value for this prop
+    """
+
+    options: typing.Optional[typing.List[ConfigurablePropStringArrayOptionsItem]] = None
     name: str = pydantic.Field()
     """
     When building `configuredProps`, make sure to use this field as the key when setting the prop value

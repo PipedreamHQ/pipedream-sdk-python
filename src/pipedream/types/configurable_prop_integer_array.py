@@ -6,6 +6,8 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_integer_array_options_item import ConfigurablePropIntegerArrayOptionsItem
+from .configured_prop_value_integer import ConfiguredPropValueInteger
 
 
 class ConfigurablePropIntegerArray(UniversalBaseModel):
@@ -20,12 +22,12 @@ class ConfigurablePropIntegerArray(UniversalBaseModel):
     The maximum value for integers in this array
     """
 
-    default: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
+    default: typing.Optional[typing.List[ConfiguredPropValueInteger]] = pydantic.Field(default=None)
     """
     Default array of integers
     """
 
-    options: typing.Optional[typing.List[int]] = pydantic.Field(default=None)
+    options: typing.Optional[typing.List[ConfigurablePropIntegerArrayOptionsItem]] = pydantic.Field(default=None)
     """
     Available options for the integer array
     """
