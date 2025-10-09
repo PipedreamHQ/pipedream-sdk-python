@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .deployed_component import DeployedComponent
+from .get_trigger_response_data import GetTriggerResponseData
 
 
 class GetTriggerResponse(UniversalBaseModel):
@@ -12,7 +12,7 @@ class GetTriggerResponse(UniversalBaseModel):
     Response received when retrieving a deployed trigger
     """
 
-    data: DeployedComponent
+    data: GetTriggerResponseData
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
