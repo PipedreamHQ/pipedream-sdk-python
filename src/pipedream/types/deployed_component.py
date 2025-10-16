@@ -59,7 +59,10 @@ class DeployedComponent(UniversalBaseModel):
     The name slug of the deployed component
     """
 
-    callback_observations: typing.Optional[typing.Optional[typing.Any]] = None
+    callback_observations: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    """
+    Callback observations for the deployed component
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
