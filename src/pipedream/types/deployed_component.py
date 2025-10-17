@@ -28,6 +28,11 @@ class DeployedComponent(UniversalBaseModel):
     The ID of the component that was deployed
     """
 
+    component_key: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The component key (name) that was deployed
+    """
+
     configurable_props: typing.List[ConfigurableProp] = pydantic.Field()
     """
     The configurable properties of the component
