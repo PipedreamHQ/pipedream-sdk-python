@@ -19,7 +19,12 @@ class RawOauthTokensClient:
         self._client_wrapper = client_wrapper
 
     def create(
-        self, *, client_id: str, client_secret: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        client_id: str,
+        client_secret: str,
+        scope: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateOAuthTokenResponse]:
         """
         Exchange OAuth credentials for an access token
@@ -29,6 +34,9 @@ class RawOauthTokensClient:
         client_id : str
 
         client_secret : str
+
+        scope : typing.Optional[str]
+            Optional space-separated scopes for the access token. Defaults to '*'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -44,6 +52,7 @@ class RawOauthTokensClient:
             json={
                 "client_id": client_id,
                 "client_secret": client_secret,
+                "scope": scope,
                 "grant_type": "client_credentials",
             },
             headers={
@@ -73,7 +82,12 @@ class AsyncRawOauthTokensClient:
         self._client_wrapper = client_wrapper
 
     async def create(
-        self, *, client_id: str, client_secret: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        client_id: str,
+        client_secret: str,
+        scope: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateOAuthTokenResponse]:
         """
         Exchange OAuth credentials for an access token
@@ -83,6 +97,9 @@ class AsyncRawOauthTokensClient:
         client_id : str
 
         client_secret : str
+
+        scope : typing.Optional[str]
+            Optional space-separated scopes for the access token. Defaults to '*'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -98,6 +115,7 @@ class AsyncRawOauthTokensClient:
             json={
                 "client_id": client_id,
                 "client_secret": client_secret,
+                "scope": scope,
                 "grant_type": "client_credentials",
             },
             headers={
