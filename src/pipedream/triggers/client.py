@@ -282,6 +282,7 @@ class TriggersClient:
         external_user_id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> DeployTriggerResponseData:
@@ -300,6 +301,9 @@ class TriggersClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
 
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
@@ -332,6 +336,7 @@ class TriggersClient:
             external_user_id=external_user_id,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
+            workflow_id=workflow_id,
             webhook_url=webhook_url,
             request_options=request_options,
         )
@@ -639,6 +644,7 @@ class AsyncTriggersClient:
         external_user_id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> DeployTriggerResponseData:
@@ -657,6 +663,9 @@ class AsyncTriggersClient:
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
 
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
@@ -697,6 +706,7 @@ class AsyncTriggersClient:
             external_user_id=external_user_id,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
+            workflow_id=workflow_id,
             webhook_url=webhook_url,
             request_options=request_options,
         )
