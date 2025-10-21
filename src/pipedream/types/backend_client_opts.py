@@ -26,6 +26,11 @@ class BackendClientOpts(UniversalBaseModel):
     The API URL to use
     """
 
+    scope: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional space-separated scopes for the access token. Defaults to '*'.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:
