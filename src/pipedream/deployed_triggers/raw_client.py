@@ -13,14 +13,14 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.configured_props import ConfiguredProps
-from ..types.deployed_component import DeployedComponent
 from ..types.emitted_event import EmittedEvent
+from ..types.emitter import Emitter
 from ..types.get_trigger_events_response import GetTriggerEventsResponse
 from ..types.get_trigger_response import GetTriggerResponse
-from ..types.get_trigger_response_data import GetTriggerResponseData
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
 from ..types.get_triggers_response import GetTriggersResponse
+from .types.deployed_triggers_list_request_emitter_type import DeployedTriggersListRequestEmitterType
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -37,8 +37,9 @@ class RawDeployedTriggersClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
+        emitter_type: typing.Optional[DeployedTriggersListRequestEmitterType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[DeployedComponent]:
+    ) -> SyncPager[Emitter]:
         """
         Retrieve all deployed triggers for a specific external user
 
@@ -56,12 +57,15 @@ class RawDeployedTriggersClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
+        emitter_type : typing.Optional[DeployedTriggersListRequestEmitterType]
+            Filter deployed triggers by emitter type (defaults to 'source' if not provided)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        SyncPager[DeployedComponent]
+        SyncPager[Emitter]
             deployed triggers listed
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -72,6 +76,7 @@ class RawDeployedTriggersClient:
                 "before": before,
                 "limit": limit,
                 "external_user_id": external_user_id,
+                "emitter_type": emitter_type,
             },
             request_options=request_options,
         )
@@ -95,6 +100,7 @@ class RawDeployedTriggersClient:
                         after=_parsed_next,
                         before=before,
                         limit=limit,
+                        emitter_type=emitter_type,
                         request_options=request_options,
                     )
                 return SyncPager(
@@ -118,7 +124,7 @@ class RawDeployedTriggersClient:
 
     def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[GetTriggerResponseData]:
+    ) -> HttpResponse[Emitter]:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -134,7 +140,7 @@ class RawDeployedTriggersClient:
 
         Returns
         -------
-        HttpResponse[GetTriggerResponseData]
+        HttpResponse[Emitter]
             deployed trigger retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -181,7 +187,7 @@ class RawDeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[GetTriggerResponseData]:
+    ) -> HttpResponse[Emitter]:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -205,7 +211,7 @@ class RawDeployedTriggersClient:
 
         Returns
         -------
-        HttpResponse[GetTriggerResponseData]
+        HttpResponse[Emitter]
             deployed trigger updated
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -637,8 +643,9 @@ class AsyncRawDeployedTriggersClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
+        emitter_type: typing.Optional[DeployedTriggersListRequestEmitterType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[DeployedComponent]:
+    ) -> AsyncPager[Emitter]:
         """
         Retrieve all deployed triggers for a specific external user
 
@@ -656,12 +663,15 @@ class AsyncRawDeployedTriggersClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
+        emitter_type : typing.Optional[DeployedTriggersListRequestEmitterType]
+            Filter deployed triggers by emitter type (defaults to 'source' if not provided)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncPager[DeployedComponent]
+        AsyncPager[Emitter]
             deployed triggers listed
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -672,6 +682,7 @@ class AsyncRawDeployedTriggersClient:
                 "before": before,
                 "limit": limit,
                 "external_user_id": external_user_id,
+                "emitter_type": emitter_type,
             },
             request_options=request_options,
         )
@@ -697,6 +708,7 @@ class AsyncRawDeployedTriggersClient:
                             after=_parsed_next,
                             before=before,
                             limit=limit,
+                            emitter_type=emitter_type,
                             request_options=request_options,
                         )
 
@@ -721,7 +733,7 @@ class AsyncRawDeployedTriggersClient:
 
     async def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[GetTriggerResponseData]:
+    ) -> AsyncHttpResponse[Emitter]:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -737,7 +749,7 @@ class AsyncRawDeployedTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[GetTriggerResponseData]
+        AsyncHttpResponse[Emitter]
             deployed trigger retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -784,7 +796,7 @@ class AsyncRawDeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[GetTriggerResponseData]:
+    ) -> AsyncHttpResponse[Emitter]:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -808,7 +820,7 @@ class AsyncRawDeployedTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[GetTriggerResponseData]
+        AsyncHttpResponse[Emitter]
             deployed trigger updated
         """
         _response = await self._client_wrapper.httpx_client.request(

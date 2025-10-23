@@ -6,15 +6,9 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from ._api import EventSource, aconnect_sse, connect_sse
-    from ._exceptions import SSEError
-    from ._models import ServerSentEvent
+    from .deployed_triggers_list_request_emitter_type import DeployedTriggersListRequestEmitterType
 _dynamic_imports: typing.Dict[str, str] = {
-    "EventSource": "._api",
-    "SSEError": "._exceptions",
-    "ServerSentEvent": "._models",
-    "aconnect_sse": "._api",
-    "connect_sse": "._api",
+    "DeployedTriggersListRequestEmitterType": ".deployed_triggers_list_request_emitter_type"
 }
 
 
@@ -39,4 +33,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["EventSource", "SSEError", "ServerSentEvent", "aconnect_sse", "connect_sse"]
+__all__ = ["DeployedTriggersListRequestEmitterType"]
