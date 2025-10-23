@@ -27,7 +27,12 @@ class OauthTokensClient:
         return self._raw_client
 
     def create(
-        self, *, client_id: str, client_secret: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        client_id: str,
+        client_secret: str,
+        scope: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateOAuthTokenResponse:
         """
         Exchange OAuth credentials for an access token
@@ -37,6 +42,9 @@ class OauthTokensClient:
         client_id : str
 
         client_secret : str
+
+        scope : typing.Optional[str]
+            Optional space-separated scopes for the access token. Defaults to '*'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -62,7 +70,7 @@ class OauthTokensClient:
         )
         """
         _response = self._raw_client.create(
-            client_id=client_id, client_secret=client_secret, request_options=request_options
+            client_id=client_id, client_secret=client_secret, scope=scope, request_options=request_options
         )
         return _response.data
 
@@ -83,7 +91,12 @@ class AsyncOauthTokensClient:
         return self._raw_client
 
     async def create(
-        self, *, client_id: str, client_secret: str, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        client_id: str,
+        client_secret: str,
+        scope: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateOAuthTokenResponse:
         """
         Exchange OAuth credentials for an access token
@@ -93,6 +106,9 @@ class AsyncOauthTokensClient:
         client_id : str
 
         client_secret : str
+
+        scope : typing.Optional[str]
+            Optional space-separated scopes for the access token. Defaults to '*'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -126,6 +142,6 @@ class AsyncOauthTokensClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            client_id=client_id, client_secret=client_secret, request_options=request_options
+            client_id=client_id, client_secret=client_secret, scope=scope, request_options=request_options
         )
         return _response.data
