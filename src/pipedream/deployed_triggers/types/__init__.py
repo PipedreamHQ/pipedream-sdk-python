@@ -6,8 +6,10 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import DeployedTriggersListRequestEmitterType
-_dynamic_imports: typing.Dict[str, str] = {"DeployedTriggersListRequestEmitterType": ".types"}
+    from .deployed_triggers_list_request_emitter_type import DeployedTriggersListRequestEmitterType
+_dynamic_imports: typing.Dict[str, str] = {
+    "DeployedTriggersListRequestEmitterType": ".deployed_triggers_list_request_emitter_type"
+}
 
 
 def __getattr__(attr_name: str) -> typing.Any:

@@ -71,10 +71,10 @@ if typing.TYPE_CHECKING:
     from .create_token_response import CreateTokenResponse
     from .delete_trigger_opts import DeleteTriggerOpts
     from .deploy_trigger_response import DeployTriggerResponse
-    from .deploy_trigger_response_data import DeployTriggerResponseData
     from .deployed_component import DeployedComponent
     from .dynamic_props import DynamicProps
     from .emitted_event import EmittedEvent
+    from .emitter import Emitter, Emitter_DeployedComponent, Emitter_HttpInterface, Emitter_TimerInterface
     from .error_response import ErrorResponse
     from .get_accounts_response import GetAccountsResponse
     from .get_app_category_response import GetAppCategoryResponse
@@ -84,7 +84,6 @@ if typing.TYPE_CHECKING:
     from .get_components_response import GetComponentsResponse
     from .get_trigger_events_response import GetTriggerEventsResponse
     from .get_trigger_response import GetTriggerResponse
-    from .get_trigger_response_data import GetTriggerResponseData
     from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
     from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
     from .get_triggers_response import GetTriggersResponse
@@ -180,10 +179,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateTokenResponse": ".create_token_response",
     "DeleteTriggerOpts": ".delete_trigger_opts",
     "DeployTriggerResponse": ".deploy_trigger_response",
-    "DeployTriggerResponseData": ".deploy_trigger_response_data",
     "DeployedComponent": ".deployed_component",
     "DynamicProps": ".dynamic_props",
     "EmittedEvent": ".emitted_event",
+    "Emitter": ".emitter",
+    "Emitter_DeployedComponent": ".emitter",
+    "Emitter_HttpInterface": ".emitter",
+    "Emitter_TimerInterface": ".emitter",
     "ErrorResponse": ".error_response",
     "GetAccountsResponse": ".get_accounts_response",
     "GetAppCategoryResponse": ".get_app_category_response",
@@ -193,7 +195,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetComponentsResponse": ".get_components_response",
     "GetTriggerEventsResponse": ".get_trigger_events_response",
     "GetTriggerResponse": ".get_trigger_response",
-    "GetTriggerResponseData": ".get_trigger_response_data",
     "GetTriggerWebhooksResponse": ".get_trigger_webhooks_response",
     "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
     "GetTriggersResponse": ".get_triggers_response",
@@ -313,10 +314,13 @@ __all__ = [
     "CreateTokenResponse",
     "DeleteTriggerOpts",
     "DeployTriggerResponse",
-    "DeployTriggerResponseData",
     "DeployedComponent",
     "DynamicProps",
     "EmittedEvent",
+    "Emitter",
+    "Emitter_DeployedComponent",
+    "Emitter_HttpInterface",
+    "Emitter_TimerInterface",
     "ErrorResponse",
     "GetAccountsResponse",
     "GetAppCategoryResponse",
@@ -326,7 +330,6 @@ __all__ = [
     "GetComponentsResponse",
     "GetTriggerEventsResponse",
     "GetTriggerResponse",
-    "GetTriggerResponseData",
     "GetTriggerWebhooksResponse",
     "GetTriggerWorkflowsResponse",
     "GetTriggersResponse",

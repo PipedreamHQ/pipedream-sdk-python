@@ -8,7 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
-from ..types.deploy_trigger_response_data import DeployTriggerResponseData
+from ..types.emitter import Emitter
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawTriggersClient, RawTriggersClient
 
@@ -282,9 +282,10 @@ class TriggersClient:
         external_user_id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployTriggerResponseData:
+    ) -> Emitter:
         """
         Deploy a trigger to listen for and emit events
 
@@ -301,6 +302,9 @@ class TriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
+
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
@@ -309,7 +313,7 @@ class TriggersClient:
 
         Returns
         -------
-        DeployTriggerResponseData
+        Emitter
             trigger deployed
 
         Examples
@@ -332,6 +336,7 @@ class TriggersClient:
             external_user_id=external_user_id,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
+            workflow_id=workflow_id,
             webhook_url=webhook_url,
             request_options=request_options,
         )
@@ -639,9 +644,10 @@ class AsyncTriggersClient:
         external_user_id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployTriggerResponseData:
+    ) -> Emitter:
         """
         Deploy a trigger to listen for and emit events
 
@@ -658,6 +664,9 @@ class AsyncTriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
+
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
@@ -666,7 +675,7 @@ class AsyncTriggersClient:
 
         Returns
         -------
-        DeployTriggerResponseData
+        Emitter
             trigger deployed
 
         Examples
@@ -697,6 +706,7 @@ class AsyncTriggersClient:
             external_user_id=external_user_id,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
+            workflow_id=workflow_id,
             webhook_url=webhook_url,
             request_options=request_options,
         )
