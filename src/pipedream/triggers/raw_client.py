@@ -16,7 +16,7 @@ from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
 from ..types.deploy_trigger_response import DeployTriggerResponse
-from ..types.deploy_trigger_response_data import DeployTriggerResponseData
+from ..types.emitter import Emitter
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
@@ -361,9 +361,10 @@ class RawTriggersClient:
         external_user_id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[DeployTriggerResponseData]:
+    ) -> HttpResponse[Emitter]:
         """
         Deploy a trigger to listen for and emit events
 
@@ -380,6 +381,9 @@ class RawTriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
+
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
@@ -388,7 +392,7 @@ class RawTriggersClient:
 
         Returns
         -------
-        HttpResponse[DeployTriggerResponseData]
+        HttpResponse[Emitter]
             trigger deployed
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -401,6 +405,7 @@ class RawTriggersClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
+                "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
             },
             headers={
@@ -776,9 +781,10 @@ class AsyncRawTriggersClient:
         external_user_id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[DeployTriggerResponseData]:
+    ) -> AsyncHttpResponse[Emitter]:
         """
         Deploy a trigger to listen for and emit events
 
@@ -795,6 +801,9 @@ class AsyncRawTriggersClient:
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
+
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
@@ -803,7 +812,7 @@ class AsyncRawTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[DeployTriggerResponseData]
+        AsyncHttpResponse[Emitter]
             trigger deployed
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -816,6 +825,7 @@ class AsyncRawTriggersClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
+                "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
             },
             headers={

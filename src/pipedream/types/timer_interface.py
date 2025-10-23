@@ -25,7 +25,7 @@ class TimerInterface(UniversalBaseModel):
     The timestamp when the timer interface was created (epoch milliseconds)
     """
 
-    updated_at: typing.Optional[int] = pydantic.Field(default=None)
+    updated_at: int = pydantic.Field()
     """
     The timestamp when the timer interface was last updated (epoch milliseconds)
     """
