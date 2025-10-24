@@ -107,7 +107,13 @@ class ComponentsClient:
             request_options=request_options,
         )
 
-    def retrieve(self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Component:
+    def retrieve(
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Component:
         """
         Get detailed configuration for a specific component by its key
 
@@ -115,6 +121,9 @@ class ComponentsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -136,9 +145,10 @@ class ComponentsClient:
         )
         client.components.retrieve(
             component_id="component_id",
+            version="1.2.3",
         )
         """
-        _response = self._raw_client.retrieve(component_id, request_options=request_options)
+        _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data
 
     def configure_prop(
@@ -147,6 +157,7 @@ class ComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -168,6 +179,9 @@ class ComponentsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -214,6 +228,7 @@ class ComponentsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -229,6 +244,7 @@ class ComponentsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -244,6 +260,9 @@ class ComponentsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -279,6 +298,7 @@ class ComponentsClient:
         _response = self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -388,7 +408,11 @@ class AsyncComponentsClient:
         )
 
     async def retrieve(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> Component:
         """
         Get detailed configuration for a specific component by its key
@@ -397,6 +421,9 @@ class AsyncComponentsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -423,12 +450,13 @@ class AsyncComponentsClient:
         async def main() -> None:
             await client.components.retrieve(
                 component_id="component_id",
+                version="1.2.3",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.retrieve(component_id, request_options=request_options)
+        _response = await self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data
 
     async def configure_prop(
@@ -437,6 +465,7 @@ class AsyncComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -458,6 +487,9 @@ class AsyncComponentsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -512,6 +544,7 @@ class AsyncComponentsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -527,6 +560,7 @@ class AsyncComponentsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -542,6 +576,9 @@ class AsyncComponentsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -585,6 +622,7 @@ class AsyncComponentsClient:
         _response = await self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,

@@ -122,7 +122,11 @@ class RawActionsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Component]:
         """
         Get detailed configuration for a specific action by its key
@@ -131,6 +135,9 @@ class RawActionsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -143,6 +150,9 @@ class RawActionsClient:
         _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/actions/{jsonable_encoder(component_id)}",
             method="GET",
+            params={
+                "version": version,
+            },
             request_options=request_options,
         )
         try:
@@ -178,6 +188,7 @@ class RawActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -199,6 +210,9 @@ class RawActionsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -230,6 +244,7 @@ class RawActionsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
@@ -278,6 +293,7 @@ class RawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -293,6 +309,9 @@ class RawActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -315,6 +334,7 @@ class RawActionsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
                 "configured_props": convert_and_respect_annotation_metadata(
@@ -359,6 +379,7 @@ class RawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
@@ -374,6 +395,9 @@ class RawActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         configured_props : typing.Optional[ConfiguredProps]
 
@@ -395,6 +419,7 @@ class RawActionsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "configured_props": convert_and_respect_annotation_metadata(
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
@@ -537,7 +562,11 @@ class AsyncRawActionsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Component]:
         """
         Get detailed configuration for a specific action by its key
@@ -546,6 +575,9 @@ class AsyncRawActionsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -558,6 +590,9 @@ class AsyncRawActionsClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/actions/{jsonable_encoder(component_id)}",
             method="GET",
+            params={
+                "version": version,
+            },
             request_options=request_options,
         )
         try:
@@ -593,6 +628,7 @@ class AsyncRawActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -614,6 +650,9 @@ class AsyncRawActionsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -645,6 +684,7 @@ class AsyncRawActionsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
@@ -693,6 +733,7 @@ class AsyncRawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -708,6 +749,9 @@ class AsyncRawActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -730,6 +774,7 @@ class AsyncRawActionsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
                 "configured_props": convert_and_respect_annotation_metadata(
@@ -774,6 +819,7 @@ class AsyncRawActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
@@ -789,6 +835,9 @@ class AsyncRawActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         configured_props : typing.Optional[ConfiguredProps]
 
@@ -810,6 +859,7 @@ class AsyncRawActionsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "configured_props": convert_and_respect_annotation_metadata(
                     object_=configured_props, annotation=ConfiguredProps, direction="write"

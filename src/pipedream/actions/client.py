@@ -97,7 +97,13 @@ class ActionsClient:
             after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
         )
 
-    def retrieve(self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Component:
+    def retrieve(
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Component:
         """
         Get detailed configuration for a specific action by its key
 
@@ -105,6 +111,9 @@ class ActionsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -126,9 +135,10 @@ class ActionsClient:
         )
         client.actions.retrieve(
             component_id="component_id",
+            version="1.2.3",
         )
         """
-        _response = self._raw_client.retrieve(component_id, request_options=request_options)
+        _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data
 
     def configure_prop(
@@ -137,6 +147,7 @@ class ActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -158,6 +169,9 @@ class ActionsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -204,6 +218,7 @@ class ActionsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -219,6 +234,7 @@ class ActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -234,6 +250,9 @@ class ActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -269,6 +288,7 @@ class ActionsClient:
         _response = self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -281,6 +301,7 @@ class ActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
@@ -296,6 +317,9 @@ class ActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         configured_props : typing.Optional[ConfiguredProps]
 
@@ -330,6 +354,7 @@ class ActionsClient:
         _response = self._raw_client.run(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
             stash_id=stash_id,
@@ -428,7 +453,11 @@ class AsyncActionsClient:
         )
 
     async def retrieve(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> Component:
         """
         Get detailed configuration for a specific action by its key
@@ -437,6 +466,9 @@ class AsyncActionsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -463,12 +495,13 @@ class AsyncActionsClient:
         async def main() -> None:
             await client.actions.retrieve(
                 component_id="component_id",
+                version="1.2.3",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.retrieve(component_id, request_options=request_options)
+        _response = await self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data
 
     async def configure_prop(
@@ -477,6 +510,7 @@ class AsyncActionsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -498,6 +532,9 @@ class AsyncActionsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -552,6 +589,7 @@ class AsyncActionsClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -567,6 +605,7 @@ class AsyncActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -582,6 +621,9 @@ class AsyncActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -625,6 +667,7 @@ class AsyncActionsClient:
         _response = await self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -637,6 +680,7 @@ class AsyncActionsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
@@ -652,6 +696,9 @@ class AsyncActionsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         configured_props : typing.Optional[ConfiguredProps]
 
@@ -694,6 +741,7 @@ class AsyncActionsClient:
         _response = await self._raw_client.run(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
             stash_id=stash_id,
