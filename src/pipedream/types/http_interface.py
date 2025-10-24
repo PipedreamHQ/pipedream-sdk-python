@@ -24,7 +24,7 @@ class HttpInterface(UniversalBaseModel):
     The timestamp when the HTTP interface was created (epoch milliseconds)
     """
 
-    updated_at: typing.Optional[int] = pydantic.Field(default=None)
+    updated_at: int = pydantic.Field()
     """
     The timestamp when the HTTP interface was last updated (epoch milliseconds)
     """
