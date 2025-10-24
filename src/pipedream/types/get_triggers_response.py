@@ -4,7 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .deployed_component import DeployedComponent
+from .emitter import Emitter
 from .page_info import PageInfo
 
 
@@ -13,7 +13,7 @@ class GetTriggersResponse(UniversalBaseModel):
     Response received when listing deployed triggers
     """
 
-    data: typing.List[DeployedComponent]
+    data: typing.List[Emitter]
     page_info: PageInfo
 
     if IS_PYDANTIC_V2:
