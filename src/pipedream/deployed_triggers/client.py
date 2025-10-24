@@ -6,9 +6,9 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.configured_props import ConfiguredProps
-from ..types.deployed_component import DeployedComponent
 from ..types.emitted_event import EmittedEvent
-from ..types.get_trigger_response_data import GetTriggerResponseData
+from ..types.emitter import Emitter
+from ..types.emitter_type import EmitterType
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
 from .raw_client import AsyncRawDeployedTriggersClient, RawDeployedTriggersClient
@@ -39,8 +39,9 @@ class DeployedTriggersClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
+        emitter_type: typing.Optional[EmitterType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[DeployedComponent]:
+    ) -> SyncPager[Emitter]:
         """
         Retrieve all deployed triggers for a specific external user
 
@@ -58,12 +59,15 @@ class DeployedTriggersClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
+        emitter_type : typing.Optional[EmitterType]
+            Filter deployed triggers by emitter type (defaults to 'source' if not provided)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        SyncPager[DeployedComponent]
+        SyncPager[Emitter]
             deployed triggers listed
 
         Examples
@@ -81,6 +85,7 @@ class DeployedTriggersClient:
             before="before",
             limit=1,
             external_user_id="external_user_id",
+            emitter_type="email",
         )
         for item in response:
             yield item
@@ -89,12 +94,17 @@ class DeployedTriggersClient:
             yield page
         """
         return self._raw_client.list(
-            external_user_id=external_user_id, after=after, before=before, limit=limit, request_options=request_options
+            external_user_id=external_user_id,
+            after=after,
+            before=before,
+            limit=limit,
+            emitter_type=emitter_type,
+            request_options=request_options,
         )
 
     def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetTriggerResponseData:
+    ) -> Emitter:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -110,7 +120,7 @@ class DeployedTriggersClient:
 
         Returns
         -------
-        GetTriggerResponseData
+        Emitter
             deployed trigger retrieved
 
         Examples
@@ -142,7 +152,7 @@ class DeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetTriggerResponseData:
+    ) -> Emitter:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -166,7 +176,7 @@ class DeployedTriggersClient:
 
         Returns
         -------
-        GetTriggerResponseData
+        Emitter
             deployed trigger updated
 
         Examples
@@ -501,8 +511,9 @@ class AsyncDeployedTriggersClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
+        emitter_type: typing.Optional[EmitterType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[DeployedComponent]:
+    ) -> AsyncPager[Emitter]:
         """
         Retrieve all deployed triggers for a specific external user
 
@@ -520,12 +531,15 @@ class AsyncDeployedTriggersClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
+        emitter_type : typing.Optional[EmitterType]
+            Filter deployed triggers by emitter type (defaults to 'source' if not provided)
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncPager[DeployedComponent]
+        AsyncPager[Emitter]
             deployed triggers listed
 
         Examples
@@ -548,6 +562,7 @@ class AsyncDeployedTriggersClient:
                 before="before",
                 limit=1,
                 external_user_id="external_user_id",
+                emitter_type="email",
             )
             async for item in response:
                 yield item
@@ -560,12 +575,17 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            external_user_id=external_user_id, after=after, before=before, limit=limit, request_options=request_options
+            external_user_id=external_user_id,
+            after=after,
+            before=before,
+            limit=limit,
+            emitter_type=emitter_type,
+            request_options=request_options,
         )
 
     async def retrieve(
         self, trigger_id: str, *, external_user_id: str, request_options: typing.Optional[RequestOptions] = None
-    ) -> GetTriggerResponseData:
+    ) -> Emitter:
         """
         Get details of a specific deployed trigger by its ID
 
@@ -581,7 +601,7 @@ class AsyncDeployedTriggersClient:
 
         Returns
         -------
-        GetTriggerResponseData
+        Emitter
             deployed trigger retrieved
 
         Examples
@@ -621,7 +641,7 @@ class AsyncDeployedTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetTriggerResponseData:
+    ) -> Emitter:
         """
         Modify the configuration of a deployed trigger, including active status
 
@@ -645,7 +665,7 @@ class AsyncDeployedTriggersClient:
 
         Returns
         -------
-        GetTriggerResponseData
+        Emitter
             deployed trigger updated
 
         Examples
