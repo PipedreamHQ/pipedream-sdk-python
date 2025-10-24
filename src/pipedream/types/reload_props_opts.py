@@ -17,6 +17,11 @@ class ReloadPropsOpts(UniversalBaseModel):
     The component ID
     """
 
+    version: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+    """
+
     external_user_id: str = pydantic.Field()
     """
     The external user ID

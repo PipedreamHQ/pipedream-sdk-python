@@ -8,7 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
-from ..types.deploy_trigger_response_data import DeployTriggerResponseData
+from ..types.emitter import Emitter
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawTriggersClient, RawTriggersClient
 
@@ -96,7 +96,13 @@ class TriggersClient:
             after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
         )
 
-    def retrieve(self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Component:
+    def retrieve(
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Component:
         """
         Get detailed configuration for a specific trigger by its key
 
@@ -104,6 +110,9 @@ class TriggersClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -125,9 +134,10 @@ class TriggersClient:
         )
         client.triggers.retrieve(
             component_id="component_id",
+            version="1.2.3",
         )
         """
-        _response = self._raw_client.retrieve(component_id, request_options=request_options)
+        _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data
 
     def configure_prop(
@@ -136,6 +146,7 @@ class TriggersClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -157,6 +168,9 @@ class TriggersClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -203,6 +217,7 @@ class TriggersClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -218,6 +233,7 @@ class TriggersClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -233,6 +249,9 @@ class TriggersClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -268,6 +287,7 @@ class TriggersClient:
         _response = self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -280,11 +300,13 @@ class TriggersClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployTriggerResponseData:
+    ) -> Emitter:
         """
         Deploy a trigger to listen for and emit events
 
@@ -296,10 +318,16 @@ class TriggersClient:
         external_user_id : str
             The external user ID
 
+        version : typing.Optional[str]
+            Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest
+
         configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
 
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
@@ -309,7 +337,7 @@ class TriggersClient:
 
         Returns
         -------
-        DeployTriggerResponseData
+        Emitter
             trigger deployed
 
         Examples
@@ -330,8 +358,10 @@ class TriggersClient:
         _response = self._raw_client.deploy(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
+            workflow_id=workflow_id,
             webhook_url=webhook_url,
             request_options=request_options,
         )
@@ -428,7 +458,11 @@ class AsyncTriggersClient:
         )
 
     async def retrieve(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> Component:
         """
         Get detailed configuration for a specific trigger by its key
@@ -437,6 +471,9 @@ class AsyncTriggersClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -463,12 +500,13 @@ class AsyncTriggersClient:
         async def main() -> None:
             await client.triggers.retrieve(
                 component_id="component_id",
+                version="1.2.3",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.retrieve(component_id, request_options=request_options)
+        _response = await self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data
 
     async def configure_prop(
@@ -477,6 +515,7 @@ class AsyncTriggersClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -498,6 +537,9 @@ class AsyncTriggersClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -552,6 +594,7 @@ class AsyncTriggersClient:
             id=id,
             external_user_id=external_user_id,
             prop_name=prop_name,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -567,6 +610,7 @@ class AsyncTriggersClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -582,6 +626,9 @@ class AsyncTriggersClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -625,6 +672,7 @@ class AsyncTriggersClient:
         _response = await self._raw_client.reload_props(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             blocking=blocking,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
@@ -637,11 +685,13 @@ class AsyncTriggersClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> DeployTriggerResponseData:
+    ) -> Emitter:
         """
         Deploy a trigger to listen for and emit events
 
@@ -653,10 +703,16 @@ class AsyncTriggersClient:
         external_user_id : str
             The external user ID
 
+        version : typing.Optional[str]
+            Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest
+
         configured_props : typing.Optional[ConfiguredProps]
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
+
+        workflow_id : typing.Optional[str]
+            Optional ID of a workflow to receive trigger events
 
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
@@ -666,7 +722,7 @@ class AsyncTriggersClient:
 
         Returns
         -------
-        DeployTriggerResponseData
+        Emitter
             trigger deployed
 
         Examples
@@ -695,8 +751,10 @@ class AsyncTriggersClient:
         _response = await self._raw_client.deploy(
             id=id,
             external_user_id=external_user_id,
+            version=version,
             configured_props=configured_props,
             dynamic_props_id=dynamic_props_id,
+            workflow_id=workflow_id,
             webhook_url=webhook_url,
             request_options=request_options,
         )

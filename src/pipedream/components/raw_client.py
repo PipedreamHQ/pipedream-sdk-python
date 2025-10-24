@@ -127,7 +127,11 @@ class RawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Component]:
         """
         Get detailed configuration for a specific component by its key
@@ -136,6 +140,9 @@ class RawComponentsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -148,6 +155,9 @@ class RawComponentsClient:
         _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/{jsonable_encoder(component_id)}",
             method="GET",
+            params={
+                "version": version,
+            },
             request_options=request_options,
         )
         try:
@@ -183,6 +193,7 @@ class RawComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -204,6 +215,9 @@ class RawComponentsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -235,6 +249,7 @@ class RawComponentsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
@@ -283,6 +298,7 @@ class RawComponentsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -298,6 +314,9 @@ class RawComponentsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -320,6 +339,7 @@ class RawComponentsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
                 "configured_props": convert_and_respect_annotation_metadata(
@@ -466,7 +486,11 @@ class AsyncRawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
-        self, component_id: str, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Component]:
         """
         Get detailed configuration for a specific component by its key
@@ -475,6 +499,9 @@ class AsyncRawComponentsClient:
         ----------
         component_id : str
             The key that uniquely identifies the component (e.g., 'slack-send-message')
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve (for example '1.0.0')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -487,6 +514,9 @@ class AsyncRawComponentsClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/{jsonable_encoder(component_id)}",
             method="GET",
+            params={
+                "version": version,
+            },
             request_options=request_options,
         )
         try:
@@ -522,6 +552,7 @@ class AsyncRawComponentsClient:
         id: str,
         external_user_id: str,
         prop_name: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -543,6 +574,9 @@ class AsyncRawComponentsClient:
 
         prop_name : str
             The name of the prop to configure
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -574,6 +608,7 @@ class AsyncRawComponentsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "prop_name": prop_name,
                 "blocking": blocking,
@@ -622,6 +657,7 @@ class AsyncRawComponentsClient:
         *,
         id: str,
         external_user_id: str,
+        version: typing.Optional[str] = OMIT,
         blocking: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
@@ -637,6 +673,9 @@ class AsyncRawComponentsClient:
 
         external_user_id : str
             The external user ID
+
+        version : typing.Optional[str]
+            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -659,6 +698,7 @@ class AsyncRawComponentsClient:
             method="POST",
             json={
                 "id": id,
+                "version": version,
                 "external_user_id": external_user_id,
                 "blocking": blocking,
                 "configured_props": convert_and_respect_annotation_metadata(
