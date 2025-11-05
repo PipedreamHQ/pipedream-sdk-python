@@ -3,7 +3,7 @@ name = "pipedream"
 
 [tool.poetry]
 name = "pipedream"
-version = "1.0.11"
+version = "1.0.12"
 description = ""
 readme = "README.md"
 authors = []
