@@ -27,7 +27,7 @@ class ConfigurablePropApphook(UniversalBaseModel):
     Whether this apphook is remote
     """
 
-    static: typing.Optional[typing.List[typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    static: typing.Optional[typing.List[typing.Any]] = pydantic.Field(default=None)
     """
     Static configuration for the apphook
     """

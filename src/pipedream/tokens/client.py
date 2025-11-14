@@ -132,7 +132,6 @@ class TokensClient:
         client.tokens.validate(
             ctok="ctok",
             app_id="app_id",
-            oauth_app_id="oauth_app_id",
         )
         """
         _response = self._raw_client.validate(
@@ -273,7 +272,6 @@ class AsyncTokensClient:
             await client.tokens.validate(
                 ctok="ctok",
                 app_id="app_id",
-                oauth_app_id="oauth_app_id",
             )
 
 
