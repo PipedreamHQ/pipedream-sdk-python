@@ -5,6 +5,7 @@ from __future__ import annotations
 import typing
 
 import pydantic
+import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .configurable_prop import ConfigurableProp
 from .configured_props import ConfiguredProps
@@ -27,7 +28,7 @@ class Emitter_DeployedComponent(UniversalBaseModel):
     updated_at: int
     name: str
     name_slug: str
-    callback_observations: typing.Optional[typing.Optional[typing.Any]] = None
+    callback_observations: typing.Optional[typing.Any] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -86,4 +87,7 @@ class Emitter_TimerInterface(UniversalBaseModel):
             extra = pydantic.Extra.allow
 
 
-Emitter = typing.Union[Emitter_DeployedComponent, Emitter_HttpInterface, Emitter_TimerInterface]
+Emitter = typing_extensions.Annotated[
+    typing.Union[Emitter_DeployedComponent, Emitter_HttpInterface, Emitter_TimerInterface],
+    pydantic.Field(discriminator="type"),
+]

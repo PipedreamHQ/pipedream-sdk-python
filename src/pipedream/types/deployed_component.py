@@ -64,7 +64,7 @@ class DeployedComponent(UniversalBaseModel):
     The name slug of the deployed component
     """
 
-    callback_observations: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    callback_observations: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     Callback observations for the deployed component
     """

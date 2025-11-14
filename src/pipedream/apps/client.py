@@ -7,9 +7,10 @@ from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.app import App
 from ..types.get_app_response import GetAppResponse
+from ..types.list_apps_response import ListAppsResponse
 from .raw_client import AsyncRawAppsClient, RawAppsClient
-from .types.apps_list_request_sort_direction import AppsListRequestSortDirection
-from .types.apps_list_request_sort_key import AppsListRequestSortKey
+from .types.list_apps_request_sort_direction import ListAppsRequestSortDirection
+from .types.list_apps_request_sort_key import ListAppsRequestSortKey
 
 
 class AppsClient:
@@ -34,11 +35,11 @@ class AppsClient:
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
-        sort_key: typing.Optional[AppsListRequestSortKey] = None,
-        sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
+        sort_key: typing.Optional[ListAppsRequestSortKey] = None,
+        sort_direction: typing.Optional[ListAppsRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[App]:
+    ) -> SyncPager[App, ListAppsResponse]:
         """
         Retrieve all available apps with optional filtering and sorting
 
@@ -56,10 +57,10 @@ class AppsClient:
         q : typing.Optional[str]
             A search query to filter the apps
 
-        sort_key : typing.Optional[AppsListRequestSortKey]
+        sort_key : typing.Optional[ListAppsRequestSortKey]
             The key to sort the apps by
 
-        sort_direction : typing.Optional[AppsListRequestSortDirection]
+        sort_direction : typing.Optional[ListAppsRequestSortDirection]
             The direction to sort the apps
 
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -70,7 +71,7 @@ class AppsClient:
 
         Returns
         -------
-        SyncPager[App]
+        SyncPager[App, ListAppsResponse]
             apps listed
 
         Examples
@@ -83,14 +84,7 @@ class AppsClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.apps.list(
-            after="after",
-            before="before",
-            limit=1,
-            q="q",
-            sort_key="name",
-            sort_direction="asc",
-        )
+        response = client.apps.list()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -165,11 +159,11 @@ class AsyncAppsClient:
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
-        sort_key: typing.Optional[AppsListRequestSortKey] = None,
-        sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
+        sort_key: typing.Optional[ListAppsRequestSortKey] = None,
+        sort_direction: typing.Optional[ListAppsRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[App]:
+    ) -> AsyncPager[App, ListAppsResponse]:
         """
         Retrieve all available apps with optional filtering and sorting
 
@@ -187,10 +181,10 @@ class AsyncAppsClient:
         q : typing.Optional[str]
             A search query to filter the apps
 
-        sort_key : typing.Optional[AppsListRequestSortKey]
+        sort_key : typing.Optional[ListAppsRequestSortKey]
             The key to sort the apps by
 
-        sort_direction : typing.Optional[AppsListRequestSortDirection]
+        sort_direction : typing.Optional[ListAppsRequestSortDirection]
             The direction to sort the apps
 
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -201,7 +195,7 @@ class AsyncAppsClient:
 
         Returns
         -------
-        AsyncPager[App]
+        AsyncPager[App, ListAppsResponse]
             apps listed
 
         Examples
@@ -219,14 +213,7 @@ class AsyncAppsClient:
 
 
         async def main() -> None:
-            response = await client.apps.list(
-                after="after",
-                before="before",
-                limit=1,
-                q="q",
-                sort_key="name",
-                sort_direction="asc",
-            )
+            response = await client.apps.list()
             async for item in response:
                 yield item
 

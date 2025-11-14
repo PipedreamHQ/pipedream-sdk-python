@@ -9,6 +9,7 @@ from ..types.component import Component
 from ..types.component_type import ComponentType
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
+from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawComponentsClient, RawComponentsClient
 
@@ -41,7 +42,7 @@ class ComponentsClient:
         app: typing.Optional[str] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component]:
+    ) -> SyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available components with optional search and app filtering
 
@@ -70,7 +71,7 @@ class ComponentsClient:
 
         Returns
         -------
-        SyncPager[Component]
+        SyncPager[Component, GetComponentsResponse]
             components listed
 
         Examples
@@ -83,14 +84,7 @@ class ComponentsClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.components.list(
-            after="after",
-            before="before",
-            limit=1,
-            q="q",
-            app="app",
-            component_type="trigger",
-        )
+        response = client.components.list()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -162,7 +156,7 @@ class ComponentsClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
@@ -194,7 +188,7 @@ class ComponentsClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
@@ -332,7 +326,7 @@ class AsyncComponentsClient:
         app: typing.Optional[str] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component]:
+    ) -> AsyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available components with optional search and app filtering
 
@@ -361,7 +355,7 @@ class AsyncComponentsClient:
 
         Returns
         -------
-        AsyncPager[Component]
+        AsyncPager[Component, GetComponentsResponse]
             components listed
 
         Examples
@@ -379,14 +373,7 @@ class AsyncComponentsClient:
 
 
         async def main() -> None:
-            response = await client.components.list(
-                after="after",
-                before="before",
-                limit=1,
-                q="q",
-                app="app",
-                component_type="trigger",
-            )
+            response = await client.components.list()
             async for item in response:
                 yield item
 
@@ -470,7 +457,7 @@ class AsyncComponentsClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
@@ -502,7 +489,7 @@ class AsyncComponentsClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
