@@ -6,11 +6,11 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .apps_list_request_sort_direction import AppsListRequestSortDirection
-    from .apps_list_request_sort_key import AppsListRequestSortKey
+    from .list_apps_request_sort_direction import ListAppsRequestSortDirection
+    from .list_apps_request_sort_key import ListAppsRequestSortKey
 _dynamic_imports: typing.Dict[str, str] = {
-    "AppsListRequestSortDirection": ".apps_list_request_sort_direction",
-    "AppsListRequestSortKey": ".apps_list_request_sort_key",
+    "ListAppsRequestSortDirection": ".list_apps_request_sort_direction",
+    "ListAppsRequestSortKey": ".list_apps_request_sort_key",
 }
 
 
@@ -35,4 +35,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["AppsListRequestSortDirection", "AppsListRequestSortKey"]
+__all__ = ["ListAppsRequestSortDirection", "ListAppsRequestSortKey"]

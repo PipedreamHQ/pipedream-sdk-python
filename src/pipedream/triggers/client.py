@@ -79,13 +79,7 @@ class TriggersClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.triggers.list(
-            after="after",
-            before="before",
-            limit=1,
-            q="q",
-            app="app",
-        )
+        response = client.triggers.list()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -305,6 +299,7 @@ class TriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Emitter:
         """
@@ -331,6 +326,9 @@ class TriggersClient:
 
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -363,6 +361,7 @@ class TriggersClient:
             dynamic_props_id=dynamic_props_id,
             workflow_id=workflow_id,
             webhook_url=webhook_url,
+            emit_on_deploy=emit_on_deploy,
             request_options=request_options,
         )
         return _response.data
@@ -436,13 +435,7 @@ class AsyncTriggersClient:
 
 
         async def main() -> None:
-            response = await client.triggers.list(
-                after="after",
-                before="before",
-                limit=1,
-                q="q",
-                app="app",
-            )
+            response = await client.triggers.list()
             async for item in response:
                 yield item
 
@@ -690,6 +683,7 @@ class AsyncTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Emitter:
         """
@@ -716,6 +710,9 @@ class AsyncTriggersClient:
 
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -756,6 +753,7 @@ class AsyncTriggersClient:
             dynamic_props_id=dynamic_props_id,
             workflow_id=workflow_id,
             webhook_url=webhook_url,
+            emit_on_deploy=emit_on_deploy,
             request_options=request_options,
         )
         return _response.data
