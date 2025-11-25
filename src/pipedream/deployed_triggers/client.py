@@ -11,6 +11,7 @@ from ..types.emitter import Emitter
 from ..types.emitter_type import EmitterType
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
+from ..types.get_triggers_response import GetTriggersResponse
 from .raw_client import AsyncRawDeployedTriggersClient, RawDeployedTriggersClient
 
 # this is used as the default value for optional parameters
@@ -41,7 +42,7 @@ class DeployedTriggersClient:
         limit: typing.Optional[int] = None,
         emitter_type: typing.Optional[EmitterType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Emitter]:
+    ) -> SyncPager[Emitter, GetTriggersResponse]:
         """
         Retrieve all deployed triggers for a specific external user
 
@@ -67,7 +68,7 @@ class DeployedTriggersClient:
 
         Returns
         -------
-        SyncPager[Emitter]
+        SyncPager[Emitter, GetTriggersResponse]
             deployed triggers listed
 
         Examples
@@ -81,11 +82,7 @@ class DeployedTriggersClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.deployed_triggers.list(
-            after="after",
-            before="before",
-            limit=1,
             external_user_id="external_user_id",
-            emitter_type="email",
         )
         for item in response:
             yield item
@@ -151,6 +148,7 @@ class DeployedTriggersClient:
         active: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Emitter:
         """
@@ -170,6 +168,9 @@ class DeployedTriggersClient:
 
         name : typing.Optional[str]
             The name of the trigger
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during deployment
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -200,6 +201,7 @@ class DeployedTriggersClient:
             active=active,
             configured_props=configured_props,
             name=name,
+            emit_on_deploy=emit_on_deploy,
             request_options=request_options,
         )
         return _response.data
@@ -245,7 +247,6 @@ class DeployedTriggersClient:
         client.deployed_triggers.delete(
             trigger_id="trigger_id",
             external_user_id="external_user_id",
-            ignore_hook_errors=True,
         )
         """
         _response = self._raw_client.delete(
@@ -298,7 +299,6 @@ class DeployedTriggersClient:
         client.deployed_triggers.list_events(
             trigger_id="trigger_id",
             external_user_id="external_user_id",
-            n=1,
         )
         """
         _response = self._raw_client.list_events(
@@ -513,7 +513,7 @@ class AsyncDeployedTriggersClient:
         limit: typing.Optional[int] = None,
         emitter_type: typing.Optional[EmitterType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Emitter]:
+    ) -> AsyncPager[Emitter, GetTriggersResponse]:
         """
         Retrieve all deployed triggers for a specific external user
 
@@ -539,7 +539,7 @@ class AsyncDeployedTriggersClient:
 
         Returns
         -------
-        AsyncPager[Emitter]
+        AsyncPager[Emitter, GetTriggersResponse]
             deployed triggers listed
 
         Examples
@@ -558,11 +558,7 @@ class AsyncDeployedTriggersClient:
 
         async def main() -> None:
             response = await client.deployed_triggers.list(
-                after="after",
-                before="before",
-                limit=1,
                 external_user_id="external_user_id",
-                emitter_type="email",
             )
             async for item in response:
                 yield item
@@ -640,6 +636,7 @@ class AsyncDeployedTriggersClient:
         active: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Emitter:
         """
@@ -659,6 +656,9 @@ class AsyncDeployedTriggersClient:
 
         name : typing.Optional[str]
             The name of the trigger
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during deployment
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -697,6 +697,7 @@ class AsyncDeployedTriggersClient:
             active=active,
             configured_props=configured_props,
             name=name,
+            emit_on_deploy=emit_on_deploy,
             request_options=request_options,
         )
         return _response.data
@@ -747,7 +748,6 @@ class AsyncDeployedTriggersClient:
             await client.deployed_triggers.delete(
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
-                ignore_hook_errors=True,
             )
 
 
@@ -808,7 +808,6 @@ class AsyncDeployedTriggersClient:
             await client.deployed_triggers.list_events(
                 trigger_id="trigger_id",
                 external_user_id="external_user_id",
-                n=1,
             )
 
 

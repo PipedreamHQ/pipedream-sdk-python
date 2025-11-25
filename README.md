@@ -5,6 +5,21 @@
 
 The Pipedream Python library provides convenient access to the Pipedream APIs from Python.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Reference](#reference)
+- [Usage](#usage)
+- [Async Client](#async-client)
+- [Exception Handling](#exception-handling)
+- [Pagination](#pagination)
+- [Advanced](#advanced)
+  - [Access Raw Response Data](#access-raw-response-data)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Custom Client](#custom-client)
+- [Contributing](#contributing)
+
 ## Installation
 
 ```sh
@@ -89,19 +104,21 @@ client = Pipedream(
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.apps.list(
-    after="after",
-    before="before",
-    limit=1,
-    q="q",
-    sort_key="name",
-    sort_direction="asc",
-)
+response = client.apps.list()
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
 for page in response.iter_pages():
     yield page
+```
+
+```python
+# You can also iterate through pages and access the typed response per page
+pager = client.apps.list(...)
+for page in pager.iter_pages():
+    print(page.response)  # access the typed response for each page
+    for item in page:
+        print(item)
 ```
 
 ## Advanced
@@ -121,11 +138,11 @@ response = client.actions.with_raw_response.run(...)
 print(response.headers)  # access the response headers
 print(response.data)  # access the underlying object
 pager = client.apps.list(...)
-print(pager.response.headers)  # access the response headers for the first page
+print(pager.response)  # access the typed response for the first page
 for item in pager:
     print(item)  # access the underlying object(s)
 for page in pager.iter_pages():
-    print(page.response.headers)  # access the response headers for each page
+    print(page.response)  # access the typed response for each page
     for item in page:
         print(item)  # access the underlying object(s)
 ```

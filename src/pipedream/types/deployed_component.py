@@ -64,9 +64,14 @@ class DeployedComponent(UniversalBaseModel):
     The name slug of the deployed component
     """
 
-    callback_observations: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    callback_observations: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     Callback observations for the deployed component
+    """
+
+    emit_on_deploy: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether the trigger emits events during the deploy hook execution. When false, the $emit function is disabled during deploy hook execution. Defaults to true.
     """
 
     if IS_PYDANTIC_V2:

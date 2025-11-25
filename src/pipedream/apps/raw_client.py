@@ -7,14 +7,14 @@ from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
-from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..types.app import App
 from ..types.get_app_response import GetAppResponse
 from ..types.list_apps_response import ListAppsResponse
-from .types.apps_list_request_sort_direction import AppsListRequestSortDirection
-from .types.apps_list_request_sort_key import AppsListRequestSortKey
+from .types.list_apps_request_sort_direction import ListAppsRequestSortDirection
+from .types.list_apps_request_sort_key import ListAppsRequestSortKey
 
 
 class RawAppsClient:
@@ -28,11 +28,11 @@ class RawAppsClient:
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
-        sort_key: typing.Optional[AppsListRequestSortKey] = None,
-        sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
+        sort_key: typing.Optional[ListAppsRequestSortKey] = None,
+        sort_direction: typing.Optional[ListAppsRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[App]:
+    ) -> SyncPager[App, ListAppsResponse]:
         """
         Retrieve all available apps with optional filtering and sorting
 
@@ -50,10 +50,10 @@ class RawAppsClient:
         q : typing.Optional[str]
             A search query to filter the apps
 
-        sort_key : typing.Optional[AppsListRequestSortKey]
+        sort_key : typing.Optional[ListAppsRequestSortKey]
             The key to sort the apps by
 
-        sort_direction : typing.Optional[AppsListRequestSortDirection]
+        sort_direction : typing.Optional[ListAppsRequestSortDirection]
             The direction to sort the apps
 
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -64,7 +64,7 @@ class RawAppsClient:
 
         Returns
         -------
-        SyncPager[App]
+        SyncPager[App, ListAppsResponse]
             apps listed
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -106,9 +106,7 @@ class RawAppsClient:
                         category_ids=category_ids,
                         request_options=request_options,
                     )
-                return SyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
-                )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -165,11 +163,11 @@ class AsyncRawAppsClient:
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
-        sort_key: typing.Optional[AppsListRequestSortKey] = None,
-        sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
+        sort_key: typing.Optional[ListAppsRequestSortKey] = None,
+        sort_direction: typing.Optional[ListAppsRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[App]:
+    ) -> AsyncPager[App, ListAppsResponse]:
         """
         Retrieve all available apps with optional filtering and sorting
 
@@ -187,10 +185,10 @@ class AsyncRawAppsClient:
         q : typing.Optional[str]
             A search query to filter the apps
 
-        sort_key : typing.Optional[AppsListRequestSortKey]
+        sort_key : typing.Optional[ListAppsRequestSortKey]
             The key to sort the apps by
 
-        sort_direction : typing.Optional[AppsListRequestSortDirection]
+        sort_direction : typing.Optional[ListAppsRequestSortDirection]
             The direction to sort the apps
 
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -201,7 +199,7 @@ class AsyncRawAppsClient:
 
         Returns
         -------
-        AsyncPager[App]
+        AsyncPager[App, ListAppsResponse]
             apps listed
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -246,9 +244,7 @@ class AsyncRawAppsClient:
                             request_options=request_options,
                         )
 
-                return AsyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
-                )
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

@@ -7,7 +7,7 @@ from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
-from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -38,7 +38,7 @@ class RawTriggersClient:
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component]:
+    ) -> SyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available triggers with optional search and app filtering
 
@@ -64,7 +64,7 @@ class RawTriggersClient:
 
         Returns
         -------
-        SyncPager[Component]
+        SyncPager[Component, GetComponentsResponse]
             triggers listed
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -102,16 +102,14 @@ class RawTriggersClient:
                         app=app,
                         request_options=request_options,
                     )
-                return SyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
-                )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -170,9 +168,9 @@ class RawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -193,7 +191,7 @@ class RawTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConfigurePropResponse]:
@@ -225,7 +223,7 @@ class RawTriggersClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
@@ -276,9 +274,9 @@ class RawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -362,9 +360,9 @@ class RawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -384,6 +382,7 @@ class RawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Emitter]:
         """
@@ -411,6 +410,9 @@ class RawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -432,6 +434,7 @@ class RawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",
@@ -454,9 +457,9 @@ class RawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -480,7 +483,7 @@ class AsyncRawTriggersClient:
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component]:
+    ) -> AsyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available triggers with optional search and app filtering
 
@@ -506,7 +509,7 @@ class AsyncRawTriggersClient:
 
         Returns
         -------
-        AsyncPager[Component]
+        AsyncPager[Component, GetComponentsResponse]
             triggers listed
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -547,16 +550,14 @@ class AsyncRawTriggersClient:
                             request_options=request_options,
                         )
 
-                return AsyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
-                )
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -615,9 +616,9 @@ class AsyncRawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -638,7 +639,7 @@ class AsyncRawTriggersClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConfigurePropResponse]:
@@ -670,7 +671,7 @@ class AsyncRawTriggersClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
@@ -721,9 +722,9 @@ class AsyncRawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -807,9 +808,9 @@ class AsyncRawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -829,6 +830,7 @@ class AsyncRawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Emitter]:
         """
@@ -856,6 +858,9 @@ class AsyncRawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -877,6 +882,7 @@ class AsyncRawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",
@@ -899,9 +905,9 @@ class AsyncRawTriggersClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
