@@ -13,8 +13,8 @@ from ..core.request_options import RequestOptions
 from ..types.app import App
 from ..types.get_app_response import GetAppResponse
 from ..types.list_apps_response import ListAppsResponse
-from .types.list_apps_request_sort_direction import ListAppsRequestSortDirection
-from .types.list_apps_request_sort_key import ListAppsRequestSortKey
+from .types.apps_list_request_sort_direction import AppsListRequestSortDirection
+from .types.apps_list_request_sort_key import AppsListRequestSortKey
 
 
 class RawAppsClient:
@@ -28,8 +28,8 @@ class RawAppsClient:
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
-        sort_key: typing.Optional[ListAppsRequestSortKey] = None,
-        sort_direction: typing.Optional[ListAppsRequestSortDirection] = None,
+        sort_key: typing.Optional[AppsListRequestSortKey] = None,
+        sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[App]:
@@ -50,10 +50,10 @@ class RawAppsClient:
         q : typing.Optional[str]
             A search query to filter the apps
 
-        sort_key : typing.Optional[ListAppsRequestSortKey]
+        sort_key : typing.Optional[AppsListRequestSortKey]
             The key to sort the apps by
 
-        sort_direction : typing.Optional[ListAppsRequestSortDirection]
+        sort_direction : typing.Optional[AppsListRequestSortDirection]
             The direction to sort the apps
 
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
@@ -165,8 +165,8 @@ class AsyncRawAppsClient:
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
-        sort_key: typing.Optional[ListAppsRequestSortKey] = None,
-        sort_direction: typing.Optional[ListAppsRequestSortDirection] = None,
+        sort_key: typing.Optional[AppsListRequestSortKey] = None,
+        sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[App]:
@@ -187,10 +187,10 @@ class AsyncRawAppsClient:
         q : typing.Optional[str]
             A search query to filter the apps
 
-        sort_key : typing.Optional[ListAppsRequestSortKey]
+        sort_key : typing.Optional[AppsListRequestSortKey]
             The key to sort the apps by
 
-        sort_direction : typing.Optional[ListAppsRequestSortDirection]
+        sort_direction : typing.Optional[AppsListRequestSortDirection]
             The direction to sort the apps
 
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]

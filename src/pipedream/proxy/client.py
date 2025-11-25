@@ -86,7 +86,7 @@ class ProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = self._raw_client.get(
             url_64,
@@ -160,7 +160,7 @@ class ProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = self._raw_client.post(
             url_64,
@@ -235,7 +235,7 @@ class ProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = self._raw_client.put(
             url_64,
@@ -302,7 +302,7 @@ class ProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = self._raw_client.delete(
             url_64,
@@ -376,7 +376,7 @@ class ProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = self._raw_client.patch(
             url_64,
@@ -470,7 +470,7 @@ class AsyncProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = await self._raw_client.get(
             url_64,
@@ -551,7 +551,7 @@ class AsyncProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = await self._raw_client.post(
             url_64,
@@ -634,7 +634,7 @@ class AsyncProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = await self._raw_client.put(
             url_64,
@@ -709,7 +709,7 @@ class AsyncProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = await self._raw_client.delete(
             url_64,
@@ -790,7 +790,7 @@ class AsyncProxyClient:
         }
         request_options = RequestOptions(
             additional_headers=downstream_headers,
-            additional_query_parameters=params,
+            additional_query_parameters=params or {},
         )
         _response = await self._raw_client.patch(
             url_64,
