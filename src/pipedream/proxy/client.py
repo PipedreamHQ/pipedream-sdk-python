@@ -37,7 +37,7 @@ class ProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -58,8 +58,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -108,7 +108,7 @@ class ProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -132,8 +132,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -183,7 +183,7 @@ class ProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -207,8 +207,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -254,7 +254,7 @@ class ProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -275,8 +275,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -324,7 +324,7 @@ class ProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -348,8 +348,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -413,7 +413,7 @@ class AsyncProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -434,8 +434,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -491,7 +491,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -515,8 +515,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -574,7 +574,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -598,8 +598,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -653,7 +653,7 @@ class AsyncProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -674,8 +674,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -730,7 +730,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -754,8 +754,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
