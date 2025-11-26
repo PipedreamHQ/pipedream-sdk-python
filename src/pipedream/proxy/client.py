@@ -413,7 +413,7 @@ class AsyncProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -434,8 +434,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Union[ProxyResponse, typing.Iterator[bytes]]
-            ProxyResponse for JSON content, Iterator[bytes] for binary content
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -456,7 +456,7 @@ class AsyncProxyClient:
                 url="https://example.com/api/endpoint",
                 external_user_id="external_user_id",
                 account_id="account_id",
-                headers={"Extra-Downstream-Header": "some value"}
+                headers={"Extra-Downstream-Header": "some value"},
                 params={"limit": 10},
             )
 
@@ -476,7 +476,8 @@ class AsyncProxyClient:
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
-            request_options=request_options)
+            request_options=request_options,
+        )
         return _response.data
 
     async def post(
@@ -491,7 +492,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -515,8 +516,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Union[ProxyResponse, typing.Iterator[bytes]]
-            ProxyResponse for JSON content, Iterator[bytes] for binary content
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -574,7 +575,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -598,8 +599,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Union[ProxyResponse, typing.Iterator[bytes]]
-            ProxyResponse for JSON content, Iterator[bytes] for binary content
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -653,7 +654,7 @@ class AsyncProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -674,8 +675,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Union[ProxyResponse, typing.Iterator[bytes]]
-            ProxyResponse for JSON content, Iterator[bytes] for binary content
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -715,7 +716,8 @@ class AsyncProxyClient:
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
-            request_options=request_options)
+            request_options=request_options,
+        )
         return _response.data
 
     async def patch(
@@ -730,7 +732,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -754,8 +756,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        typing.Union[ProxyResponse, typing.Iterator[bytes]]
-            ProxyResponse for JSON content, Iterator[bytes] for binary content
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
