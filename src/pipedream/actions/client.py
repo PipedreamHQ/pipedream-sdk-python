@@ -12,6 +12,7 @@ from ..types.reload_props_response import ReloadPropsResponse
 from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
 from .raw_client import AsyncRawActionsClient, RawActionsClient
+from .types.actions_list_request_registry import ActionsListRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -40,6 +41,7 @@ class ActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
@@ -61,6 +63,9 @@ class ActionsClient:
 
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
+
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -86,6 +91,7 @@ class ActionsClient:
             limit=1,
             q="q",
             app="app",
+            registry="public",
         )
         for item in response:
             yield item
@@ -94,7 +100,7 @@ class ActionsClient:
             yield page
         """
         return self._raw_client.list(
-            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
+            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
         )
 
     def retrieve(
@@ -386,6 +392,7 @@ class AsyncActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
@@ -407,6 +414,9 @@ class AsyncActionsClient:
 
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
+
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -437,6 +447,7 @@ class AsyncActionsClient:
                 limit=1,
                 q="q",
                 app="app",
+                registry="public",
             )
             async for item in response:
                 yield item
@@ -449,7 +460,7 @@ class AsyncActionsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
+            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
         )
 
     async def retrieve(

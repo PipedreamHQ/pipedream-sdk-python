@@ -6,8 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import ComponentsListRequestRegistry
-_dynamic_imports: typing.Dict[str, str] = {"ComponentsListRequestRegistry": ".types"}
+    from .components_list_request_registry import ComponentsListRequestRegistry
+_dynamic_imports: typing.Dict[str, str] = {"ComponentsListRequestRegistry": ".components_list_request_registry"}
 
 
 def __getattr__(attr_name: str) -> typing.Any:

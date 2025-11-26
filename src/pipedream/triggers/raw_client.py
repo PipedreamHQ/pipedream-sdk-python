@@ -20,6 +20,7 @@ from ..types.emitter import Emitter
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
+from .types.triggers_list_request_registry import TriggersListRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -37,6 +38,7 @@ class RawTriggersClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[TriggersListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
@@ -59,6 +61,9 @@ class RawTriggersClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the triggers
 
+        registry : typing.Optional[TriggersListRequestRegistry]
+            The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -76,6 +81,7 @@ class RawTriggersClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -100,6 +106,7 @@ class RawTriggersClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        registry=registry,
                         request_options=request_options,
                     )
                 return SyncPager(
@@ -384,6 +391,7 @@ class RawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Emitter]:
         """
@@ -411,6 +419,9 @@ class RawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -432,6 +443,7 @@ class RawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",
@@ -479,6 +491,7 @@ class AsyncRawTriggersClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[TriggersListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
@@ -501,6 +514,9 @@ class AsyncRawTriggersClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the triggers
 
+        registry : typing.Optional[TriggersListRequestRegistry]
+            The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -518,6 +534,7 @@ class AsyncRawTriggersClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -544,6 +561,7 @@ class AsyncRawTriggersClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            registry=registry,
                             request_options=request_options,
                         )
 
@@ -829,6 +847,7 @@ class AsyncRawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Emitter]:
         """
@@ -856,6 +875,9 @@ class AsyncRawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -877,6 +899,7 @@ class AsyncRawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",

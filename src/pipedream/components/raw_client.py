@@ -19,6 +19,7 @@ from ..types.configured_props import ConfiguredProps
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
+from .types.components_list_request_registry import ComponentsListRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -36,6 +37,7 @@ class RawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ComponentsListRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
@@ -59,6 +61,9 @@ class RawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ComponentsListRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -79,6 +84,7 @@ class RawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
                 "component_type": component_type,
             },
             request_options=request_options,
@@ -104,6 +110,7 @@ class RawComponentsClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        registry=registry,
                         component_type=component_type,
                         request_options=request_options,
                     )
@@ -392,6 +399,7 @@ class AsyncRawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ComponentsListRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
@@ -415,6 +423,9 @@ class AsyncRawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ComponentsListRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -435,6 +446,7 @@ class AsyncRawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
                 "component_type": component_type,
             },
             request_options=request_options,
@@ -462,6 +474,7 @@ class AsyncRawComponentsClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            registry=registry,
                             component_type=component_type,
                             request_options=request_options,
                         )

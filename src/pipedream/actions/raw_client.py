@@ -20,6 +20,7 @@ from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
 from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
+from .types.actions_list_request_registry import ActionsListRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -37,6 +38,7 @@ class RawActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
@@ -59,6 +61,9 @@ class RawActionsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
 
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -76,6 +81,7 @@ class RawActionsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -100,6 +106,7 @@ class RawActionsClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        registry=registry,
                         request_options=request_options,
                     )
                 return SyncPager(
@@ -474,6 +481,7 @@ class AsyncRawActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
@@ -496,6 +504,9 @@ class AsyncRawActionsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
 
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -513,6 +524,7 @@ class AsyncRawActionsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -539,6 +551,7 @@ class AsyncRawActionsClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            registry=registry,
                             request_options=request_options,
                         )
 

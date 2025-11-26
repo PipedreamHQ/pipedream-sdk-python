@@ -6,8 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import ComponentsListRequestRegistry
-_dynamic_imports: typing.Dict[str, str] = {"ComponentsListRequestRegistry": ".types"}
+    from .triggers_list_request_registry import TriggersListRequestRegistry
+_dynamic_imports: typing.Dict[str, str] = {"TriggersListRequestRegistry": ".triggers_list_request_registry"}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -31,4 +31,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["ComponentsListRequestRegistry"]
+__all__ = ["TriggersListRequestRegistry"]

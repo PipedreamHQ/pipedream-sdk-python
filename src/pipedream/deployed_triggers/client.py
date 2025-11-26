@@ -151,6 +151,7 @@ class DeployedTriggersClient:
         active: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Emitter:
         """
@@ -170,6 +171,9 @@ class DeployedTriggersClient:
 
         name : typing.Optional[str]
             The name of the trigger
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during deployment
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -200,6 +204,7 @@ class DeployedTriggersClient:
             active=active,
             configured_props=configured_props,
             name=name,
+            emit_on_deploy=emit_on_deploy,
             request_options=request_options,
         )
         return _response.data
@@ -640,6 +645,7 @@ class AsyncDeployedTriggersClient:
         active: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Emitter:
         """
@@ -659,6 +665,9 @@ class AsyncDeployedTriggersClient:
 
         name : typing.Optional[str]
             The name of the trigger
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during deployment
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -697,6 +706,7 @@ class AsyncDeployedTriggersClient:
             active=active,
             configured_props=configured_props,
             name=name,
+            emit_on_deploy=emit_on_deploy,
             request_options=request_options,
         )
         return _response.data
