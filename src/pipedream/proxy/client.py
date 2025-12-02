@@ -108,6 +108,7 @@ class ProxyClient:
                     yield chunk
             finally:
                 ctx.__exit__(None, None, None)
+
         return _stream()
 
     def post(
@@ -196,6 +197,7 @@ class ProxyClient:
                     yield chunk
             finally:
                 ctx.__exit__(None, None, None)
+
         return _stream()
 
     def put(
@@ -284,6 +286,7 @@ class ProxyClient:
                     yield chunk
             finally:
                 ctx.__exit__(None, None, None)
+
         return _stream()
 
     def delete(
@@ -363,6 +366,7 @@ class ProxyClient:
                     yield chunk
             finally:
                 ctx.__exit__(None, None, None)
+
         return _stream()
 
     def patch(
@@ -451,6 +455,7 @@ class ProxyClient:
                     yield chunk
             finally:
                 ctx.__exit__(None, None, None)
+
         return _stream()
 
 
@@ -557,6 +562,7 @@ class AsyncProxyClient:
                     yield chunk
             finally:
                 await ctx.__aexit__(None, None, None)
+
         return _stream()
 
     async def post(
@@ -653,6 +659,7 @@ class AsyncProxyClient:
                     yield chunk
             finally:
                 await ctx.__aexit__(None, None, None)
+
         return _stream()
 
     async def put(
@@ -749,6 +756,7 @@ class AsyncProxyClient:
                     yield chunk
             finally:
                 await ctx.__aexit__(None, None, None)
+
         return _stream()
 
     async def delete(
@@ -836,6 +844,7 @@ class AsyncProxyClient:
                     yield chunk
             finally:
                 await ctx.__aexit__(None, None, None)
+
         return _stream()
 
     async def patch(
@@ -932,4 +941,5 @@ class AsyncProxyClient:
                     yield chunk
             finally:
                 await ctx.__aexit__(None, None, None)
+
         return _stream()

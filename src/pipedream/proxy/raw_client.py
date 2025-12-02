@@ -18,6 +18,7 @@ OMIT = typing.cast(typing.Any, ...)
 
 
 class RawProxyClient:
+
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -29,7 +30,8 @@ class RawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
+                                                   typing.Iterator[bytes]]]]:
         """
         Forward an authenticated GET request to an external API using an external user's account credentials
 
@@ -53,25 +55,28 @@ class RawProxyClient:
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="GET",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            request_options=request_options,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="GET",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                request_options=request_options,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]:
+            def _handle_response() -> HttpResponse[typing.Union[
+                ProxyResponse, typing.Iterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             _response.read()
                             if not _response.text.strip():
-                                return HttpResponse(response=_response, data=None)
+                                return HttpResponse(response=_response,
+                                                    data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -81,18 +86,26 @@ class RawProxyClient:
                             )
                             return HttpResponse(response=_response, data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return HttpResponse(response=_response, data=_response.iter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return HttpResponse(response=_response,
+                                                data=_response.iter_bytes(
+                                                    chunk_size=_chunk_size))
                     _response.read()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -101,10 +114,12 @@ class RawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield _handle_response()
 
@@ -117,7 +132,8 @@ class RawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
+                                                   typing.Iterator[bytes]]]]:
         """
         Forward an authenticated POST request to an external API using an external user's account credentials
 
@@ -143,30 +159,33 @@ class RawProxyClient:
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="POST",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="POST",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                json=request,
+                headers={
+                    "content-type": "application/json",
+                },
+                request_options=request_options,
+                omit=OMIT,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]:
+            def _handle_response() -> HttpResponse[typing.Union[
+                ProxyResponse, typing.Iterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             _response.read()
                             if not _response.text.strip():
-                                return HttpResponse(response=_response, data=None)
+                                return HttpResponse(response=_response,
+                                                    data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -176,18 +195,26 @@ class RawProxyClient:
                             )
                             return HttpResponse(response=_response, data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return HttpResponse(response=_response, data=_response.iter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return HttpResponse(response=_response,
+                                                data=_response.iter_bytes(
+                                                    chunk_size=_chunk_size))
                     _response.read()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -196,10 +223,12 @@ class RawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield _handle_response()
 
@@ -212,7 +241,8 @@ class RawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
+                                                   typing.Iterator[bytes]]]]:
         """
         Forward an authenticated PUT request to an external API using an external user's account credentials
 
@@ -238,30 +268,33 @@ class RawProxyClient:
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="PUT",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="PUT",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                json=request,
+                headers={
+                    "content-type": "application/json",
+                },
+                request_options=request_options,
+                omit=OMIT,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]:
+            def _handle_response() -> HttpResponse[typing.Union[
+                ProxyResponse, typing.Iterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             _response.read()
                             if not _response.text.strip():
-                                return HttpResponse(response=_response, data=None)
+                                return HttpResponse(response=_response,
+                                                    data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -271,18 +304,26 @@ class RawProxyClient:
                             )
                             return HttpResponse(response=_response, data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return HttpResponse(response=_response, data=_response.iter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return HttpResponse(response=_response,
+                                                data=_response.iter_bytes(
+                                                    chunk_size=_chunk_size))
                     _response.read()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -291,10 +332,12 @@ class RawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield _handle_response()
 
@@ -306,7 +349,8 @@ class RawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
+                                                   typing.Iterator[bytes]]]]:
         """
         Forward an authenticated DELETE request to an external API using an external user's account credentials
 
@@ -330,25 +374,28 @@ class RawProxyClient:
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="DELETE",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            request_options=request_options,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="DELETE",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                request_options=request_options,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]:
+            def _handle_response() -> HttpResponse[typing.Union[
+                ProxyResponse, typing.Iterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             _response.read()
                             if not _response.text.strip():
-                                return HttpResponse(response=_response, data=None)
+                                return HttpResponse(response=_response,
+                                                    data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -358,18 +405,26 @@ class RawProxyClient:
                             )
                             return HttpResponse(response=_response, data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return HttpResponse(response=_response, data=_response.iter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return HttpResponse(response=_response,
+                                                data=_response.iter_bytes(
+                                                    chunk_size=_chunk_size))
                     _response.read()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -378,10 +433,12 @@ class RawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield _handle_response()
 
@@ -394,7 +451,8 @@ class RawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
+                                                   typing.Iterator[bytes]]]]:
         """
         Forward an authenticated PATCH request to an external API using an external user's account credentials
 
@@ -420,30 +478,33 @@ class RawProxyClient:
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="PATCH",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="PATCH",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                json=request,
+                headers={
+                    "content-type": "application/json",
+                },
+                request_options=request_options,
+                omit=OMIT,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]:
+            def _handle_response() -> HttpResponse[typing.Union[
+                ProxyResponse, typing.Iterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             _response.read()
                             if not _response.text.strip():
-                                return HttpResponse(response=_response, data=None)
+                                return HttpResponse(response=_response,
+                                                    data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -453,18 +514,26 @@ class RawProxyClient:
                             )
                             return HttpResponse(response=_response, data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return HttpResponse(response=_response, data=_response.iter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return HttpResponse(response=_response,
+                                                data=_response.iter_bytes(
+                                                    chunk_size=_chunk_size))
                     _response.read()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -473,15 +542,18 @@ class RawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield _handle_response()
 
 
 class AsyncRawProxyClient:
+
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -493,7 +565,8 @@ class AsyncRawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
+            ProxyResponse, typing.AsyncIterator[bytes]]]]:
         """
         Forward an authenticated GET request to an external API using an external user's account credentials
 
@@ -517,25 +590,28 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="GET",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            request_options=request_options,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="GET",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                request_options=request_options,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _handle_response() -> AsyncHttpResponse[typing.Union[
+                ProxyResponse, typing.AsyncIterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             await _response.aread()
                             if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response, data=None)
+                                return AsyncHttpResponse(response=_response,
+                                                         data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -543,20 +619,30 @@ class AsyncRawProxyClient:
                                     object_=_response.json(),
                                 ),
                             )
-                            return AsyncHttpResponse(response=_response, data=_data)
+                            return AsyncHttpResponse(response=_response,
+                                                     data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return AsyncHttpResponse(response=_response, data=_response.aiter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return AsyncHttpResponse(
+                                response=_response,
+                                data=_response.aiter_bytes(
+                                    chunk_size=_chunk_size))
                     await _response.aread()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -565,10 +651,12 @@ class AsyncRawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield await _handle_response()
 
@@ -581,7 +669,8 @@ class AsyncRawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
+            ProxyResponse, typing.AsyncIterator[bytes]]]]:
         """
         Forward an authenticated POST request to an external API using an external user's account credentials
 
@@ -607,30 +696,33 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="POST",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="POST",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                json=request,
+                headers={
+                    "content-type": "application/json",
+                },
+                request_options=request_options,
+                omit=OMIT,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _handle_response() -> AsyncHttpResponse[typing.Union[
+                ProxyResponse, typing.AsyncIterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             await _response.aread()
                             if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response, data=None)
+                                return AsyncHttpResponse(response=_response,
+                                                         data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -638,20 +730,30 @@ class AsyncRawProxyClient:
                                     object_=_response.json(),
                                 ),
                             )
-                            return AsyncHttpResponse(response=_response, data=_data)
+                            return AsyncHttpResponse(response=_response,
+                                                     data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return AsyncHttpResponse(response=_response, data=_response.aiter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return AsyncHttpResponse(
+                                response=_response,
+                                data=_response.aiter_bytes(
+                                    chunk_size=_chunk_size))
                     await _response.aread()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -660,10 +762,12 @@ class AsyncRawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield await _handle_response()
 
@@ -676,7 +780,8 @@ class AsyncRawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
+            ProxyResponse, typing.AsyncIterator[bytes]]]]:
         """
         Forward an authenticated PUT request to an external API using an external user's account credentials
 
@@ -702,30 +807,33 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="PUT",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="PUT",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                json=request,
+                headers={
+                    "content-type": "application/json",
+                },
+                request_options=request_options,
+                omit=OMIT,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _handle_response() -> AsyncHttpResponse[typing.Union[
+                ProxyResponse, typing.AsyncIterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             await _response.aread()
                             if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response, data=None)
+                                return AsyncHttpResponse(response=_response,
+                                                         data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -733,20 +841,30 @@ class AsyncRawProxyClient:
                                     object_=_response.json(),
                                 ),
                             )
-                            return AsyncHttpResponse(response=_response, data=_data)
+                            return AsyncHttpResponse(response=_response,
+                                                     data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return AsyncHttpResponse(response=_response, data=_response.aiter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return AsyncHttpResponse(
+                                response=_response,
+                                data=_response.aiter_bytes(
+                                    chunk_size=_chunk_size))
                     await _response.aread()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -755,10 +873,12 @@ class AsyncRawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield await _handle_response()
 
@@ -770,7 +890,8 @@ class AsyncRawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
+            ProxyResponse, typing.AsyncIterator[bytes]]]]:
         """
         Forward an authenticated DELETE request to an external API using an external user's account credentials
 
@@ -794,25 +915,28 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="DELETE",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            request_options=request_options,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="DELETE",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                request_options=request_options,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _handle_response() -> AsyncHttpResponse[typing.Union[
+                ProxyResponse, typing.AsyncIterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             await _response.aread()
                             if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response, data=None)
+                                return AsyncHttpResponse(response=_response,
+                                                         data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -820,20 +944,30 @@ class AsyncRawProxyClient:
                                     object_=_response.json(),
                                 ),
                             )
-                            return AsyncHttpResponse(response=_response, data=_data)
+                            return AsyncHttpResponse(response=_response,
+                                                     data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return AsyncHttpResponse(response=_response, data=_response.aiter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return AsyncHttpResponse(
+                                response=_response,
+                                data=_response.aiter_bytes(
+                                    chunk_size=_chunk_size))
                     await _response.aread()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -842,10 +976,12 @@ class AsyncRawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield await _handle_response()
 
@@ -858,7 +994,8 @@ class AsyncRawProxyClient:
         account_id: str,
         request: typing.Dict[str, typing.Optional[typing.Any]],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
+            ProxyResponse, typing.AsyncIterator[bytes]]]]:
         """
         Forward an authenticated PATCH request to an external API using an external user's account credentials
 
@@ -884,30 +1021,33 @@ class AsyncRawProxyClient:
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-            method="PATCH",
-            params={
-                "external_user_id": external_user_id,
-                "account_id": account_id,
-            },
-            json=request,
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
+                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
+                method="PATCH",
+                params={
+                    "external_user_id": external_user_id,
+                    "account_id": account_id,
+                },
+                json=request,
+                headers={
+                    "content-type": "application/json",
+                },
+                request_options=request_options,
+                omit=OMIT,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _handle_response() -> AsyncHttpResponse[typing.Union[
+                ProxyResponse, typing.AsyncIterator[bytes]]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get("content-type", "").lower()
+                        content_type = _response.headers.get(
+                            "content-type", "").lower()
                         is_json = "application/json" in content_type or not content_type
 
                         if is_json:
                             await _response.aread()
                             if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response, data=None)
+                                return AsyncHttpResponse(response=_response,
+                                                         data=None)
                             _data = typing.cast(
                                 ProxyResponse,
                                 parse_obj_as(
@@ -915,20 +1055,30 @@ class AsyncRawProxyClient:
                                     object_=_response.json(),
                                 ),
                             )
-                            return AsyncHttpResponse(response=_response, data=_data)
+                            return AsyncHttpResponse(response=_response,
+                                                     data=_data)
                         else:
-                            _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
-                            return AsyncHttpResponse(response=_response, data=_response.aiter_bytes(chunk_size=_chunk_size))
+                            _chunk_size = request_options.get(
+                                "chunk_size",
+                                None) if request_options is not None else None
+                            return AsyncHttpResponse(
+                                response=_response,
+                                data=_response.aiter_bytes(
+                                    chunk_size=_chunk_size))
                     await _response.aread()
-                    _error_content_type = _response.headers.get("content-type", "").lower()
+                    _error_content_type = _response.headers.get(
+                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
                                 typing.Optional[typing.Any],
                                 parse_obj_as(
-                                    type_=typing.Optional[typing.Any],  # type: ignore
-                                    object_=_response.json() if "application/json" in _error_content_type else _response.text,
+                                    type_=typing.Optional[
+                                        typing.Any],  # type: ignore
+                                    object_=_response.json()
+                                    if "application/json"
+                                    in _error_content_type else _response.text,
                                 ),
                             ),
                         )
@@ -937,9 +1087,11 @@ class AsyncRawProxyClient:
                     else:
                         _response_body = _response.text
                 except JSONDecodeError:
-                    raise ApiError(
-                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
-                    )
-                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_body)
+                    raise ApiError(status_code=_response.status_code,
+                                   headers=dict(_response.headers),
+                                   body=_response.text)
+                raise ApiError(status_code=_response.status_code,
+                               headers=dict(_response.headers),
+                               body=_response_body)
 
             yield await _handle_response()
