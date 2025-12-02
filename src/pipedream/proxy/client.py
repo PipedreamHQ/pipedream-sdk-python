@@ -2,6 +2,7 @@
 
 import base64
 import typing
+from collections.abc import AsyncIterator, Iterator
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
@@ -88,13 +89,26 @@ class ProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = self._raw_client.get(
+        ctx = self._raw_client.get(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+        return _stream()
 
     def post(
         self,
@@ -162,14 +176,27 @@ class ProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = self._raw_client.post(
+        ctx = self._raw_client.post(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+        return _stream()
 
     def put(
         self,
@@ -237,14 +264,27 @@ class ProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = self._raw_client.put(
+        ctx = self._raw_client.put(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+        return _stream()
 
     def delete(
         self,
@@ -304,13 +344,26 @@ class ProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = self._raw_client.delete(
+        ctx = self._raw_client.delete(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+        return _stream()
 
     def patch(
         self,
@@ -378,14 +431,27 @@ class ProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = self._raw_client.patch(
+        ctx = self._raw_client.patch(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+        return _stream()
 
 
 class AsyncProxyClient:
@@ -472,13 +538,26 @@ class AsyncProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = await self._raw_client.get(
+        ctx = self._raw_client.get(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+        return _stream()
 
     async def post(
         self,
@@ -554,14 +633,27 @@ class AsyncProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = await self._raw_client.post(
+        ctx = self._raw_client.post(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+        return _stream()
 
     async def put(
         self,
@@ -637,14 +729,27 @@ class AsyncProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = await self._raw_client.put(
+        ctx = self._raw_client.put(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+        return _stream()
 
     async def delete(
         self,
@@ -712,13 +817,26 @@ class AsyncProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = await self._raw_client.delete(
+        ctx = self._raw_client.delete(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+        return _stream()
 
     async def patch(
         self,
@@ -794,11 +912,24 @@ class AsyncProxyClient:
             additional_headers=downstream_headers,
             additional_query_parameters=params or {},
         )
-        _response = await self._raw_client.patch(
+        ctx = self._raw_client.patch(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+        return _stream()
