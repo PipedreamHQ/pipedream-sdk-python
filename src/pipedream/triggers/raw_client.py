@@ -11,15 +11,18 @@ from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..errors.bad_request_error import BadRequestError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
 from ..types.deploy_trigger_response import DeployTriggerResponse
 from ..types.emitter import Emitter
+from ..types.error_response import ErrorResponse
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
+from .types.list_triggers_request_registry import ListTriggersRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -37,6 +40,7 @@ class RawTriggersClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListTriggersRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
@@ -59,13 +63,16 @@ class RawTriggersClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the triggers
 
+        registry : typing.Optional[ListTriggersRequestRegistry]
+            The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
         SyncPager[Component]
-            triggers listed
+            behaves like registry=all
         """
         _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers",
@@ -76,6 +83,7 @@ class RawTriggersClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -100,10 +108,22 @@ class RawTriggersClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        registry=registry,
                         request_options=request_options,
                     )
                 return SyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
@@ -384,6 +404,7 @@ class RawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Emitter]:
         """
@@ -411,6 +432,9 @@ class RawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -432,6 +456,7 @@ class RawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",
@@ -479,6 +504,7 @@ class AsyncRawTriggersClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListTriggersRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
@@ -501,13 +527,16 @@ class AsyncRawTriggersClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the triggers
 
+        registry : typing.Optional[ListTriggersRequestRegistry]
+            The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
         AsyncPager[Component]
-            triggers listed
+            behaves like registry=all
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/triggers",
@@ -518,6 +547,7 @@ class AsyncRawTriggersClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -544,11 +574,23 @@ class AsyncRawTriggersClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            registry=registry,
                             request_options=request_options,
                         )
 
                 return AsyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
@@ -829,6 +871,7 @@ class AsyncRawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Emitter]:
         """
@@ -856,6 +899,9 @@ class AsyncRawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -877,6 +923,7 @@ class AsyncRawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",

@@ -6,8 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import ListAppsRequestSortDirection, ListAppsRequestSortKey
-_dynamic_imports: typing.Dict[str, str] = {"ListAppsRequestSortDirection": ".types", "ListAppsRequestSortKey": ".types"}
+    from .list_triggers_request_registry import ListTriggersRequestRegistry
+_dynamic_imports: typing.Dict[str, str] = {"ListTriggersRequestRegistry": ".list_triggers_request_registry"}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -31,4 +31,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["ListAppsRequestSortDirection", "ListAppsRequestSortKey"]
+__all__ = ["ListTriggersRequestRegistry"]

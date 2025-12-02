@@ -11,15 +11,18 @@ from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..errors.bad_request_error import BadRequestError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
+from ..types.error_response import ErrorResponse
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
 from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
+from .types.list_actions_request_registry import ListActionsRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -37,6 +40,7 @@ class RawActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListActionsRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
         """
@@ -59,13 +63,16 @@ class RawActionsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
 
+        registry : typing.Optional[ListActionsRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
         SyncPager[Component]
-            actions listed
+            behaves like registry=all
         """
         _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/actions",
@@ -76,6 +83,7 @@ class RawActionsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -100,10 +108,22 @@ class RawActionsClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        registry=registry,
                         request_options=request_options,
                     )
                 return SyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
@@ -426,7 +446,7 @@ class RawActionsClient:
                 ),
                 "dynamic_props_id": dynamic_props_id,
                 "stash_id": convert_and_respect_annotation_metadata(
-                    object_=stash_id, annotation=RunActionOptsStashId, direction="write"
+                    object_=stash_id, annotation=typing.Optional[RunActionOptsStashId], direction="write"
                 ),
             },
             headers={
@@ -474,6 +494,7 @@ class AsyncRawActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListActionsRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
         """
@@ -496,13 +517,16 @@ class AsyncRawActionsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
 
+        registry : typing.Optional[ListActionsRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
         AsyncPager[Component]
-            actions listed
+            behaves like registry=all
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/actions",
@@ -513,6 +537,7 @@ class AsyncRawActionsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
             },
             request_options=request_options,
         )
@@ -539,11 +564,23 @@ class AsyncRawActionsClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            registry=registry,
                             request_options=request_options,
                         )
 
                 return AsyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
@@ -866,7 +903,7 @@ class AsyncRawActionsClient:
                 ),
                 "dynamic_props_id": dynamic_props_id,
                 "stash_id": convert_and_respect_annotation_metadata(
-                    object_=stash_id, annotation=RunActionOptsStashId, direction="write"
+                    object_=stash_id, annotation=typing.Optional[RunActionOptsStashId], direction="write"
                 ),
             },
             headers={

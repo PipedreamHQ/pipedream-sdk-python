@@ -11,14 +11,17 @@ from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..errors.bad_request_error import BadRequestError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.component import Component
 from ..types.component_type import ComponentType
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
+from ..types.error_response import ErrorResponse
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
+from .types.list_components_request_registry import ListComponentsRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -36,6 +39,7 @@ class RawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListComponentsRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
@@ -59,6 +63,9 @@ class RawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ListComponentsRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -68,7 +75,7 @@ class RawComponentsClient:
         Returns
         -------
         SyncPager[Component]
-            components listed
+            behaves like registry=all
         """
         _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
@@ -79,6 +86,7 @@ class RawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
                 "component_type": component_type,
             },
             request_options=request_options,
@@ -104,11 +112,23 @@ class RawComponentsClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        registry=registry,
                         component_type=component_type,
                         request_options=request_options,
                     )
                 return SyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
@@ -392,6 +412,7 @@ class AsyncRawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListComponentsRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
@@ -415,6 +436,9 @@ class AsyncRawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ListComponentsRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -424,7 +448,7 @@ class AsyncRawComponentsClient:
         Returns
         -------
         AsyncPager[Component]
-            components listed
+            behaves like registry=all
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
@@ -435,6 +459,7 @@ class AsyncRawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
                 "component_type": component_type,
             },
             request_options=request_options,
@@ -462,12 +487,24 @@ class AsyncRawComponentsClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            registry=registry,
                             component_type=component_type,
                             request_options=request_options,
                         )
 
                 return AsyncPager(
                     has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                )
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(

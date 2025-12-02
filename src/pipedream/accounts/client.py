@@ -82,15 +82,7 @@ class AccountsClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.accounts.list(
-            external_user_id="external_user_id",
-            oauth_app_id="oauth_app_id",
-            after="after",
-            before="before",
-            limit=1,
-            app="app",
-            include_credentials=True,
-        )
+        response = client.accounts.list()
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -160,8 +152,6 @@ class AccountsClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.create(
-            external_user_id="external_user_id",
-            oauth_app_id="oauth_app_id",
             app_slug="app_slug",
             cfmap_json="cfmap_json",
             connect_token="connect_token",
@@ -215,7 +205,6 @@ class AccountsClient:
         )
         client.accounts.retrieve(
             account_id="account_id",
-            include_credentials=True,
         )
         """
         _response = self._raw_client.retrieve(
@@ -363,15 +352,7 @@ class AsyncAccountsClient:
 
 
         async def main() -> None:
-            response = await client.accounts.list(
-                external_user_id="external_user_id",
-                oauth_app_id="oauth_app_id",
-                after="after",
-                before="before",
-                limit=1,
-                app="app",
-                include_credentials=True,
-            )
+            response = await client.accounts.list()
             async for item in response:
                 yield item
 
@@ -450,8 +431,6 @@ class AsyncAccountsClient:
 
         async def main() -> None:
             await client.accounts.create(
-                external_user_id="external_user_id",
-                oauth_app_id="oauth_app_id",
                 app_slug="app_slug",
                 cfmap_json="cfmap_json",
                 connect_token="connect_token",
@@ -513,7 +492,6 @@ class AsyncAccountsClient:
         async def main() -> None:
             await client.accounts.retrieve(
                 account_id="account_id",
-                include_credentials=True,
             )
 
 
