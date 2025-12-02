@@ -105,6 +105,7 @@ class RawProxyClient:
                     return HttpResponse(response=_stream_context, data=_create_stream_iterator(_response, _stream_context, _chunk_size))
             _stream_context.read()
             _response.__exit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -112,11 +113,14 @@ class RawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             _response.__exit__(None, None, None)
             raise ApiError(
@@ -125,7 +129,7 @@ class RawProxyClient:
         except Exception:
             _response.__exit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     def post(
         self,
@@ -202,6 +206,7 @@ class RawProxyClient:
                     return HttpResponse(response=_stream_context, data=_create_stream_iterator(_response, _stream_context, _chunk_size))
             _stream_context.read()
             _response.__exit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -209,11 +214,14 @@ class RawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             _response.__exit__(None, None, None)
             raise ApiError(
@@ -222,7 +230,7 @@ class RawProxyClient:
         except Exception:
             _response.__exit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     def put(
         self,
@@ -299,6 +307,7 @@ class RawProxyClient:
                     return HttpResponse(response=_stream_context, data=_create_stream_iterator(_response, _stream_context, _chunk_size))
             _stream_context.read()
             _response.__exit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -306,11 +315,14 @@ class RawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             _response.__exit__(None, None, None)
             raise ApiError(
@@ -319,7 +331,7 @@ class RawProxyClient:
         except Exception:
             _response.__exit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     def delete(
         self,
@@ -388,6 +400,7 @@ class RawProxyClient:
                     return HttpResponse(response=_stream_context, data=_create_stream_iterator(_response, _stream_context, _chunk_size))
             _stream_context.read()
             _response.__exit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -395,11 +408,14 @@ class RawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             _response.__exit__(None, None, None)
             raise ApiError(
@@ -408,7 +424,7 @@ class RawProxyClient:
         except Exception:
             _response.__exit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     def patch(
         self,
@@ -485,6 +501,7 @@ class RawProxyClient:
                     return HttpResponse(response=_stream_context, data=_create_stream_iterator(_response, _stream_context, _chunk_size))
             _stream_context.read()
             _response.__exit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -492,11 +509,14 @@ class RawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             _response.__exit__(None, None, None)
             raise ApiError(
@@ -505,7 +525,7 @@ class RawProxyClient:
         except Exception:
             _response.__exit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
 
 class AsyncRawProxyClient:
@@ -579,6 +599,7 @@ class AsyncRawProxyClient:
                     return AsyncHttpResponse(response=_stream_context, data=_create_async_stream_iterator(_response, _stream_context, _chunk_size))
             await _stream_context.aread()
             await _response.__aexit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -586,11 +607,14 @@ class AsyncRawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             await _response.__aexit__(None, None, None)
             raise ApiError(
@@ -599,7 +623,7 @@ class AsyncRawProxyClient:
         except Exception:
             await _response.__aexit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     async def post(
         self,
@@ -676,6 +700,7 @@ class AsyncRawProxyClient:
                     return AsyncHttpResponse(response=_stream_context, data=_create_async_stream_iterator(_response, _stream_context, _chunk_size))
             await _stream_context.aread()
             await _response.__aexit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -683,11 +708,14 @@ class AsyncRawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             await _response.__aexit__(None, None, None)
             raise ApiError(
@@ -696,7 +724,7 @@ class AsyncRawProxyClient:
         except Exception:
             await _response.__aexit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     async def put(
         self,
@@ -773,6 +801,7 @@ class AsyncRawProxyClient:
                     return AsyncHttpResponse(response=_stream_context, data=_create_async_stream_iterator(_response, _stream_context, _chunk_size))
             await _stream_context.aread()
             await _response.__aexit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -780,11 +809,14 @@ class AsyncRawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             await _response.__aexit__(None, None, None)
             raise ApiError(
@@ -793,7 +825,7 @@ class AsyncRawProxyClient:
         except Exception:
             await _response.__aexit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     async def delete(
         self,
@@ -862,6 +894,7 @@ class AsyncRawProxyClient:
                     return AsyncHttpResponse(response=_stream_context, data=_create_async_stream_iterator(_response, _stream_context, _chunk_size))
             await _stream_context.aread()
             await _response.__aexit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -869,11 +902,14 @@ class AsyncRawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             await _response.__aexit__(None, None, None)
             raise ApiError(
@@ -882,7 +918,7 @@ class AsyncRawProxyClient:
         except Exception:
             await _response.__aexit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
 
     async def patch(
         self,
@@ -959,6 +995,7 @@ class AsyncRawProxyClient:
                     return AsyncHttpResponse(response=_stream_context, data=_create_async_stream_iterator(_response, _stream_context, _chunk_size))
             await _stream_context.aread()
             await _response.__aexit__(None, None, None)
+            _error_content_type = _stream_context.headers.get("content-type", "").lower()
             if _stream_context.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_stream_context.headers),
@@ -966,11 +1003,14 @@ class AsyncRawProxyClient:
                         typing.Optional[typing.Any],
                         parse_obj_as(
                             type_=typing.Optional[typing.Any],  # type: ignore
-                            object_=_stream_context.json(),
+                            object_=_stream_context.json() if "application/json" in _error_content_type else _stream_context.text,
                         ),
                     ),
                 )
-            _response_json = _stream_context.json()
+            if "application/json" in _error_content_type:
+                _response_body = _stream_context.json()
+            else:
+                _response_body = _stream_context.text
         except JSONDecodeError:
             await _response.__aexit__(None, None, None)
             raise ApiError(
@@ -979,4 +1019,4 @@ class AsyncRawProxyClient:
         except Exception:
             await _response.__aexit__(None, None, None)
             raise
-        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_json)
+        raise ApiError(status_code=_stream_context.status_code, headers=dict(_stream_context.headers), body=_response_body)
