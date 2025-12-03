@@ -3,6 +3,7 @@
 import base64
 import typing
 from collections.abc import AsyncIterator, Iterator
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
@@ -80,15 +81,19 @@ class ProxyClient:
             params={"limit": 10},
         )
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.get(
             url_64,
             external_user_id=external_user_id,
@@ -168,15 +173,19 @@ class ProxyClient:
             body={"key": "value"},
         )
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.post(
             url_64,
             external_user_id=external_user_id,
@@ -257,15 +266,19 @@ class ProxyClient:
             body={"key": "value"},
         )
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.put(
             url_64,
             external_user_id=external_user_id,
@@ -338,15 +351,19 @@ class ProxyClient:
             headers={"Extra-Downstream-Header": "some value"}
         )
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.delete(
             url_64,
             external_user_id=external_user_id,
@@ -426,15 +443,19 @@ class ProxyClient:
             body={"key": "value"},
         )
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.patch(
             url_64,
             external_user_id=external_user_id,
@@ -534,15 +555,19 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.get(
             url_64,
             external_user_id=external_user_id,
@@ -630,15 +655,19 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.post(
             url_64,
             external_user_id=external_user_id,
@@ -727,15 +756,19 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.put(
             url_64,
             external_user_id=external_user_id,
@@ -816,15 +849,19 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.delete(
             url_64,
             external_user_id=external_user_id,
@@ -912,15 +949,19 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            parsed = urlparse(url)
+            existing_params = parse_qs(parsed.query)
+            existing_params.update(params)
+            new_query = urlencode(existing_params, doseq=True)
+            url = urlunparse(parsed._replace(query=new_query))
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params or {},
-        )
+            additional_headers=downstream_headers, )
         ctx = self._raw_client.patch(
             url_64,
             external_user_id=external_user_id,
