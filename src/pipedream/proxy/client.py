@@ -14,6 +14,15 @@ from .raw_client import AsyncRawProxyClient, RawProxyClient
 OMIT = typing.cast(typing.Any, ...)
 
 
+def _add_params_to_url(url: str, params: typing.Dict[str, typing.Any]) -> str:
+    parsed = urlparse(url)
+    existing_params = parse_qs(parsed.query)
+    for key, value in params.items():
+        existing_params[key] = value if isinstance(value, list) else [value]
+    new_query = urlencode(existing_params, doseq=True)
+    return urlunparse(parsed._replace(query=new_query))
+
+
 class ProxyClient:
 
     def __init__(self, *, client_wrapper: SyncClientWrapper):
@@ -77,16 +86,12 @@ class ProxyClient:
             url="https://example.com/api/endpoint",
             external_user_id="external_user_id",
             account_id="account_id",
-            headers={"Extra-Downstream-Header": "some value"}
+            headers={"Extra-Downstream-Header": "some value"},
             params={"limit": 10},
         )
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -174,11 +179,7 @@ class ProxyClient:
         )
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -267,11 +268,7 @@ class ProxyClient:
         )
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -352,11 +349,7 @@ class ProxyClient:
         )
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -444,11 +437,7 @@ class ProxyClient:
         )
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -556,11 +545,7 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -656,11 +641,7 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -757,11 +738,7 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -850,11 +827,7 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
@@ -950,11 +923,7 @@ class AsyncProxyClient:
         asyncio.run(main())
         """
         if params:
-            parsed = urlparse(url)
-            existing_params = parse_qs(parsed.query)
-            existing_params.update(params)
-            new_query = urlencode(existing_params, doseq=True)
-            url = urlunparse(parsed._replace(query=new_query))
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
