@@ -2,6 +2,8 @@
 
 import base64
 import typing
+from collections.abc import AsyncIterator, Iterator
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
@@ -10,6 +12,15 @@ from .raw_client import AsyncRawProxyClient, RawProxyClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
+
+
+def _add_params_to_url(url: str, params: typing.Dict[str, typing.Any]) -> str:
+    parsed = urlparse(url)
+    existing_params = parse_qs(parsed.query)
+    for key, value in params.items():
+        existing_params[key] = value if isinstance(value, list) else [value]
+    new_query = urlencode(existing_params, doseq=True)
+    return urlunparse(parsed._replace(query=new_query))
 
 
 class ProxyClient:
@@ -37,7 +48,7 @@ class ProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -58,8 +69,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -75,26 +86,40 @@ class ProxyClient:
             url="https://example.com/api/endpoint",
             external_user_id="external_user_id",
             account_id="account_id",
-            headers={"Extra-Downstream-Header": "some value"}
+            headers={"Extra-Downstream-Header": "some value"},
             params={"limit": 10},
         )
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = self._raw_client.get(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.get(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+
+        return _stream()
 
     def post(
         self,
@@ -108,7 +133,7 @@ class ProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -132,8 +157,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -153,23 +178,37 @@ class ProxyClient:
             body={"key": "value"},
         )
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = self._raw_client.post(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.post(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+
+        return _stream()
 
     def put(
         self,
@@ -183,7 +222,7 @@ class ProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -207,8 +246,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -228,23 +267,37 @@ class ProxyClient:
             body={"key": "value"},
         )
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = self._raw_client.put(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.put(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+
+        return _stream()
 
     def delete(
         self,
@@ -254,7 +307,7 @@ class ProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -275,8 +328,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -295,22 +348,36 @@ class ProxyClient:
             headers={"Extra-Downstream-Header": "some value"}
         )
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = self._raw_client.delete(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.delete(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+
+        return _stream()
 
     def patch(
         self,
@@ -324,7 +391,7 @@ class ProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.Iterator[bytes]]:
         """
         Parameters
         ----------
@@ -348,8 +415,8 @@ class ProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.Iterator[bytes]]
+            ProxyResponse for JSON content, Iterator[bytes] for binary content
 
         Examples
         --------
@@ -369,23 +436,37 @@ class ProxyClient:
             body={"key": "value"},
         )
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = self._raw_client.patch(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.patch(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = ctx.__enter__()
+        data = _response.data
+
+        if not isinstance(data, Iterator):
+            ctx.__exit__(None, None, None)
+            return data
+
+        def _stream() -> typing.Iterator[bytes]:
+            try:
+                for chunk in data:
+                    yield chunk
+            finally:
+                ctx.__exit__(None, None, None)
+
+        return _stream()
 
 
 class AsyncProxyClient:
@@ -413,7 +494,7 @@ class AsyncProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -434,8 +515,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -456,28 +537,43 @@ class AsyncProxyClient:
                 url="https://example.com/api/endpoint",
                 external_user_id="external_user_id",
                 account_id="account_id",
-                headers={"Extra-Downstream-Header": "some value"}
+                headers={"Extra-Downstream-Header": "some value"},
                 params={"limit": 10},
             )
 
 
         asyncio.run(main())
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = await self._raw_client.get(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.get(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
-            request_options=request_options)
-        return _response.data
+            request_options=request_options,
+        )
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+
+        return _stream()
 
     async def post(
         self,
@@ -491,7 +587,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -515,8 +611,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -544,23 +640,37 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = await self._raw_client.post(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.post(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+
+        return _stream()
 
     async def put(
         self,
@@ -574,7 +684,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -598,8 +708,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -627,23 +737,37 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = await self._raw_client.put(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.put(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+
+        return _stream()
 
     async def delete(
         self,
@@ -653,7 +777,7 @@ class AsyncProxyClient:
         account_id: str,
         headers: typing.Optional[typing.Dict[str, typing.Any]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -674,8 +798,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -702,21 +826,36 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = await self._raw_client.delete(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.delete(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
-            request_options=request_options)
-        return _response.data
+            request_options=request_options,
+        )
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+
+        return _stream()
 
     async def patch(
         self,
@@ -730,7 +869,7 @@ class AsyncProxyClient:
             typing.Optional[typing.Any],
         ]] = None,
         params: typing.Optional[typing.Dict[str, typing.Any]] = None,
-    ) -> ProxyResponse:
+    ) -> typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]:
         """
         Parameters
         ----------
@@ -754,8 +893,8 @@ class AsyncProxyClient:
 
         Returns
         -------
-        ProxyResponse
-            proxy request successful
+        typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]
+            ProxyResponse for JSON content, AsyncIterator[bytes] for binary content
 
         Examples
         --------
@@ -783,20 +922,34 @@ class AsyncProxyClient:
 
         asyncio.run(main())
         """
+        if params:
+            url = _add_params_to_url(url, params)
         url_64 = base64.urlsafe_b64encode(url.encode()).decode()
         downstream_headers = {
             f"x-pd-proxy-{header}": value
             for header, value in (headers or {}).items()
         }
         request_options = RequestOptions(
-            additional_headers=downstream_headers,
-            additional_query_parameters=params,
-        )
-        _response = await self._raw_client.patch(
+            additional_headers=downstream_headers, )
+        ctx = self._raw_client.patch(
             url_64,
             external_user_id=external_user_id,
             account_id=account_id,
             request=body or {},
             request_options=request_options,
         )
-        return _response.data
+        _response = await ctx.__aenter__()
+        data = _response.data
+
+        if not isinstance(data, AsyncIterator):
+            await ctx.__aexit__(None, None, None)
+            return data
+
+        async def _stream() -> typing.AsyncIterator[bytes]:
+            try:
+                async for chunk in data:
+                    yield chunk
+            finally:
+                await ctx.__aexit__(None, None, None)
+
+        return _stream()

@@ -384,6 +384,7 @@ class RawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Emitter]:
         """
@@ -411,6 +412,9 @@ class RawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -432,6 +436,7 @@ class RawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",
@@ -829,6 +834,7 @@ class AsyncRawTriggersClient:
         dynamic_props_id: typing.Optional[str] = OMIT,
         workflow_id: typing.Optional[str] = OMIT,
         webhook_url: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Emitter]:
         """
@@ -856,6 +862,9 @@ class AsyncRawTriggersClient:
         webhook_url : typing.Optional[str]
             Optional webhook URL to receive trigger events
 
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -877,6 +886,7 @@ class AsyncRawTriggersClient:
                 "dynamic_props_id": dynamic_props_id,
                 "workflow_id": workflow_id,
                 "webhook_url": webhook_url,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",

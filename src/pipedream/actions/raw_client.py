@@ -426,7 +426,7 @@ class RawActionsClient:
                 ),
                 "dynamic_props_id": dynamic_props_id,
                 "stash_id": convert_and_respect_annotation_metadata(
-                    object_=stash_id, annotation=RunActionOptsStashId, direction="write"
+                    object_=stash_id, annotation=typing.Optional[RunActionOptsStashId], direction="write"
                 ),
             },
             headers={
@@ -866,7 +866,7 @@ class AsyncRawActionsClient:
                 ),
                 "dynamic_props_id": dynamic_props_id,
                 "stash_id": convert_and_respect_annotation_metadata(
-                    object_=stash_id, annotation=RunActionOptsStashId, direction="write"
+                    object_=stash_id, annotation=typing.Optional[RunActionOptsStashId], direction="write"
                 ),
             },
             headers={

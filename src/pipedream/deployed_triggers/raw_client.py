@@ -186,6 +186,7 @@ class RawDeployedTriggersClient:
         active: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Emitter]:
         """
@@ -205,6 +206,9 @@ class RawDeployedTriggersClient:
 
         name : typing.Optional[str]
             The name of the trigger
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during deployment
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -226,6 +230,7 @@ class RawDeployedTriggersClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "name": name,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",
@@ -795,6 +800,7 @@ class AsyncRawDeployedTriggersClient:
         active: typing.Optional[bool] = OMIT,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         name: typing.Optional[str] = OMIT,
+        emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Emitter]:
         """
@@ -814,6 +820,9 @@ class AsyncRawDeployedTriggersClient:
 
         name : typing.Optional[str]
             The name of the trigger
+
+        emit_on_deploy : typing.Optional[bool]
+            Whether the trigger should emit events during deployment
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -835,6 +844,7 @@ class AsyncRawDeployedTriggersClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "name": name,
+                "emit_on_deploy": emit_on_deploy,
             },
             headers={
                 "content-type": "application/json",

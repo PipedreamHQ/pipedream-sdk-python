@@ -5,6 +5,21 @@
 
 The Pipedream Python library provides convenient access to the Pipedream APIs from Python.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Reference](#reference)
+- [Usage](#usage)
+- [Async Client](#async-client)
+- [Exception Handling](#exception-handling)
+- [Pagination](#pagination)
+- [Advanced](#advanced)
+  - [Access Raw Response Data](#access-raw-response-data)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Custom Client](#custom-client)
+- [Contributing](#contributing)
+
 ## Installation
 
 ```sh
@@ -89,14 +104,7 @@ client = Pipedream(
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.apps.list(
-    after="after",
-    before="before",
-    limit=1,
-    q="q",
-    sort_key="name",
-    sort_direction="asc",
-)
+response = client.apps.list()
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page

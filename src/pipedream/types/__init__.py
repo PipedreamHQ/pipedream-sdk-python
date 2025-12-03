@@ -102,6 +102,7 @@ if typing.TYPE_CHECKING:
     from .prop_option_nested import PropOptionNested
     from .prop_option_value import PropOptionValue
     from .proxy_response import ProxyResponse
+    from .proxy_response_binary import ProxyResponseBinary
     from .reload_props_opts import ReloadPropsOpts
     from .reload_props_response import ReloadPropsResponse
     from .run_action_opts_stash_id import RunActionOptsStashId
@@ -214,6 +215,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "PropOptionNested": ".prop_option_nested",
     "PropOptionValue": ".prop_option_value",
     "ProxyResponse": ".proxy_response",
+    "ProxyResponseBinary": ".proxy_response_binary",
     "ReloadPropsOpts": ".reload_props_opts",
     "ReloadPropsResponse": ".reload_props_response",
     "RunActionOptsStashId": ".run_action_opts_stash_id",
@@ -350,6 +352,7 @@ __all__ = [
     "PropOptionNested",
     "PropOptionValue",
     "ProxyResponse",
+    "ProxyResponseBinary",
     "ReloadPropsOpts",
     "ReloadPropsResponse",
     "RunActionOptsStashId",

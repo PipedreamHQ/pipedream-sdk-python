@@ -69,6 +69,11 @@ class DeployedComponent(UniversalBaseModel):
     Callback observations for the deployed component
     """
 
+    emit_on_deploy: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Whether the trigger emits events during the deploy hook execution. When false, the $emit function is disabled during deploy hook execution. Defaults to true.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:
