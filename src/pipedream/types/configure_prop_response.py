@@ -20,7 +20,7 @@ class ConfigurePropResponse(UniversalBaseModel):
     """
 
     observations: typing.Optional[typing.List[Observation]] = None
-    context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    context: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     New context after configuring the prop
     """

@@ -46,7 +46,7 @@ class Account(UniversalBaseModel):
     The date and time the account was last updated, an ISO 8601 formatted string
     """
 
-    credentials: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    credentials: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     The credentials associated with the account, if the `include_credentials` parameter was set to true in the request
     """
