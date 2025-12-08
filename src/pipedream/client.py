@@ -6,11 +6,11 @@ import os
 import typing
 
 import httpx
+from ._.types.project_environment import ProjectEnvironment
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.oauth_token_provider import OAuthTokenProvider
 from .environment import PipedreamEnvironment
-from .types.project_environment import ProjectEnvironment
 
 if typing.TYPE_CHECKING:
     from .accounts.client import AccountsClient, AsyncAccountsClient

@@ -11,6 +11,7 @@ from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawComponentsClient, RawComponentsClient
+from .types.list_components_request_registry import ListComponentsRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -39,6 +40,7 @@ class ComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListComponentsRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[Component]:
@@ -62,6 +64,9 @@ class ComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ListComponentsRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -71,7 +76,7 @@ class ComponentsClient:
         Returns
         -------
         SyncPager[Component]
-            components listed
+            behaves like registry=all
 
         Examples
         --------
@@ -96,6 +101,7 @@ class ComponentsClient:
             limit=limit,
             q=q,
             app=app,
+            registry=registry,
             component_type=component_type,
             request_options=request_options,
         )
@@ -323,6 +329,7 @@ class AsyncComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ListComponentsRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[Component]:
@@ -346,6 +353,9 @@ class AsyncComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ListComponentsRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -355,7 +365,7 @@ class AsyncComponentsClient:
         Returns
         -------
         AsyncPager[Component]
-            components listed
+            behaves like registry=all
 
         Examples
         --------
@@ -389,6 +399,7 @@ class AsyncComponentsClient:
             limit=limit,
             q=q,
             app=app,
+            registry=registry,
             component_type=component_type,
             request_options=request_options,
         )
