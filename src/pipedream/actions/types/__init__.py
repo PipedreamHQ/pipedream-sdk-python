@@ -6,14 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .bad_request_error import BadRequestError
-    from .not_found_error import NotFoundError
-    from .too_many_requests_error import TooManyRequestsError
-_dynamic_imports: typing.Dict[str, str] = {
-    "BadRequestError": ".bad_request_error",
-    "NotFoundError": ".not_found_error",
-    "TooManyRequestsError": ".too_many_requests_error",
-}
+    from .list_actions_request_registry import ListActionsRequestRegistry
+_dynamic_imports: typing.Dict[str, str] = {"ListActionsRequestRegistry": ".list_actions_request_registry"}
 
 
 def __getattr__(attr_name: str) -> typing.Any:
@@ -37,4 +31,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = ["BadRequestError", "NotFoundError", "TooManyRequestsError"]
+__all__ = ["ListActionsRequestRegistry"]
