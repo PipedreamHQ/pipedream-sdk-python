@@ -3,79 +3,19 @@
 import typing
 
 import pydantic
-import typing_extensions
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ..core.serialization import FieldMetadata
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from .configurable_prop_base import ConfigurablePropBase
 from .configurable_prop_timer_default import ConfigurablePropTimerDefault
 from .configurable_prop_timer_option import ConfigurablePropTimerOption
 from .configurable_prop_timer_static import ConfigurablePropTimerStatic
 
 
-class ConfigurablePropTimer(UniversalBaseModel):
-    type: typing.Literal["$.interface.timer"] = "$.interface.timer"
+class ConfigurablePropTimer(ConfigurablePropBase):
     static: typing.Optional[ConfigurablePropTimerStatic] = None
     default: typing.Optional[ConfigurablePropTimerDefault] = None
     options: typing.Optional[typing.List[typing.Optional[ConfigurablePropTimerOption]]] = pydantic.Field(default=None)
     """
     Available timer configuration options
-    """
-
-    name: str = pydantic.Field()
-    """
-    When building `configuredProps`, make sure to use this field as the key when setting the prop value
-    """
-
-    label: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead.
-    """
-
-    description: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    A description of the prop, shown to the user when configuring the component.
-    """
-
-    optional: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    If true, this prop does not need to be specified.
-    """
-
-    disabled: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    If true, this prop will be ignored.
-    """
-
-    hidden: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    If true, should not expose this prop to the user
-    """
-
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    If true, call `configureComponent` for this prop to load remote options. It is safe, and preferred, given a returned list of { label: string; value: any } objects to set the prop value to { __lv: { label: string; value: any } }. This way, on load, you can access label for the value without necessarily reloading these options
-    """
-
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = pydantic.Field(
-        default=None
-    )
-    """
-    If true, calls to `configureComponent` for this prop support receiving a `query` parameter to filter remote options
-    """
-
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    If true, after setting a value for this prop, a call to `reloadComponentProps` is required as the component has dynamic configurable props dependent on this one
-    """
-
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = pydantic.Field(
-        default=None
-    )
-    """
-    If true, you must save the configured prop value as a "label-value" object which should look like: { __lv: { label: string; value: any } } because the execution needs to access the label
     """
 
     if IS_PYDANTIC_V2:

@@ -8,10 +8,12 @@ from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
+from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
 from ..types.run_action_opts_stash_id import RunActionOptsStashId
 from ..types.run_action_response import RunActionResponse
 from .raw_client import AsyncRawActionsClient, RawActionsClient
+from .types.actions_list_request_registry import ActionsListRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -40,8 +42,9 @@ class ActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component]:
+    ) -> SyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available actions with optional search and app filtering
 
@@ -62,13 +65,16 @@ class ActionsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
 
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        SyncPager[Component]
-            actions listed
+        SyncPager[Component, GetComponentsResponse]
+            behaves like registry=all
 
         Examples
         --------
@@ -80,7 +86,14 @@ class ActionsClient:
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        response = client.actions.list()
+        response = client.actions.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+            app="app",
+            registry="public",
+        )
         for item in response:
             yield item
         # alternatively, you can paginate page-by-page
@@ -88,7 +101,7 @@ class ActionsClient:
             yield page
         """
         return self._raw_client.list(
-            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
+            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
         )
 
     def retrieve(
@@ -146,7 +159,7 @@ class ActionsClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
@@ -178,7 +191,7 @@ class ActionsClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
@@ -380,8 +393,9 @@ class AsyncActionsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component]:
+    ) -> AsyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available actions with optional search and app filtering
 
@@ -402,13 +416,16 @@ class AsyncActionsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the actions
 
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncPager[Component]
-            actions listed
+        AsyncPager[Component, GetComponentsResponse]
+            behaves like registry=all
 
         Examples
         --------
@@ -425,7 +442,14 @@ class AsyncActionsClient:
 
 
         async def main() -> None:
-            response = await client.actions.list()
+            response = await client.actions.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+                app="app",
+                registry="public",
+            )
             async for item in response:
                 yield item
 
@@ -437,7 +461,7 @@ class AsyncActionsClient:
         asyncio.run(main())
         """
         return await self._raw_client.list(
-            after=after, before=before, limit=limit, q=q, app=app, request_options=request_options
+            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
         )
 
     async def retrieve(
@@ -503,7 +527,7 @@ class AsyncActionsClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ConfigurePropResponse:
@@ -535,7 +559,7 @@ class AsyncActionsClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
