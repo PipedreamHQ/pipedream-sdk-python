@@ -7,10 +7,11 @@ from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
-from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..errors.bad_request_error import BadRequestError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.component import Component
 from ..types.component_type import ComponentType
@@ -19,6 +20,7 @@ from ..types.configured_props import ConfiguredProps
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
+from .types.components_list_request_registry import ComponentsListRequestRegistry
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -36,9 +38,10 @@ class RawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ComponentsListRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component]:
+    ) -> SyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available components with optional search and app filtering
 
@@ -59,6 +62,9 @@ class RawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ComponentsListRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -67,8 +73,8 @@ class RawComponentsClient:
 
         Returns
         -------
-        SyncPager[Component]
-            components listed
+        SyncPager[Component, GetComponentsResponse]
+            behaves like registry=all
         """
         _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
@@ -79,6 +85,7 @@ class RawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
                 "component_type": component_type,
             },
             request_options=request_options,
@@ -104,19 +111,29 @@ class RawComponentsClient:
                         limit=limit,
                         q=q,
                         app=app,
+                        registry=registry,
                         component_type=component_type,
                         request_options=request_options,
                     )
-                return SyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -175,9 +192,9 @@ class RawComponentsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -198,7 +215,7 @@ class RawComponentsClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ConfigurePropResponse]:
@@ -230,7 +247,7 @@ class RawComponentsClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
@@ -281,9 +298,9 @@ class RawComponentsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -367,9 +384,9 @@ class RawComponentsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -392,9 +409,10 @@ class AsyncRawComponentsClient:
         limit: typing.Optional[int] = None,
         q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
+        registry: typing.Optional[ComponentsListRequestRegistry] = None,
         component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component]:
+    ) -> AsyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available components with optional search and app filtering
 
@@ -415,6 +433,9 @@ class AsyncRawComponentsClient:
         app : typing.Optional[str]
             The ID or name slug of the app to filter the components
 
+        registry : typing.Optional[ComponentsListRequestRegistry]
+            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
 
@@ -423,8 +444,8 @@ class AsyncRawComponentsClient:
 
         Returns
         -------
-        AsyncPager[Component]
-            components listed
+        AsyncPager[Component, GetComponentsResponse]
+            behaves like registry=all
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
@@ -435,6 +456,7 @@ class AsyncRawComponentsClient:
                 "limit": limit,
                 "q": q,
                 "app": app,
+                "registry": registry,
                 "component_type": component_type,
             },
             request_options=request_options,
@@ -462,20 +484,30 @@ class AsyncRawComponentsClient:
                             limit=limit,
                             q=q,
                             app=app,
+                            registry=registry,
                             component_type=component_type,
                             request_options=request_options,
                         )
 
-                return AsyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
                 )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -534,9 +566,9 @@ class AsyncRawComponentsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -557,7 +589,7 @@ class AsyncRawComponentsClient:
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
         page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         query: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ConfigurePropResponse]:
@@ -589,7 +621,7 @@ class AsyncRawComponentsClient:
         page : typing.Optional[float]
             Page number for paginated results
 
-        prev_context : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
             Previous context for pagination
 
         query : typing.Optional[str]
@@ -640,9 +672,9 @@ class AsyncRawComponentsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -726,9 +758,9 @@ class AsyncRawComponentsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
