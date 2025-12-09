@@ -6,11 +6,11 @@ import os
 import typing
 
 import httpx
+from ._.types.project_environment import ProjectEnvironment
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from .core.oauth_token_provider import OAuthTokenProvider
+from .core.oauth_token_provider import AsyncOAuthTokenProvider, OAuthTokenProvider
 from .environment import PipedreamEnvironment
-from .types.project_environment import ProjectEnvironment
 
 if typing.TYPE_CHECKING:
     from .accounts.client import AccountsClient, AsyncAccountsClient
@@ -310,16 +310,16 @@ class AsyncClient:
             raise ApiError(
                 body="The client must be instantiated be either passing in client_secret or setting PIPEDREAM_CLIENT_SECRET"
             )
-        oauth_token_provider = OAuthTokenProvider(
+        oauth_token_provider = AsyncOAuthTokenProvider(
             client_id=client_id,
             client_secret=client_secret,
-            client_wrapper=SyncClientWrapper(
+            client_wrapper=AsyncClientWrapper(
                 base_url=_get_base_url(base_url=base_url, environment=environment),
                 project_id=project_id,
                 project_environment=project_environment,
-                httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                httpx_client=httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                 if follow_redirects is not None
-                else httpx.Client(timeout=_defaulted_timeout),
+                else httpx.AsyncClient(timeout=_defaulted_timeout),
                 timeout=_defaulted_timeout,
             ),
         )
@@ -327,7 +327,8 @@ class AsyncClient:
             base_url=_get_base_url(base_url=base_url, environment=environment),
             project_id=project_id,
             project_environment=project_environment,
-            token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
+            token=_token_getter_override,
+            async_token=oauth_token_provider.get_token,
             httpx_client=httpx_client
             if httpx_client is not None
             else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)

@@ -2,4 +2,4 @@
 
 import typing
 
-ProxyResponse = typing.Optional[typing.Any]
+ProxyResponse = typing.Any
