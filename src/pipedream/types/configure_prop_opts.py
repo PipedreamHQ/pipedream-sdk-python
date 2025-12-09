@@ -48,7 +48,7 @@ class ConfigurePropOpts(UniversalBaseModel):
     Page number for paginated results
     """
 
-    prev_context: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    prev_context: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Previous context for pagination
     """

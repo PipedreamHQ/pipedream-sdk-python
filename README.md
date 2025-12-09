@@ -104,12 +104,28 @@ client = Pipedream(
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.apps.list()
+response = client.apps.list(
+    after="after",
+    before="before",
+    limit=1,
+    q="q",
+    sort_key="name",
+    sort_direction="asc",
+)
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
 for page in response.iter_pages():
     yield page
+```
+
+```python
+# You can also iterate through pages and access the typed response per page
+pager = client.apps.list(...)
+for page in pager.iter_pages():
+    print(page.response)  # access the typed response for each page
+    for item in page:
+        print(item)
 ```
 
 ## Advanced
@@ -129,11 +145,11 @@ response = client.actions.with_raw_response.run(...)
 print(response.headers)  # access the response headers
 print(response.data)  # access the underlying object
 pager = client.apps.list(...)
-print(pager.response.headers)  # access the response headers for the first page
+print(pager.response)  # access the typed response for the first page
 for item in pager:
     print(item)  # access the underlying object(s)
 for page in pager.iter_pages():
-    print(page.response.headers)  # access the response headers for each page
+    print(page.response)  # access the typed response for each page
     for item in page:
         print(item)  # access the underlying object(s)
 ```

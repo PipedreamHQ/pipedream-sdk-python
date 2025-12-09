@@ -7,15 +7,408 @@ from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.bad_request_error import BadRequestError
+from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
+from ..types.list_projects_response import ListProjectsResponse
+from ..types.project import Project
 from ..types.project_info_response import ProjectInfoResponse
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 
 class RawProjectsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[Project, ListProjectsResponse]:
+        """
+        List the projects that are available to the authenticated Connect client
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            A search query to filter the projects
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[Project, ListProjectsResponse]
+            projects listed
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/connect/projects",
+            method="GET",
+            params={
+                "after": after,
+                "before": before,
+                "limit": limit,
+                "q": q,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    ListProjectsResponse,
+                    parse_obj_as(
+                        type_=ListProjectsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.page_info is not None:
+                    _parsed_next = _parsed_response.page_info.end_cursor
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+                    _get_next = lambda: self.list(
+                        after=_parsed_next,
+                        before=before,
+                        limit=limit,
+                        q=q,
+                        request_options=request_options,
+                    )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def create(
+        self,
+        *,
+        name: str,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        external_url: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[Project]:
+        """
+        Create a new project for the authenticated workspace
+
+        Parameters
+        ----------
+        name : str
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        external_url : typing.Optional[str]
+            External URL for the project, if configured
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[Project]
+            project created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/connect/projects",
+            method="POST",
+            json={
+                "name": name,
+                "app_name": app_name,
+                "support_email": support_email,
+                "external_url": external_url,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Project,
+                    parse_obj_as(
+                        type_=Project,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def retrieve(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[Project]:
+        """
+        Get the project details for a specific project
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[Project]
+            project retrieved
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Project,
+                    parse_obj_as(
+                        type_=Project,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def delete(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
+        """
+        Delete a project owned by the authenticated workspace
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[None]
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return HttpResponse(response=_response, data=None)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def update(
+        self,
+        *,
+        name: typing.Optional[str] = OMIT,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        external_url: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[Project]:
+        """
+        Update project details or application information
+
+        Parameters
+        ----------
+        name : typing.Optional[str]
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        external_url : typing.Optional[str]
+            External URL for the project, if configured
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[Project]
+            project updated
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}",
+            method="PATCH",
+            json={
+                "name": name,
+                "app_name": app_name,
+                "support_email": support_email,
+                "external_url": external_url,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Project,
+                    parse_obj_as(
+                        type_=Project,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def update_logo(self, *, logo: str, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
+        """
+        Upload or replace the project logo
+
+        Parameters
+        ----------
+        logo : str
+            Data URI containing the new Base64 encoded image
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[None]
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}/logo",
+            method="POST",
+            json={
+                "logo": logo,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return HttpResponse(response=_response, data=None)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve_info(
         self, *, request_options: typing.Optional[RequestOptions] = None
@@ -52,9 +445,9 @@ class RawProjectsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -68,6 +461,396 @@ class RawProjectsClient:
 class AsyncRawProjectsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    async def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[Project, ListProjectsResponse]:
+        """
+        List the projects that are available to the authenticated Connect client
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            A search query to filter the projects
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[Project, ListProjectsResponse]
+            projects listed
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/connect/projects",
+            method="GET",
+            params={
+                "after": after,
+                "before": before,
+                "limit": limit,
+                "q": q,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    ListProjectsResponse,
+                    parse_obj_as(
+                        type_=ListProjectsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.page_info is not None:
+                    _parsed_next = _parsed_response.page_info.end_cursor
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+
+                    async def _get_next():
+                        return await self.list(
+                            after=_parsed_next,
+                            before=before,
+                            limit=limit,
+                            q=q,
+                            request_options=request_options,
+                        )
+
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create(
+        self,
+        *,
+        name: str,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        external_url: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[Project]:
+        """
+        Create a new project for the authenticated workspace
+
+        Parameters
+        ----------
+        name : str
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        external_url : typing.Optional[str]
+            External URL for the project, if configured
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[Project]
+            project created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/connect/projects",
+            method="POST",
+            json={
+                "name": name,
+                "app_name": app_name,
+                "support_email": support_email,
+                "external_url": external_url,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Project,
+                    parse_obj_as(
+                        type_=Project,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def retrieve(self, *, request_options: typing.Optional[RequestOptions] = None) -> AsyncHttpResponse[Project]:
+        """
+        Get the project details for a specific project
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[Project]
+            project retrieved
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Project,
+                    parse_obj_as(
+                        type_=Project,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete(self, *, request_options: typing.Optional[RequestOptions] = None) -> AsyncHttpResponse[None]:
+        """
+        Delete a project owned by the authenticated workspace
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[None]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def update(
+        self,
+        *,
+        name: typing.Optional[str] = OMIT,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        external_url: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[Project]:
+        """
+        Update project details or application information
+
+        Parameters
+        ----------
+        name : typing.Optional[str]
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        external_url : typing.Optional[str]
+            External URL for the project, if configured
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[Project]
+            project updated
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}",
+            method="PATCH",
+            json={
+                "name": name,
+                "app_name": app_name,
+                "support_email": support_email,
+                "external_url": external_url,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    Project,
+                    parse_obj_as(
+                        type_=Project,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def update_logo(
+        self, *, logo: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[None]:
+        """
+        Upload or replace the project logo
+
+        Parameters
+        ----------
+        logo : str
+            Data URI containing the new Base64 encoded image
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[None]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/projects/{jsonable_encoder(self._client_wrapper._project_id)}/logo",
+            method="POST",
+            json={
+                "logo": logo,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve_info(
         self, *, request_options: typing.Optional[RequestOptions] = None
@@ -104,9 +887,9 @@ class AsyncRawProjectsClient:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        typing.Any,
                         parse_obj_as(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
