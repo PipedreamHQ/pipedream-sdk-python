@@ -3,9 +3,15 @@
 import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.list_projects_response import ListProjectsResponse
+from ..types.project import Project
 from ..types.project_info_response import ProjectInfoResponse
 from .raw_client import AsyncRawProjectsClient, RawProjectsClient
+
+# this is used as the default value for optional parameters
+OMIT = typing.cast(typing.Any, ...)
 
 
 class ProjectsClient:
@@ -22,6 +28,272 @@ class ProjectsClient:
         RawProjectsClient
         """
         return self._raw_client
+
+    def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[Project, ListProjectsResponse]:
+        """
+        List the projects that are available to the authenticated Connect client
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            A search query to filter the projects
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[Project, ListProjectsResponse]
+            projects listed
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        response = client.projects.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+        )
+        for item in response:
+            yield item
+        # alternatively, you can paginate page-by-page
+        for page in response.iter_pages():
+            yield page
+        """
+        return self._raw_client.list(after=after, before=before, limit=limit, q=q, request_options=request_options)
+
+    def create(
+        self,
+        *,
+        name: str,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Project:
+        """
+        Create a new project for the authenticated workspace
+
+        Parameters
+        ----------
+        name : str
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Project
+            project created
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.projects.create(
+            name="name",
+        )
+        """
+        _response = self._raw_client.create(
+            name=name, app_name=app_name, support_email=support_email, request_options=request_options
+        )
+        return _response.data
+
+    def retrieve(self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Project:
+        """
+        Get the project details for a specific project
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Project
+            project retrieved
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.projects.retrieve(
+            project_id="project_id",
+        )
+        """
+        _response = self._raw_client.retrieve(project_id, request_options=request_options)
+        return _response.data
+
+    def delete(self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Delete a project owned by the authenticated workspace
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.projects.delete(
+            project_id="project_id",
+        )
+        """
+        _response = self._raw_client.delete(project_id, request_options=request_options)
+        return _response.data
+
+    def update(
+        self,
+        project_id: str,
+        *,
+        name: typing.Optional[str] = OMIT,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Project:
+        """
+        Update project details or application information
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        name : typing.Optional[str]
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Project
+            project updated
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.projects.update(
+            project_id="project_id",
+        )
+        """
+        _response = self._raw_client.update(
+            project_id, name=name, app_name=app_name, support_email=support_email, request_options=request_options
+        )
+        return _response.data
+
+    def update_logo(
+        self, project_id: str, *, logo: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Upload or replace the project logo
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        logo : str
+            Data URI containing the new Base64 encoded image
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.projects.update_logo(
+            project_id="project_id",
+            logo="data:image/png;base64,AAAAAA...",
+        )
+        """
+        _response = self._raw_client.update_logo(project_id, logo=logo, request_options=request_options)
+        return _response.data
 
     def retrieve_info(self, *, request_options: typing.Optional[RequestOptions] = None) -> ProjectInfoResponse:
         """
@@ -67,6 +339,323 @@ class AsyncProjectsClient:
         AsyncRawProjectsClient
         """
         return self._raw_client
+
+    async def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[Project, ListProjectsResponse]:
+        """
+        List the projects that are available to the authenticated Connect client
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            A search query to filter the projects
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[Project, ListProjectsResponse]
+            projects listed
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            response = await client.projects.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+            )
+            async for item in response:
+                yield item
+
+            # alternatively, you can paginate page-by-page
+            async for page in response.iter_pages():
+                yield page
+
+
+        asyncio.run(main())
+        """
+        return await self._raw_client.list(
+            after=after, before=before, limit=limit, q=q, request_options=request_options
+        )
+
+    async def create(
+        self,
+        *,
+        name: str,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Project:
+        """
+        Create a new project for the authenticated workspace
+
+        Parameters
+        ----------
+        name : str
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Project
+            project created
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.projects.create(
+                name="name",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create(
+            name=name, app_name=app_name, support_email=support_email, request_options=request_options
+        )
+        return _response.data
+
+    async def retrieve(self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> Project:
+        """
+        Get the project details for a specific project
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Project
+            project retrieved
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.projects.retrieve(
+                project_id="project_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.retrieve(project_id, request_options=request_options)
+        return _response.data
+
+    async def delete(self, project_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> None:
+        """
+        Delete a project owned by the authenticated workspace
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.projects.delete(
+                project_id="project_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.delete(project_id, request_options=request_options)
+        return _response.data
+
+    async def update(
+        self,
+        project_id: str,
+        *,
+        name: typing.Optional[str] = OMIT,
+        app_name: typing.Optional[str] = OMIT,
+        support_email: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Project:
+        """
+        Update project details or application information
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        name : typing.Optional[str]
+            Name of the project
+
+        app_name : typing.Optional[str]
+            Display name for the Connect application
+
+        support_email : typing.Optional[str]
+            Support email displayed to end users
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Project
+            project updated
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.projects.update(
+                project_id="project_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update(
+            project_id, name=name, app_name=app_name, support_email=support_email, request_options=request_options
+        )
+        return _response.data
+
+    async def update_logo(
+        self, project_id: str, *, logo: str, request_options: typing.Optional[RequestOptions] = None
+    ) -> None:
+        """
+        Upload or replace the project logo
+
+        Parameters
+        ----------
+        project_id : str
+            The project ID, which starts with `proj_`.
+
+        logo : str
+            Data URI containing the new Base64 encoded image
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        None
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.projects.update_logo(
+                project_id="project_id",
+                logo="data:image/png;base64,AAAAAA...",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update_logo(project_id, logo=logo, request_options=request_options)
+        return _response.data
 
     async def retrieve_info(self, *, request_options: typing.Optional[RequestOptions] = None) -> ProjectInfoResponse:
         """
