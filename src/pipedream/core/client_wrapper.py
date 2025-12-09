@@ -27,10 +27,10 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "pipedream/1.0.12",
+            "User-Agent": "pipedream/1.0.13",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "pipedream",
-            "X-Fern-SDK-Version": "1.0.12",
+            "X-Fern-SDK-Version": "1.0.13",
             **(self.get_custom_headers() or {}),
         }
         if self._project_environment is not None:
@@ -94,6 +94,7 @@ class AsyncClientWrapper(BaseClientWrapper):
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
+        async_token: typing.Optional[typing.Callable[[], typing.Awaitable[str]]] = None,
         httpx_client: httpx.AsyncClient,
     ):
         super().__init__(
@@ -104,9 +105,18 @@ class AsyncClientWrapper(BaseClientWrapper):
             base_url=base_url,
             timeout=timeout,
         )
+        self._async_token = async_token
         self.httpx_client = AsyncHttpClient(
             httpx_client=httpx_client,
             base_headers=self.get_headers,
             base_timeout=self.get_timeout,
             base_url=self.get_base_url,
+            async_base_headers=self.async_get_headers,
         )
+
+    async def async_get_headers(self) -> typing.Dict[str, str]:
+        headers = self.get_headers()
+        if self._async_token is not None:
+            token = await self._async_token()
+            headers["Authorization"] = f"Bearer {token}"
+        return headers

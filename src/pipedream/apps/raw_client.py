@@ -7,7 +7,7 @@ from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
-from ..core.pagination import AsyncPager, BaseHttpResponse, SyncPager
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..types.app import App
@@ -32,7 +32,7 @@ class RawAppsClient:
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[App]:
+    ) -> SyncPager[App, ListAppsResponse]:
         """
         Retrieve all available apps with optional filtering and sorting
 
@@ -64,7 +64,7 @@ class RawAppsClient:
 
         Returns
         -------
-        SyncPager[App]
+        SyncPager[App, ListAppsResponse]
             apps listed
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -106,9 +106,7 @@ class RawAppsClient:
                         category_ids=category_ids,
                         request_options=request_options,
                     )
-                return SyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
-                )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -169,7 +167,7 @@ class AsyncRawAppsClient:
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[App]:
+    ) -> AsyncPager[App, ListAppsResponse]:
         """
         Retrieve all available apps with optional filtering and sorting
 
@@ -201,7 +199,7 @@ class AsyncRawAppsClient:
 
         Returns
         -------
-        AsyncPager[App]
+        AsyncPager[App, ListAppsResponse]
             apps listed
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -246,9 +244,7 @@ class AsyncRawAppsClient:
                             request_options=request_options,
                         )
 
-                return AsyncPager(
-                    has_next=_has_next, items=_items, get_next=_get_next, response=BaseHttpResponse(response=_response)
-                )
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
