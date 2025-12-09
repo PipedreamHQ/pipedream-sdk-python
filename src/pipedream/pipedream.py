@@ -32,14 +32,21 @@ class Pipedream(Client):
         if not project_id:
             raise ValueError("Project ID is required")
 
-        super().__init__(
-            _token_getter_override=_new_token_getter(access_token),
-            base_url=_get_base_url(environment),
-            client_id=client_id,
-            client_secret=client_secret,
-            project_id=project_id,
-            project_environment=project_environment,
-        )
+        if access_token:
+            super().__init__(
+                base_url=_get_base_url(environment),
+                project_environment=project_environment,
+                project_id=project_id,
+                token=(lambda: access_token),
+            )
+        else:
+            super().__init__(
+                base_url=_get_base_url(environment),
+                project_environment=project_environment,
+                project_id=project_id,
+                client_id=client_id,
+                client_secret=client_secret,
+            )
 
         if not workflow_domain:
             workflow_domain = _get_default_workflow_domain(environment)
@@ -73,18 +80,24 @@ class AsyncPipedream(AsyncClient):
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         workflow_domain: Optional[str] = None,
     ):
-        project_id = project_id
         if not project_id:
             raise ValueError("Project ID is required")
 
-        super().__init__(
-            _token_getter_override=_new_token_getter(access_token),
-            base_url=_get_base_url(environment),
-            client_id=client_id,
-            client_secret=client_secret,
-            project_id=project_id,
-            project_environment=project_environment,
-        )
+        if access_token:
+            super().__init__(
+                base_url=_get_base_url(environment),
+                project_environment=project_environment,
+                project_id=project_id,
+                token=(lambda: access_token),
+            )
+        else:
+            super().__init__(
+                base_url=_get_base_url(environment),
+                project_environment=project_environment,
+                project_id=project_id,
+                client_id=client_id,
+                client_secret=client_secret,
+            )
 
         if not workflow_domain:
             workflow_domain = _get_default_workflow_domain(environment)
@@ -116,10 +129,3 @@ def _get_default_workflow_domain(environment: PipedreamEnvironment) -> str:
     if environment == PipedreamEnvironment.DEV:
         return "m.d.pipedream.net"
     return "m.pipedream.net"
-
-
-def _new_token_getter(access_token: Optional[str] = None):
-    """
-    Returns a new token getter function that retrieves the access token.
-    """
-    return (lambda: access_token) if access_token else None
