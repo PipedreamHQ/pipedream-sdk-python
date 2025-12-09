@@ -16,7 +16,32 @@ if typing.TYPE_CHECKING:
     from .component import Component
     from .component_stash import ComponentStash
     from .component_type import ComponentType
-    from .configurable_prop import ConfigurableProp
+    from .configurable_prop import (
+        ConfigurableProp,
+        ConfigurableProp_AirtableBaseId,
+        ConfigurableProp_AirtableFieldId,
+        ConfigurableProp_AirtableTableId,
+        ConfigurableProp_AirtableViewId,
+        ConfigurableProp_Alert,
+        ConfigurableProp_Any,
+        ConfigurableProp_App,
+        ConfigurableProp_Boolean,
+        ConfigurableProp_DataStore,
+        ConfigurableProp_Dir,
+        ConfigurableProp_DiscordChannel,
+        ConfigurableProp_DiscordChannelArray,
+        ConfigurableProp_HttpRequest,
+        ConfigurableProp_Integer,
+        ConfigurableProp_IntegerArray,
+        ConfigurableProp_InterfaceApphook,
+        ConfigurableProp_InterfaceHttp,
+        ConfigurableProp_InterfaceTimer,
+        ConfigurableProp_Object,
+        ConfigurableProp_ServiceDb,
+        ConfigurableProp_Sql,
+        ConfigurableProp_String,
+        ConfigurableProp_StringArray,
+    )
     from .configurable_prop_airtable_base_id import ConfigurablePropAirtableBaseId
     from .configurable_prop_airtable_field_id import ConfigurablePropAirtableFieldId
     from .configurable_prop_airtable_table_id import ConfigurablePropAirtableTableId
@@ -27,13 +52,17 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_any_options_item import ConfigurablePropAnyOptionsItem
     from .configurable_prop_app import ConfigurablePropApp
     from .configurable_prop_apphook import ConfigurablePropApphook
+    from .configurable_prop_base import ConfigurablePropBase
     from .configurable_prop_boolean import ConfigurablePropBoolean
     from .configurable_prop_boolean_options_item import ConfigurablePropBooleanOptionsItem
+    from .configurable_prop_data_store import ConfigurablePropDataStore
     from .configurable_prop_db import ConfigurablePropDb
+    from .configurable_prop_dir import ConfigurablePropDir
     from .configurable_prop_discord import ConfigurablePropDiscord
     from .configurable_prop_discord_channel import ConfigurablePropDiscordChannel
     from .configurable_prop_discord_channel_array import ConfigurablePropDiscordChannelArray
     from .configurable_prop_http import ConfigurablePropHttp
+    from .configurable_prop_http_request import ConfigurablePropHttpRequest
     from .configurable_prop_integer import ConfigurablePropInteger
     from .configurable_prop_integer_array import ConfigurablePropIntegerArray
     from .configurable_prop_integer_array_options_item import ConfigurablePropIntegerArrayOptionsItem
@@ -51,7 +80,6 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_timer_default import ConfigurablePropTimerDefault
     from .configurable_prop_timer_option import ConfigurablePropTimerOption
     from .configurable_prop_timer_static import ConfigurablePropTimerStatic
-    from .configurable_prop_type import ConfigurablePropType
     from .configure_prop_options import ConfigurePropOptions
     from .configure_prop_options_item import ConfigurePropOptionsItem
     from .configure_prop_opts import ConfigurePropOpts
@@ -89,12 +117,21 @@ if typing.TYPE_CHECKING:
     from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
     from .get_triggers_response import GetTriggersResponse
     from .http_interface import HttpInterface
+    from .http_request_auth import HttpRequestAuth
+    from .http_request_auth_type import HttpRequestAuthType
+    from .http_request_body import HttpRequestBody
+    from .http_request_body_mode import HttpRequestBodyMode
+    from .http_request_body_type import HttpRequestBodyType
+    from .http_request_config import HttpRequestConfig
+    from .http_request_field import HttpRequestField
     from .list_accounts_response import ListAccountsResponse
     from .list_app_categories_response import ListAppCategoriesResponse
     from .list_apps_response import ListAppsResponse
+    from .list_projects_response import ListProjectsResponse
     from .observation import Observation
     from .observation_error import ObservationError
     from .page_info import PageInfo
+    from .project import Project
     from .project_environment import ProjectEnvironment
     from .project_info_response import ProjectInfoResponse
     from .project_info_response_app import ProjectInfoResponseApp
@@ -137,13 +174,17 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropAnyOptionsItem": ".configurable_prop_any_options_item",
     "ConfigurablePropApp": ".configurable_prop_app",
     "ConfigurablePropApphook": ".configurable_prop_apphook",
+    "ConfigurablePropBase": ".configurable_prop_base",
     "ConfigurablePropBoolean": ".configurable_prop_boolean",
     "ConfigurablePropBooleanOptionsItem": ".configurable_prop_boolean_options_item",
+    "ConfigurablePropDataStore": ".configurable_prop_data_store",
     "ConfigurablePropDb": ".configurable_prop_db",
+    "ConfigurablePropDir": ".configurable_prop_dir",
     "ConfigurablePropDiscord": ".configurable_prop_discord",
     "ConfigurablePropDiscordChannel": ".configurable_prop_discord_channel",
     "ConfigurablePropDiscordChannelArray": ".configurable_prop_discord_channel_array",
     "ConfigurablePropHttp": ".configurable_prop_http",
+    "ConfigurablePropHttpRequest": ".configurable_prop_http_request",
     "ConfigurablePropInteger": ".configurable_prop_integer",
     "ConfigurablePropIntegerArray": ".configurable_prop_integer_array",
     "ConfigurablePropIntegerArrayOptionsItem": ".configurable_prop_integer_array_options_item",
@@ -161,7 +202,29 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropTimerDefault": ".configurable_prop_timer_default",
     "ConfigurablePropTimerOption": ".configurable_prop_timer_option",
     "ConfigurablePropTimerStatic": ".configurable_prop_timer_static",
-    "ConfigurablePropType": ".configurable_prop_type",
+    "ConfigurableProp_AirtableBaseId": ".configurable_prop",
+    "ConfigurableProp_AirtableFieldId": ".configurable_prop",
+    "ConfigurableProp_AirtableTableId": ".configurable_prop",
+    "ConfigurableProp_AirtableViewId": ".configurable_prop",
+    "ConfigurableProp_Alert": ".configurable_prop",
+    "ConfigurableProp_Any": ".configurable_prop",
+    "ConfigurableProp_App": ".configurable_prop",
+    "ConfigurableProp_Boolean": ".configurable_prop",
+    "ConfigurableProp_DataStore": ".configurable_prop",
+    "ConfigurableProp_Dir": ".configurable_prop",
+    "ConfigurableProp_DiscordChannel": ".configurable_prop",
+    "ConfigurableProp_DiscordChannelArray": ".configurable_prop",
+    "ConfigurableProp_HttpRequest": ".configurable_prop",
+    "ConfigurableProp_Integer": ".configurable_prop",
+    "ConfigurableProp_IntegerArray": ".configurable_prop",
+    "ConfigurableProp_InterfaceApphook": ".configurable_prop",
+    "ConfigurableProp_InterfaceHttp": ".configurable_prop",
+    "ConfigurableProp_InterfaceTimer": ".configurable_prop",
+    "ConfigurableProp_Object": ".configurable_prop",
+    "ConfigurableProp_ServiceDb": ".configurable_prop",
+    "ConfigurableProp_Sql": ".configurable_prop",
+    "ConfigurableProp_String": ".configurable_prop",
+    "ConfigurableProp_StringArray": ".configurable_prop",
     "ConfigurePropOptions": ".configure_prop_options",
     "ConfigurePropOptionsItem": ".configure_prop_options_item",
     "ConfigurePropOpts": ".configure_prop_opts",
@@ -202,12 +265,21 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
     "GetTriggersResponse": ".get_triggers_response",
     "HttpInterface": ".http_interface",
+    "HttpRequestAuth": ".http_request_auth",
+    "HttpRequestAuthType": ".http_request_auth_type",
+    "HttpRequestBody": ".http_request_body",
+    "HttpRequestBodyMode": ".http_request_body_mode",
+    "HttpRequestBodyType": ".http_request_body_type",
+    "HttpRequestConfig": ".http_request_config",
+    "HttpRequestField": ".http_request_field",
     "ListAccountsResponse": ".list_accounts_response",
     "ListAppCategoriesResponse": ".list_app_categories_response",
     "ListAppsResponse": ".list_apps_response",
+    "ListProjectsResponse": ".list_projects_response",
     "Observation": ".observation",
     "ObservationError": ".observation_error",
     "PageInfo": ".page_info",
+    "Project": ".project",
     "ProjectEnvironment": ".project_environment",
     "ProjectInfoResponse": ".project_info_response",
     "ProjectInfoResponseApp": ".project_info_response_app",
@@ -274,13 +346,17 @@ __all__ = [
     "ConfigurablePropAnyOptionsItem",
     "ConfigurablePropApp",
     "ConfigurablePropApphook",
+    "ConfigurablePropBase",
     "ConfigurablePropBoolean",
     "ConfigurablePropBooleanOptionsItem",
+    "ConfigurablePropDataStore",
     "ConfigurablePropDb",
+    "ConfigurablePropDir",
     "ConfigurablePropDiscord",
     "ConfigurablePropDiscordChannel",
     "ConfigurablePropDiscordChannelArray",
     "ConfigurablePropHttp",
+    "ConfigurablePropHttpRequest",
     "ConfigurablePropInteger",
     "ConfigurablePropIntegerArray",
     "ConfigurablePropIntegerArrayOptionsItem",
@@ -298,7 +374,29 @@ __all__ = [
     "ConfigurablePropTimerDefault",
     "ConfigurablePropTimerOption",
     "ConfigurablePropTimerStatic",
-    "ConfigurablePropType",
+    "ConfigurableProp_AirtableBaseId",
+    "ConfigurableProp_AirtableFieldId",
+    "ConfigurableProp_AirtableTableId",
+    "ConfigurableProp_AirtableViewId",
+    "ConfigurableProp_Alert",
+    "ConfigurableProp_Any",
+    "ConfigurableProp_App",
+    "ConfigurableProp_Boolean",
+    "ConfigurableProp_DataStore",
+    "ConfigurableProp_Dir",
+    "ConfigurableProp_DiscordChannel",
+    "ConfigurableProp_DiscordChannelArray",
+    "ConfigurableProp_HttpRequest",
+    "ConfigurableProp_Integer",
+    "ConfigurableProp_IntegerArray",
+    "ConfigurableProp_InterfaceApphook",
+    "ConfigurableProp_InterfaceHttp",
+    "ConfigurableProp_InterfaceTimer",
+    "ConfigurableProp_Object",
+    "ConfigurableProp_ServiceDb",
+    "ConfigurableProp_Sql",
+    "ConfigurableProp_String",
+    "ConfigurableProp_StringArray",
     "ConfigurePropOptions",
     "ConfigurePropOptionsItem",
     "ConfigurePropOpts",
@@ -339,12 +437,21 @@ __all__ = [
     "GetTriggerWorkflowsResponse",
     "GetTriggersResponse",
     "HttpInterface",
+    "HttpRequestAuth",
+    "HttpRequestAuthType",
+    "HttpRequestBody",
+    "HttpRequestBodyMode",
+    "HttpRequestBodyType",
+    "HttpRequestConfig",
+    "HttpRequestField",
     "ListAccountsResponse",
     "ListAppCategoriesResponse",
     "ListAppsResponse",
+    "ListProjectsResponse",
     "Observation",
     "ObservationError",
     "PageInfo",
+    "Project",
     "ProjectEnvironment",
     "ProjectInfoResponse",
     "ProjectInfoResponseApp",
