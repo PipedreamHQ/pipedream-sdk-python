@@ -157,6 +157,7 @@ if typing.TYPE_CHECKING:
         tokens,
         triggers,
         users,
+        workflows,
     )
     from .actions import ActionsListRequestRegistry
     from .apps import AppsListRequestSortDirection, AppsListRequestSortKey
@@ -325,6 +326,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "tokens": ".tokens",
     "triggers": ".triggers",
     "users": ".users",
+    "workflows": ".workflows",
 }
 
 
@@ -509,4 +511,5 @@ __all__ = [
     "tokens",
     "triggers",
     "users",
+    "workflows",
 ]
