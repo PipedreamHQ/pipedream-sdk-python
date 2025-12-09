@@ -13,6 +13,7 @@ The Pipedream Python library provides convenient access to the Pipedream APIs fr
 - [Async Client](#async-client)
 - [Exception Handling](#exception-handling)
 - [Pagination](#pagination)
+- [Oauth Token Override](#oauth-token-override)
 - [Advanced](#advanced)
   - [Access Raw Response Data](#access-raw-response-data)
   - [Retries](#retries)
@@ -104,12 +105,46 @@ client = Pipedream(
     client_id="YOUR_CLIENT_ID",
     client_secret="YOUR_CLIENT_SECRET",
 )
-response = client.apps.list()
+response = client.apps.list(
+    after="after",
+    before="before",
+    limit=1,
+    q="q",
+    sort_key="name",
+    sort_direction="asc",
+)
 for item in response:
     yield item
 # alternatively, you can paginate page-by-page
 for page in response.iter_pages():
     yield page
+```
+
+```python
+# You can also iterate through pages and access the typed response per page
+pager = client.apps.list(...)
+for page in pager.iter_pages():
+    print(page.response)  # access the typed response for each page
+    for item in page:
+        print(item)
+```
+
+## Oauth Token Override
+
+This SDK supports two authentication methods: OAuth client credentials flow (automatic token management) or direct bearer token authentication. You can choose between these options when initializing the client:
+
+```python
+from pipedream import Pipedream
+
+# Option 1: Direct bearer token (bypass OAuth flow)
+client = Pipedream(..., token="my-pre-generated-bearer-token")
+
+from pipedream import Pipedream
+
+# Option 2: OAuth client credentials flow (automatic token management)
+client = Pipedream(
+    ..., client_id="your-client-id", client_secret="your-client-secret"
+)
 ```
 
 ## Advanced
@@ -129,11 +164,11 @@ response = client.actions.with_raw_response.run(...)
 print(response.headers)  # access the response headers
 print(response.data)  # access the underlying object
 pager = client.apps.list(...)
-print(pager.response.headers)  # access the response headers for the first page
+print(pager.response)  # access the typed response for the first page
 for item in pager:
     print(item)  # access the underlying object(s)
 for page in pager.iter_pages():
-    print(page.response.headers)  # access the response headers for each page
+    print(page.response)  # access the typed response for each page
     for item in page:
         print(item)  # access the underlying object(s)
 ```

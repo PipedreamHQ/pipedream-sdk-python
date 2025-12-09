@@ -6,11 +6,11 @@ import os
 import typing
 
 import httpx
+from ._.types.project_environment import ProjectEnvironment
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
-from .core.oauth_token_provider import OAuthTokenProvider
+from .core.oauth_token_provider import AsyncOAuthTokenProvider, OAuthTokenProvider
 from .environment import PipedreamEnvironment
-from .types.project_environment import ProjectEnvironment
 
 if typing.TYPE_CHECKING:
     from .accounts.client import AccountsClient, AsyncAccountsClient
@@ -34,23 +34,33 @@ class Client:
 
     Parameters
     ----------
+
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : PipedreamEnvironment
-        The environment to use for requests from the client. from .environment import PipedreamEnvironment
+    client_id : str
+        The client identifier used for authentication.
 
+    client_secret : str
+        The client secret used for authentication.
 
+    timeout : typing.Optional[float]
+        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
-        Defaults to PipedreamEnvironment.PROD
+    follow_redirects : typing.Optional[bool]
+        Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
+    httpx_client : typing.Optional[httpx.Client]
+        The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
 
+    # or ...
 
-    project_id : str
-    project_environment : typing.Optional[ProjectEnvironment]
-    client_id : typing.Optional[str]
-    client_secret : typing.Optional[str]
-    _token_getter_override : typing.Optional[typing.Callable[[], str]]
+    base_url : typing.Optional[str]
+        The base url to use for requests from the client.
+
+    token : typing.Callable[[], str]
+        Authenticate by providing a callable that returns a pre-generated bearer token. In this mode, OAuth client credentials are not required.
+
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -70,8 +80,44 @@ class Client:
         client_id="YOUR_CLIENT_ID",
         client_secret="YOUR_CLIENT_SECRET",
     )
+
+    # or ...
+
+    from pipedream import Pipedream
+
+    client = Pipedream(
+        base_url="https://yourhost.com/path/to/api",
+        token="YOUR_BEARER_TOKEN",
+    )
     """
 
+    @typing.overload
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_id: str,
+        project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.Client] = None,
+        client_id: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_ID"),
+        client_secret: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_SECRET"),
+    ): ...
+    @typing.overload
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_id: str,
+        project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.Client] = None,
+        token: typing.Callable[[], str],
+    ): ...
     def __init__(
         self,
         *,
@@ -81,6 +127,7 @@ class Client:
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
         client_id: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_ID"),
         client_secret: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_SECRET"),
+        token: typing.Optional[typing.Callable[[], str]] = None,
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -89,39 +136,49 @@ class Client:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        if client_id is None:
-            raise ApiError(
-                body="The client must be instantiated be either passing in client_id or setting PIPEDREAM_CLIENT_ID"
-            )
-        if client_secret is None:
-            raise ApiError(
-                body="The client must be instantiated be either passing in client_secret or setting PIPEDREAM_CLIENT_SECRET"
-            )
-        oauth_token_provider = OAuthTokenProvider(
-            client_id=client_id,
-            client_secret=client_secret,
-            client_wrapper=SyncClientWrapper(
+        if token is not None:
+            self._client_wrapper = SyncClientWrapper(
                 base_url=_get_base_url(base_url=base_url, environment=environment),
                 project_id=project_id,
                 project_environment=project_environment,
-                httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                 if follow_redirects is not None
                 else httpx.Client(timeout=_defaulted_timeout),
                 timeout=_defaulted_timeout,
-            ),
-        )
-        self._client_wrapper = SyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
-            project_id=project_id,
-            project_environment=project_environment,
-            token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
-            httpx_client=httpx_client
-            if httpx_client is not None
-            else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
-            if follow_redirects is not None
-            else httpx.Client(timeout=_defaulted_timeout),
-            timeout=_defaulted_timeout,
-        )
+                token=_token_getter_override if _token_getter_override is not None else token,
+            )
+        elif client_id is not None and client_secret is not None:
+            oauth_token_provider = OAuthTokenProvider(
+                client_id=client_id,
+                client_secret=client_secret,
+                client_wrapper=SyncClientWrapper(
+                    base_url=_get_base_url(base_url=base_url, environment=environment),
+                    project_id=project_id,
+                    project_environment=project_environment,
+                    httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                    if follow_redirects is not None
+                    else httpx.Client(timeout=_defaulted_timeout),
+                    timeout=_defaulted_timeout,
+                ),
+            )
+            self._client_wrapper = SyncClientWrapper(
+                base_url=_get_base_url(base_url=base_url, environment=environment),
+                project_id=project_id,
+                project_environment=project_environment,
+                token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                if follow_redirects is not None
+                else httpx.Client(timeout=_defaulted_timeout),
+                timeout=_defaulted_timeout,
+            )
+        else:
+            raise ApiError(
+                body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
+            )
         self._app_categories: typing.Optional[AppCategoriesClient] = None
         self._apps: typing.Optional[AppsClient] = None
         self._accounts: typing.Optional[AccountsClient] = None
@@ -247,23 +304,33 @@ class AsyncClient:
 
     Parameters
     ----------
+
     base_url : typing.Optional[str]
         The base url to use for requests from the client.
 
-    environment : PipedreamEnvironment
-        The environment to use for requests from the client. from .environment import PipedreamEnvironment
+    client_id : str
+        The client identifier used for authentication.
 
+    client_secret : str
+        The client secret used for authentication.
 
+    timeout : typing.Optional[float]
+        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
-        Defaults to PipedreamEnvironment.PROD
+    follow_redirects : typing.Optional[bool]
+        Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
 
+    httpx_client : typing.Optional[httpx.AsyncClient]
+        The httpx client to use for making requests, a preconfigured client is used by default, however this is useful should you want to pass in any custom httpx configuration.
 
+    # or ...
 
-    project_id : str
-    project_environment : typing.Optional[ProjectEnvironment]
-    client_id : typing.Optional[str]
-    client_secret : typing.Optional[str]
-    _token_getter_override : typing.Optional[typing.Callable[[], str]]
+    base_url : typing.Optional[str]
+        The base url to use for requests from the client.
+
+    token : typing.Callable[[], str]
+        Authenticate by providing a callable that returns a pre-generated bearer token. In this mode, OAuth client credentials are not required.
+
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -283,8 +350,44 @@ class AsyncClient:
         client_id="YOUR_CLIENT_ID",
         client_secret="YOUR_CLIENT_SECRET",
     )
+
+    # or ...
+
+    from pipedream import AsyncPipedream
+
+    client = AsyncPipedream(
+        base_url="https://yourhost.com/path/to/api",
+        token="YOUR_BEARER_TOKEN",
+    )
     """
 
+    @typing.overload
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_id: str,
+        project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.AsyncClient] = None,
+        client_id: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_ID"),
+        client_secret: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_SECRET"),
+    ): ...
+    @typing.overload
+    def __init__(
+        self,
+        *,
+        base_url: typing.Optional[str] = None,
+        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        project_id: str,
+        project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        timeout: typing.Optional[float] = None,
+        follow_redirects: typing.Optional[bool] = True,
+        httpx_client: typing.Optional[httpx.AsyncClient] = None,
+        token: typing.Callable[[], str],
+    ): ...
     def __init__(
         self,
         *,
@@ -294,6 +397,7 @@ class AsyncClient:
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
         client_id: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_ID"),
         client_secret: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_SECRET"),
+        token: typing.Optional[typing.Callable[[], str]] = None,
         _token_getter_override: typing.Optional[typing.Callable[[], str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -302,39 +406,50 @@ class AsyncClient:
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
-        if client_id is None:
-            raise ApiError(
-                body="The client must be instantiated be either passing in client_id or setting PIPEDREAM_CLIENT_ID"
-            )
-        if client_secret is None:
-            raise ApiError(
-                body="The client must be instantiated be either passing in client_secret or setting PIPEDREAM_CLIENT_SECRET"
-            )
-        oauth_token_provider = OAuthTokenProvider(
-            client_id=client_id,
-            client_secret=client_secret,
-            client_wrapper=SyncClientWrapper(
+        if token is not None:
+            self._client_wrapper = AsyncClientWrapper(
                 base_url=_get_base_url(base_url=base_url, environment=environment),
                 project_id=project_id,
                 project_environment=project_environment,
-                httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                 if follow_redirects is not None
-                else httpx.Client(timeout=_defaulted_timeout),
+                else httpx.AsyncClient(timeout=_defaulted_timeout),
                 timeout=_defaulted_timeout,
-            ),
-        )
-        self._client_wrapper = AsyncClientWrapper(
-            base_url=_get_base_url(base_url=base_url, environment=environment),
-            project_id=project_id,
-            project_environment=project_environment,
-            token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
-            httpx_client=httpx_client
-            if httpx_client is not None
-            else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
-            if follow_redirects is not None
-            else httpx.AsyncClient(timeout=_defaulted_timeout),
-            timeout=_defaulted_timeout,
-        )
+                token=_token_getter_override if _token_getter_override is not None else token,
+            )
+        elif client_id is not None and client_secret is not None:
+            oauth_token_provider = AsyncOAuthTokenProvider(
+                client_id=client_id,
+                client_secret=client_secret,
+                client_wrapper=AsyncClientWrapper(
+                    base_url=_get_base_url(base_url=base_url, environment=environment),
+                    project_id=project_id,
+                    project_environment=project_environment,
+                    httpx_client=httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                    if follow_redirects is not None
+                    else httpx.AsyncClient(timeout=_defaulted_timeout),
+                    timeout=_defaulted_timeout,
+                ),
+            )
+            self._client_wrapper = AsyncClientWrapper(
+                base_url=_get_base_url(base_url=base_url, environment=environment),
+                project_id=project_id,
+                project_environment=project_environment,
+                token=_token_getter_override,
+                async_token=oauth_token_provider.get_token,
+                httpx_client=httpx_client
+                if httpx_client is not None
+                else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
+                if follow_redirects is not None
+                else httpx.AsyncClient(timeout=_defaulted_timeout),
+                timeout=_defaulted_timeout,
+            )
+        else:
+            raise ApiError(
+                body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
+            )
         self._app_categories: typing.Optional[AsyncAppCategoriesClient] = None
         self._apps: typing.Optional[AsyncAppsClient] = None
         self._accounts: typing.Optional[AsyncAccountsClient] = None

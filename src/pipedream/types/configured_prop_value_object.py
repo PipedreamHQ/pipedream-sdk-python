@@ -2,4 +2,4 @@
 
 import typing
 
-ConfiguredPropValueObject = typing.Dict[str, typing.Optional[typing.Any]]
+ConfiguredPropValueObject = typing.Dict[str, typing.Any]
