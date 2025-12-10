@@ -11,7 +11,7 @@ class EmittedEvent(UniversalBaseModel):
     An event emitted by a trigger
     """
 
-    e: typing.Dict[str, typing.Optional[typing.Any]] = pydantic.Field()
+    e: typing.Dict[str, typing.Any] = pydantic.Field()
     """
     The event's payload
     """

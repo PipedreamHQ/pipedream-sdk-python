@@ -13,6 +13,8 @@ LICENSE
 reference.md
 
 # Custom Pipedream client files
+src/pipedream/__init__.py
+src/pipedream/pipedream.py
 
 # Custom Proxy files
 src/pipedream/proxy/client.py

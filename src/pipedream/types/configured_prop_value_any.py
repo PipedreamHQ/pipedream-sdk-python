@@ -2,4 +2,4 @@
 
 import typing
 
-ConfiguredPropValueAny = typing.Optional[typing.Any]
+ConfiguredPropValueAny = typing.Any

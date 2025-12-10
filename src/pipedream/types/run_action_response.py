@@ -12,17 +12,17 @@ class RunActionResponse(UniversalBaseModel):
     The response received after running an action. See https://pipedream.com/docs/components/api#returning-data-from-steps for more details.
     """
 
-    exports: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    exports: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     The key-value pairs resulting from calls to `$.export`
     """
 
-    os: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    os: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     Any logs produced during the execution of the action
     """
 
-    ret: typing.Optional[typing.Optional[typing.Any]] = pydantic.Field(default=None)
+    ret: typing.Optional[typing.Any] = pydantic.Field(default=None)
     """
     The value returned by the action
     """
