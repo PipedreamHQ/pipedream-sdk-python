@@ -38,6 +38,9 @@ class AppsClient:
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_components: typing.Optional[bool] = None,
+        has_actions: typing.Optional[bool] = None,
+        has_triggers: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[App, ListAppsResponse]:
         """
@@ -66,6 +69,15 @@ class AppsClient:
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Only return apps in these categories
 
+        has_components : typing.Optional[bool]
+            Filter to apps that have components (actions or triggers)
+
+        has_actions : typing.Optional[bool]
+            Filter to apps that have actions
+
+        has_triggers : typing.Optional[bool]
+            Filter to apps that have triggers
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -91,6 +103,9 @@ class AppsClient:
             q="q",
             sort_key="name",
             sort_direction="asc",
+            has_components=True,
+            has_actions=True,
+            has_triggers=True,
         )
         for item in response:
             yield item
@@ -106,6 +121,9 @@ class AppsClient:
             sort_key=sort_key,
             sort_direction=sort_direction,
             category_ids=category_ids,
+            has_components=has_components,
+            has_actions=has_actions,
+            has_triggers=has_triggers,
             request_options=request_options,
         )
 
@@ -169,6 +187,9 @@ class AsyncAppsClient:
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_components: typing.Optional[bool] = None,
+        has_actions: typing.Optional[bool] = None,
+        has_triggers: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[App, ListAppsResponse]:
         """
@@ -196,6 +217,15 @@ class AsyncAppsClient:
 
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Only return apps in these categories
+
+        has_components : typing.Optional[bool]
+            Filter to apps that have components (actions or triggers)
+
+        has_actions : typing.Optional[bool]
+            Filter to apps that have actions
+
+        has_triggers : typing.Optional[bool]
+            Filter to apps that have triggers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -227,6 +257,9 @@ class AsyncAppsClient:
                 q="q",
                 sort_key="name",
                 sort_direction="asc",
+                has_components=True,
+                has_actions=True,
+                has_triggers=True,
             )
             async for item in response:
                 yield item
@@ -246,6 +279,9 @@ class AsyncAppsClient:
             sort_key=sort_key,
             sort_direction=sort_direction,
             category_ids=category_ids,
+            has_components=has_components,
+            has_actions=has_actions,
+            has_triggers=has_triggers,
             request_options=request_options,
         )
 

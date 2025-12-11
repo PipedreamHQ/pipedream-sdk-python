@@ -112,6 +112,9 @@ response = client.apps.list(
     q="q",
     sort_key="name",
     sort_direction="asc",
+    has_components=True,
+    has_actions=True,
+    has_triggers=True,
 )
 for item in response:
     yield item
