@@ -120,3 +120,8 @@ class AsyncClientWrapper(BaseClientWrapper):
             token = await self._async_token()
             headers["Authorization"] = f"Bearer {token}"
         return headers
+
+    async def _async_get_token(self) -> typing.Optional[str]:
+        if self._async_token is not None:
+            return await self._async_token()
+        return self._get_token()

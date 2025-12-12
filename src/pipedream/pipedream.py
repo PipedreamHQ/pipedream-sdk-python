@@ -110,9 +110,22 @@ class AsyncPipedream(AsyncClient):
     @property
     def raw_access_token(self) -> Optional[str]:
         """
-        Returns an access token that can be used to authenticate API requests
+        Returns an access token that can be used to authenticate API requests.
+
+        Note: When using OAuth authentication (client_id/client_secret), this property
+        may perform blocking network operations. For async applications, prefer using
+        the async method `get_raw_access_token()` instead.
         """
         return self._client_wrapper._get_token()
+
+    async def get_raw_access_token(self) -> Optional[str]:
+        """
+        Asynchronously returns an access token that can be used to authenticate API requests.
+
+        This method is non-blocking and safe to use in async contexts such as FastAPI,
+        Django ASGI, or any other asyncio-based application.
+        """
+        return await self._client_wrapper._async_get_token()
 
 
 def _get_base_url(environment: PipedreamEnvironment) -> str:
