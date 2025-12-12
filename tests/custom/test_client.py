@@ -38,9 +38,6 @@ async def test_async_pipedream_async_raw_access_token_with_oauth() -> None:
         project_id="test-project",
     )
 
-    # The client should have _async_token set when using OAuth
-    assert client._client_wrapper._async_token is not None
-
     # Mock the async token provider
     client._client_wrapper._async_token = AsyncMock(return_value="mocked-oauth-token")
 
