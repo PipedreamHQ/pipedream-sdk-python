@@ -31,6 +31,11 @@ class Project(UniversalBaseModel):
     Support email configured for the project
     """
 
+    connect_require_key_auth_test: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Send a test request to the upstream API when adding Connect accounts for key-based apps
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

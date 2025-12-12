@@ -31,6 +31,9 @@ class RawAppsClient:
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_components: typing.Optional[bool] = None,
+        has_actions: typing.Optional[bool] = None,
+        has_triggers: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[App, ListAppsResponse]:
         """
@@ -59,6 +62,15 @@ class RawAppsClient:
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Only return apps in these categories
 
+        has_components : typing.Optional[bool]
+            Filter to apps that have components (actions or triggers)
+
+        has_actions : typing.Optional[bool]
+            Filter to apps that have actions
+
+        has_triggers : typing.Optional[bool]
+            Filter to apps that have triggers
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -78,6 +90,9 @@ class RawAppsClient:
                 "sort_key": sort_key,
                 "sort_direction": sort_direction,
                 "category_ids": category_ids,
+                "has_components": has_components,
+                "has_actions": has_actions,
+                "has_triggers": has_triggers,
             },
             request_options=request_options,
         )
@@ -104,6 +119,9 @@ class RawAppsClient:
                         sort_key=sort_key,
                         sort_direction=sort_direction,
                         category_ids=category_ids,
+                        has_components=has_components,
+                        has_actions=has_actions,
+                        has_triggers=has_triggers,
                         request_options=request_options,
                     )
                 return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
@@ -166,6 +184,9 @@ class AsyncRawAppsClient:
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
         category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
+        has_components: typing.Optional[bool] = None,
+        has_actions: typing.Optional[bool] = None,
+        has_triggers: typing.Optional[bool] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[App, ListAppsResponse]:
         """
@@ -194,6 +215,15 @@ class AsyncRawAppsClient:
         category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
             Only return apps in these categories
 
+        has_components : typing.Optional[bool]
+            Filter to apps that have components (actions or triggers)
+
+        has_actions : typing.Optional[bool]
+            Filter to apps that have actions
+
+        has_triggers : typing.Optional[bool]
+            Filter to apps that have triggers
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -213,6 +243,9 @@ class AsyncRawAppsClient:
                 "sort_key": sort_key,
                 "sort_direction": sort_direction,
                 "category_ids": category_ids,
+                "has_components": has_components,
+                "has_actions": has_actions,
+                "has_triggers": has_triggers,
             },
             request_options=request_options,
         )
@@ -241,6 +274,9 @@ class AsyncRawAppsClient:
                             sort_key=sort_key,
                             sort_direction=sort_direction,
                             category_ids=category_ids,
+                            has_components=has_components,
+                            has_actions=has_actions,
+                            has_triggers=has_triggers,
                             request_options=request_options,
                         )
 

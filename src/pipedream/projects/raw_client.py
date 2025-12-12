@@ -126,6 +126,7 @@ class RawProjectsClient:
         name: str,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Project]:
         """
@@ -142,6 +143,9 @@ class RawProjectsClient:
         support_email : typing.Optional[str]
             Support email displayed to end users
 
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -157,6 +161,7 @@ class RawProjectsClient:
                 "name": name,
                 "app_name": app_name,
                 "support_email": support_email,
+                "connect_require_key_auth_test": connect_require_key_auth_test,
             },
             headers={
                 "content-type": "application/json",
@@ -287,6 +292,7 @@ class RawProjectsClient:
         name: typing.Optional[str] = OMIT,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Project]:
         """
@@ -306,6 +312,9 @@ class RawProjectsClient:
         support_email : typing.Optional[str]
             Support email displayed to end users
 
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -321,6 +330,7 @@ class RawProjectsClient:
                 "name": name,
                 "app_name": app_name,
                 "support_email": support_email,
+                "connect_require_key_auth_test": connect_require_key_auth_test,
             },
             headers={
                 "content-type": "application/json",
@@ -573,6 +583,7 @@ class AsyncRawProjectsClient:
         name: str,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Project]:
         """
@@ -589,6 +600,9 @@ class AsyncRawProjectsClient:
         support_email : typing.Optional[str]
             Support email displayed to end users
 
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -604,6 +618,7 @@ class AsyncRawProjectsClient:
                 "name": name,
                 "app_name": app_name,
                 "support_email": support_email,
+                "connect_require_key_auth_test": connect_require_key_auth_test,
             },
             headers={
                 "content-type": "application/json",
@@ -736,6 +751,7 @@ class AsyncRawProjectsClient:
         name: typing.Optional[str] = OMIT,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Project]:
         """
@@ -755,6 +771,9 @@ class AsyncRawProjectsClient:
         support_email : typing.Optional[str]
             Support email displayed to end users
 
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -770,6 +789,7 @@ class AsyncRawProjectsClient:
                 "name": name,
                 "app_name": app_name,
                 "support_email": support_email,
+                "connect_require_key_auth_test": connect_require_key_auth_test,
             },
             headers={
                 "content-type": "application/json",

@@ -93,6 +93,7 @@ class ProjectsClient:
         name: str,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
         """
@@ -108,6 +109,9 @@ class ProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -132,7 +136,11 @@ class ProjectsClient:
         )
         """
         _response = self._raw_client.create(
-            name=name, app_name=app_name, support_email=support_email, request_options=request_options
+            name=name,
+            app_name=app_name,
+            support_email=support_email,
+            connect_require_key_auth_test=connect_require_key_auth_test,
+            request_options=request_options,
         )
         return _response.data
 
@@ -210,6 +218,7 @@ class ProjectsClient:
         name: typing.Optional[str] = OMIT,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
         """
@@ -228,6 +237,9 @@ class ProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -252,7 +264,12 @@ class ProjectsClient:
         )
         """
         _response = self._raw_client.update(
-            project_id, name=name, app_name=app_name, support_email=support_email, request_options=request_options
+            project_id,
+            name=name,
+            app_name=app_name,
+            support_email=support_email,
+            connect_require_key_auth_test=connect_require_key_auth_test,
+            request_options=request_options,
         )
         return _response.data
 
@@ -415,6 +432,7 @@ class AsyncProjectsClient:
         name: str,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
         """
@@ -430,6 +448,9 @@ class AsyncProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -462,7 +483,11 @@ class AsyncProjectsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            name=name, app_name=app_name, support_email=support_email, request_options=request_options
+            name=name,
+            app_name=app_name,
+            support_email=support_email,
+            connect_require_key_auth_test=connect_require_key_auth_test,
+            request_options=request_options,
         )
         return _response.data
 
@@ -556,6 +581,7 @@ class AsyncProjectsClient:
         name: typing.Optional[str] = OMIT,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
         """
@@ -574,6 +600,9 @@ class AsyncProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        connect_require_key_auth_test : typing.Optional[bool]
+            Send a test request to the upstream API when adding Connect accounts for key-based apps
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -606,7 +635,12 @@ class AsyncProjectsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.update(
-            project_id, name=name, app_name=app_name, support_email=support_email, request_options=request_options
+            project_id,
+            name=name,
+            app_name=app_name,
+            support_email=support_email,
+            connect_require_key_auth_test=connect_require_key_auth_test,
+            request_options=request_options,
         )
         return _response.data
 
