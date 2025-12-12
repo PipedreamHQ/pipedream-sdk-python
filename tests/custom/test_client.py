@@ -23,14 +23,14 @@ def test_async_pipedream_raw_access_token() -> None:
     assert client.raw_access_token == "test-token"
 
 
-async def test_async_pipedream_get_raw_access_token() -> None:
-    """Test AsyncPipedream async method get_raw_access_token() with access_token."""
+async def test_async_pipedream_async_raw_access_token() -> None:
+    """Test AsyncPipedream async method async_raw_access_token() with access_token."""
     client = AsyncPipedream(access_token="test-token", project_id="test-project")
-    token = await client.get_raw_access_token()
+    token = await client.async_raw_access_token
     assert token == "test-token"
 
 
-async def test_async_pipedream_get_raw_access_token_with_oauth() -> None:
+async def test_async_pipedream_async_raw_access_token_with_oauth() -> None:
     """Test AsyncPipedream async method with OAuth flow."""
     client = AsyncPipedream(
         client_id="test-client-id",
@@ -45,5 +45,5 @@ async def test_async_pipedream_get_raw_access_token_with_oauth() -> None:
     client._client_wrapper._async_token = AsyncMock(return_value="mocked-oauth-token")
 
     # Test the async method
-    token = await client.get_raw_access_token()
+    token = await client.async_raw_access_token
     assert token == "mocked-oauth-token"
