@@ -3,7 +3,9 @@
 import typing
 
 import pydantic
+import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.serialization import FieldMetadata
 from .configure_prop_options import ConfigurePropOptions
 from .observation import Observation
 
@@ -14,7 +16,9 @@ class ConfigurePropResponse(UniversalBaseModel):
     """
 
     options: typing.Optional[ConfigurePropOptions] = None
-    string_options: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    string_options: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]], FieldMetadata(alias="stringOptions")
+    ] = pydantic.Field(default=None)
     """
     Available options for the configured prop
     """
