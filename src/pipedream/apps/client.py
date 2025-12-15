@@ -70,13 +70,13 @@ class AppsClient:
             Only return apps in these categories
 
         has_components : typing.Optional[bool]
-            Filter to apps that have components (actions or triggers)
+            Only return apps that have components (actions or triggers)
 
         has_actions : typing.Optional[bool]
-            Filter to apps that have actions
+            Only return apps that have actions
 
         has_triggers : typing.Optional[bool]
-            Filter to apps that have triggers
+            Only return apps that have triggers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -219,13 +219,13 @@ class AsyncAppsClient:
             Only return apps in these categories
 
         has_components : typing.Optional[bool]
-            Filter to apps that have components (actions or triggers)
+            Only return apps that have components (actions or triggers)
 
         has_actions : typing.Optional[bool]
-            Filter to apps that have actions
+            Only return apps that have actions
 
         has_triggers : typing.Optional[bool]
-            Filter to apps that have triggers
+            Only return apps that have triggers
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
