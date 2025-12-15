@@ -28,6 +28,7 @@ class Pipedream(Client):
         ),
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         workflow_domain: Optional[str] = None,
+        timeout: Optional[float] = None,
     ):
         if not project_id:
             raise ValueError("Project ID is required")
@@ -38,6 +39,7 @@ class Pipedream(Client):
                 project_environment=project_environment,
                 project_id=project_id,
                 token=(lambda: access_token),
+                timeout=timeout,
             )
         else:
             super().__init__(
@@ -46,6 +48,7 @@ class Pipedream(Client):
                 project_id=project_id,
                 client_id=client_id,
                 client_secret=client_secret,
+                timeout=timeout,
             )
 
         if not workflow_domain:
@@ -79,6 +82,7 @@ class AsyncPipedream(AsyncClient):
         ),
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         workflow_domain: Optional[str] = None,
+        timeout: Optional[float] = None,
     ):
         if not project_id:
             raise ValueError("Project ID is required")
@@ -89,6 +93,7 @@ class AsyncPipedream(AsyncClient):
                 project_environment=project_environment,
                 project_id=project_id,
                 token=(lambda: access_token),
+                timeout=timeout,
             )
         else:
             super().__init__(
@@ -97,6 +102,7 @@ class AsyncPipedream(AsyncClient):
                 project_id=project_id,
                 client_id=client_id,
                 client_secret=client_secret,
+                timeout=timeout,
             )
 
         if not workflow_domain:
