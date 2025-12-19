@@ -1,7 +1,7 @@
 {
-  "cliVersion": "3.5.0",
+  "cliVersion": "3.29.1",
   "generatorName": "fernapi/fern-python-sdk",
-  "generatorVersion": "4.45.0",
+  "generatorVersion": "4.46.6",
   "generatorConfig": {
     "client": {
       "class_name": "Client",
@@ -9,5 +9,6 @@
       "exported_class_name": "Pipedream",
       "exported_filename": "pipedream.py"
     }
-  }
+  },
+  "sdkVersion": "1.1.4"
 }
