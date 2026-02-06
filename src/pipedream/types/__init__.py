@@ -95,6 +95,8 @@ if typing.TYPE_CHECKING:
     from .configured_prop_value_string_array import ConfiguredPropValueStringArray
     from .configured_props import ConfiguredProps
     from .connect_token import ConnectToken
+    from .connect_usage import ConnectUsage
+    from .connect_usage_response import ConnectUsageResponse
     from .create_o_auth_token_response import CreateOAuthTokenResponse
     from .create_token_response import CreateTokenResponse
     from .delete_trigger_opts import DeleteTriggerOpts
@@ -240,6 +242,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfiguredPropValueStringArray": ".configured_prop_value_string_array",
     "ConfiguredProps": ".configured_props",
     "ConnectToken": ".connect_token",
+    "ConnectUsage": ".connect_usage",
+    "ConnectUsageResponse": ".connect_usage_response",
     "CreateOAuthTokenResponse": ".create_o_auth_token_response",
     "CreateTokenResponse": ".create_token_response",
     "DeleteTriggerOpts": ".delete_trigger_opts",
@@ -412,6 +416,8 @@ __all__ = [
     "ConfiguredPropValueStringArray",
     "ConfiguredProps",
     "ConnectToken",
+    "ConnectUsage",
+    "ConnectUsageResponse",
     "CreateOAuthTokenResponse",
     "CreateTokenResponse",
     "DeleteTriggerOpts",
