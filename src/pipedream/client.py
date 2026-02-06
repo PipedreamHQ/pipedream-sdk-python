@@ -6,11 +6,11 @@ import os
 import typing
 
 import httpx
-from .types.project_environment import ProjectEnvironment
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.oauth_token_provider import AsyncOAuthTokenProvider, OAuthTokenProvider
 from .environment import PipedreamEnvironment
+from .types.project_environment import ProjectEnvironment
 
 if typing.TYPE_CHECKING:
     from .accounts.client import AccountsClient, AsyncAccountsClient
@@ -25,6 +25,7 @@ if typing.TYPE_CHECKING:
     from .proxy.client import AsyncProxyClient, ProxyClient
     from .tokens.client import AsyncTokensClient, TokensClient
     from .triggers.client import AsyncTriggersClient, TriggersClient
+    from .usage.client import AsyncUsageClient, UsageClient
     from .users.client import AsyncUsersClient, UsersClient
 
 
@@ -76,9 +77,6 @@ class Client:
 
     client = Pipedream(
         project_id="YOUR_PROJECT_ID",
-        project_environment="YOUR_PROJECT_ENVIRONMENT",
-        client_id="YOUR_CLIENT_ID",
-        client_secret="YOUR_CLIENT_SECRET",
     )
 
     # or ...
@@ -99,6 +97,7 @@ class Client:
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
@@ -113,6 +112,7 @@ class Client:
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
@@ -125,6 +125,7 @@ class Client:
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         client_id: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_ID"),
         client_secret: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_SECRET"),
         token: typing.Optional[typing.Callable[[], str]] = None,
@@ -141,6 +142,7 @@ class Client:
                 base_url=_get_base_url(base_url=base_url, environment=environment),
                 project_id=project_id,
                 project_environment=project_environment,
+                headers=headers,
                 httpx_client=httpx_client
                 if httpx_client is not None
                 else httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
@@ -157,6 +159,7 @@ class Client:
                     base_url=_get_base_url(base_url=base_url, environment=environment),
                     project_id=project_id,
                     project_environment=project_environment,
+                    headers=headers,
                     httpx_client=httpx.Client(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                     if follow_redirects is not None
                     else httpx.Client(timeout=_defaulted_timeout),
@@ -167,6 +170,7 @@ class Client:
                 base_url=_get_base_url(base_url=base_url, environment=environment),
                 project_id=project_id,
                 project_environment=project_environment,
+                headers=headers,
                 token=_token_getter_override if _token_getter_override is not None else oauth_token_provider.get_token,
                 httpx_client=httpx_client
                 if httpx_client is not None
@@ -191,6 +195,7 @@ class Client:
         self._file_stash: typing.Optional[FileStashClient] = None
         self._proxy: typing.Optional[ProxyClient] = None
         self._tokens: typing.Optional[TokensClient] = None
+        self._usage: typing.Optional[UsageClient] = None
         self._oauth_tokens: typing.Optional[OauthTokensClient] = None
 
     @property
@@ -290,6 +295,14 @@ class Client:
         return self._tokens
 
     @property
+    def usage(self):
+        if self._usage is None:
+            from .usage.client import UsageClient  # noqa: E402
+
+            self._usage = UsageClient(client_wrapper=self._client_wrapper)
+        return self._usage
+
+    @property
     def oauth_tokens(self):
         if self._oauth_tokens is None:
             from .oauth_tokens.client import OauthTokensClient  # noqa: E402
@@ -346,9 +359,6 @@ class AsyncClient:
 
     client = AsyncPipedream(
         project_id="YOUR_PROJECT_ID",
-        project_environment="YOUR_PROJECT_ENVIRONMENT",
-        client_id="YOUR_CLIENT_ID",
-        client_secret="YOUR_CLIENT_SECRET",
     )
 
     # or ...
@@ -369,6 +379,7 @@ class AsyncClient:
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
@@ -383,6 +394,7 @@ class AsyncClient:
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
@@ -395,6 +407,7 @@ class AsyncClient:
         environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
         project_id: str,
         project_environment: typing.Optional[ProjectEnvironment] = os.getenv("PIPEDREAM_PROJECT_ENVIRONMENT"),
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         client_id: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_ID"),
         client_secret: typing.Optional[str] = os.getenv("PIPEDREAM_CLIENT_SECRET"),
         token: typing.Optional[typing.Callable[[], str]] = None,
@@ -411,6 +424,7 @@ class AsyncClient:
                 base_url=_get_base_url(base_url=base_url, environment=environment),
                 project_id=project_id,
                 project_environment=project_environment,
+                headers=headers,
                 httpx_client=httpx_client
                 if httpx_client is not None
                 else httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
@@ -427,6 +441,7 @@ class AsyncClient:
                     base_url=_get_base_url(base_url=base_url, environment=environment),
                     project_id=project_id,
                     project_environment=project_environment,
+                    headers=headers,
                     httpx_client=httpx.AsyncClient(timeout=_defaulted_timeout, follow_redirects=follow_redirects)
                     if follow_redirects is not None
                     else httpx.AsyncClient(timeout=_defaulted_timeout),
@@ -437,6 +452,7 @@ class AsyncClient:
                 base_url=_get_base_url(base_url=base_url, environment=environment),
                 project_id=project_id,
                 project_environment=project_environment,
+                headers=headers,
                 token=_token_getter_override,
                 async_token=oauth_token_provider.get_token,
                 httpx_client=httpx_client
@@ -462,6 +478,7 @@ class AsyncClient:
         self._file_stash: typing.Optional[AsyncFileStashClient] = None
         self._proxy: typing.Optional[AsyncProxyClient] = None
         self._tokens: typing.Optional[AsyncTokensClient] = None
+        self._usage: typing.Optional[AsyncUsageClient] = None
         self._oauth_tokens: typing.Optional[AsyncOauthTokensClient] = None
 
     @property
@@ -559,6 +576,14 @@ class AsyncClient:
 
             self._tokens = AsyncTokensClient(client_wrapper=self._client_wrapper)
         return self._tokens
+
+    @property
+    def usage(self):
+        if self._usage is None:
+            from .usage.client import AsyncUsageClient  # noqa: E402
+
+            self._usage = AsyncUsageClient(client_wrapper=self._client_wrapper)
+        return self._usage
 
     @property
     def oauth_tokens(self):

@@ -10,12 +10,11 @@ from .configurable_prop_base import ConfigurablePropBase
 
 
 class ConfigurablePropHttp(ConfigurablePropBase):
-    custom_response: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="customResponse")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    Whether this HTTP interface allows custom responses
-    """
+    custom_response: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="customResponse"),
+        pydantic.Field(alias="customResponse", description="Whether this HTTP interface allows custom responses"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

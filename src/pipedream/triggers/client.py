@@ -73,7 +73,7 @@ class TriggersClient:
         Returns
         -------
         SyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
 
         Examples
         --------
@@ -81,9 +81,6 @@ class TriggersClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.triggers.list(
             after="after",
@@ -135,9 +132,6 @@ class TriggersClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.triggers.retrieve(
             component_id="component_id",
@@ -210,9 +204,6 @@ class TriggersClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.triggers.configure_prop(
             id="id",
@@ -282,9 +273,6 @@ class TriggersClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.triggers.reload_props(
             id="id",
@@ -357,9 +345,6 @@ class TriggersClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.triggers.deploy(
             id="id",
@@ -435,7 +420,7 @@ class AsyncTriggersClient:
         Returns
         -------
         AsyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
 
         Examples
         --------
@@ -445,9 +430,6 @@ class AsyncTriggersClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -508,9 +490,6 @@ class AsyncTriggersClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -591,9 +570,6 @@ class AsyncTriggersClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -671,9 +647,6 @@ class AsyncTriggersClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -754,9 +727,6 @@ class AsyncTriggersClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

@@ -12,7 +12,7 @@ from .configurable_prop_base import ConfigurablePropBase
 
 class ConfigurablePropAlert(ConfigurablePropBase):
     alert_type: typing_extensions.Annotated[
-        typing.Optional[ConfigurablePropAlertType], FieldMetadata(alias="alertType")
+        typing.Optional[ConfigurablePropAlertType], FieldMetadata(alias="alertType"), pydantic.Field(alias="alertType")
     ] = None
     content: str = pydantic.Field()
     """

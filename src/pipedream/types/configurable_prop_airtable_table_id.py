@@ -10,10 +10,11 @@ from .configurable_prop_base import ConfigurablePropBase
 
 
 class ConfigurablePropAirtableTableId(ConfigurablePropBase):
-    base_id_prop: typing_extensions.Annotated[str, FieldMetadata(alias="baseIdProp")] = pydantic.Field()
-    """
-    The name of the prop that provides the Airtable base ID
-    """
+    base_id_prop: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="baseIdProp"),
+        pydantic.Field(alias="baseIdProp", description="The name of the prop that provides the Airtable base ID"),
+    ]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

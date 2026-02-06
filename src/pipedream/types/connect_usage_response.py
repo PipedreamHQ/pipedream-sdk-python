@@ -3,18 +3,16 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from ..core.serialization import FieldMetadata
-from .prop_option import PropOption
+from .connect_usage import ConnectUsage
 
 
-class PropOptionNested(UniversalBaseModel):
+class ConnectUsageResponse(UniversalBaseModel):
     """
-    A configuration option for a component's prop (nested under `__lv`)
+    Connect usage records for a time window
     """
 
-    lv: typing_extensions.Annotated[PropOption, FieldMetadata(alias="__lv"), pydantic.Field(alias="__lv")]
+    data: typing.List[ConnectUsage]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

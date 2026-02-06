@@ -17,12 +17,10 @@ class ConfigurePropResponse(UniversalBaseModel):
 
     options: typing.Optional[ConfigurePropOptions] = None
     string_options: typing_extensions.Annotated[
-        typing.Optional[typing.List[str]], FieldMetadata(alias="stringOptions")
-    ] = pydantic.Field(default=None)
-    """
-    Available options for the configured prop
-    """
-
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="stringOptions"),
+        pydantic.Field(alias="stringOptions", description="Available options for the configured prop"),
+    ] = None
     observations: typing.Optional[typing.List[Observation]] = None
     context: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """

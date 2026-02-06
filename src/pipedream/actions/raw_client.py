@@ -71,7 +71,7 @@ class RawActionsClient:
         Returns
         -------
         SyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
         """
         _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/actions",
@@ -523,7 +523,7 @@ class AsyncRawActionsClient:
         Returns
         -------
         AsyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/actions",
