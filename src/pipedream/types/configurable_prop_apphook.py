@@ -10,18 +10,16 @@ from .configurable_prop_base import ConfigurablePropBase
 
 
 class ConfigurablePropApphook(ConfigurablePropBase):
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")] = pydantic.Field()
-    """
-    The name of the app prop that this apphook depends on
-    """
-
-    event_names: typing_extensions.Annotated[typing.Optional[typing.List[str]], FieldMetadata(alias="eventNames")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    List of event names to listen for
-    """
-
+    app_prop: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="appProp"),
+        pydantic.Field(alias="appProp", description="The name of the app prop that this apphook depends on"),
+    ]
+    event_names: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="eventNames"),
+        pydantic.Field(alias="eventNames", description="List of event names to listen for"),
+    ] = None
     remote: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Whether this apphook is remote

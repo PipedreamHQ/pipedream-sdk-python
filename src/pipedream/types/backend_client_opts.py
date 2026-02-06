@@ -28,7 +28,7 @@ class BackendClientOpts(UniversalBaseModel):
 
     scope: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional space-separated scopes for the access token. Defaults to '*'.
+    Optional space-separated scopes for the access token. Defaults to `*`.
     """
 
     if IS_PYDANTIC_V2:

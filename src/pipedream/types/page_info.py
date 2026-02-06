@@ -7,10 +7,25 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 
 
 class PageInfo(UniversalBaseModel):
-    count: typing.Optional[int] = None
-    total_count: typing.Optional[int] = None
-    start_cursor: typing.Optional[str] = None
-    end_cursor: typing.Optional[str] = None
+    count: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Number of items returned
+    """
+
+    total_count: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Total number of items
+    """
+
+    start_cursor: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Used to fetch the previous page of items
+    """
+
+    end_cursor: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Used to fetch the next page of items
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

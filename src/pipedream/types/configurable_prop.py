@@ -37,7 +37,7 @@ class ConfigurableProp_Alert(UniversalBaseModel):
 
     type: typing.Literal["alert"] = "alert"
     alert_type: typing_extensions.Annotated[
-        typing.Optional[ConfigurablePropAlertType], FieldMetadata(alias="alertType")
+        typing.Optional[ConfigurablePropAlertType], FieldMetadata(alias="alertType"), pydantic.Field(alias="alertType")
     ] = None
     content: str
     name: str
@@ -46,10 +46,18 @@ class ConfigurableProp_Alert(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -75,10 +83,18 @@ class ConfigurableProp_Any(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -103,10 +119,18 @@ class ConfigurableProp_App(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -132,10 +156,18 @@ class ConfigurableProp_Boolean(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -159,10 +191,18 @@ class ConfigurableProp_DataStore(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -186,10 +226,18 @@ class ConfigurableProp_Dir(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -216,10 +264,18 @@ class ConfigurableProp_InterfaceTimer(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -237,10 +293,10 @@ class ConfigurableProp_InterfaceApphook(UniversalBaseModel):
     """
 
     type: typing.Literal["$.interface.apphook"] = "$.interface.apphook"
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")]
-    event_names: typing_extensions.Annotated[typing.Optional[typing.List[str]], FieldMetadata(alias="eventNames")] = (
-        None
-    )
+    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp"), pydantic.Field(alias="appProp")]
+    event_names: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]], FieldMetadata(alias="eventNames"), pydantic.Field(alias="eventNames")
+    ] = None
     remote: typing.Optional[bool] = None
     static: typing.Optional[typing.List[typing.Any]] = None
     name: str
@@ -249,10 +305,18 @@ class ConfigurableProp_InterfaceApphook(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -280,10 +344,18 @@ class ConfigurableProp_IntegerArray(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -301,17 +373,27 @@ class ConfigurableProp_InterfaceHttp(UniversalBaseModel):
     """
 
     type: typing.Literal["$.interface.http"] = "$.interface.http"
-    custom_response: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="customResponse")] = None
+    custom_response: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="customResponse"), pydantic.Field(alias="customResponse")
+    ] = None
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -336,10 +418,18 @@ class ConfigurableProp_HttpRequest(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -363,10 +453,18 @@ class ConfigurableProp_ServiceDb(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -393,10 +491,18 @@ class ConfigurableProp_Sql(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -414,17 +520,25 @@ class ConfigurableProp_AirtableBaseId(UniversalBaseModel):
     """
 
     type: typing.Literal["$.airtable.baseId"] = "$.airtable.baseId"
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")]
+    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp"), pydantic.Field(alias="appProp")]
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -442,17 +556,27 @@ class ConfigurableProp_AirtableTableId(UniversalBaseModel):
     """
 
     type: typing.Literal["$.airtable.tableId"] = "$.airtable.tableId"
-    base_id_prop: typing_extensions.Annotated[str, FieldMetadata(alias="baseIdProp")]
+    base_id_prop: typing_extensions.Annotated[
+        str, FieldMetadata(alias="baseIdProp"), pydantic.Field(alias="baseIdProp")
+    ]
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -470,17 +594,27 @@ class ConfigurableProp_AirtableViewId(UniversalBaseModel):
     """
 
     type: typing.Literal["$.airtable.viewId"] = "$.airtable.viewId"
-    table_id_prop: typing_extensions.Annotated[str, FieldMetadata(alias="tableIdProp")]
+    table_id_prop: typing_extensions.Annotated[
+        str, FieldMetadata(alias="tableIdProp"), pydantic.Field(alias="tableIdProp")
+    ]
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -498,17 +632,27 @@ class ConfigurableProp_AirtableFieldId(UniversalBaseModel):
     """
 
     type: typing.Literal["$.airtable.fieldId"] = "$.airtable.fieldId"
-    table_id_prop: typing_extensions.Annotated[str, FieldMetadata(alias="tableIdProp")]
+    table_id_prop: typing_extensions.Annotated[
+        str, FieldMetadata(alias="tableIdProp"), pydantic.Field(alias="tableIdProp")
+    ]
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -526,17 +670,25 @@ class ConfigurableProp_DiscordChannel(UniversalBaseModel):
     """
 
     type: typing.Literal["$.discord.channel"] = "$.discord.channel"
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")]
+    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp"), pydantic.Field(alias="appProp")]
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -554,17 +706,27 @@ class ConfigurableProp_DiscordChannelArray(UniversalBaseModel):
     """
 
     type: typing.Literal["$.discord.channel[]"] = "$.discord.channel[]"
-    app_prop: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="appProp")] = None
+    app_prop: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="appProp"), pydantic.Field(alias="appProp")
+    ] = None
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -592,10 +754,18 @@ class ConfigurableProp_Integer(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -621,10 +791,18 @@ class ConfigurableProp_Object(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -651,10 +829,18 @@ class ConfigurableProp_String(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
@@ -681,10 +867,18 @@ class ConfigurableProp_StringArray(UniversalBaseModel):
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
     hidden: typing.Optional[bool] = None
-    remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
-    use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
-    reload_props: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="reloadProps")] = None
-    with_label: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="withLabel")] = None
+    remote_options: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="remoteOptions"), pydantic.Field(alias="remoteOptions")
+    ] = None
+    use_query: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="useQuery"), pydantic.Field(alias="useQuery")
+    ] = None
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="reloadProps"), pydantic.Field(alias="reloadProps")
+    ] = None
+    with_label: typing_extensions.Annotated[
+        typing.Optional[bool], FieldMetadata(alias="withLabel"), pydantic.Field(alias="withLabel")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
