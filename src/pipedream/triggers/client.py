@@ -73,7 +73,7 @@ class TriggersClient:
         Returns
         -------
         SyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
 
         Examples
         --------
@@ -435,7 +435,7 @@ class AsyncTriggersClient:
         Returns
         -------
         AsyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
 
         Examples
         --------
