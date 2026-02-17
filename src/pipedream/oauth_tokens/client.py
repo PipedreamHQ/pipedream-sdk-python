@@ -44,7 +44,7 @@ class OauthTokensClient:
         client_secret : str
 
         scope : typing.Optional[str]
-            Optional space-separated scopes for the access token. Defaults to '*'.
+            Optional space-separated scopes for the access token. Defaults to `*`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -108,7 +108,7 @@ class AsyncOauthTokensClient:
         client_secret : str
 
         scope : typing.Optional[str]
-            Optional space-separated scopes for the access token. Defaults to '*'.
+            Optional space-separated scopes for the access token. Defaults to `*`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

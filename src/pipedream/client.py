@@ -25,6 +25,7 @@ if typing.TYPE_CHECKING:
     from .proxy.client import AsyncProxyClient, ProxyClient
     from .tokens.client import AsyncTokensClient, TokensClient
     from .triggers.client import AsyncTriggersClient, TriggersClient
+    from .usage.client import AsyncUsageClient, UsageClient
     from .users.client import AsyncUsersClient, UsersClient
 
 
@@ -191,6 +192,7 @@ class Client:
         self._file_stash: typing.Optional[FileStashClient] = None
         self._proxy: typing.Optional[ProxyClient] = None
         self._tokens: typing.Optional[TokensClient] = None
+        self._usage: typing.Optional[UsageClient] = None
         self._oauth_tokens: typing.Optional[OauthTokensClient] = None
 
     @property
@@ -288,6 +290,14 @@ class Client:
 
             self._tokens = TokensClient(client_wrapper=self._client_wrapper)
         return self._tokens
+
+    @property
+    def usage(self):
+        if self._usage is None:
+            from .usage.client import UsageClient  # noqa: E402
+
+            self._usage = UsageClient(client_wrapper=self._client_wrapper)
+        return self._usage
 
     @property
     def oauth_tokens(self):
@@ -462,6 +472,7 @@ class AsyncClient:
         self._file_stash: typing.Optional[AsyncFileStashClient] = None
         self._proxy: typing.Optional[AsyncProxyClient] = None
         self._tokens: typing.Optional[AsyncTokensClient] = None
+        self._usage: typing.Optional[AsyncUsageClient] = None
         self._oauth_tokens: typing.Optional[AsyncOauthTokensClient] = None
 
     @property
@@ -559,6 +570,14 @@ class AsyncClient:
 
             self._tokens = AsyncTokensClient(client_wrapper=self._client_wrapper)
         return self._tokens
+
+    @property
+    def usage(self):
+        if self._usage is None:
+            from .usage.client import AsyncUsageClient  # noqa: E402
+
+            self._usage = AsyncUsageClient(client_wrapper=self._client_wrapper)
+        return self._usage
 
     @property
     def oauth_tokens(self):

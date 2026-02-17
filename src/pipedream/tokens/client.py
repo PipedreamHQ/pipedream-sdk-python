@@ -34,6 +34,8 @@ class TokensClient:
         external_user_id: str,
         allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
         error_redirect_uri: typing.Optional[str] = OMIT,
+        expires_in: typing.Optional[int] = OMIT,
+        scope: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
         webhook_uri: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -51,6 +53,12 @@ class TokensClient:
 
         error_redirect_uri : typing.Optional[str]
             URI to redirect to on error
+
+        expires_in : typing.Optional[int]
+            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
+
+        scope : typing.Optional[str]
+            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
 
         success_redirect_uri : typing.Optional[str]
             URI to redirect to on success
@@ -84,6 +92,8 @@ class TokensClient:
             external_user_id=external_user_id,
             allowed_origins=allowed_origins,
             error_redirect_uri=error_redirect_uri,
+            expires_in=expires_in,
+            scope=scope,
             success_redirect_uri=success_redirect_uri,
             webhook_uri=webhook_uri,
             request_options=request_options,
@@ -162,6 +172,8 @@ class AsyncTokensClient:
         external_user_id: str,
         allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
         error_redirect_uri: typing.Optional[str] = OMIT,
+        expires_in: typing.Optional[int] = OMIT,
+        scope: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
         webhook_uri: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
@@ -179,6 +191,12 @@ class AsyncTokensClient:
 
         error_redirect_uri : typing.Optional[str]
             URI to redirect to on error
+
+        expires_in : typing.Optional[int]
+            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
+
+        scope : typing.Optional[str]
+            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
 
         success_redirect_uri : typing.Optional[str]
             URI to redirect to on success
@@ -220,6 +238,8 @@ class AsyncTokensClient:
             external_user_id=external_user_id,
             allowed_origins=allowed_origins,
             error_redirect_uri=error_redirect_uri,
+            expires_in=expires_in,
+            scope=scope,
             success_redirect_uri=success_redirect_uri,
             webhook_uri=webhook_uri,
             request_options=request_options,

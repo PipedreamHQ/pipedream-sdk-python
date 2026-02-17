@@ -77,7 +77,7 @@ class ComponentsClient:
         Returns
         -------
         SyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
 
         Examples
         --------
@@ -374,7 +374,7 @@ class AsyncComponentsClient:
         Returns
         -------
         AsyncPager[Component, GetComponentsResponse]
-            behaves like registry=all
+            returns public + private without permission
 
         Examples
         --------
