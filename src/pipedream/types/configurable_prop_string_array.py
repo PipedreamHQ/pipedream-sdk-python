@@ -15,6 +15,11 @@ class ConfigurablePropStringArray(ConfigurablePropBase):
     If true, this prop is a secret and should not be displayed in plain text.
     """
 
+    format: typing.Optional[typing.Literal["file-ref"]] = pydantic.Field(default=None)
+    """
+    The format of the string value. `file-ref` indicates a URL of a file or path to a file in the component's /tmp directory.
+    """
+
     default: typing.Optional[typing.List[ConfiguredPropValueString]] = pydantic.Field(default=None)
     """
     The default value for this prop

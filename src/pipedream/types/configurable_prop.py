@@ -643,6 +643,7 @@ class ConfigurableProp_String(UniversalBaseModel):
 
     type: typing.Literal["string"] = "string"
     secret: typing.Optional[bool] = None
+    format: typing.Optional[typing.Literal["file-ref"]] = None
     default: typing.Optional[ConfiguredPropValueString] = None
     options: typing.Optional[typing.List[ConfigurablePropStringOptionsItem]] = None
     name: str
@@ -673,6 +674,7 @@ class ConfigurableProp_StringArray(UniversalBaseModel):
 
     type: typing.Literal["string[]"] = "string[]"
     secret: typing.Optional[bool] = None
+    format: typing.Optional[typing.Literal["file-ref"]] = None
     default: typing.Optional[typing.List[ConfiguredPropValueString]] = None
     options: typing.Optional[typing.List[ConfigurablePropStringArrayOptionsItem]] = None
     name: str
