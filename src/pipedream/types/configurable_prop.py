@@ -17,6 +17,7 @@ from .configurable_prop_object_options_item import ConfigurablePropObjectOptions
 from .configurable_prop_sql_auth import ConfigurablePropSqlAuth
 from .configurable_prop_sql_options_item import ConfigurablePropSqlOptionsItem
 from .configurable_prop_string_array_options_item import ConfigurablePropStringArrayOptionsItem
+from .configurable_prop_string_format import ConfigurablePropStringFormat
 from .configurable_prop_string_options_item import ConfigurablePropStringOptionsItem
 from .configurable_prop_timer_default import ConfigurablePropTimerDefault
 from .configurable_prop_timer_option import ConfigurablePropTimerOption
@@ -643,6 +644,7 @@ class ConfigurableProp_String(UniversalBaseModel):
 
     type: typing.Literal["string"] = "string"
     secret: typing.Optional[bool] = None
+    format: typing.Optional[ConfigurablePropStringFormat] = None
     default: typing.Optional[ConfiguredPropValueString] = None
     options: typing.Optional[typing.List[ConfigurablePropStringOptionsItem]] = None
     name: str
@@ -673,6 +675,7 @@ class ConfigurableProp_StringArray(UniversalBaseModel):
 
     type: typing.Literal["string[]"] = "string[]"
     secret: typing.Optional[bool] = None
+    format: typing.Optional[ConfigurablePropStringFormat] = None
     default: typing.Optional[typing.List[ConfiguredPropValueString]] = None
     options: typing.Optional[typing.List[ConfigurablePropStringArrayOptionsItem]] = None
     name: str

@@ -75,6 +75,7 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_string import ConfigurablePropString
     from .configurable_prop_string_array import ConfigurablePropStringArray
     from .configurable_prop_string_array_options_item import ConfigurablePropStringArrayOptionsItem
+    from .configurable_prop_string_format import ConfigurablePropStringFormat
     from .configurable_prop_string_options_item import ConfigurablePropStringOptionsItem
     from .configurable_prop_timer import ConfigurablePropTimer
     from .configurable_prop_timer_default import ConfigurablePropTimerDefault
@@ -199,6 +200,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropString": ".configurable_prop_string",
     "ConfigurablePropStringArray": ".configurable_prop_string_array",
     "ConfigurablePropStringArrayOptionsItem": ".configurable_prop_string_array_options_item",
+    "ConfigurablePropStringFormat": ".configurable_prop_string_format",
     "ConfigurablePropStringOptionsItem": ".configurable_prop_string_options_item",
     "ConfigurablePropTimer": ".configurable_prop_timer",
     "ConfigurablePropTimerDefault": ".configurable_prop_timer_default",
@@ -373,6 +375,7 @@ __all__ = [
     "ConfigurablePropString",
     "ConfigurablePropStringArray",
     "ConfigurablePropStringArrayOptionsItem",
+    "ConfigurablePropStringFormat",
     "ConfigurablePropStringOptionsItem",
     "ConfigurablePropTimer",
     "ConfigurablePropTimerDefault",

@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from .configurable_prop_base import ConfigurablePropBase
+from .configurable_prop_string_format import ConfigurablePropStringFormat
 from .configurable_prop_string_options_item import ConfigurablePropStringOptionsItem
 from .configured_prop_value_string import ConfiguredPropValueString
 
@@ -15,6 +16,7 @@ class ConfigurablePropString(ConfigurablePropBase):
     If true, this prop is a secret and should not be displayed in plain text.
     """
 
+    format: typing.Optional[ConfigurablePropStringFormat] = None
     default: typing.Optional[ConfiguredPropValueString] = None
     options: typing.Optional[typing.List[ConfigurablePropStringOptionsItem]] = None
 
