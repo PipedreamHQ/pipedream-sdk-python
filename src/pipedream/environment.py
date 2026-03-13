@@ -4,6 +4,4 @@ import enum
 
 
 class PipedreamEnvironment(enum.Enum):
-    CANARY = "https://api2.pipedream.com"
-    DEV = "https://api.${DEV_NAMESPACE}.gkes.pipedream.net"
     PROD = "https://api.pipedream.com"
