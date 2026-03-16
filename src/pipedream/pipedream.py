@@ -34,7 +34,8 @@ class Pipedream(Client):
         if not project_id:
             raise ValueError("Project ID is required")
 
-        resolved_base_url = base_url or _PROD_BASE_URL
+        resolved_base_url = base_url or os.environ.get("PIPEDREAM_BASE_URL") or _PROD_BASE_URL
+        resolved_workflow_domain = workflow_domain or os.environ.get("PIPEDREAM_WORKFLOW_DOMAIN") or "m.pipedream.net"
 
         if access_token:
             super().__init__(
@@ -54,12 +55,9 @@ class Pipedream(Client):
                 timeout=timeout,
             )
 
-        if not workflow_domain:
-            workflow_domain = "m.pipedream.net"
-
         self.workflows = WorkflowsClient(
             client_wrapper=self._client_wrapper,
-            workflow_domain=workflow_domain,
+            workflow_domain=resolved_workflow_domain,
         )
 
     @property
@@ -90,7 +88,8 @@ class AsyncPipedream(AsyncClient):
         if not project_id:
             raise ValueError("Project ID is required")
 
-        resolved_base_url = base_url or _PROD_BASE_URL
+        resolved_base_url = base_url or os.environ.get("PIPEDREAM_BASE_URL") or _PROD_BASE_URL
+        resolved_workflow_domain = workflow_domain or os.environ.get("PIPEDREAM_WORKFLOW_DOMAIN") or "m.pipedream.net"
 
         if access_token:
             super().__init__(
@@ -110,12 +109,9 @@ class AsyncPipedream(AsyncClient):
                 timeout=timeout,
             )
 
-        if not workflow_domain:
-            workflow_domain = "m.pipedream.net"
-
         self.workflows = AsyncWorkflowsClient(
             client_wrapper=self._client_wrapper,
-            workflow_domain=workflow_domain,
+            workflow_domain=resolved_workflow_domain,
         )
 
     @property
