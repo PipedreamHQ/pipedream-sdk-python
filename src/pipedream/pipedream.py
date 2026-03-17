@@ -5,12 +5,13 @@ from .client import (
     AsyncClient,
     Client,
 )
-from .environment import PipedreamEnvironment
 from .types.project_environment import ProjectEnvironment
 from .workflows.client import (
     AsyncWorkflowsClient,
     WorkflowsClient,
 )
+
+_PROD_BASE_URL = "https://api.pipedream.com"
 
 
 class Pipedream(Client):
@@ -26,16 +27,19 @@ class Pipedream(Client):
             "PIPEDREAM_PROJECT_ENVIRONMENT",
             "production",
         ),
-        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        base_url: Optional[str] = None,
         workflow_domain: Optional[str] = None,
         timeout: Optional[float] = None,
     ):
         if not project_id:
             raise ValueError("Project ID is required")
 
+        resolved_base_url = base_url or os.environ.get("PIPEDREAM_BASE_URL") or _PROD_BASE_URL
+        resolved_workflow_domain = workflow_domain or os.environ.get("PIPEDREAM_WORKFLOW_DOMAIN") or "m.pipedream.net"
+
         if access_token:
             super().__init__(
-                base_url=_get_base_url(environment),
+                base_url=resolved_base_url,
                 project_environment=project_environment,
                 project_id=project_id,
                 token=(lambda: access_token),
@@ -43,7 +47,7 @@ class Pipedream(Client):
             )
         else:
             super().__init__(
-                base_url=_get_base_url(environment),
+                base_url=resolved_base_url,
                 project_environment=project_environment,
                 project_id=project_id,
                 client_id=client_id,
@@ -51,12 +55,9 @@ class Pipedream(Client):
                 timeout=timeout,
             )
 
-        if not workflow_domain:
-            workflow_domain = _get_default_workflow_domain(environment)
-
         self.workflows = WorkflowsClient(
             client_wrapper=self._client_wrapper,
-            workflow_domain=workflow_domain,
+            workflow_domain=resolved_workflow_domain,
         )
 
     @property
@@ -80,16 +81,19 @@ class AsyncPipedream(AsyncClient):
             "PIPEDREAM_PROJECT_ENVIRONMENT",
             "production",
         ),
-        environment: PipedreamEnvironment = PipedreamEnvironment.PROD,
+        base_url: Optional[str] = None,
         workflow_domain: Optional[str] = None,
         timeout: Optional[float] = None,
     ):
         if not project_id:
             raise ValueError("Project ID is required")
 
+        resolved_base_url = base_url or os.environ.get("PIPEDREAM_BASE_URL") or _PROD_BASE_URL
+        resolved_workflow_domain = workflow_domain or os.environ.get("PIPEDREAM_WORKFLOW_DOMAIN") or "m.pipedream.net"
+
         if access_token:
             super().__init__(
-                base_url=_get_base_url(environment),
+                base_url=resolved_base_url,
                 project_environment=project_environment,
                 project_id=project_id,
                 token=(lambda: access_token),
@@ -97,7 +101,7 @@ class AsyncPipedream(AsyncClient):
             )
         else:
             super().__init__(
-                base_url=_get_base_url(environment),
+                base_url=resolved_base_url,
                 project_environment=project_environment,
                 project_id=project_id,
                 client_id=client_id,
@@ -105,12 +109,9 @@ class AsyncPipedream(AsyncClient):
                 timeout=timeout,
             )
 
-        if not workflow_domain:
-            workflow_domain = _get_default_workflow_domain(environment)
-
         self.workflows = AsyncWorkflowsClient(
             client_wrapper=self._client_wrapper,
-            workflow_domain=workflow_domain,
+            workflow_domain=resolved_workflow_domain,
         )
 
     @property
@@ -119,19 +120,3 @@ class AsyncPipedream(AsyncClient):
         Returns an access token that can be used to authenticate API requests
         """
         return self._client_wrapper._get_token()
-
-
-def _get_base_url(environment: PipedreamEnvironment) -> str:
-    """
-    Returns the base URL for the given environment.
-    """
-    return os.path.expandvars(environment.value)
-
-
-def _get_default_workflow_domain(environment: PipedreamEnvironment) -> str:
-    """
-    Returns the default workflow domain.
-    """
-    if environment == PipedreamEnvironment.DEV:
-        return "m.d.pipedream.net"
-    return "m.pipedream.net"
