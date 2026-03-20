@@ -8,7 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
-from ..types.emitter import Emitter
+from ..types.deploy_trigger_result import DeployTriggerResult
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
 from .raw_client import AsyncRawTriggersClient, RawTriggersClient
@@ -314,7 +314,7 @@ class TriggersClient:
         webhook_url: typing.Optional[str] = OMIT,
         emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Emitter:
+    ) -> DeployTriggerResult:
         """
         Deploy a trigger to listen for and emit events
 
@@ -348,7 +348,7 @@ class TriggersClient:
 
         Returns
         -------
-        Emitter
+        DeployTriggerResult
             trigger deployed
 
         Examples
@@ -709,7 +709,7 @@ class AsyncTriggersClient:
         webhook_url: typing.Optional[str] = OMIT,
         emit_on_deploy: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> Emitter:
+    ) -> DeployTriggerResult:
         """
         Deploy a trigger to listen for and emit events
 
@@ -743,7 +743,7 @@ class AsyncTriggersClient:
 
         Returns
         -------
-        Emitter
+        DeployTriggerResult
             trigger deployed
 
         Examples

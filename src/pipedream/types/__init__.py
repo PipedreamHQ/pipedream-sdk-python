@@ -102,6 +102,7 @@ if typing.TYPE_CHECKING:
     from .create_token_response import CreateTokenResponse
     from .delete_trigger_opts import DeleteTriggerOpts
     from .deploy_trigger_response import DeployTriggerResponse
+    from .deploy_trigger_result import DeployTriggerResult
     from .deployed_component import DeployedComponent
     from .dynamic_props import DynamicProps
     from .emitted_event import EmittedEvent
@@ -119,6 +120,8 @@ if typing.TYPE_CHECKING:
     from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
     from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
     from .get_triggers_response import GetTriggersResponse
+    from .get_webhook_response import GetWebhookResponse
+    from .get_webhook_with_signing_key_response import GetWebhookWithSigningKeyResponse
     from .http_interface import HttpInterface
     from .http_request_auth import HttpRequestAuth
     from .http_request_auth_type import HttpRequestAuthType
@@ -147,6 +150,7 @@ if typing.TYPE_CHECKING:
     from .reload_props_response import ReloadPropsResponse
     from .run_action_opts_stash_id import RunActionOptsStashId
     from .run_action_response import RunActionResponse
+    from .set_webhook_response import SetWebhookResponse
     from .start_connect_opts import StartConnectOpts
     from .stash_id import StashId
     from .timer_cron import TimerCron
@@ -154,7 +158,12 @@ if typing.TYPE_CHECKING:
     from .timer_interval import TimerInterval
     from .too_many_requests_error_body import TooManyRequestsErrorBody
     from .tool_annotations import ToolAnnotations
+    from .trigger_webhook import TriggerWebhook
+    from .update_trigger_webhooks_response import UpdateTriggerWebhooksResponse
     from .validate_token_response import ValidateTokenResponse
+    from .webhook import Webhook
+    from .webhook_with_optional_signing_key import WebhookWithOptionalSigningKey
+    from .webhook_with_signing_key import WebhookWithSigningKey
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
     "AccountId": ".account_id",
@@ -250,6 +259,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateTokenResponse": ".create_token_response",
     "DeleteTriggerOpts": ".delete_trigger_opts",
     "DeployTriggerResponse": ".deploy_trigger_response",
+    "DeployTriggerResult": ".deploy_trigger_result",
     "DeployedComponent": ".deployed_component",
     "DynamicProps": ".dynamic_props",
     "EmittedEvent": ".emitted_event",
@@ -270,6 +280,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetTriggerWebhooksResponse": ".get_trigger_webhooks_response",
     "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
     "GetTriggersResponse": ".get_triggers_response",
+    "GetWebhookResponse": ".get_webhook_response",
+    "GetWebhookWithSigningKeyResponse": ".get_webhook_with_signing_key_response",
     "HttpInterface": ".http_interface",
     "HttpRequestAuth": ".http_request_auth",
     "HttpRequestAuthType": ".http_request_auth_type",
@@ -298,6 +310,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ReloadPropsResponse": ".reload_props_response",
     "RunActionOptsStashId": ".run_action_opts_stash_id",
     "RunActionResponse": ".run_action_response",
+    "SetWebhookResponse": ".set_webhook_response",
     "StartConnectOpts": ".start_connect_opts",
     "StashId": ".stash_id",
     "TimerCron": ".timer_cron",
@@ -305,7 +318,12 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TimerInterval": ".timer_interval",
     "TooManyRequestsErrorBody": ".too_many_requests_error_body",
     "ToolAnnotations": ".tool_annotations",
+    "TriggerWebhook": ".trigger_webhook",
+    "UpdateTriggerWebhooksResponse": ".update_trigger_webhooks_response",
     "ValidateTokenResponse": ".validate_token_response",
+    "Webhook": ".webhook",
+    "WebhookWithOptionalSigningKey": ".webhook_with_optional_signing_key",
+    "WebhookWithSigningKey": ".webhook_with_signing_key",
 }
 
 
@@ -425,6 +443,7 @@ __all__ = [
     "CreateTokenResponse",
     "DeleteTriggerOpts",
     "DeployTriggerResponse",
+    "DeployTriggerResult",
     "DeployedComponent",
     "DynamicProps",
     "EmittedEvent",
@@ -445,6 +464,8 @@ __all__ = [
     "GetTriggerWebhooksResponse",
     "GetTriggerWorkflowsResponse",
     "GetTriggersResponse",
+    "GetWebhookResponse",
+    "GetWebhookWithSigningKeyResponse",
     "HttpInterface",
     "HttpRequestAuth",
     "HttpRequestAuthType",
@@ -473,6 +494,7 @@ __all__ = [
     "ReloadPropsResponse",
     "RunActionOptsStashId",
     "RunActionResponse",
+    "SetWebhookResponse",
     "StartConnectOpts",
     "StashId",
     "TimerCron",
@@ -480,5 +502,10 @@ __all__ = [
     "TimerInterval",
     "TooManyRequestsErrorBody",
     "ToolAnnotations",
+    "TriggerWebhook",
+    "UpdateTriggerWebhooksResponse",
     "ValidateTokenResponse",
+    "Webhook",
+    "WebhookWithOptionalSigningKey",
+    "WebhookWithSigningKey",
 ]

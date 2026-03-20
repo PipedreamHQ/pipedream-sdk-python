@@ -6,7 +6,7 @@ import os
 import typing
 
 import httpx
-from .types.project_environment import ProjectEnvironment
+from ._.types.project_environment import ProjectEnvironment
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.oauth_token_provider import AsyncOAuthTokenProvider, OAuthTokenProvider
@@ -27,6 +27,7 @@ if typing.TYPE_CHECKING:
     from .triggers.client import AsyncTriggersClient, TriggersClient
     from .usage.client import AsyncUsageClient, UsageClient
     from .users.client import AsyncUsersClient, UsersClient
+    from .webhooks.client import AsyncWebhooksClient, WebhooksClient
 
 
 class Client:
@@ -188,6 +189,7 @@ class Client:
         self._actions: typing.Optional[ActionsClient] = None
         self._triggers: typing.Optional[TriggersClient] = None
         self._deployed_triggers: typing.Optional[DeployedTriggersClient] = None
+        self._webhooks: typing.Optional[WebhooksClient] = None
         self._projects: typing.Optional[ProjectsClient] = None
         self._file_stash: typing.Optional[FileStashClient] = None
         self._proxy: typing.Optional[ProxyClient] = None
@@ -258,6 +260,14 @@ class Client:
 
             self._deployed_triggers = DeployedTriggersClient(client_wrapper=self._client_wrapper)
         return self._deployed_triggers
+
+    @property
+    def webhooks(self):
+        if self._webhooks is None:
+            from .webhooks.client import WebhooksClient  # noqa: E402
+
+            self._webhooks = WebhooksClient(client_wrapper=self._client_wrapper)
+        return self._webhooks
 
     @property
     def projects(self):
@@ -468,6 +478,7 @@ class AsyncClient:
         self._actions: typing.Optional[AsyncActionsClient] = None
         self._triggers: typing.Optional[AsyncTriggersClient] = None
         self._deployed_triggers: typing.Optional[AsyncDeployedTriggersClient] = None
+        self._webhooks: typing.Optional[AsyncWebhooksClient] = None
         self._projects: typing.Optional[AsyncProjectsClient] = None
         self._file_stash: typing.Optional[AsyncFileStashClient] = None
         self._proxy: typing.Optional[AsyncProxyClient] = None
@@ -538,6 +549,14 @@ class AsyncClient:
 
             self._deployed_triggers = AsyncDeployedTriggersClient(client_wrapper=self._client_wrapper)
         return self._deployed_triggers
+
+    @property
+    def webhooks(self):
+        if self._webhooks is None:
+            from .webhooks.client import AsyncWebhooksClient  # noqa: E402
+
+            self._webhooks = AsyncWebhooksClient(client_wrapper=self._client_wrapper)
+        return self._webhooks
 
     @property
     def projects(self):
