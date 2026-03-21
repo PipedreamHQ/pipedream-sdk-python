@@ -12,6 +12,8 @@ from ..types.emitter_type import EmitterType
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
 from ..types.get_triggers_response import GetTriggersResponse
+from ..types.get_webhook_with_signing_key_response import GetWebhookWithSigningKeyResponse
+from ..types.update_trigger_webhooks_response import UpdateTriggerWebhooksResponse
 from .raw_client import AsyncRawDeployedTriggersClient, RawDeployedTriggersClient
 
 # this is used as the default value for optional parameters
@@ -451,9 +453,9 @@ class DeployedTriggersClient:
         external_user_id: str,
         webhook_urls: typing.Sequence[str],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetTriggerWebhooksResponse:
+    ) -> UpdateTriggerWebhooksResponse:
         """
-        Configure webhook URLs to receive trigger events
+        Configure webhook URLs to receive trigger events. `signing_key` is only returned for OAuth-authenticated requests.
 
         Parameters
         ----------
@@ -470,7 +472,7 @@ class DeployedTriggersClient:
 
         Returns
         -------
-        GetTriggerWebhooksResponse
+        UpdateTriggerWebhooksResponse
             trigger webhooks updated
 
         Examples
@@ -491,6 +493,104 @@ class DeployedTriggersClient:
         """
         _response = self._raw_client.update_webhooks(
             trigger_id, external_user_id=external_user_id, webhook_urls=webhook_urls, request_options=request_options
+        )
+        return _response.data
+
+    def retrieve_webhook(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetWebhookWithSigningKeyResponse:
+        """
+        Retrieve a specific webhook for a deployed trigger, including its signing key
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWebhookWithSigningKeyResponse
+            trigger webhook retrieved
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.deployed_triggers.retrieve_webhook(
+            trigger_id="trigger_id",
+            webhook_id="webhook_id",
+            external_user_id="external_user_id",
+        )
+        """
+        _response = self._raw_client.retrieve_webhook(
+            trigger_id, webhook_id, external_user_id=external_user_id, request_options=request_options
+        )
+        return _response.data
+
+    def regenerate_webhook_signing_key(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetWebhookWithSigningKeyResponse:
+        """
+        Regenerate the signing key for a specific webhook on a deployed trigger
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWebhookWithSigningKeyResponse
+            signing key regenerated
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.deployed_triggers.regenerate_webhook_signing_key(
+            trigger_id="trigger_id",
+            webhook_id="webhook_id",
+            external_user_id="external_user_id",
+        )
+        """
+        _response = self._raw_client.regenerate_webhook_signing_key(
+            trigger_id, webhook_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
 
@@ -993,9 +1093,9 @@ class AsyncDeployedTriggersClient:
         external_user_id: str,
         webhook_urls: typing.Sequence[str],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> GetTriggerWebhooksResponse:
+    ) -> UpdateTriggerWebhooksResponse:
         """
-        Configure webhook URLs to receive trigger events
+        Configure webhook URLs to receive trigger events. `signing_key` is only returned for OAuth-authenticated requests.
 
         Parameters
         ----------
@@ -1012,7 +1112,7 @@ class AsyncDeployedTriggersClient:
 
         Returns
         -------
-        GetTriggerWebhooksResponse
+        UpdateTriggerWebhooksResponse
             trigger webhooks updated
 
         Examples
@@ -1041,5 +1141,119 @@ class AsyncDeployedTriggersClient:
         """
         _response = await self._raw_client.update_webhooks(
             trigger_id, external_user_id=external_user_id, webhook_urls=webhook_urls, request_options=request_options
+        )
+        return _response.data
+
+    async def retrieve_webhook(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetWebhookWithSigningKeyResponse:
+        """
+        Retrieve a specific webhook for a deployed trigger, including its signing key
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWebhookWithSigningKeyResponse
+            trigger webhook retrieved
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.deployed_triggers.retrieve_webhook(
+                trigger_id="trigger_id",
+                webhook_id="webhook_id",
+                external_user_id="external_user_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.retrieve_webhook(
+            trigger_id, webhook_id, external_user_id=external_user_id, request_options=request_options
+        )
+        return _response.data
+
+    async def regenerate_webhook_signing_key(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetWebhookWithSigningKeyResponse:
+        """
+        Regenerate the signing key for a specific webhook on a deployed trigger
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWebhookWithSigningKeyResponse
+            signing key regenerated
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.deployed_triggers.regenerate_webhook_signing_key(
+                trigger_id="trigger_id",
+                webhook_id="webhook_id",
+                external_user_id="external_user_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.regenerate_webhook_signing_key(
+            trigger_id, webhook_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data

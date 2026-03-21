@@ -4,15 +4,17 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .deploy_trigger_result import DeployTriggerResult
 
 
-class DeployTriggerResponse(UniversalBaseModel):
+class DeployTriggerResult(UniversalBaseModel):
     """
-    Response received after deploying a trigger
+    Response payload received after deploying a trigger
     """
 
-    data: DeployTriggerResult
+    webhook_signing_key: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The webhook signing key. Only returned for OAuth-authenticated requests when `webhook_url` is supplied.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
