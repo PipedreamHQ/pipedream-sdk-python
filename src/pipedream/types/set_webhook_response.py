@@ -4,15 +4,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .deploy_trigger_result import DeployTriggerResult
+from .webhook_with_optional_signing_key import WebhookWithOptionalSigningKey
 
 
-class DeployTriggerResponse(UniversalBaseModel):
+class SetWebhookResponse(UniversalBaseModel):
     """
-    Response received after deploying a trigger
+    Response received when creating or updating a webhook
     """
 
-    data: DeployTriggerResult
+    data: WebhookWithOptionalSigningKey
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

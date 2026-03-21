@@ -21,6 +21,8 @@ from ..types.get_trigger_response import GetTriggerResponse
 from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
 from ..types.get_triggers_response import GetTriggersResponse
+from ..types.get_webhook_with_signing_key_response import GetWebhookWithSigningKeyResponse
+from ..types.update_trigger_webhooks_response import UpdateTriggerWebhooksResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -571,9 +573,9 @@ class RawDeployedTriggersClient:
         external_user_id: str,
         webhook_urls: typing.Sequence[str],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[GetTriggerWebhooksResponse]:
+    ) -> HttpResponse[UpdateTriggerWebhooksResponse]:
         """
-        Configure webhook URLs to receive trigger events
+        Configure webhook URLs to receive trigger events. `signing_key` is only returned for OAuth-authenticated requests.
 
         Parameters
         ----------
@@ -590,7 +592,7 @@ class RawDeployedTriggersClient:
 
         Returns
         -------
-        HttpResponse[GetTriggerWebhooksResponse]
+        HttpResponse[UpdateTriggerWebhooksResponse]
             trigger webhooks updated
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -611,9 +613,133 @@ class RawDeployedTriggersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetTriggerWebhooksResponse,
+                    UpdateTriggerWebhooksResponse,
                     parse_obj_as(
-                        type_=GetTriggerWebhooksResponse,  # type: ignore
+                        type_=UpdateTriggerWebhooksResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def retrieve_webhook(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetWebhookWithSigningKeyResponse]:
+        """
+        Retrieve a specific webhook for a deployed trigger, including its signing key
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetWebhookWithSigningKeyResponse]
+            trigger webhook retrieved
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}",
+            method="GET",
+            params={
+                "external_user_id": external_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetWebhookWithSigningKeyResponse,
+                    parse_obj_as(
+                        type_=GetWebhookWithSigningKeyResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def regenerate_webhook_signing_key(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetWebhookWithSigningKeyResponse]:
+        """
+        Regenerate the signing key for a specific webhook on a deployed trigger
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetWebhookWithSigningKeyResponse]
+            signing key regenerated
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}/regenerate_signing_key",
+            method="POST",
+            params={
+                "external_user_id": external_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetWebhookWithSigningKeyResponse,
+                    parse_obj_as(
+                        type_=GetWebhookWithSigningKeyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -1183,9 +1309,9 @@ class AsyncRawDeployedTriggersClient:
         external_user_id: str,
         webhook_urls: typing.Sequence[str],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[GetTriggerWebhooksResponse]:
+    ) -> AsyncHttpResponse[UpdateTriggerWebhooksResponse]:
         """
-        Configure webhook URLs to receive trigger events
+        Configure webhook URLs to receive trigger events. `signing_key` is only returned for OAuth-authenticated requests.
 
         Parameters
         ----------
@@ -1202,7 +1328,7 @@ class AsyncRawDeployedTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[GetTriggerWebhooksResponse]
+        AsyncHttpResponse[UpdateTriggerWebhooksResponse]
             trigger webhooks updated
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -1223,9 +1349,133 @@ class AsyncRawDeployedTriggersClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    GetTriggerWebhooksResponse,
+                    UpdateTriggerWebhooksResponse,
                     parse_obj_as(
-                        type_=GetTriggerWebhooksResponse,  # type: ignore
+                        type_=UpdateTriggerWebhooksResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def retrieve_webhook(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetWebhookWithSigningKeyResponse]:
+        """
+        Retrieve a specific webhook for a deployed trigger, including its signing key
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetWebhookWithSigningKeyResponse]
+            trigger webhook retrieved
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}",
+            method="GET",
+            params={
+                "external_user_id": external_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetWebhookWithSigningKeyResponse,
+                    parse_obj_as(
+                        type_=GetWebhookWithSigningKeyResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def regenerate_webhook_signing_key(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetWebhookWithSigningKeyResponse]:
+        """
+        Regenerate the signing key for a specific webhook on a deployed trigger
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetWebhookWithSigningKeyResponse]
+            signing key regenerated
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}/regenerate_signing_key",
+            method="POST",
+            params={
+                "external_user_id": external_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetWebhookWithSigningKeyResponse,
+                    parse_obj_as(
+                        type_=GetWebhookWithSigningKeyResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
