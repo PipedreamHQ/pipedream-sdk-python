@@ -74,6 +74,11 @@ class DeployedComponent(UniversalBaseModel):
     Whether the trigger emits events during the deploy hook execution. When false, the $emit function is disabled during deploy hook execution. Defaults to true.
     """
 
+    webhook_signing_key: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The webhook signing key. Only returned for OAuth-authenticated requests when `webhook_url` is supplied.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

@@ -30,6 +30,7 @@ class Emitter_DeployedComponent(UniversalBaseModel):
     name_slug: str
     callback_observations: typing.Optional[typing.Any] = None
     emit_on_deploy: typing.Optional[bool] = None
+    webhook_signing_key: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
