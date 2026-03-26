@@ -4,19 +4,15 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
-from .trigger_webhook import TriggerWebhook
+from .webhook_with_signing_key import WebhookWithSigningKey
 
 
-class GetTriggerWebhooksResponse(UniversalBaseModel):
+class GetWebhookWithSigningKeyResponse(UniversalBaseModel):
     """
-    Response received when retrieving trigger webhooks
+    Response received when retrieving a webhook with its signing key
     """
 
-    webhook_urls: typing.List[str]
-    webhooks: typing.Optional[typing.List[TriggerWebhook]] = pydantic.Field(default=None)
-    """
-    Webhook objects for the configured URLs. `signing_key` is only returned for OAuth-authenticated requests.
-    """
+    data: WebhookWithSigningKey
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
