@@ -7,6 +7,7 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .account import Account
+    from .account_credentials import AccountCredentials
     from .account_id import AccountId
     from .app import App
     from .app_auth_type import AppAuthType
@@ -164,6 +165,7 @@ if typing.TYPE_CHECKING:
     from .webhook_with_signing_key import WebhookWithSigningKey
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
+    "AccountCredentials": ".account_credentials",
     "AccountId": ".account_id",
     "App": ".app",
     "AppAuthType": ".app_auth_type",
@@ -346,6 +348,7 @@ def __dir__():
 
 __all__ = [
     "Account",
+    "AccountCredentials",
     "AccountId",
     "App",
     "AppAuthType",
