@@ -5,3 +5,6 @@ import typing
 from .configure_prop_options_item import ConfigurePropOptionsItem
 
 ConfigurePropOptions = typing.Optional[typing.List[ConfigurePropOptionsItem]]
+"""
+Available options (with labels) for the configured prop
+"""

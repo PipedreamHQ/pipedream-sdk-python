@@ -17,7 +17,9 @@ class HttpRequestBody(UniversalBaseModel):
     """
 
     type: typing.Optional[HttpRequestBodyType] = None
-    content_type: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="contentType")] = None
+    content_type: typing_extensions.Annotated[
+        typing.Optional[str], FieldMetadata(alias="contentType"), pydantic.Field(alias="contentType")
+    ] = None
     fields: typing.Optional[typing.List[HttpRequestField]] = None
     mode: typing.Optional[HttpRequestBodyMode] = None
     raw: typing.Optional[str] = None

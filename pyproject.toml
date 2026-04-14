@@ -4,7 +4,7 @@ dynamic = ["version"]
 
 [tool.poetry]
 name = "pipedream"
-version = "1.1.8"
+version = "0.0.0"
 description = ""
 readme = "README.md"
 authors = []
@@ -14,11 +14,12 @@ classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Operating System :: OS Independent",
     "Operating System :: POSIX",
     "Operating System :: MacOS",
@@ -35,16 +36,18 @@ packages = [
 Repository = 'https://github.com/PipedreamHQ/pipedream-sdk-python'
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
+aiohttp = { version = ">=3.10.0,<4", optional = true}
 httpx = ">=0.21.2"
+httpx-aiohttp = { version = "0.1.8", optional = true}
 pydantic = ">= 1.9.2"
-pydantic-core = ">=2.18.2"
+pydantic-core = ">=2.18.2,<2.44.0"
 typing_extensions = ">= 4.0.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "==1.13.0"
-pytest = "^7.4.0"
-pytest-asyncio = "^0.23.5"
+pytest = "^8.2.0"
+pytest-asyncio = "^1.0.0"
 pytest-xdist = "^3.6.1"
 python-dateutil = "^2.9.0"
 types-python-dateutil = "^2.9.0.20240316"
@@ -53,6 +56,9 @@ ruff = "==0.11.5"
 [tool.pytest.ini_options]
 testpaths = [ "tests" ]
 asyncio_mode = "auto"
+markers = [
+    "aiohttp: tests that require httpx_aiohttp to be installed",
+]
 
 [tool.mypy]
 plugins = ["pydantic.mypy"]
@@ -84,3 +90,6 @@ section-order = ["future", "standard-library", "third-party", "first-party"]
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+aiohttp=["aiohttp", "httpx-aiohttp"]

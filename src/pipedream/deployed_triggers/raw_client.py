@@ -6,8 +6,9 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.pagination import AsyncPager, SyncPager
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -22,6 +23,7 @@ from ..types.get_trigger_webhooks_response import GetTriggerWebhooksResponse
 from ..types.get_trigger_workflows_response import GetTriggerWorkflowsResponse
 from ..types.get_triggers_response import GetTriggersResponse
 from ..types.get_webhook_with_signing_key_response import GetWebhookWithSigningKeyResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -70,7 +72,7 @@ class RawDeployedTriggersClient:
             deployed triggers listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers",
             method="GET",
             params={
                 "after": after,
@@ -119,6 +121,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
@@ -143,7 +149,7 @@ class RawDeployedTriggersClient:
             deployed trigger retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -175,6 +181,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def update(
@@ -218,7 +228,7 @@ class RawDeployedTriggersClient:
             deployed trigger updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -262,6 +272,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete(
@@ -293,7 +307,7 @@ class RawDeployedTriggersClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}",
             method="DELETE",
             params={
                 "external_user_id": external_user_id,
@@ -318,6 +332,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def list_events(
@@ -350,7 +368,7 @@ class RawDeployedTriggersClient:
             trigger events retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/events",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/events",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -383,6 +401,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def list_workflows(
@@ -407,7 +429,7 @@ class RawDeployedTriggersClient:
             trigger workflows retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/pipelines",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -438,6 +460,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def update_workflows(
@@ -470,7 +496,7 @@ class RawDeployedTriggersClient:
             trigger workflows updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/pipelines",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -508,6 +534,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def list_webhooks(
@@ -532,7 +562,7 @@ class RawDeployedTriggersClient:
             trigger webhooks retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -563,6 +593,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def update_webhooks(
@@ -595,7 +629,7 @@ class RawDeployedTriggersClient:
             trigger webhooks updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -633,6 +667,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve_webhook(
@@ -664,7 +702,7 @@ class RawDeployedTriggersClient:
             trigger webhook retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks/{encode_path_param(webhook_id)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -695,6 +733,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def regenerate_webhook_signing_key(
@@ -726,7 +768,7 @@ class RawDeployedTriggersClient:
             signing key regenerated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}/regenerate_signing_key",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks/{encode_path_param(webhook_id)}/regenerate_signing_key",
             method="POST",
             params={
                 "external_user_id": external_user_id,
@@ -757,6 +799,10 @@ class RawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
@@ -803,7 +849,7 @@ class AsyncRawDeployedTriggersClient:
             deployed triggers listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers",
             method="GET",
             params={
                 "after": after,
@@ -855,6 +901,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
@@ -879,7 +929,7 @@ class AsyncRawDeployedTriggersClient:
             deployed trigger retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -911,6 +961,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def update(
@@ -954,7 +1008,7 @@ class AsyncRawDeployedTriggersClient:
             deployed trigger updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -998,6 +1052,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete(
@@ -1029,7 +1087,7 @@ class AsyncRawDeployedTriggersClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}",
             method="DELETE",
             params={
                 "external_user_id": external_user_id,
@@ -1054,6 +1112,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def list_events(
@@ -1086,7 +1148,7 @@ class AsyncRawDeployedTriggersClient:
             trigger events retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/events",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/events",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -1119,6 +1181,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def list_workflows(
@@ -1143,7 +1209,7 @@ class AsyncRawDeployedTriggersClient:
             trigger workflows retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/pipelines",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -1174,6 +1240,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def update_workflows(
@@ -1206,7 +1276,7 @@ class AsyncRawDeployedTriggersClient:
             trigger workflows updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/pipelines",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/pipelines",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -1244,6 +1314,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def list_webhooks(
@@ -1268,7 +1342,7 @@ class AsyncRawDeployedTriggersClient:
             trigger webhooks retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -1299,6 +1373,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def update_webhooks(
@@ -1331,7 +1409,7 @@ class AsyncRawDeployedTriggersClient:
             trigger webhooks updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks",
             method="PUT",
             params={
                 "external_user_id": external_user_id,
@@ -1369,6 +1447,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve_webhook(
@@ -1400,7 +1482,7 @@ class AsyncRawDeployedTriggersClient:
             trigger webhook retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks/{encode_path_param(webhook_id)}",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -1431,6 +1513,10 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def regenerate_webhook_signing_key(
@@ -1462,7 +1548,7 @@ class AsyncRawDeployedTriggersClient:
             signing key regenerated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/deployed-triggers/{jsonable_encoder(trigger_id)}/webhooks/{jsonable_encoder(webhook_id)}/regenerate_signing_key",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks/{encode_path_param(webhook_id)}/regenerate_signing_key",
             method="POST",
             params={
                 "external_user_id": external_user_id,
@@ -1493,4 +1579,8 @@ class AsyncRawDeployedTriggersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

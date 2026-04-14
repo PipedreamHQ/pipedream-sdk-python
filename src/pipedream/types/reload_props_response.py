@@ -21,9 +21,9 @@ class ReloadPropsResponse(UniversalBaseModel):
     Any errors that occurred during configuration
     """
 
-    dynamic_props: typing_extensions.Annotated[typing.Optional[DynamicProps], FieldMetadata(alias="dynamicProps")] = (
-        None
-    )
+    dynamic_props: typing_extensions.Annotated[
+        typing.Optional[DynamicProps], FieldMetadata(alias="dynamicProps"), pydantic.Field(alias="dynamicProps")
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

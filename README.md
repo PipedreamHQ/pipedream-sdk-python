@@ -10,6 +10,7 @@ The Pipedream Python library provides convenient access to the Pipedream APIs fr
 - [Installation](#installation)
 - [Reference](#reference)
 - [Usage](#usage)
+- [Environments](#environments)
 - [Async Client](#async-client)
 - [Exception Handling](#exception-handling)
 - [Pagination](#pagination)
@@ -39,14 +40,26 @@ Instantiate and use the client with the following:
 from pipedream import Pipedream
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
 )
+
 client.actions.run(
     id="id",
     external_user_id="external_user_id",
+)
+```
+
+## Environments
+
+This SDK allows you to configure different environments for API requests.
+
+```python
+from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
+
+client = Pipedream(
+    environment=PipedreamEnvironment.PROD,
 )
 ```
 
@@ -60,10 +73,8 @@ import asyncio
 from pipedream import AsyncPipedream
 
 client = AsyncPipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
 )
 
 
@@ -100,12 +111,11 @@ Paginated requests will return a `SyncPager` or `AsyncPager`, which can be used 
 from pipedream import Pipedream
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
 )
-response = client.apps.list(
+
+client.apps.list(
     after="after",
     before="before",
     limit=1,
@@ -116,11 +126,6 @@ response = client.apps.list(
     has_actions=True,
     has_triggers=True,
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 ```
 
 ```python
@@ -140,13 +145,16 @@ This SDK supports two authentication methods: OAuth client credentials flow (aut
 from pipedream import Pipedream
 
 # Option 1: Direct bearer token (bypass OAuth flow)
-client = Pipedream(..., token="my-pre-generated-bearer-token")
-
-from pipedream import Pipedream
+client = Pipedream(
+    ...,
+    token="my-pre-generated-bearer-token",
+)
 
 # Option 2: OAuth client credentials flow (automatic token management)
 client = Pipedream(
-    ..., client_id="your-client-id", client_secret="your-client-secret"
+    ...,
+    client_id="your-client-id",
+    client_secret="your-client-secret",
 )
 ```
 
@@ -160,20 +168,11 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 ```python
 from pipedream import Pipedream
 
-client = Pipedream(
-    ...,
-)
+client = Pipedream(...)
 response = client.actions.with_raw_response.run(...)
 print(response.headers)  # access the response headers
+print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
-pager = client.apps.list(...)
-print(pager.response)  # access the typed response for the first page
-for item in pager:
-    print(item)  # access the underlying object(s)
-for page in pager.iter_pages():
-    print(page.response)  # access the typed response for each page
-    for item in page:
-        print(item)  # access the underlying object(s)
 ```
 
 ### Retries
@@ -201,14 +200,9 @@ client.actions.run(..., request_options={
 The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```python
-
 from pipedream import Pipedream
 
-client = Pipedream(
-    ...,
-    timeout=20.0,
-)
-
+client = Pipedream(..., timeout=20.0)
 
 # Override timeout for a specific method
 client.actions.run(..., request_options={

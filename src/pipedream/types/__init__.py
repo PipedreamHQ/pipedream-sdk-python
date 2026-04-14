@@ -7,7 +7,6 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .account import Account
-    from .account_credentials import AccountCredentials
     from .account_id import AccountId
     from .app import App
     from .app_auth_type import AppAuthType
@@ -54,6 +53,7 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_app import ConfigurablePropApp
     from .configurable_prop_apphook import ConfigurablePropApphook
     from .configurable_prop_base import ConfigurablePropBase
+    from .configurable_prop_base_type import ConfigurablePropBaseType
     from .configurable_prop_boolean import ConfigurablePropBoolean
     from .configurable_prop_boolean_options_item import ConfigurablePropBooleanOptionsItem
     from .configurable_prop_data_store import ConfigurablePropDataStore
@@ -62,6 +62,7 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_discord import ConfigurablePropDiscord
     from .configurable_prop_discord_channel import ConfigurablePropDiscordChannel
     from .configurable_prop_discord_channel_array import ConfigurablePropDiscordChannelArray
+    from .configurable_prop_discord_type import ConfigurablePropDiscordType
     from .configurable_prop_http import ConfigurablePropHttp
     from .configurable_prop_http_request import ConfigurablePropHttpRequest
     from .configurable_prop_integer import ConfigurablePropInteger
@@ -165,7 +166,6 @@ if typing.TYPE_CHECKING:
     from .webhook_with_signing_key import WebhookWithSigningKey
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
-    "AccountCredentials": ".account_credentials",
     "AccountId": ".account_id",
     "App": ".app",
     "AppAuthType": ".app_auth_type",
@@ -187,6 +187,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropApp": ".configurable_prop_app",
     "ConfigurablePropApphook": ".configurable_prop_apphook",
     "ConfigurablePropBase": ".configurable_prop_base",
+    "ConfigurablePropBaseType": ".configurable_prop_base_type",
     "ConfigurablePropBoolean": ".configurable_prop_boolean",
     "ConfigurablePropBooleanOptionsItem": ".configurable_prop_boolean_options_item",
     "ConfigurablePropDataStore": ".configurable_prop_data_store",
@@ -195,6 +196,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropDiscord": ".configurable_prop_discord",
     "ConfigurablePropDiscordChannel": ".configurable_prop_discord_channel",
     "ConfigurablePropDiscordChannelArray": ".configurable_prop_discord_channel_array",
+    "ConfigurablePropDiscordType": ".configurable_prop_discord_type",
     "ConfigurablePropHttp": ".configurable_prop_http",
     "ConfigurablePropHttpRequest": ".configurable_prop_http_request",
     "ConfigurablePropInteger": ".configurable_prop_integer",
@@ -348,7 +350,6 @@ def __dir__():
 
 __all__ = [
     "Account",
-    "AccountCredentials",
     "AccountId",
     "App",
     "AppAuthType",
@@ -370,6 +371,7 @@ __all__ = [
     "ConfigurablePropApp",
     "ConfigurablePropApphook",
     "ConfigurablePropBase",
+    "ConfigurablePropBaseType",
     "ConfigurablePropBoolean",
     "ConfigurablePropBooleanOptionsItem",
     "ConfigurablePropDataStore",
@@ -378,6 +380,7 @@ __all__ = [
     "ConfigurablePropDiscord",
     "ConfigurablePropDiscordChannel",
     "ConfigurablePropDiscordChannelArray",
+    "ConfigurablePropDiscordType",
     "ConfigurablePropHttp",
     "ConfigurablePropHttpRequest",
     "ConfigurablePropInteger",

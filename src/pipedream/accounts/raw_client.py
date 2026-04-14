@@ -6,13 +6,15 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.pagination import AsyncPager, SyncPager
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.account import Account
 from ..types.list_accounts_response import ListAccountsResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -68,7 +70,7 @@ class RawAccountsClient:
             accounts listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -121,6 +123,10 @@ class RawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def create(
@@ -165,7 +171,7 @@ class RawAccountsClient:
             account created
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts",
             method="POST",
             params={
                 "external_user_id": external_user_id,
@@ -207,6 +213,10 @@ class RawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
@@ -235,7 +245,7 @@ class RawAccountsClient:
             account retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts/{encode_path_param(account_id)}",
             method="GET",
             params={
                 "include_credentials": include_credentials,
@@ -266,6 +276,10 @@ class RawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete(self, account_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
@@ -284,7 +298,7 @@ class RawAccountsClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts/{encode_path_param(account_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -305,6 +319,10 @@ class RawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete_by_app(
@@ -325,7 +343,7 @@ class RawAccountsClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/apps/{jsonable_encoder(app_id)}/accounts",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/apps/{encode_path_param(app_id)}/accounts",
             method="DELETE",
             request_options=request_options,
         )
@@ -346,6 +364,10 @@ class RawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
@@ -399,7 +421,7 @@ class AsyncRawAccountsClient:
             accounts listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts",
             method="GET",
             params={
                 "external_user_id": external_user_id,
@@ -455,6 +477,10 @@ class AsyncRawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
@@ -499,7 +525,7 @@ class AsyncRawAccountsClient:
             account created
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts",
             method="POST",
             params={
                 "external_user_id": external_user_id,
@@ -541,6 +567,10 @@ class AsyncRawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
@@ -569,7 +599,7 @@ class AsyncRawAccountsClient:
             account retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts/{encode_path_param(account_id)}",
             method="GET",
             params={
                 "include_credentials": include_credentials,
@@ -600,6 +630,10 @@ class AsyncRawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete(
@@ -620,7 +654,7 @@ class AsyncRawAccountsClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/accounts/{jsonable_encoder(account_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/accounts/{encode_path_param(account_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -641,6 +675,10 @@ class AsyncRawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete_by_app(
@@ -661,7 +699,7 @@ class AsyncRawAccountsClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/apps/{jsonable_encoder(app_id)}/accounts",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/apps/{encode_path_param(app_id)}/accounts",
             method="DELETE",
             request_options=request_options,
         )
@@ -682,4 +720,8 @@ class AsyncRawAccountsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

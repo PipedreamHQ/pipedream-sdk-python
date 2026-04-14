@@ -6,13 +6,15 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.connect_token import ConnectToken
 from ..types.create_token_response import CreateTokenResponse
 from ..types.validate_token_response import ValidateTokenResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -69,7 +71,7 @@ class RawTokensClient:
             connect token created
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/tokens",
             method="POST",
             json={
                 "allowed_origins": allowed_origins,
@@ -110,6 +112,10 @@ class RawTokensClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def validate(
@@ -142,7 +148,7 @@ class RawTokensClient:
             connect token validated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
+            f"v1/connect/tokens/{encode_path_param(ctok)}/validate",
             method="GET",
             params={
                 "app_id": app_id,
@@ -174,6 +180,10 @@ class RawTokensClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
@@ -228,7 +238,7 @@ class AsyncRawTokensClient:
             connect token created
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/tokens",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/tokens",
             method="POST",
             json={
                 "allowed_origins": allowed_origins,
@@ -269,6 +279,10 @@ class AsyncRawTokensClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def validate(
@@ -301,7 +315,7 @@ class AsyncRawTokensClient:
             connect token validated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/tokens/{jsonable_encoder(ctok)}/validate",
+            f"v1/connect/tokens/{encode_path_param(ctok)}/validate",
             method="GET",
             params={
                 "app_id": app_id,
@@ -333,4 +347,8 @@ class AsyncRawTokensClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

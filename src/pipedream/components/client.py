@@ -85,7 +85,6 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -147,7 +146,6 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -222,7 +220,6 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -294,7 +291,6 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -384,7 +380,6 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -455,7 +450,6 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -538,7 +532,6 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
@@ -618,7 +611,6 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )

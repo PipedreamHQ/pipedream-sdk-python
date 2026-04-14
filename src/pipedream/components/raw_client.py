@@ -6,8 +6,9 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.pagination import AsyncPager, SyncPager
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
@@ -21,6 +22,7 @@ from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
 from .types.components_list_request_registry import ComponentsListRequestRegistry
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -77,7 +79,7 @@ class RawComponentsClient:
             returns public + private without permission
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components",
             method="GET",
             params={
                 "after": after,
@@ -141,6 +143,10 @@ class RawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
@@ -170,7 +176,7 @@ class RawComponentsClient:
             component retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/{jsonable_encoder(component_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/{encode_path_param(component_id)}",
             method="GET",
             params={
                 "version": version,
@@ -202,6 +208,10 @@ class RawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def configure_prop(
@@ -262,7 +272,7 @@ class RawComponentsClient:
             component configuration started
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/configure",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/configure",
             method="POST",
             json={
                 "id": id,
@@ -308,6 +318,10 @@ class RawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def reload_props(
@@ -352,7 +366,7 @@ class RawComponentsClient:
             component props reloaded
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/props",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/props",
             method="POST",
             json={
                 "id": id,
@@ -394,6 +408,10 @@ class RawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
@@ -448,7 +466,7 @@ class AsyncRawComponentsClient:
             returns public + private without permission
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components",
             method="GET",
             params={
                 "after": after,
@@ -515,6 +533,10 @@ class AsyncRawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
@@ -544,7 +566,7 @@ class AsyncRawComponentsClient:
             component retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/{jsonable_encoder(component_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/{encode_path_param(component_id)}",
             method="GET",
             params={
                 "version": version,
@@ -576,6 +598,10 @@ class AsyncRawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def configure_prop(
@@ -636,7 +662,7 @@ class AsyncRawComponentsClient:
             component configuration started
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/configure",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/configure",
             method="POST",
             json={
                 "id": id,
@@ -682,6 +708,10 @@ class AsyncRawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def reload_props(
@@ -726,7 +756,7 @@ class AsyncRawComponentsClient:
             component props reloaded
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/components/props",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/props",
             method="POST",
             json={
                 "id": id,
@@ -768,4 +798,8 @@ class AsyncRawComponentsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
