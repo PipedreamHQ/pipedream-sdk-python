@@ -3,7 +3,10 @@
 import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.external_user import ExternalUser
+from ..types.get_users_response import GetUsersResponse
 from .raw_client import AsyncRawUsersClient, RawUsersClient
 
 
@@ -55,6 +58,64 @@ class UsersClient:
         """
         _response = self._raw_client.delete_external_user(external_user_id, request_options=request_options)
         return _response.data
+
+    def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[ExternalUser, GetUsersResponse]:
+        """
+        Retrieve all external users for the project
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            Filter users by external_id (partial match)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[ExternalUser, GetUsersResponse]
+            users listed
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        response = client.users.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+        )
+        for item in response:
+            yield item
+        # alternatively, you can paginate page-by-page
+        for page in response.iter_pages():
+            yield page
+        """
+        return self._raw_client.list(after=after, before=before, limit=limit, q=q, request_options=request_options)
 
 
 class AsyncUsersClient:
@@ -113,3 +174,72 @@ class AsyncUsersClient:
         """
         _response = await self._raw_client.delete_external_user(external_user_id, request_options=request_options)
         return _response.data
+
+    async def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[ExternalUser, GetUsersResponse]:
+        """
+        Retrieve all external users for the project
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            Filter users by external_id (partial match)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[ExternalUser, GetUsersResponse]
+            users listed
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            project_environment="YOUR_PROJECT_ENVIRONMENT",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            response = await client.users.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+            )
+            async for item in response:
+                yield item
+
+            # alternatively, you can paginate page-by-page
+            async for page in response.iter_pages():
+                yield page
+
+
+        asyncio.run(main())
+        """
+        return await self._raw_client.list(
+            after=after, before=before, limit=limit, q=q, request_options=request_options
+        )
