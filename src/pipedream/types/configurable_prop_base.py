@@ -38,6 +38,13 @@ class ConfigurablePropBase(UniversalBaseModel):
     If true, this prop will be ignored.
     """
 
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = pydantic.Field(
+        default=None
+    )
+    """
+    If true, this prop is read-only — its value is either fixed by the component author (`static`) or the prop is purely informational (e.g. `alert`, `dir`). Connect clients should render it without treating it as a configurable input.
+    """
+
     hidden: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If true, should not expose this prop to the user

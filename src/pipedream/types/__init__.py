@@ -109,6 +109,7 @@ if typing.TYPE_CHECKING:
     from .emitter import Emitter, Emitter_DeployedComponent, Emitter_HttpInterface, Emitter_TimerInterface
     from .emitter_type import EmitterType
     from .error_response import ErrorResponse
+    from .external_user import ExternalUser
     from .get_accounts_response import GetAccountsResponse
     from .get_app_category_response import GetAppCategoryResponse
     from .get_app_response import GetAppResponse
@@ -120,6 +121,7 @@ if typing.TYPE_CHECKING:
     from .get_trigger_webhooks_response import GetTriggerWebhooksResponse
     from .get_trigger_workflows_response import GetTriggerWorkflowsResponse
     from .get_triggers_response import GetTriggersResponse
+    from .get_users_response import GetUsersResponse
     from .get_webhook_response import GetWebhookResponse
     from .get_webhook_with_signing_key_response import GetWebhookWithSigningKeyResponse
     from .http_interface import HttpInterface
@@ -268,6 +270,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Emitter_HttpInterface": ".emitter",
     "Emitter_TimerInterface": ".emitter",
     "ErrorResponse": ".error_response",
+    "ExternalUser": ".external_user",
     "GetAccountsResponse": ".get_accounts_response",
     "GetAppCategoryResponse": ".get_app_category_response",
     "GetAppResponse": ".get_app_response",
@@ -279,6 +282,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetTriggerWebhooksResponse": ".get_trigger_webhooks_response",
     "GetTriggerWorkflowsResponse": ".get_trigger_workflows_response",
     "GetTriggersResponse": ".get_triggers_response",
+    "GetUsersResponse": ".get_users_response",
     "GetWebhookResponse": ".get_webhook_response",
     "GetWebhookWithSigningKeyResponse": ".get_webhook_with_signing_key_response",
     "HttpInterface": ".http_interface",
@@ -451,6 +455,7 @@ __all__ = [
     "Emitter_HttpInterface",
     "Emitter_TimerInterface",
     "ErrorResponse",
+    "ExternalUser",
     "GetAccountsResponse",
     "GetAppCategoryResponse",
     "GetAppResponse",
@@ -462,6 +467,7 @@ __all__ = [
     "GetTriggerWebhooksResponse",
     "GetTriggerWorkflowsResponse",
     "GetTriggersResponse",
+    "GetUsersResponse",
     "GetWebhookResponse",
     "GetWebhookWithSigningKeyResponse",
     "HttpInterface",

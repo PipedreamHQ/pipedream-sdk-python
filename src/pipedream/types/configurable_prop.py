@@ -46,6 +46,7 @@ class ConfigurableProp_Alert(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -75,6 +76,7 @@ class ConfigurableProp_Any(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -103,6 +105,7 @@ class ConfigurableProp_App(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -132,6 +135,7 @@ class ConfigurableProp_Boolean(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -159,6 +163,7 @@ class ConfigurableProp_DataStore(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -186,6 +191,7 @@ class ConfigurableProp_Dir(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -216,6 +222,7 @@ class ConfigurableProp_InterfaceTimer(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -249,6 +256,7 @@ class ConfigurableProp_InterfaceApphook(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -280,6 +288,7 @@ class ConfigurableProp_IntegerArray(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -308,6 +317,7 @@ class ConfigurableProp_InterfaceHttp(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -336,6 +346,7 @@ class ConfigurableProp_HttpRequest(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -363,6 +374,7 @@ class ConfigurableProp_ServiceDb(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -393,6 +405,7 @@ class ConfigurableProp_Sql(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -421,6 +434,7 @@ class ConfigurableProp_AirtableBaseId(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -449,6 +463,7 @@ class ConfigurableProp_AirtableTableId(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -477,6 +492,7 @@ class ConfigurableProp_AirtableViewId(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -505,6 +521,7 @@ class ConfigurableProp_AirtableFieldId(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -533,6 +550,7 @@ class ConfigurableProp_DiscordChannel(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -561,6 +579,7 @@ class ConfigurableProp_DiscordChannelArray(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -592,6 +611,7 @@ class ConfigurableProp_Integer(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -621,6 +641,7 @@ class ConfigurableProp_Object(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -652,6 +673,7 @@ class ConfigurableProp_String(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None
@@ -683,6 +705,7 @@ class ConfigurableProp_StringArray(UniversalBaseModel):
     description: typing.Optional[str] = None
     optional: typing.Optional[bool] = None
     disabled: typing.Optional[bool] = None
+    read_only: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnly")] = None
     hidden: typing.Optional[bool] = None
     remote_options: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="remoteOptions")] = None
     use_query: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="useQuery")] = None

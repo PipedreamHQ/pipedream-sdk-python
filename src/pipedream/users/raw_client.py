@@ -7,9 +7,12 @@ from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
+from ..core.pagination import AsyncPager, SyncPager
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.too_many_requests_error import TooManyRequestsError
+from ..types.external_user import ExternalUser
+from ..types.get_users_response import GetUsersResponse
 
 
 class RawUsersClient:
@@ -57,6 +60,90 @@ class RawUsersClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[ExternalUser, GetUsersResponse]:
+        """
+        Retrieve all external users for the project
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            Filter users by external_id (partial match)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[ExternalUser, GetUsersResponse]
+            users listed
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users",
+            method="GET",
+            params={
+                "after": after,
+                "before": before,
+                "limit": limit,
+                "q": q,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    GetUsersResponse,
+                    parse_obj_as(
+                        type_=GetUsersResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.page_info is not None:
+                    _parsed_next = _parsed_response.page_info.end_cursor
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+                    _get_next = lambda: self.list(
+                        after=_parsed_next,
+                        before=before,
+                        limit=limit,
+                        q=q,
+                        request_options=request_options,
+                    )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
 
 class AsyncRawUsersClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -87,6 +174,93 @@ class AsyncRawUsersClient:
         try:
             if 200 <= _response.status_code < 300:
                 return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[ExternalUser, GetUsersResponse]:
+        """
+        Retrieve all external users for the project
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            Filter users by external_id (partial match)
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[ExternalUser, GetUsersResponse]
+            users listed
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users",
+            method="GET",
+            params={
+                "after": after,
+                "before": before,
+                "limit": limit,
+                "q": q,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    GetUsersResponse,
+                    parse_obj_as(
+                        type_=GetUsersResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.page_info is not None:
+                    _parsed_next = _parsed_response.page_info.end_cursor
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+
+                    async def _get_next():
+                        return await self.list(
+                            after=_parsed_next,
+                            before=before,
+                            limit=limit,
+                            q=q,
+                            request_options=request_options,
+                        )
+
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
