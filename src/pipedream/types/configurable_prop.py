@@ -11,6 +11,7 @@ from ..core.serialization import FieldMetadata
 from .configurable_prop_alert_type import ConfigurablePropAlertType
 from .configurable_prop_any_options_item import ConfigurablePropAnyOptionsItem
 from .configurable_prop_boolean_options_item import ConfigurablePropBooleanOptionsItem
+from .configurable_prop_dir_access_mode import ConfigurablePropDirAccessMode
 from .configurable_prop_integer_array_options_item import ConfigurablePropIntegerArrayOptionsItem
 from .configurable_prop_integer_options_item import ConfigurablePropIntegerOptionsItem
 from .configurable_prop_object_options_item import ConfigurablePropObjectOptionsItem
@@ -186,6 +187,10 @@ class ConfigurableProp_Dir(UniversalBaseModel):
     """
 
     type: typing.Literal["dir"] = "dir"
+    access_mode: typing_extensions.Annotated[
+        typing.Optional[ConfigurablePropDirAccessMode], FieldMetadata(alias="accessMode")
+    ] = None
+    sync: typing.Optional[bool] = None
     name: str
     label: typing.Optional[str] = None
     description: typing.Optional[str] = None

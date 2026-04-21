@@ -59,6 +59,7 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_data_store import ConfigurablePropDataStore
     from .configurable_prop_db import ConfigurablePropDb
     from .configurable_prop_dir import ConfigurablePropDir
+    from .configurable_prop_dir_access_mode import ConfigurablePropDirAccessMode
     from .configurable_prop_discord import ConfigurablePropDiscord
     from .configurable_prop_discord_channel import ConfigurablePropDiscordChannel
     from .configurable_prop_discord_channel_array import ConfigurablePropDiscordChannelArray
@@ -194,6 +195,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropDataStore": ".configurable_prop_data_store",
     "ConfigurablePropDb": ".configurable_prop_db",
     "ConfigurablePropDir": ".configurable_prop_dir",
+    "ConfigurablePropDirAccessMode": ".configurable_prop_dir_access_mode",
     "ConfigurablePropDiscord": ".configurable_prop_discord",
     "ConfigurablePropDiscordChannel": ".configurable_prop_discord_channel",
     "ConfigurablePropDiscordChannelArray": ".configurable_prop_discord_channel_array",
@@ -379,6 +381,7 @@ __all__ = [
     "ConfigurablePropDataStore",
     "ConfigurablePropDb",
     "ConfigurablePropDir",
+    "ConfigurablePropDirAccessMode",
     "ConfigurablePropDiscord",
     "ConfigurablePropDiscordChannel",
     "ConfigurablePropDiscordChannelArray",

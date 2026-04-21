@@ -47,6 +47,11 @@ class Account(UniversalBaseModel):
     The date and time the account was last updated, an ISO 8601 formatted string
     """
 
+    authorized_scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    The OAuth scopes effectively granted to this account. Empty for non-OAuth apps.
+    """
+
     credentials: typing.Optional[AccountCredentials] = pydantic.Field(default=None)
     """
     The credentials associated with the account, if the `include_credentials` parameter was set to true in the request (only applicable for BYOA apps). In addition to the well-known OAuth fields listed below, this object may contain app-specific custom fields (e.g. `base_url`).
