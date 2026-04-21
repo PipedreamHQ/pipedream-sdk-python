@@ -3,11 +3,22 @@
 import typing
 
 import pydantic
+import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from ..core.serialization import FieldMetadata
 from .configurable_prop_base import ConfigurablePropBase
+from .configurable_prop_dir_access_mode import ConfigurablePropDirAccessMode
 
 
 class ConfigurablePropDir(ConfigurablePropBase):
+    access_mode: typing_extensions.Annotated[
+        typing.Optional[ConfigurablePropDirAccessMode], FieldMetadata(alias="accessMode")
+    ] = None
+    sync: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, the component's /tmp directory is synchronized with File Stash
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:
