@@ -10,7 +10,7 @@
 LICENSE
 
 # References doc (we have additional use cases)
-reference.md
+# reference.md
 
 # Custom Pipedream client files
 src/pipedream/__init__.py
