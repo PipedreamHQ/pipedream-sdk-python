@@ -5506,3 +5506,196 @@ client.oauth_tokens.create(
 </dl>
 </details>
 
+
+## Workflows
+<details><summary><code>client.workflows.<a href="src/pipedream/workflows/client.py">invoke</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from pipedream import Pipedream
+from pipedream.workflows.client import HTTPAuthType
+
+client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
+    project_environment="YOUR_PROJECT_ENVIRONMENT",
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+)
+response = client.workflows.invoke(
+    url_or_endpoint="https://your-workflow.m.pipedream.net",
+    method="POST",
+    body={"key": "value"},
+    headers={"Content-Type": "application/json"},
+    auth_type=HTTPAuthType.NONE,
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**url_or_endpoint:** `str` — The URL of the workflow's HTTP interface or the ID of the endpoint
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**method:** `str` — HTTP method to use (default: "POST")
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**body:** `typing.Optional[typing.Any]` — Request body data
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**headers:** `typing.Optional[typing.Dict[str, str]]` — HTTP headers to include
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**auth_type:** `HTTPAuthType` — Type of authorization (default: HTTPAuthType.NONE)
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.workflows.<a href="src/pipedream/workflows/client.py">invoke_for_external_user</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from pipedream import Pipedream
+
+client = Pipedream(
+    project_id="YOUR_PROJECT_ID",
+    project_environment="YOUR_PROJECT_ENVIRONMENT",
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+)
+response = client.workflows.invoke_for_external_user(
+    url_or_endpoint="en2r1n8a98np7",
+    external_user_id="user_123",
+    method="POST",
+    body={"message": "Hello from external user"},
+    headers={"Content-Type": "application/json"},
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**url_or_endpoint:** `str` — The URL of the workflow's HTTP interface or the ID of the endpoint
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**external_user_id:** `str` — The external user ID for whom the workflow is being invoked
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**method:** `str` — HTTP method to use (default: "POST")
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**body:** `typing.Optional[typing.Any]` — Request body data
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**headers:** `typing.Optional[typing.Dict[str, str]]` — HTTP headers to include
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
