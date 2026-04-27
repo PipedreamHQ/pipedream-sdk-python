@@ -38,6 +38,7 @@ class TokensClient:
         scope: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
         webhook_uri: typing.Optional[str] = OMIT,
+        allow_progressive_scopes: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateTokenResponse:
         """
@@ -65,6 +66,9 @@ class TokensClient:
 
         webhook_uri : typing.Optional[str]
             Webhook URI for notifications
+
+        allow_progressive_scopes : typing.Optional[bool]
+            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -96,6 +100,7 @@ class TokensClient:
             scope=scope,
             success_redirect_uri=success_redirect_uri,
             webhook_uri=webhook_uri,
+            allow_progressive_scopes=allow_progressive_scopes,
             request_options=request_options,
         )
         return _response.data
@@ -176,6 +181,7 @@ class AsyncTokensClient:
         scope: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
         webhook_uri: typing.Optional[str] = OMIT,
+        allow_progressive_scopes: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateTokenResponse:
         """
@@ -203,6 +209,9 @@ class AsyncTokensClient:
 
         webhook_uri : typing.Optional[str]
             Webhook URI for notifications
+
+        allow_progressive_scopes : typing.Optional[bool]
+            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -242,6 +251,7 @@ class AsyncTokensClient:
             scope=scope,
             success_redirect_uri=success_redirect_uri,
             webhook_uri=webhook_uri,
+            allow_progressive_scopes=allow_progressive_scopes,
             request_options=request_options,
         )
         return _response.data
