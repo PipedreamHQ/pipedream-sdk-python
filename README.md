@@ -40,9 +40,6 @@ from pipedream import Pipedream
 
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
 )
 client.actions.run(
     id="id",
@@ -61,9 +58,6 @@ from pipedream import AsyncPipedream
 
 client = AsyncPipedream(
     project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
 )
 
 
@@ -101,9 +95,6 @@ from pipedream import Pipedream
 
 client = Pipedream(
     project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
 )
 response = client.apps.list(
     after="after",
@@ -165,6 +156,7 @@ client = Pipedream(
 )
 response = client.actions.with_raw_response.run(...)
 print(response.headers)  # access the response headers
+print(response.status_code)  # access the response status code
 print(response.data)  # access the underlying object
 pager = client.apps.list(...)
 print(pager.response)  # access the typed response for the first page

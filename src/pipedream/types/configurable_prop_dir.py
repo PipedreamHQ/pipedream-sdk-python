@@ -12,7 +12,9 @@ from .configurable_prop_dir_access_mode import ConfigurablePropDirAccessMode
 
 class ConfigurablePropDir(ConfigurablePropBase):
     access_mode: typing_extensions.Annotated[
-        typing.Optional[ConfigurablePropDirAccessMode], FieldMetadata(alias="accessMode")
+        typing.Optional[ConfigurablePropDirAccessMode],
+        FieldMetadata(alias="accessMode"),
+        pydantic.Field(alias="accessMode"),
     ] = None
     sync: typing.Optional[bool] = pydantic.Field(default=None)
     """

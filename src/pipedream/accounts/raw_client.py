@@ -132,6 +132,7 @@ class RawAccountsClient:
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
+        account_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Account]:
         """
@@ -156,6 +157,9 @@ class RawAccountsClient:
         name : typing.Optional[str]
             Optional name for the account
 
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -176,6 +180,7 @@ class RawAccountsClient:
                 "cfmap_json": cfmap_json,
                 "connect_token": connect_token,
                 "name": name,
+                "account_id": account_id,
             },
             headers={
                 "content-type": "application/json",
@@ -466,6 +471,7 @@ class AsyncRawAccountsClient:
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
+        account_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Account]:
         """
@@ -490,6 +496,9 @@ class AsyncRawAccountsClient:
         name : typing.Optional[str]
             Optional name for the account
 
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -510,6 +519,7 @@ class AsyncRawAccountsClient:
                 "cfmap_json": cfmap_json,
                 "connect_token": connect_token,
                 "name": name,
+                "account_id": account_id,
             },
             headers={
                 "content-type": "application/json",

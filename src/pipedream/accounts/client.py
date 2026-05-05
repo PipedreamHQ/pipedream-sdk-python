@@ -79,9 +79,6 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.accounts.list(
             external_user_id="external_user_id",
@@ -118,6 +115,7 @@ class AccountsClient:
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
+        account_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
@@ -142,6 +140,9 @@ class AccountsClient:
         name : typing.Optional[str]
             Optional name for the account
 
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -156,9 +157,6 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.create(
             external_user_id="external_user_id",
@@ -175,6 +173,7 @@ class AccountsClient:
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             name=name,
+            account_id=account_id,
             request_options=request_options,
         )
         return _response.data
@@ -210,9 +209,6 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.retrieve(
             account_id="account_id",
@@ -245,9 +241,6 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.delete(
             account_id="account_id",
@@ -277,9 +270,6 @@ class AccountsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.accounts.delete_by_app(
             app_id="app_id",
@@ -357,9 +347,6 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -403,6 +390,7 @@ class AsyncAccountsClient:
         external_user_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
+        account_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
@@ -427,6 +415,9 @@ class AsyncAccountsClient:
         name : typing.Optional[str]
             Optional name for the account
 
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -443,9 +434,6 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -468,6 +456,7 @@ class AsyncAccountsClient:
             external_user_id=external_user_id,
             oauth_app_id=oauth_app_id,
             name=name,
+            account_id=account_id,
             request_options=request_options,
         )
         return _response.data
@@ -505,9 +494,6 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -548,9 +534,6 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -588,9 +571,6 @@ class AsyncAccountsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

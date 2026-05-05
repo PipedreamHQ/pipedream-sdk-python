@@ -24,12 +24,13 @@ class ConfiguredPropValueSql(UniversalBaseModel):
     The list of parameters for the prepared statement
     """
 
-    use_prepared_statements: typing_extensions.Annotated[bool, FieldMetadata(alias="usePreparedStatements")] = (
-        pydantic.Field()
-    )
-    """
-    Whether to use prepared statements for the query or not
-    """
+    use_prepared_statements: typing_extensions.Annotated[
+        bool,
+        FieldMetadata(alias="usePreparedStatements"),
+        pydantic.Field(
+            alias="usePreparedStatements", description="Whether to use prepared statements for the query or not"
+        ),
+    ]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

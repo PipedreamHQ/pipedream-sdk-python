@@ -69,9 +69,6 @@ class ProjectsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.projects.list(
             after="after",
@@ -127,9 +124,6 @@ class ProjectsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.projects.create(
             name="name",
@@ -167,9 +161,6 @@ class ProjectsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.projects.retrieve(
             project_id="project_id",
@@ -200,9 +191,6 @@ class ProjectsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.projects.delete(
             project_id="project_id",
@@ -255,9 +243,6 @@ class ProjectsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.projects.update(
             project_id="project_id",
@@ -300,9 +285,6 @@ class ProjectsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.projects.update_logo(
             project_id="project_id",
@@ -332,9 +314,6 @@ class ProjectsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.projects.retrieve_info()
         """
@@ -399,9 +378,6 @@ class AsyncProjectsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -468,9 +444,6 @@ class AsyncProjectsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -516,9 +489,6 @@ class AsyncProjectsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -557,9 +527,6 @@ class AsyncProjectsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -620,9 +587,6 @@ class AsyncProjectsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -673,9 +637,6 @@ class AsyncProjectsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -713,9 +674,6 @@ class AsyncProjectsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

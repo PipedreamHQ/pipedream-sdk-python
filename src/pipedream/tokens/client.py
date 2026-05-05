@@ -84,9 +84,6 @@ class TokensClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.tokens.create(
             external_user_id="external_user_id",
@@ -110,6 +107,7 @@ class TokensClient:
         ctok: ConnectToken,
         *,
         app_id: str,
+        account_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ValidateTokenResponse:
@@ -122,6 +120,9 @@ class TokensClient:
 
         app_id : str
             The app ID to validate against
+
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. Must belong to the app identified by app_id.
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to validate against (if the token is for an OAuth app)
@@ -140,18 +141,16 @@ class TokensClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
         client.tokens.validate(
             ctok="ctok",
             app_id="app_id",
+            account_id="account_id",
             oauth_app_id="oauth_app_id",
         )
         """
         _response = self._raw_client.validate(
-            ctok, app_id=app_id, oauth_app_id=oauth_app_id, request_options=request_options
+            ctok, app_id=app_id, account_id=account_id, oauth_app_id=oauth_app_id, request_options=request_options
         )
         return _response.data
 
@@ -229,9 +228,6 @@ class AsyncTokensClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -261,6 +257,7 @@ class AsyncTokensClient:
         ctok: ConnectToken,
         *,
         app_id: str,
+        account_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ValidateTokenResponse:
@@ -273,6 +270,9 @@ class AsyncTokensClient:
 
         app_id : str
             The app ID to validate against
+
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. Must belong to the app identified by app_id.
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to validate against (if the token is for an OAuth app)
@@ -293,9 +293,6 @@ class AsyncTokensClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
-            project_environment="YOUR_PROJECT_ENVIRONMENT",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -303,6 +300,7 @@ class AsyncTokensClient:
             await client.tokens.validate(
                 ctok="ctok",
                 app_id="app_id",
+                account_id="account_id",
                 oauth_app_id="oauth_app_id",
             )
 
@@ -310,6 +308,6 @@ class AsyncTokensClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.validate(
-            ctok, app_id=app_id, oauth_app_id=oauth_app_id, request_options=request_options
+            ctok, app_id=app_id, account_id=account_id, oauth_app_id=oauth_app_id, request_options=request_options
         )
         return _response.data
