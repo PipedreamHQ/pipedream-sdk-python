@@ -122,6 +122,7 @@ class RawTokensClient:
         ctok: ConnectToken,
         *,
         app_id: str,
+        account_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ValidateTokenResponse]:
@@ -134,6 +135,9 @@ class RawTokensClient:
 
         app_id : str
             The app ID to validate against
+
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. Must belong to the app identified by app_id.
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to validate against (if the token is for an OAuth app)
@@ -151,6 +155,7 @@ class RawTokensClient:
             method="GET",
             params={
                 "app_id": app_id,
+                "account_id": account_id,
                 "oauth_app_id": oauth_app_id,
             },
             request_options=request_options,
@@ -286,6 +291,7 @@ class AsyncRawTokensClient:
         ctok: ConnectToken,
         *,
         app_id: str,
+        account_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ValidateTokenResponse]:
@@ -298,6 +304,9 @@ class AsyncRawTokensClient:
 
         app_id : str
             The app ID to validate against
+
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. Must belong to the app identified by app_id.
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to validate against (if the token is for an OAuth app)
@@ -315,6 +324,7 @@ class AsyncRawTokensClient:
             method="GET",
             params={
                 "app_id": app_id,
+                "account_id": account_id,
                 "oauth_app_id": oauth_app_id,
             },
             request_options=request_options,
