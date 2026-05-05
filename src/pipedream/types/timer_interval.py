@@ -13,10 +13,11 @@ class TimerInterval(UniversalBaseModel):
     Timer configuration using interval in seconds
     """
 
-    interval_seconds: typing_extensions.Annotated[int, FieldMetadata(alias="intervalSeconds")] = pydantic.Field()
-    """
-    Interval in seconds for timer execution
-    """
+    interval_seconds: typing_extensions.Annotated[
+        int,
+        FieldMetadata(alias="intervalSeconds"),
+        pydantic.Field(alias="intervalSeconds", description="Interval in seconds for timer execution"),
+    ]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
