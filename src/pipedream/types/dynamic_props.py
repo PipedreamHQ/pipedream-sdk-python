@@ -20,11 +20,10 @@ class DynamicProps(UniversalBaseModel):
     """
 
     configurable_props: typing_extensions.Annotated[
-        typing.Optional[typing.List[ConfigurableProp]], FieldMetadata(alias="configurableProps")
-    ] = pydantic.Field(default=None)
-    """
-    The updated configurable properties
-    """
+        typing.Optional[typing.List[ConfigurableProp]],
+        FieldMetadata(alias="configurableProps"),
+        pydantic.Field(alias="configurableProps", description="The updated configurable properties"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
