@@ -10,10 +10,11 @@ from .configurable_prop_base import ConfigurablePropBase
 
 
 class ConfigurablePropDiscordChannel(ConfigurablePropBase):
-    app_prop: typing_extensions.Annotated[str, FieldMetadata(alias="appProp")] = pydantic.Field()
-    """
-    The name of the app prop that provides Discord authentication
-    """
+    app_prop: typing_extensions.Annotated[
+        str,
+        FieldMetadata(alias="appProp"),
+        pydantic.Field(alias="appProp", description="The name of the app prop that provides Discord authentication"),
+    ]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -14,7 +14,7 @@ class PropOptionNested(UniversalBaseModel):
     A configuration option for a component's prop (nested under `__lv`)
     """
 
-    lv: typing_extensions.Annotated[PropOption, FieldMetadata(alias="__lv")]
+    lv: typing_extensions.Annotated[PropOption, FieldMetadata(alias="__lv"), pydantic.Field(alias="__lv")]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

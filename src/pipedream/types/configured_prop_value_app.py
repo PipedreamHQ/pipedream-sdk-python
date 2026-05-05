@@ -10,7 +10,9 @@ from .account_id import AccountId
 
 
 class ConfiguredPropValueApp(UniversalBaseModel):
-    auth_provision_id: typing_extensions.Annotated[AccountId, FieldMetadata(alias="authProvisionId")]
+    auth_provision_id: typing_extensions.Annotated[
+        AccountId, FieldMetadata(alias="authProvisionId"), pydantic.Field(alias="authProvisionId")
+    ]
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -13,34 +13,35 @@ class ToolAnnotations(UniversalBaseModel):
     Optional properties describing component behavior
     """
 
-    destructive_hint: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="destructiveHint")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    If true, the component may perform destructive updates to its environment. If false, the component performs only additive updates.
-    """
-
-    idempotent_hint: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="idempotentHint")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    If true, calling the component repeatedly with the same arguments will have no additional effect on the its environment.
-    """
-
-    open_world_hint: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="openWorldHint")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    If true, this component may interact with an “open world” of external entities. If false, the component's domain of interaction is closed. For example, the world of a web search component is open, whereas that of a memory component is not.
-    """
-
-    read_only_hint: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="readOnlyHint")] = (
-        pydantic.Field(default=None)
-    )
-    """
-    If true, the component does not modify its environment.
-    """
-
+    destructive_hint: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="destructiveHint"),
+        pydantic.Field(
+            alias="destructiveHint",
+            description="If true, the component may perform destructive updates to its environment. If false, the component performs only additive updates.",
+        ),
+    ] = None
+    idempotent_hint: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="idempotentHint"),
+        pydantic.Field(
+            alias="idempotentHint",
+            description="If true, calling the component repeatedly with the same arguments will have no additional effect on the its environment.",
+        ),
+    ] = None
+    open_world_hint: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="openWorldHint"),
+        pydantic.Field(
+            alias="openWorldHint",
+            description="If true, this component may interact with an “open world” of external entities. If false, the component's domain of interaction is closed. For example, the world of a web search component is open, whereas that of a memory component is not.",
+        ),
+    ] = None
+    read_only_hint: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="readOnlyHint"),
+        pydantic.Field(alias="readOnlyHint", description="If true, the component does not modify its environment."),
+    ] = None
     title: typing.Optional[str] = pydantic.Field(default=None)
     """
     A human-readable title for the component.
