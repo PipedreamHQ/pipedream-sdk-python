@@ -23,3 +23,6 @@ src/pipedream/proxy/raw_client.py
 # Custom Workflow files
 src/pipedream/workflows/__init__.py
 src/pipedream/workflows/client.py
+
+# Project-level documentation for AI assistants
+CLAUDE.md

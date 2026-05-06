@@ -53,7 +53,7 @@ client.app_categories.list()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -119,7 +119,7 @@ client.app_categories.retrieve(
 <dd>
 
 **id:** `str` — The ID of the app category to retrieve
-    
+
 </dd>
 </dl>
 
@@ -127,7 +127,7 @@ client.app_categories.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -205,7 +205,7 @@ client.apps.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -213,7 +213,7 @@ client.apps.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -221,7 +221,7 @@ client.apps.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -229,7 +229,7 @@ client.apps.list(
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the apps
-    
+
 </dd>
 </dl>
 
@@ -237,7 +237,7 @@ client.apps.list(
 <dd>
 
 **sort_key:** `typing.Optional[AppsListRequestSortKey]` — The key to sort the apps by
-    
+
 </dd>
 </dl>
 
@@ -245,7 +245,7 @@ client.apps.list(
 <dd>
 
 **sort_direction:** `typing.Optional[AppsListRequestSortDirection]` — The direction to sort the apps
-    
+
 </dd>
 </dl>
 
@@ -253,7 +253,7 @@ client.apps.list(
 <dd>
 
 **category_ids:** `typing.Optional[typing.Union[str, typing.Sequence[str]]]` — Only return apps in these categories
-    
+
 </dd>
 </dl>
 
@@ -261,7 +261,7 @@ client.apps.list(
 <dd>
 
 **has_components:** `typing.Optional[bool]` — Only return apps that have components (actions or triggers)
-    
+
 </dd>
 </dl>
 
@@ -269,7 +269,7 @@ client.apps.list(
 <dd>
 
 **has_actions:** `typing.Optional[bool]` — Only return apps that have actions
-    
+
 </dd>
 </dl>
 
@@ -277,7 +277,7 @@ client.apps.list(
 <dd>
 
 **has_triggers:** `typing.Optional[bool]` — Only return apps that have triggers
-    
+
 </dd>
 </dl>
 
@@ -285,7 +285,7 @@ client.apps.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -351,7 +351,7 @@ client.apps.retrieve(
 <dd>
 
 **app_id:** `str` — The name slug or ID of the app (e.g., 'slack', 'github')
-    
+
 </dd>
 </dl>
 
@@ -359,7 +359,7 @@ client.apps.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -432,15 +432,15 @@ client.accounts.list(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**external_user_id:** `typing.Optional[str]` 
-    
+**external_user_id:** `typing.Optional[str]`
+
 </dd>
 </dl>
 
@@ -448,7 +448,7 @@ client.accounts.list(
 <dd>
 
 **oauth_app_id:** `typing.Optional[str]` — The OAuth app ID to filter by, if applicable
-    
+
 </dd>
 </dl>
 
@@ -456,7 +456,7 @@ client.accounts.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -464,7 +464,7 @@ client.accounts.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -472,7 +472,7 @@ client.accounts.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -480,7 +480,7 @@ client.accounts.list(
 <dd>
 
 **app:** `typing.Optional[str]` — The app slug or ID to filter accounts by.
-    
+
 </dd>
 </dl>
 
@@ -488,7 +488,7 @@ client.accounts.list(
 <dd>
 
 **include_credentials:** `typing.Optional[bool]` — Whether to retrieve the account's credentials or not
-    
+
 </dd>
 </dl>
 
@@ -496,7 +496,7 @@ client.accounts.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -566,7 +566,7 @@ client.accounts.create(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -574,7 +574,7 @@ client.accounts.create(
 <dd>
 
 **app_slug:** `str` — The app slug for the account
-    
+
 </dd>
 </dl>
 
@@ -582,7 +582,7 @@ client.accounts.create(
 <dd>
 
 **cfmap_json:** `str` — JSON string containing the custom fields mapping
-    
+
 </dd>
 </dl>
 
@@ -590,15 +590,15 @@ client.accounts.create(
 <dd>
 
 **connect_token:** `str` — The connect token for authentication
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**external_user_id:** `typing.Optional[str]` 
-    
+**external_user_id:** `typing.Optional[str]`
+
 </dd>
 </dl>
 
@@ -606,7 +606,7 @@ client.accounts.create(
 <dd>
 
 **oauth_app_id:** `typing.Optional[str]` — The OAuth app ID to filter by, if applicable
-    
+
 </dd>
 </dl>
 
@@ -614,7 +614,7 @@ client.accounts.create(
 <dd>
 
 **name:** `typing.Optional[str]` — Optional name for the account
-    
+
 </dd>
 </dl>
 
@@ -622,7 +622,7 @@ client.accounts.create(
 <dd>
 
 **account_id:** `typing.Optional[str]` — An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
-    
+
 </dd>
 </dl>
 
@@ -630,7 +630,7 @@ client.accounts.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -697,15 +697,15 @@ client.accounts.retrieve(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**account_id:** `str` 
-    
+**account_id:** `str`
+
 </dd>
 </dl>
 
@@ -713,7 +713,7 @@ client.accounts.retrieve(
 <dd>
 
 **include_credentials:** `typing.Optional[bool]` — Whether to retrieve the account's credentials or not
-    
+
 </dd>
 </dl>
 
@@ -721,7 +721,7 @@ client.accounts.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -787,15 +787,15 @@ client.accounts.delete(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**account_id:** `str` 
-    
+**account_id:** `str`
+
 </dd>
 </dl>
 
@@ -803,7 +803,7 @@ client.accounts.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -869,15 +869,15 @@ client.accounts.delete_by_app(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**app_id:** `str` 
-    
+**app_id:** `str`
+
 </dd>
 </dl>
 
@@ -885,7 +885,7 @@ client.accounts.delete_by_app(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -952,15 +952,15 @@ client.users.delete_external_user(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**external_user_id:** `str` 
-    
+**external_user_id:** `str`
+
 </dd>
 </dl>
 
@@ -968,7 +968,7 @@ client.users.delete_external_user(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1037,7 +1037,7 @@ client.users.list(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -1045,7 +1045,7 @@ client.users.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -1053,7 +1053,7 @@ client.users.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -1061,7 +1061,7 @@ client.users.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -1069,7 +1069,7 @@ client.users.list(
 <dd>
 
 **q:** `typing.Optional[str]` — Filter users by external_id (partial match)
-    
+
 </dd>
 </dl>
 
@@ -1077,7 +1077,7 @@ client.users.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1150,7 +1150,7 @@ client.components.list(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -1158,7 +1158,7 @@ client.components.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -1166,7 +1166,7 @@ client.components.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -1174,7 +1174,7 @@ client.components.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -1182,7 +1182,7 @@ client.components.list(
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the components
-    
+
 </dd>
 </dl>
 
@@ -1190,7 +1190,7 @@ client.components.list(
 <dd>
 
 **app:** `typing.Optional[str]` — The ID or name slug of the app to filter the components
-    
+
 </dd>
 </dl>
 
@@ -1198,7 +1198,7 @@ client.components.list(
 <dd>
 
 **registry:** `typing.Optional[ComponentsListRequestRegistry]` — The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
-    
+
 </dd>
 </dl>
 
@@ -1206,7 +1206,7 @@ client.components.list(
 <dd>
 
 **component_type:** `typing.Optional[ComponentType]` — The type of the component to filter the components
-    
+
 </dd>
 </dl>
 
@@ -1214,7 +1214,7 @@ client.components.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1281,7 +1281,7 @@ client.components.retrieve(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -1289,7 +1289,7 @@ client.components.retrieve(
 <dd>
 
 **component_id:** `str` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-    
+
 </dd>
 </dl>
 
@@ -1297,7 +1297,7 @@ client.components.retrieve(
 <dd>
 
 **version:** `typing.Optional[str]` — Optional semantic version of the component to retrieve (for example '1.0.0')
-    
+
 </dd>
 </dl>
 
@@ -1305,7 +1305,7 @@ client.components.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1373,15 +1373,15 @@ client.components.configure_prop(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ConfigurePropOpts` 
-    
+**request:** `ConfigurePropOpts`
+
 </dd>
 </dl>
 
@@ -1389,7 +1389,7 @@ client.components.configure_prop(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1456,15 +1456,15 @@ client.components.reload_props(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ReloadPropsOpts` 
-    
+**request:** `ReloadPropsOpts`
+
 </dd>
 </dl>
 
@@ -1472,7 +1472,7 @@ client.components.reload_props(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1544,7 +1544,7 @@ client.actions.list(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -1552,7 +1552,7 @@ client.actions.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -1560,7 +1560,7 @@ client.actions.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -1568,7 +1568,7 @@ client.actions.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -1576,7 +1576,7 @@ client.actions.list(
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the actions
-    
+
 </dd>
 </dl>
 
@@ -1584,7 +1584,7 @@ client.actions.list(
 <dd>
 
 **app:** `typing.Optional[str]` — The ID or name slug of the app to filter the actions
-    
+
 </dd>
 </dl>
 
@@ -1592,7 +1592,7 @@ client.actions.list(
 <dd>
 
 **registry:** `typing.Optional[ActionsListRequestRegistry]` — The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
-    
+
 </dd>
 </dl>
 
@@ -1600,7 +1600,7 @@ client.actions.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1667,7 +1667,7 @@ client.actions.retrieve(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -1675,7 +1675,7 @@ client.actions.retrieve(
 <dd>
 
 **component_id:** `str` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-    
+
 </dd>
 </dl>
 
@@ -1683,7 +1683,7 @@ client.actions.retrieve(
 <dd>
 
 **version:** `typing.Optional[str]` — Optional semantic version of the component to retrieve (for example '1.0.0')
-    
+
 </dd>
 </dl>
 
@@ -1691,7 +1691,7 @@ client.actions.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1759,15 +1759,15 @@ client.actions.configure_prop(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ConfigurePropOpts` 
-    
+**request:** `ConfigurePropOpts`
+
 </dd>
 </dl>
 
@@ -1775,7 +1775,7 @@ client.actions.configure_prop(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1842,15 +1842,15 @@ client.actions.reload_props(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ReloadPropsOpts` 
-    
+**request:** `ReloadPropsOpts`
+
 </dd>
 </dl>
 
@@ -1858,7 +1858,7 @@ client.actions.reload_props(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -1925,7 +1925,7 @@ client.actions.run(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -1933,7 +1933,7 @@ client.actions.run(
 <dd>
 
 **id:** `str` — The action component ID
-    
+
 </dd>
 </dl>
 
@@ -1941,7 +1941,7 @@ client.actions.run(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-    
+
 </dd>
 </dl>
 
@@ -1949,15 +1949,15 @@ client.actions.run(
 <dd>
 
 **version:** `typing.Optional[str]` — Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
+**configured_props:** `typing.Optional[ConfiguredProps]`
+
 </dd>
 </dl>
 
@@ -1965,15 +1965,15 @@ client.actions.run(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**stash_id:** `typing.Optional[RunActionOptsStashId]` 
-    
+**stash_id:** `typing.Optional[RunActionOptsStashId]`
+
 </dd>
 </dl>
 
@@ -1981,7 +1981,7 @@ client.actions.run(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2053,7 +2053,7 @@ client.triggers.list(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -2061,7 +2061,7 @@ client.triggers.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -2069,7 +2069,7 @@ client.triggers.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -2077,7 +2077,7 @@ client.triggers.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -2085,7 +2085,7 @@ client.triggers.list(
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the triggers
-    
+
 </dd>
 </dl>
 
@@ -2093,7 +2093,7 @@ client.triggers.list(
 <dd>
 
 **app:** `typing.Optional[str]` — The ID or name slug of the app to filter the triggers
-    
+
 </dd>
 </dl>
 
@@ -2101,7 +2101,7 @@ client.triggers.list(
 <dd>
 
 **registry:** `typing.Optional[TriggersListRequestRegistry]` — The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all')
-    
+
 </dd>
 </dl>
 
@@ -2109,7 +2109,7 @@ client.triggers.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2176,7 +2176,7 @@ client.triggers.retrieve(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -2184,7 +2184,7 @@ client.triggers.retrieve(
 <dd>
 
 **component_id:** `str` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-    
+
 </dd>
 </dl>
 
@@ -2192,7 +2192,7 @@ client.triggers.retrieve(
 <dd>
 
 **version:** `typing.Optional[str]` — Optional semantic version of the component to retrieve (for example '1.0.0')
-    
+
 </dd>
 </dl>
 
@@ -2200,7 +2200,7 @@ client.triggers.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2268,15 +2268,15 @@ client.triggers.configure_prop(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ConfigurePropOpts` 
-    
+**request:** `ConfigurePropOpts`
+
 </dd>
 </dl>
 
@@ -2284,7 +2284,7 @@ client.triggers.configure_prop(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2351,15 +2351,15 @@ client.triggers.reload_props(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `ReloadPropsOpts` 
-    
+**request:** `ReloadPropsOpts`
+
 </dd>
 </dl>
 
@@ -2367,7 +2367,7 @@ client.triggers.reload_props(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2434,7 +2434,7 @@ client.triggers.deploy(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -2442,7 +2442,7 @@ client.triggers.deploy(
 <dd>
 
 **id:** `str` — The trigger component ID
-    
+
 </dd>
 </dl>
 
@@ -2450,7 +2450,7 @@ client.triggers.deploy(
 <dd>
 
 **external_user_id:** `str` — The external user ID
-    
+
 </dd>
 </dl>
 
@@ -2458,15 +2458,15 @@ client.triggers.deploy(
 <dd>
 
 **version:** `typing.Optional[str]` — Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
+**configured_props:** `typing.Optional[ConfiguredProps]`
+
 </dd>
 </dl>
 
@@ -2474,7 +2474,7 @@ client.triggers.deploy(
 <dd>
 
 **dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-    
+
 </dd>
 </dl>
 
@@ -2482,7 +2482,7 @@ client.triggers.deploy(
 <dd>
 
 **workflow_id:** `typing.Optional[str]` — Optional ID of a workflow to receive trigger events
-    
+
 </dd>
 </dl>
 
@@ -2490,7 +2490,7 @@ client.triggers.deploy(
 <dd>
 
 **webhook_url:** `typing.Optional[str]` — Optional webhook URL to receive trigger events
-    
+
 </dd>
 </dl>
 
@@ -2498,7 +2498,7 @@ client.triggers.deploy(
 <dd>
 
 **emit_on_deploy:** `typing.Optional[bool]` — Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified.
-    
+
 </dd>
 </dl>
 
@@ -2506,7 +2506,7 @@ client.triggers.deploy(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2577,7 +2577,7 @@ client.deployed_triggers.list(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -2585,7 +2585,7 @@ client.deployed_triggers.list(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you deployed the trigger
-    
+
 </dd>
 </dl>
 
@@ -2593,7 +2593,7 @@ client.deployed_triggers.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -2601,7 +2601,7 @@ client.deployed_triggers.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -2609,7 +2609,7 @@ client.deployed_triggers.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -2617,7 +2617,7 @@ client.deployed_triggers.list(
 <dd>
 
 **emitter_type:** `typing.Optional[EmitterType]` — Filter deployed triggers by emitter type (defaults to 'source' if not provided)
-    
+
 </dd>
 </dl>
 
@@ -2625,7 +2625,7 @@ client.deployed_triggers.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2692,15 +2692,15 @@ client.deployed_triggers.retrieve(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -2708,7 +2708,7 @@ client.deployed_triggers.retrieve(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you deployed the trigger
-    
+
 </dd>
 </dl>
 
@@ -2716,7 +2716,7 @@ client.deployed_triggers.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2783,15 +2783,15 @@ client.deployed_triggers.update(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -2799,7 +2799,7 @@ client.deployed_triggers.update(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -2807,15 +2807,15 @@ client.deployed_triggers.update(
 <dd>
 
 **active:** `typing.Optional[bool]` — Whether the trigger should be active
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
+**configured_props:** `typing.Optional[ConfiguredProps]`
+
 </dd>
 </dl>
 
@@ -2823,7 +2823,7 @@ client.deployed_triggers.update(
 <dd>
 
 **name:** `typing.Optional[str]` — The name of the trigger
-    
+
 </dd>
 </dl>
 
@@ -2831,7 +2831,7 @@ client.deployed_triggers.update(
 <dd>
 
 **emit_on_deploy:** `typing.Optional[bool]` — Whether the trigger should emit events during deployment
-    
+
 </dd>
 </dl>
 
@@ -2839,7 +2839,7 @@ client.deployed_triggers.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -2907,15 +2907,15 @@ client.deployed_triggers.delete(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -2923,7 +2923,7 @@ client.deployed_triggers.delete(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -2931,7 +2931,7 @@ client.deployed_triggers.delete(
 <dd>
 
 **ignore_hook_errors:** `typing.Optional[bool]` — Whether to ignore errors during deactivation hook
-    
+
 </dd>
 </dl>
 
@@ -2939,7 +2939,7 @@ client.deployed_triggers.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3007,15 +3007,15 @@ client.deployed_triggers.list_events(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -3023,7 +3023,7 @@ client.deployed_triggers.list_events(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you deployed the trigger
-    
+
 </dd>
 </dl>
 
@@ -3031,7 +3031,7 @@ client.deployed_triggers.list_events(
 <dd>
 
 **n:** `typing.Optional[int]` — The number of events to retrieve (defaults to 20 if not provided)
-    
+
 </dd>
 </dl>
 
@@ -3039,7 +3039,7 @@ client.deployed_triggers.list_events(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3106,15 +3106,15 @@ client.deployed_triggers.list_workflows(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -3122,7 +3122,7 @@ client.deployed_triggers.list_workflows(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -3130,7 +3130,7 @@ client.deployed_triggers.list_workflows(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3200,15 +3200,15 @@ client.deployed_triggers.update_workflows(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -3216,7 +3216,7 @@ client.deployed_triggers.update_workflows(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -3224,7 +3224,7 @@ client.deployed_triggers.update_workflows(
 <dd>
 
 **workflow_ids:** `typing.List[str]` — Array of workflow IDs to set
-    
+
 </dd>
 </dl>
 
@@ -3232,7 +3232,7 @@ client.deployed_triggers.update_workflows(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3299,15 +3299,15 @@ client.deployed_triggers.list_webhooks(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -3315,7 +3315,7 @@ client.deployed_triggers.list_webhooks(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -3323,7 +3323,7 @@ client.deployed_triggers.list_webhooks(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3393,15 +3393,15 @@ client.deployed_triggers.update_webhooks(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
@@ -3409,7 +3409,7 @@ client.deployed_triggers.update_webhooks(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -3417,7 +3417,7 @@ client.deployed_triggers.update_webhooks(
 <dd>
 
 **webhook_urls:** `typing.List[str]` — Array of webhook URLs to set
-    
+
 </dd>
 </dl>
 
@@ -3425,7 +3425,7 @@ client.deployed_triggers.update_webhooks(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3493,23 +3493,23 @@ client.deployed_triggers.retrieve_webhook(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**webhook_id:** `str` 
-    
+**webhook_id:** `str`
+
 </dd>
 </dl>
 
@@ -3517,7 +3517,7 @@ client.deployed_triggers.retrieve_webhook(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -3525,7 +3525,7 @@ client.deployed_triggers.retrieve_webhook(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3593,23 +3593,23 @@ client.deployed_triggers.regenerate_webhook_signing_key(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**trigger_id:** `str` 
-    
+**trigger_id:** `str`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**webhook_id:** `str` 
-    
+**webhook_id:** `str`
+
 </dd>
 </dl>
 
@@ -3617,7 +3617,7 @@ client.deployed_triggers.regenerate_webhook_signing_key(
 <dd>
 
 **external_user_id:** `str` — The external user ID who owns the trigger
-    
+
 </dd>
 </dl>
 
@@ -3625,7 +3625,7 @@ client.deployed_triggers.regenerate_webhook_signing_key(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3690,7 +3690,7 @@ client.project_environment.retrieve_webhook()
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -3698,7 +3698,7 @@ client.project_environment.retrieve_webhook()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3764,7 +3764,7 @@ client.project_environment.update_webhook(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -3772,7 +3772,7 @@ client.project_environment.update_webhook(
 <dd>
 
 **url:** `str` — The webhook URL to set
-    
+
 </dd>
 </dl>
 
@@ -3780,7 +3780,7 @@ client.project_environment.update_webhook(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3844,7 +3844,7 @@ client.project_environment.delete_webhook()
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -3852,7 +3852,7 @@ client.project_environment.delete_webhook()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3916,7 +3916,7 @@ client.project_environment.regenerate_webhook_signing_key()
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -3924,7 +3924,7 @@ client.project_environment.regenerate_webhook_signing_key()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -3994,7 +3994,7 @@ client.projects.list(
 <dd>
 
 **after:** `typing.Optional[str]` — The cursor to start from for pagination
-    
+
 </dd>
 </dl>
 
@@ -4002,7 +4002,7 @@ client.projects.list(
 <dd>
 
 **before:** `typing.Optional[str]` — The cursor to end before for pagination
-    
+
 </dd>
 </dl>
 
@@ -4010,7 +4010,7 @@ client.projects.list(
 <dd>
 
 **limit:** `typing.Optional[int]` — The maximum number of results to return
-    
+
 </dd>
 </dl>
 
@@ -4018,7 +4018,7 @@ client.projects.list(
 <dd>
 
 **q:** `typing.Optional[str]` — A search query to filter the projects
-    
+
 </dd>
 </dl>
 
@@ -4026,7 +4026,7 @@ client.projects.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4092,7 +4092,7 @@ client.projects.create(
 <dd>
 
 **name:** `str` — Name of the project
-    
+
 </dd>
 </dl>
 
@@ -4100,7 +4100,7 @@ client.projects.create(
 <dd>
 
 **app_name:** `typing.Optional[str]` — Display name for the Connect application
-    
+
 </dd>
 </dl>
 
@@ -4108,7 +4108,7 @@ client.projects.create(
 <dd>
 
 **support_email:** `typing.Optional[str]` — Support email displayed to end users
-    
+
 </dd>
 </dl>
 
@@ -4116,7 +4116,7 @@ client.projects.create(
 <dd>
 
 **connect_require_key_auth_test:** `typing.Optional[bool]` — Send a test request to the upstream API when adding Connect accounts for key-based apps
-    
+
 </dd>
 </dl>
 
@@ -4124,7 +4124,7 @@ client.projects.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4190,7 +4190,7 @@ client.projects.retrieve(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4198,7 +4198,7 @@ client.projects.retrieve(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4264,7 +4264,7 @@ client.projects.delete(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4272,7 +4272,7 @@ client.projects.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4338,7 +4338,7 @@ client.projects.update(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4346,7 +4346,7 @@ client.projects.update(
 <dd>
 
 **name:** `typing.Optional[str]` — Name of the project
-    
+
 </dd>
 </dl>
 
@@ -4354,7 +4354,7 @@ client.projects.update(
 <dd>
 
 **app_name:** `typing.Optional[str]` — Display name for the Connect application
-    
+
 </dd>
 </dl>
 
@@ -4362,7 +4362,7 @@ client.projects.update(
 <dd>
 
 **support_email:** `typing.Optional[str]` — Support email displayed to end users
-    
+
 </dd>
 </dl>
 
@@ -4370,7 +4370,7 @@ client.projects.update(
 <dd>
 
 **connect_require_key_auth_test:** `typing.Optional[bool]` — Send a test request to the upstream API when adding Connect accounts for key-based apps
-    
+
 </dd>
 </dl>
 
@@ -4378,7 +4378,7 @@ client.projects.update(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4445,7 +4445,7 @@ client.projects.update_logo(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4453,7 +4453,7 @@ client.projects.update_logo(
 <dd>
 
 **logo:** `str` — Data URI containing the new Base64 encoded image
-    
+
 </dd>
 </dl>
 
@@ -4461,7 +4461,7 @@ client.projects.update_logo(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4525,7 +4525,7 @@ client.projects.retrieve_info()
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4533,7 +4533,7 @@ client.projects.retrieve_info()
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4600,15 +4600,15 @@ client.file_stash.download_file(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**s_3_key:** `str` 
-    
+**s_3_key:** `str`
+
 </dd>
 </dl>
 
@@ -4616,7 +4616,7 @@ client.file_stash.download_file(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4685,7 +4685,7 @@ client.proxy.get(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4693,7 +4693,7 @@ client.proxy.get(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-    
+
 </dd>
 </dl>
 
@@ -4701,7 +4701,7 @@ client.proxy.get(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-    
+
 </dd>
 </dl>
 
@@ -4709,7 +4709,7 @@ client.proxy.get(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-    
+
 </dd>
 </dl>
 
@@ -4717,7 +4717,7 @@ client.proxy.get(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4788,7 +4788,7 @@ client.proxy.post(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4796,7 +4796,7 @@ client.proxy.post(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-    
+
 </dd>
 </dl>
 
@@ -4804,7 +4804,7 @@ client.proxy.post(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-    
+
 </dd>
 </dl>
 
@@ -4812,7 +4812,7 @@ client.proxy.post(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-    
+
 </dd>
 </dl>
 
@@ -4820,7 +4820,7 @@ client.proxy.post(
 <dd>
 
 **request:** `typing.Dict[str, typing.Any]` — Request body to forward to the target API
-    
+
 </dd>
 </dl>
 
@@ -4828,7 +4828,7 @@ client.proxy.post(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -4899,7 +4899,7 @@ client.proxy.put(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -4907,7 +4907,7 @@ client.proxy.put(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-    
+
 </dd>
 </dl>
 
@@ -4915,7 +4915,7 @@ client.proxy.put(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-    
+
 </dd>
 </dl>
 
@@ -4923,7 +4923,7 @@ client.proxy.put(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-    
+
 </dd>
 </dl>
 
@@ -4931,7 +4931,7 @@ client.proxy.put(
 <dd>
 
 **request:** `typing.Dict[str, typing.Any]` — Request body to forward to the target API
-    
+
 </dd>
 </dl>
 
@@ -4939,7 +4939,7 @@ client.proxy.put(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -5007,7 +5007,7 @@ client.proxy.delete(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -5015,7 +5015,7 @@ client.proxy.delete(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-    
+
 </dd>
 </dl>
 
@@ -5023,7 +5023,7 @@ client.proxy.delete(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-    
+
 </dd>
 </dl>
 
@@ -5031,7 +5031,7 @@ client.proxy.delete(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-    
+
 </dd>
 </dl>
 
@@ -5039,7 +5039,7 @@ client.proxy.delete(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -5110,7 +5110,7 @@ client.proxy.patch(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -5118,7 +5118,7 @@ client.proxy.patch(
 <dd>
 
 **url_64:** `str` — Base64-encoded target URL
-    
+
 </dd>
 </dl>
 
@@ -5126,7 +5126,7 @@ client.proxy.patch(
 <dd>
 
 **external_user_id:** `str` — The external user ID for the proxy request
-    
+
 </dd>
 </dl>
 
@@ -5134,7 +5134,7 @@ client.proxy.patch(
 <dd>
 
 **account_id:** `str` — The account ID to use for authentication
-    
+
 </dd>
 </dl>
 
@@ -5142,7 +5142,7 @@ client.proxy.patch(
 <dd>
 
 **request:** `typing.Dict[str, typing.Any]` — Request body to forward to the target API
-    
+
 </dd>
 </dl>
 
@@ -5150,7 +5150,7 @@ client.proxy.patch(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -5217,7 +5217,7 @@ client.tokens.create(
 <dd>
 
 **project_id:** `str` — The project ID, which starts with `proj_`.
-    
+
 </dd>
 </dl>
 
@@ -5225,7 +5225,7 @@ client.tokens.create(
 <dd>
 
 **external_user_id:** `str` — Your end user ID, for whom you're creating the token
-    
+
 </dd>
 </dl>
 
@@ -5233,7 +5233,7 @@ client.tokens.create(
 <dd>
 
 **allowed_origins:** `typing.Optional[typing.List[str]]` — List of allowed origins for CORS
-    
+
 </dd>
 </dl>
 
@@ -5241,7 +5241,7 @@ client.tokens.create(
 <dd>
 
 **error_redirect_uri:** `typing.Optional[str]` — URI to redirect to on error
-    
+
 </dd>
 </dl>
 
@@ -5249,7 +5249,7 @@ client.tokens.create(
 <dd>
 
 **expires_in:** `typing.Optional[int]` — Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
-    
+
 </dd>
 </dl>
 
@@ -5257,7 +5257,7 @@ client.tokens.create(
 <dd>
 
 **scope:** `typing.Optional[str]` — Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
-    
+
 </dd>
 </dl>
 
@@ -5265,7 +5265,7 @@ client.tokens.create(
 <dd>
 
 **success_redirect_uri:** `typing.Optional[str]` — URI to redirect to on success
-    
+
 </dd>
 </dl>
 
@@ -5273,7 +5273,7 @@ client.tokens.create(
 <dd>
 
 **webhook_uri:** `typing.Optional[str]` — Webhook URI for notifications
-    
+
 </dd>
 </dl>
 
@@ -5281,7 +5281,7 @@ client.tokens.create(
 <dd>
 
 **allow_progressive_scopes:** `typing.Optional[bool]` — When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
-    
+
 </dd>
 </dl>
 
@@ -5289,7 +5289,7 @@ client.tokens.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -5357,8 +5357,8 @@ client.tokens.validate(
 <dl>
 <dd>
 
-**ctok:** `ConnectToken` 
-    
+**ctok:** `ConnectToken`
+
 </dd>
 </dl>
 
@@ -5366,7 +5366,7 @@ client.tokens.validate(
 <dd>
 
 **app_id:** `str` — The app ID to validate against
-    
+
 </dd>
 </dl>
 
@@ -5374,7 +5374,7 @@ client.tokens.validate(
 <dd>
 
 **account_id:** `typing.Optional[str]` — An existing account ID to reconnect. Must belong to the app identified by app_id.
-    
+
 </dd>
 </dl>
 
@@ -5382,7 +5382,7 @@ client.tokens.validate(
 <dd>
 
 **oauth_app_id:** `typing.Optional[str]` — The OAuth app ID to validate against (if the token is for an OAuth app)
-    
+
 </dd>
 </dl>
 
@@ -5390,7 +5390,7 @@ client.tokens.validate(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -5458,7 +5458,7 @@ client.usage.list(
 <dd>
 
 **start_ts:** `int` — Usage window start timestamp (seconds)
-    
+
 </dd>
 </dl>
 
@@ -5466,7 +5466,7 @@ client.usage.list(
 <dd>
 
 **end_ts:** `int` — Usage window end timestamp (seconds)
-    
+
 </dd>
 </dl>
 
@@ -5474,7 +5474,7 @@ client.usage.list(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
@@ -5541,24 +5541,24 @@ client.oauth_tokens.create(
 <dl>
 <dd>
 
-**grant_type:** `typing.Literal` 
-    
+**grant_type:** `typing.Literal`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**client_id:** `str` 
-    
+**client_id:** `str`
+
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**client_secret:** `str` 
-    
+**client_secret:** `str`
+
 </dd>
 </dl>
 
@@ -5566,7 +5566,7 @@ client.oauth_tokens.create(
 <dd>
 
 **scope:** `typing.Optional[str]` — Optional space-separated scopes for the access token. Defaults to `*`.
-    
+
 </dd>
 </dl>
 
@@ -5574,7 +5574,7 @@ client.oauth_tokens.create(
 <dd>
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
+
 </dd>
 </dl>
 </dd>
