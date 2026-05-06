@@ -7,18 +7,18 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.too_many_requests_error import TooManyRequestsError
-from ..types.proxy_response import ProxyResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
 class RawProxyClient:
-
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -30,8 +30,7 @@ class RawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
-                                                   typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[bytes]]]:
         """
         Forward an authenticated GET request to an external API using an external user's account credentials
 
@@ -51,77 +50,53 @@ class RawProxyClient:
 
         Returns
         -------
-        typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]
+        typing.Iterator[HttpResponse[typing.Iterator[bytes]]]
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="GET",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                request_options=request_options,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="GET",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            request_options=request_options,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[
-                ProxyResponse, typing.Iterator[bytes]]]:
+            def _stream() -> HttpResponse[typing.Iterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            _response.read()
-                            if not _response.text.strip():
-                                return HttpResponse(response=_response,
-                                                    data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return HttpResponse(response=_response, data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return HttpResponse(response=_response,
-                                                data=_response.iter_bytes(
-                                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return HttpResponse(
+                            response=_response, data=(_chunk for _chunk in _response.iter_bytes(chunk_size=_chunk_size))
+                        )
                     _response.read()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield _handle_response()
+            yield _stream()
 
     @contextlib.contextmanager
     def post(
@@ -130,10 +105,9 @@ class RawProxyClient:
         *,
         external_user_id: str,
         account_id: str,
-        request: typing.Dict[str, typing.Optional[typing.Any]],
+        request: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
-                                                   typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[bytes]]]:
         """
         Forward an authenticated POST request to an external API using an external user's account credentials
 
@@ -148,89 +122,65 @@ class RawProxyClient:
         account_id : str
             The account ID to use for authentication
 
-        request : typing.Dict[str, typing.Optional[typing.Any]]
+        request : typing.Dict[str, typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]
+        typing.Iterator[HttpResponse[typing.Iterator[bytes]]]
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="POST",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                json=request,
-                headers={
-                    "content-type": "application/json",
-                },
-                request_options=request_options,
-                omit=OMIT,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="POST",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[
-                ProxyResponse, typing.Iterator[bytes]]]:
+            def _stream() -> HttpResponse[typing.Iterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            _response.read()
-                            if not _response.text.strip():
-                                return HttpResponse(response=_response,
-                                                    data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return HttpResponse(response=_response, data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return HttpResponse(response=_response,
-                                                data=_response.iter_bytes(
-                                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return HttpResponse(
+                            response=_response, data=(_chunk for _chunk in _response.iter_bytes(chunk_size=_chunk_size))
+                        )
                     _response.read()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield _handle_response()
+            yield _stream()
 
     @contextlib.contextmanager
     def put(
@@ -239,10 +189,9 @@ class RawProxyClient:
         *,
         external_user_id: str,
         account_id: str,
-        request: typing.Dict[str, typing.Optional[typing.Any]],
+        request: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
-                                                   typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[bytes]]]:
         """
         Forward an authenticated PUT request to an external API using an external user's account credentials
 
@@ -257,89 +206,65 @@ class RawProxyClient:
         account_id : str
             The account ID to use for authentication
 
-        request : typing.Dict[str, typing.Optional[typing.Any]]
+        request : typing.Dict[str, typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]
+        typing.Iterator[HttpResponse[typing.Iterator[bytes]]]
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="PUT",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                json=request,
-                headers={
-                    "content-type": "application/json",
-                },
-                request_options=request_options,
-                omit=OMIT,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="PUT",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[
-                ProxyResponse, typing.Iterator[bytes]]]:
+            def _stream() -> HttpResponse[typing.Iterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            _response.read()
-                            if not _response.text.strip():
-                                return HttpResponse(response=_response,
-                                                    data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return HttpResponse(response=_response, data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return HttpResponse(response=_response,
-                                                data=_response.iter_bytes(
-                                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return HttpResponse(
+                            response=_response, data=(_chunk for _chunk in _response.iter_bytes(chunk_size=_chunk_size))
+                        )
                     _response.read()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield _handle_response()
+            yield _stream()
 
     @contextlib.contextmanager
     def delete(
@@ -349,8 +274,7 @@ class RawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
-                                                   typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[bytes]]]:
         """
         Forward an authenticated DELETE request to an external API using an external user's account credentials
 
@@ -370,77 +294,53 @@ class RawProxyClient:
 
         Returns
         -------
-        typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]
+        typing.Iterator[HttpResponse[typing.Iterator[bytes]]]
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="DELETE",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                request_options=request_options,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="DELETE",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            request_options=request_options,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[
-                ProxyResponse, typing.Iterator[bytes]]]:
+            def _stream() -> HttpResponse[typing.Iterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            _response.read()
-                            if not _response.text.strip():
-                                return HttpResponse(response=_response,
-                                                    data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return HttpResponse(response=_response, data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return HttpResponse(response=_response,
-                                                data=_response.iter_bytes(
-                                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return HttpResponse(
+                            response=_response, data=(_chunk for _chunk in _response.iter_bytes(chunk_size=_chunk_size))
+                        )
                     _response.read()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield _handle_response()
+            yield _stream()
 
     @contextlib.contextmanager
     def patch(
@@ -449,10 +349,9 @@ class RawProxyClient:
         *,
         external_user_id: str,
         account_id: str,
-        request: typing.Dict[str, typing.Optional[typing.Any]],
+        request: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Iterator[HttpResponse[typing.Union[ProxyResponse,
-                                                   typing.Iterator[bytes]]]]:
+    ) -> typing.Iterator[HttpResponse[typing.Iterator[bytes]]]:
         """
         Forward an authenticated PATCH request to an external API using an external user's account credentials
 
@@ -467,93 +366,68 @@ class RawProxyClient:
         account_id : str
             The account ID to use for authentication
 
-        request : typing.Dict[str, typing.Optional[typing.Any]]
+        request : typing.Dict[str, typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        typing.Iterator[HttpResponse[typing.Union[ProxyResponse, typing.Iterator[bytes]]]]
+        typing.Iterator[HttpResponse[typing.Iterator[bytes]]]
             proxy request successful
         """
         with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="PATCH",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                json=request,
-                headers={
-                    "content-type": "application/json",
-                },
-                request_options=request_options,
-                omit=OMIT,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="PATCH",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
         ) as _response:
 
-            def _handle_response() -> HttpResponse[typing.Union[
-                ProxyResponse, typing.Iterator[bytes]]]:
+            def _stream() -> HttpResponse[typing.Iterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            _response.read()
-                            if not _response.text.strip():
-                                return HttpResponse(response=_response,
-                                                    data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return HttpResponse(response=_response, data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return HttpResponse(response=_response,
-                                                data=_response.iter_bytes(
-                                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return HttpResponse(
+                            response=_response, data=(_chunk for _chunk in _response.iter_bytes(chunk_size=_chunk_size))
+                        )
                     _response.read()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield _handle_response()
+            yield _stream()
 
 
 class AsyncRawProxyClient:
-
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -565,8 +439,7 @@ class AsyncRawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
-            ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]:
         """
         Forward an authenticated GET request to an external API using an external user's account credentials
 
@@ -586,79 +459,54 @@ class AsyncRawProxyClient:
 
         Returns
         -------
-        typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="GET",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                request_options=request_options,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="GET",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            request_options=request_options,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[
-                ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            await _response.aread()
-                            if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response,
-                                                         data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return AsyncHttpResponse(response=_response,
-                                                     data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return AsyncHttpResponse(
-                                response=_response,
-                                data=_response.aiter_bytes(
-                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return AsyncHttpResponse(
+                            response=_response,
+                            data=(_chunk async for _chunk in _response.aiter_bytes(chunk_size=_chunk_size)),
+                        )
                     await _response.aread()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield await _handle_response()
+            yield await _stream()
 
     @contextlib.asynccontextmanager
     async def post(
@@ -667,10 +515,9 @@ class AsyncRawProxyClient:
         *,
         external_user_id: str,
         account_id: str,
-        request: typing.Dict[str, typing.Optional[typing.Any]],
+        request: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
-            ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]:
         """
         Forward an authenticated POST request to an external API using an external user's account credentials
 
@@ -685,91 +532,66 @@ class AsyncRawProxyClient:
         account_id : str
             The account ID to use for authentication
 
-        request : typing.Dict[str, typing.Optional[typing.Any]]
+        request : typing.Dict[str, typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="POST",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                json=request,
-                headers={
-                    "content-type": "application/json",
-                },
-                request_options=request_options,
-                omit=OMIT,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="POST",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[
-                ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            await _response.aread()
-                            if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response,
-                                                         data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return AsyncHttpResponse(response=_response,
-                                                     data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return AsyncHttpResponse(
-                                response=_response,
-                                data=_response.aiter_bytes(
-                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return AsyncHttpResponse(
+                            response=_response,
+                            data=(_chunk async for _chunk in _response.aiter_bytes(chunk_size=_chunk_size)),
+                        )
                     await _response.aread()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield await _handle_response()
+            yield await _stream()
 
     @contextlib.asynccontextmanager
     async def put(
@@ -778,10 +600,9 @@ class AsyncRawProxyClient:
         *,
         external_user_id: str,
         account_id: str,
-        request: typing.Dict[str, typing.Optional[typing.Any]],
+        request: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
-            ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]:
         """
         Forward an authenticated PUT request to an external API using an external user's account credentials
 
@@ -796,91 +617,66 @@ class AsyncRawProxyClient:
         account_id : str
             The account ID to use for authentication
 
-        request : typing.Dict[str, typing.Optional[typing.Any]]
+        request : typing.Dict[str, typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="PUT",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                json=request,
-                headers={
-                    "content-type": "application/json",
-                },
-                request_options=request_options,
-                omit=OMIT,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="PUT",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[
-                ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            await _response.aread()
-                            if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response,
-                                                         data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return AsyncHttpResponse(response=_response,
-                                                     data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return AsyncHttpResponse(
-                                response=_response,
-                                data=_response.aiter_bytes(
-                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return AsyncHttpResponse(
+                            response=_response,
+                            data=(_chunk async for _chunk in _response.aiter_bytes(chunk_size=_chunk_size)),
+                        )
                     await _response.aread()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield await _handle_response()
+            yield await _stream()
 
     @contextlib.asynccontextmanager
     async def delete(
@@ -890,8 +686,7 @@ class AsyncRawProxyClient:
         external_user_id: str,
         account_id: str,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
-            ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]:
         """
         Forward an authenticated DELETE request to an external API using an external user's account credentials
 
@@ -911,79 +706,54 @@ class AsyncRawProxyClient:
 
         Returns
         -------
-        typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="DELETE",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                request_options=request_options,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="DELETE",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            request_options=request_options,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[
-                ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            await _response.aread()
-                            if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response,
-                                                         data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return AsyncHttpResponse(response=_response,
-                                                     data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return AsyncHttpResponse(
-                                response=_response,
-                                data=_response.aiter_bytes(
-                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return AsyncHttpResponse(
+                            response=_response,
+                            data=(_chunk async for _chunk in _response.aiter_bytes(chunk_size=_chunk_size)),
+                        )
                     await _response.aread()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield await _handle_response()
+            yield await _stream()
 
     @contextlib.asynccontextmanager
     async def patch(
@@ -992,10 +762,9 @@ class AsyncRawProxyClient:
         *,
         external_user_id: str,
         account_id: str,
-        request: typing.Dict[str, typing.Optional[typing.Any]],
+        request: typing.Dict[str, typing.Any],
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.Union[
-            ProxyResponse, typing.AsyncIterator[bytes]]]]:
+    ) -> typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]:
         """
         Forward an authenticated PATCH request to an external API using an external user's account credentials
 
@@ -1010,88 +779,63 @@ class AsyncRawProxyClient:
         account_id : str
             The account ID to use for authentication
 
-        request : typing.Dict[str, typing.Optional[typing.Any]]
+        request : typing.Dict[str, typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
 
         Returns
         -------
-        typing.AsyncIterator[AsyncHttpResponse[typing.Union[ProxyResponse, typing.AsyncIterator[bytes]]]]
+        typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]
             proxy request successful
         """
         async with self._client_wrapper.httpx_client.stream(
-                f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/proxy/{jsonable_encoder(url_64)}",
-                method="PATCH",
-                params={
-                    "external_user_id": external_user_id,
-                    "account_id": account_id,
-                },
-                json=request,
-                headers={
-                    "content-type": "application/json",
-                },
-                request_options=request_options,
-                omit=OMIT,
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/proxy/{encode_path_param(url_64)}",
+            method="PATCH",
+            params={
+                "external_user_id": external_user_id,
+                "account_id": account_id,
+            },
+            json=request,
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
         ) as _response:
 
-            async def _handle_response() -> AsyncHttpResponse[typing.Union[
-                ProxyResponse, typing.AsyncIterator[bytes]]]:
+            async def _stream() -> AsyncHttpResponse[typing.AsyncIterator[bytes]]:
                 try:
                     if 200 <= _response.status_code < 300:
-                        content_type = _response.headers.get(
-                            "content-type", "").lower()
-                        is_json = "application/json" in content_type or not content_type
-
-                        if is_json:
-                            await _response.aread()
-                            if not _response.text.strip():
-                                return AsyncHttpResponse(response=_response,
-                                                         data=None)
-                            _data = typing.cast(
-                                ProxyResponse,
-                                parse_obj_as(
-                                    type_=ProxyResponse,  # type: ignore
-                                    object_=_response.json(),
-                                ),
-                            )
-                            return AsyncHttpResponse(response=_response,
-                                                     data=_data)
-                        else:
-                            _chunk_size = request_options.get(
-                                "chunk_size",
-                                None) if request_options is not None else None
-                            return AsyncHttpResponse(
-                                response=_response,
-                                data=_response.aiter_bytes(
-                                    chunk_size=_chunk_size))
+                        _chunk_size = request_options.get("chunk_size", None) if request_options is not None else None
+                        return AsyncHttpResponse(
+                            response=_response,
+                            data=(_chunk async for _chunk in _response.aiter_bytes(chunk_size=_chunk_size)),
+                        )
                     await _response.aread()
-                    _error_content_type = _response.headers.get(
-                        "content-type", "").lower()
                     if _response.status_code == 429:
                         raise TooManyRequestsError(
                             headers=dict(_response.headers),
                             body=typing.cast(
-                                typing.Optional[typing.Any],
+                                typing.Any,
                                 parse_obj_as(
-                                    type_=typing.Optional[
-                                        typing.Any],  # type: ignore
-                                    object_=_response.json()
-                                    if "application/json"
-                                    in _error_content_type else _response.text,
+                                    type_=typing.Any,  # type: ignore
+                                    object_=_response.json(),
                                 ),
                             ),
                         )
-                    if "application/json" in _error_content_type:
-                        _response_body = _response.json()
-                    else:
-                        _response_body = _response.text
+                    _response_json = _response.json()
                 except JSONDecodeError:
-                    raise ApiError(status_code=_response.status_code,
-                                   headers=dict(_response.headers),
-                                   body=_response.text)
-                raise ApiError(status_code=_response.status_code,
-                               headers=dict(_response.headers),
-                               body=_response_body)
+                    raise ApiError(
+                        status_code=_response.status_code, headers=dict(_response.headers), body=_response.text
+                    )
+                except ValidationError as e:
+                    raise ParsingError(
+                        status_code=_response.status_code,
+                        headers=dict(_response.headers),
+                        body=_response.json(),
+                        cause=e,
+                    )
+                raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-            yield await _handle_response()
+            yield await _stream()

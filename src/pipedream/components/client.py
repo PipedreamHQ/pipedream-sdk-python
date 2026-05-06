@@ -85,6 +85,8 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.components.list(
             after="after",
@@ -144,6 +146,8 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.components.retrieve(
             component_id="component_id",
@@ -216,6 +220,8 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.components.configure_prop(
             id="id",
@@ -285,6 +291,8 @@ class ComponentsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.components.reload_props(
             id="id",
@@ -372,6 +380,8 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -440,6 +450,8 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -520,6 +532,8 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -597,6 +611,8 @@ class AsyncComponentsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

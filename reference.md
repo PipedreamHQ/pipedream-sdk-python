@@ -1,6 +1,6 @@
 # Reference
 ## AppCategories
-<details><summary><code>client.app_categories.<a href="src/pipedream/app_categories/client.py">list</a>()</code></summary>
+<details><summary><code>client.app_categories.<a href="src/pipedream/app_categories/client.py">list</a>() -> ListAppCategoriesResponse</code></summary>
 <dl>
 <dd>
 
@@ -28,13 +28,14 @@ Retrieve all available categories for integrated apps
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.app_categories.list()
 
 ```
@@ -63,7 +64,7 @@ client.app_categories.list()
 </dl>
 </details>
 
-<details><summary><code>client.app_categories.<a href="src/pipedream/app_categories/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.app_categories.<a href="src/pipedream/app_categories/client.py">retrieve</a>(...) -> GetAppCategoryResponse</code></summary>
 <dl>
 <dd>
 
@@ -91,13 +92,14 @@ Get details of a specific app category by its ID
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.app_categories.retrieve(
     id="id",
 )
@@ -137,7 +139,7 @@ client.app_categories.retrieve(
 </details>
 
 ## Apps
-<details><summary><code>client.apps.<a href="src/pipedream/apps/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.apps.<a href="src/pipedream/apps/client.py">list</a>(...) -> ListAppsResponse</code></summary>
 <dl>
 <dd>
 
@@ -165,29 +167,28 @@ Retrieve all available apps with optional filtering and sorting
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.apps.list(
+
+client.apps.list(
     after="after",
     before="before",
     limit=1,
     q="q",
     sort_key="name",
     sort_direction="asc",
+    category_ids=[
+        "category_ids"
+    ],
     has_components=True,
     has_actions=True,
     has_triggers=True,
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -295,7 +296,7 @@ for page in response.iter_pages():
 </dl>
 </details>
 
-<details><summary><code>client.apps.<a href="src/pipedream/apps/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.apps.<a href="src/pipedream/apps/client.py">retrieve</a>(...) -> GetAppResponse</code></summary>
 <dl>
 <dd>
 
@@ -323,13 +324,14 @@ Get detailed information about a specific app by ID or name slug
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.apps.retrieve(
     app_id="app_id",
 )
@@ -369,7 +371,7 @@ client.apps.retrieve(
 </details>
 
 ## Accounts
-<details><summary><code>client.accounts.<a href="src/pipedream/accounts/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/pipedream/accounts/client.py">list</a>(...) -> ListAccountsResponse</code></summary>
 <dl>
 <dd>
 
@@ -397,14 +399,15 @@ Retrieve all connected accounts for the project with optional filtering
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.accounts.list(
+
+client.accounts.list(
     external_user_id="external_user_id",
     oauth_app_id="oauth_app_id",
     after="after",
@@ -413,11 +416,6 @@ response = client.accounts.list(
     app="app",
     include_credentials=True,
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -429,6 +427,14 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -501,7 +507,7 @@ for page in response.iter_pages():
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/pipedream/accounts/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/pipedream/accounts/client.py">create</a>(...) -> Account</code></summary>
 <dl>
 <dd>
 
@@ -529,13 +535,14 @@ Connect a new account for an external user in the project
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.accounts.create(
     external_user_id="external_user_id",
     oauth_app_id="oauth_app_id",
@@ -554,6 +561,14 @@ client.accounts.create(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -606,6 +621,14 @@ client.accounts.create(
 <dl>
 <dd>
 
+**account_id:** `typing.Optional[str]` — An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -618,7 +641,7 @@ client.accounts.create(
 </dl>
 </details>
 
-<details><summary><code>client.accounts.<a href="src/pipedream/accounts/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.accounts.<a href="src/pipedream/accounts/client.py">retrieve</a>(...) -> Account</code></summary>
 <dl>
 <dd>
 
@@ -646,13 +669,14 @@ Get the details for a specific connected account
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.accounts.retrieve(
     account_id="account_id",
     include_credentials=True,
@@ -668,6 +692,14 @@ client.accounts.retrieve(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -728,13 +760,14 @@ Remove a connected account and its associated credentials
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.accounts.delete(
     account_id="account_id",
 )
@@ -749,6 +782,14 @@ client.accounts.delete(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -801,13 +842,14 @@ Remove all connected accounts for a specific app
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.accounts.delete_by_app(
     app_id="app_id",
 )
@@ -822,6 +864,14 @@ client.accounts.delete_by_app(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -875,13 +925,14 @@ Remove an external user and all their associated accounts and resources
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.users.delete_external_user(
     external_user_id="external_user_id",
 )
@@ -896,6 +947,14 @@ client.users.delete_external_user(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -920,7 +979,7 @@ client.users.delete_external_user(
 </dl>
 </details>
 
-<details><summary><code>client.users.<a href="src/pipedream/users/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.users.<a href="src/pipedream/users/client.py">list</a>(...) -> GetUsersResponse</code></summary>
 <dl>
 <dd>
 
@@ -948,24 +1007,20 @@ Retrieve all external users for the project
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.users.list(
+
+client.users.list(
     after="after",
     before="before",
     limit=1,
     q="q",
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -977,6 +1032,14 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1026,7 +1089,7 @@ for page in response.iter_pages():
 </details>
 
 ## Components
-<details><summary><code>client.components.<a href="src/pipedream/components/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/pipedream/components/client.py">list</a>(...) -> GetComponentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1054,14 +1117,15 @@ Retrieve available components with optional search and app filtering
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.components.list(
+
+client.components.list(
     after="after",
     before="before",
     limit=1,
@@ -1070,11 +1134,6 @@ response = client.components.list(
     registry="public",
     component_type="trigger",
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -1086,6 +1145,14 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1158,7 +1225,7 @@ for page in response.iter_pages():
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/pipedream/components/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/pipedream/components/client.py">retrieve</a>(...) -> GetComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -1186,13 +1253,14 @@ Get detailed configuration for a specific component by its key
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.components.retrieve(
     component_id="component_id",
     version="1.2.3",
@@ -1208,6 +1276,14 @@ client.components.retrieve(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1240,7 +1316,7 @@ client.components.retrieve(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/pipedream/components/client.py">configure_prop</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/pipedream/components/client.py">configure_prop</a>(...) -> ConfigurePropResponse</code></summary>
 <dl>
 <dd>
 
@@ -1268,13 +1344,14 @@ Retrieve remote options for a given prop for a component
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.components.configure_prop(
     id="id",
     external_user_id="external_user_id",
@@ -1295,7 +1372,7 @@ client.components.configure_prop(
 <dl>
 <dd>
 
-**id:** `str` — The component ID
+**project_id:** `str` — The project ID, which starts with `proj_`.
     
 </dd>
 </dl>
@@ -1303,71 +1380,7 @@ client.components.configure_prop(
 <dl>
 <dd>
 
-**external_user_id:** `str` — The external user ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prop_name:** `str` — The name of the prop to configure
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `typing.Optional[float]` — Page number for paginated results
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prev_context:** `typing.Optional[typing.Dict[str, typing.Any]]` — Previous context for pagination
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**query:** `typing.Optional[str]` — Search query for filtering options
+**request:** `ConfigurePropOpts` 
     
 </dd>
 </dl>
@@ -1387,7 +1400,7 @@ client.components.configure_prop(
 </dl>
 </details>
 
-<details><summary><code>client.components.<a href="src/pipedream/components/client.py">reload_props</a>(...)</code></summary>
+<details><summary><code>client.components.<a href="src/pipedream/components/client.py">reload_props</a>(...) -> ReloadPropsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1415,13 +1428,14 @@ Reload the prop definition based on the currently configured props
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.components.reload_props(
     id="id",
     external_user_id="external_user_id",
@@ -1441,7 +1455,7 @@ client.components.reload_props(
 <dl>
 <dd>
 
-**id:** `str` — The component ID
+**project_id:** `str` — The project ID, which starts with `proj_`.
     
 </dd>
 </dl>
@@ -1449,39 +1463,7 @@ client.components.reload_props(
 <dl>
 <dd>
 
-**external_user_id:** `str` — The external user ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
+**request:** `ReloadPropsOpts` 
     
 </dd>
 </dl>
@@ -1502,7 +1484,7 @@ client.components.reload_props(
 </details>
 
 ## Actions
-<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">list</a>(...) -> GetComponentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1530,14 +1512,15 @@ Retrieve available actions with optional search and app filtering
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.actions.list(
+
+client.actions.list(
     after="after",
     before="before",
     limit=1,
@@ -1545,11 +1528,6 @@ response = client.actions.list(
     app="app",
     registry="public",
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -1561,6 +1539,14 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1625,7 +1611,7 @@ for page in response.iter_pages():
 </dl>
 </details>
 
-<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">retrieve</a>(...) -> GetComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -1653,13 +1639,14 @@ Get detailed configuration for a specific action by its key
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.actions.retrieve(
     component_id="component_id",
     version="1.2.3",
@@ -1675,6 +1662,14 @@ client.actions.retrieve(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1707,7 +1702,7 @@ client.actions.retrieve(
 </dl>
 </details>
 
-<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">configure_prop</a>(...)</code></summary>
+<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">configure_prop</a>(...) -> ConfigurePropResponse</code></summary>
 <dl>
 <dd>
 
@@ -1735,13 +1730,14 @@ Retrieve remote options for a given prop for a action
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.actions.configure_prop(
     id="id",
     external_user_id="external_user_id",
@@ -1762,7 +1758,7 @@ client.actions.configure_prop(
 <dl>
 <dd>
 
-**id:** `str` — The component ID
+**project_id:** `str` — The project ID, which starts with `proj_`.
     
 </dd>
 </dl>
@@ -1770,71 +1766,7 @@ client.actions.configure_prop(
 <dl>
 <dd>
 
-**external_user_id:** `str` — The external user ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prop_name:** `str` — The name of the prop to configure
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `typing.Optional[float]` — Page number for paginated results
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prev_context:** `typing.Optional[typing.Dict[str, typing.Any]]` — Previous context for pagination
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**query:** `typing.Optional[str]` — Search query for filtering options
+**request:** `ConfigurePropOpts` 
     
 </dd>
 </dl>
@@ -1854,7 +1786,7 @@ client.actions.configure_prop(
 </dl>
 </details>
 
-<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">reload_props</a>(...)</code></summary>
+<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">reload_props</a>(...) -> ReloadPropsResponse</code></summary>
 <dl>
 <dd>
 
@@ -1882,13 +1814,14 @@ Reload the prop definition based on the currently configured props
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.actions.reload_props(
     id="id",
     external_user_id="external_user_id",
@@ -1908,7 +1841,7 @@ client.actions.reload_props(
 <dl>
 <dd>
 
-**id:** `str` — The component ID
+**project_id:** `str` — The project ID, which starts with `proj_`.
     
 </dd>
 </dl>
@@ -1916,39 +1849,7 @@ client.actions.reload_props(
 <dl>
 <dd>
 
-**external_user_id:** `str` — The external user ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
+**request:** `ReloadPropsOpts` 
     
 </dd>
 </dl>
@@ -1968,7 +1869,7 @@ client.actions.reload_props(
 </dl>
 </details>
 
-<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">run</a>(...)</code></summary>
+<details><summary><code>client.actions.<a href="src/pipedream/actions/client.py">run</a>(...) -> RunActionResponse</code></summary>
 <dl>
 <dd>
 
@@ -1996,13 +1897,14 @@ Execute an action with the provided configuration and return results
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.actions.run(
     id="id",
     external_user_id="external_user_id",
@@ -2018,6 +1920,14 @@ client.actions.run(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2083,7 +1993,7 @@ client.actions.run(
 </details>
 
 ## Triggers
-<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">list</a>(...) -> GetComponentsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2111,14 +2021,15 @@ Retrieve available triggers with optional search and app filtering
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.triggers.list(
+
+client.triggers.list(
     after="after",
     before="before",
     limit=1,
@@ -2126,11 +2037,6 @@ response = client.triggers.list(
     app="app",
     registry="public",
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -2142,6 +2048,14 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2206,7 +2120,7 @@ for page in response.iter_pages():
 </dl>
 </details>
 
-<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">retrieve</a>(...) -> GetComponentResponse</code></summary>
 <dl>
 <dd>
 
@@ -2234,13 +2148,14 @@ Get detailed configuration for a specific trigger by its key
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.triggers.retrieve(
     component_id="component_id",
     version="1.2.3",
@@ -2256,6 +2171,14 @@ client.triggers.retrieve(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2288,7 +2211,7 @@ client.triggers.retrieve(
 </dl>
 </details>
 
-<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">configure_prop</a>(...)</code></summary>
+<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">configure_prop</a>(...) -> ConfigurePropResponse</code></summary>
 <dl>
 <dd>
 
@@ -2316,13 +2239,14 @@ Retrieve remote options for a given prop for a trigger
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.triggers.configure_prop(
     id="id",
     external_user_id="external_user_id",
@@ -2343,7 +2267,7 @@ client.triggers.configure_prop(
 <dl>
 <dd>
 
-**id:** `str` — The component ID
+**project_id:** `str` — The project ID, which starts with `proj_`.
     
 </dd>
 </dl>
@@ -2351,71 +2275,7 @@ client.triggers.configure_prop(
 <dl>
 <dd>
 
-**external_user_id:** `str` — The external user ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prop_name:** `str` — The name of the prop to configure
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**page:** `typing.Optional[float]` — Page number for paginated results
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**prev_context:** `typing.Optional[typing.Dict[str, typing.Any]]` — Previous context for pagination
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**query:** `typing.Optional[str]` — Search query for filtering options
+**request:** `ConfigurePropOpts` 
     
 </dd>
 </dl>
@@ -2435,7 +2295,7 @@ client.triggers.configure_prop(
 </dl>
 </details>
 
-<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">reload_props</a>(...)</code></summary>
+<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">reload_props</a>(...) -> ReloadPropsResponse</code></summary>
 <dl>
 <dd>
 
@@ -2463,13 +2323,14 @@ Reload the prop definition based on the currently configured props
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.triggers.reload_props(
     id="id",
     external_user_id="external_user_id",
@@ -2489,7 +2350,7 @@ client.triggers.reload_props(
 <dl>
 <dd>
 
-**id:** `str` — The component ID
+**project_id:** `str` — The project ID, which starts with `proj_`.
     
 </dd>
 </dl>
@@ -2497,39 +2358,7 @@ client.triggers.reload_props(
 <dl>
 <dd>
 
-**external_user_id:** `str` — The external user ID
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**version:** `typing.Optional[str]` — Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**blocking:** `typing.Optional[bool]` — Whether this operation should block until completion
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**configured_props:** `typing.Optional[ConfiguredProps]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**dynamic_props_id:** `typing.Optional[str]` — The ID for dynamic props
+**request:** `ReloadPropsOpts` 
     
 </dd>
 </dl>
@@ -2549,7 +2378,7 @@ client.triggers.reload_props(
 </dl>
 </details>
 
-<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">deploy</a>(...)</code></summary>
+<details><summary><code>client.triggers.<a href="src/pipedream/triggers/client.py">deploy</a>(...) -> DeployTriggerResponse</code></summary>
 <dl>
 <dd>
 
@@ -2577,13 +2406,14 @@ Deploy a trigger to listen for and emit events
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.triggers.deploy(
     id="id",
     external_user_id="external_user_id",
@@ -2599,6 +2429,14 @@ client.triggers.deploy(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2680,7 +2518,7 @@ client.triggers.deploy(
 </details>
 
 ## DeployedTriggers
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list</a>(...) -> GetTriggersResponse</code></summary>
 <dl>
 <dd>
 
@@ -2708,25 +2546,21 @@ Retrieve all deployed triggers for a specific external user
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.deployed_triggers.list(
+
+client.deployed_triggers.list(
     after="after",
     before="before",
     limit=1,
     external_user_id="external_user_id",
     emitter_type="email",
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -2738,6 +2572,14 @@ for page in response.iter_pages():
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2794,7 +2636,7 @@ for page in response.iter_pages():
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">retrieve</a>(...) -> GetTriggerResponse</code></summary>
 <dl>
 <dd>
 
@@ -2822,13 +2664,14 @@ Get details of a specific deployed trigger by its ID
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.retrieve(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
@@ -2844,6 +2687,14 @@ client.deployed_triggers.retrieve(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -2876,7 +2727,7 @@ client.deployed_triggers.retrieve(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">update</a>(...) -> GetTriggerResponse</code></summary>
 <dl>
 <dd>
 
@@ -2904,13 +2755,14 @@ Modify the configuration of a deployed trigger, including active status
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.update(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
@@ -2926,6 +2778,14 @@ client.deployed_triggers.update(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3018,13 +2878,14 @@ Remove a deployed trigger and stop receiving events
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.delete(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
@@ -3041,6 +2902,14 @@ client.deployed_triggers.delete(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3081,7 +2950,7 @@ client.deployed_triggers.delete(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list_events</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list_events</a>(...) -> GetTriggerEventsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3109,13 +2978,14 @@ Retrieve recent events emitted by a deployed trigger
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.list_events(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
@@ -3132,6 +3002,14 @@ client.deployed_triggers.list_events(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3172,7 +3050,7 @@ client.deployed_triggers.list_events(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list_workflows</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list_workflows</a>(...) -> GetTriggerWorkflowsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3200,13 +3078,14 @@ Get workflows connected to receive events from this trigger
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.list_workflows(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
@@ -3222,6 +3101,14 @@ client.deployed_triggers.list_workflows(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3254,7 +3141,7 @@ client.deployed_triggers.list_workflows(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">update_workflows</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">update_workflows</a>(...) -> GetTriggerWorkflowsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3282,17 +3169,20 @@ Connect or disconnect workflows to receive trigger events
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.update_workflows(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
-    workflow_ids=["workflow_ids"],
+    workflow_ids=[
+        "workflow_ids"
+    ],
 )
 
 ```
@@ -3305,6 +3195,14 @@ client.deployed_triggers.update_workflows(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3325,7 +3223,7 @@ client.deployed_triggers.update_workflows(
 <dl>
 <dd>
 
-**workflow_ids:** `typing.Sequence[str]` — Array of workflow IDs to set
+**workflow_ids:** `typing.List[str]` — Array of workflow IDs to set
     
 </dd>
 </dl>
@@ -3345,7 +3243,7 @@ client.deployed_triggers.update_workflows(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list_webhooks</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">list_webhooks</a>(...) -> GetTriggerWebhooksResponse</code></summary>
 <dl>
 <dd>
 
@@ -3373,13 +3271,14 @@ Get webhook URLs configured to receive trigger events
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.list_webhooks(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
@@ -3395,6 +3294,14 @@ client.deployed_triggers.list_webhooks(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3427,7 +3334,7 @@ client.deployed_triggers.list_webhooks(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">update_webhooks</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">update_webhooks</a>(...) -> GetTriggerWebhooksResponse</code></summary>
 <dl>
 <dd>
 
@@ -3455,17 +3362,20 @@ Configure webhook URLs to receive trigger events. `signing_key` is only returned
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.update_webhooks(
     trigger_id="trigger_id",
     external_user_id="external_user_id",
-    webhook_urls=["webhook_urls"],
+    webhook_urls=[
+        "webhook_urls"
+    ],
 )
 
 ```
@@ -3478,6 +3388,14 @@ client.deployed_triggers.update_webhooks(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3498,7 +3416,7 @@ client.deployed_triggers.update_webhooks(
 <dl>
 <dd>
 
-**webhook_urls:** `typing.Sequence[str]` — Array of webhook URLs to set
+**webhook_urls:** `typing.List[str]` — Array of webhook URLs to set
     
 </dd>
 </dl>
@@ -3518,7 +3436,7 @@ client.deployed_triggers.update_webhooks(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">retrieve_webhook</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">retrieve_webhook</a>(...) -> GetWebhookWithSigningKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -3546,13 +3464,14 @@ Retrieve a specific webhook for a deployed trigger, including its signing key
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.retrieve_webhook(
     trigger_id="trigger_id",
     webhook_id="webhook_id",
@@ -3569,6 +3488,14 @@ client.deployed_triggers.retrieve_webhook(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3609,7 +3536,7 @@ client.deployed_triggers.retrieve_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">regenerate_webhook_signing_key</a>(...)</code></summary>
+<details><summary><code>client.deployed_triggers.<a href="src/pipedream/deployed_triggers/client.py">regenerate_webhook_signing_key</a>(...) -> GetWebhookWithSigningKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -3637,13 +3564,14 @@ Regenerate the signing key for a specific webhook on a deployed trigger
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.deployed_triggers.regenerate_webhook_signing_key(
     trigger_id="trigger_id",
     webhook_id="webhook_id",
@@ -3660,6 +3588,14 @@ client.deployed_triggers.regenerate_webhook_signing_key(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3701,7 +3637,7 @@ client.deployed_triggers.regenerate_webhook_signing_key(
 </details>
 
 ## ProjectEnvironment
-<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">retrieve_webhook</a>()</code></summary>
+<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">retrieve_webhook</a>(...) -> GetWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -3729,13 +3665,14 @@ Retrieve the webhook configured for a project environment
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.project_environment.retrieve_webhook()
 
 ```
@@ -3752,6 +3689,14 @@ client.project_environment.retrieve_webhook()
 <dl>
 <dd>
 
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -3764,7 +3709,7 @@ client.project_environment.retrieve_webhook()
 </dl>
 </details>
 
-<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">update_webhook</a>(...)</code></summary>
+<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">update_webhook</a>(...) -> SetWebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -3792,13 +3737,14 @@ Create or update the webhook URL for a project environment. Creating a webhook r
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.project_environment.update_webhook(
     url="url",
 )
@@ -3813,6 +3759,14 @@ client.project_environment.update_webhook(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3837,7 +3791,7 @@ client.project_environment.update_webhook(
 </dl>
 </details>
 
-<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">delete_webhook</a>()</code></summary>
+<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">delete_webhook</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -3865,13 +3819,14 @@ Remove the webhook configured for a project environment
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.project_environment.delete_webhook()
 
 ```
@@ -3888,6 +3843,14 @@ client.project_environment.delete_webhook()
 <dl>
 <dd>
 
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -3900,7 +3863,7 @@ client.project_environment.delete_webhook()
 </dl>
 </details>
 
-<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">regenerate_webhook_signing_key</a>()</code></summary>
+<details><summary><code>client.project_environment.<a href="src/pipedream/project_environment/client.py">regenerate_webhook_signing_key</a>(...) -> GetWebhookWithSigningKeyResponse</code></summary>
 <dl>
 <dd>
 
@@ -3928,13 +3891,14 @@ Regenerate the signing key for the project environment webhook
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.project_environment.regenerate_webhook_signing_key()
 
 ```
@@ -3947,6 +3911,14 @@ client.project_environment.regenerate_webhook_signing_key()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -3964,7 +3936,7 @@ client.project_environment.regenerate_webhook_signing_key()
 </details>
 
 ## Projects
-<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">list</a>(...) -> ListProjectsResponse</code></summary>
 <dl>
 <dd>
 
@@ -3992,24 +3964,20 @@ List the projects that are available to the authenticated Connect client
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
-response = client.projects.list(
+
+client.projects.list(
     after="after",
     before="before",
     limit=1,
     q="q",
 )
-for item in response:
-    yield item
-# alternatively, you can paginate page-by-page
-for page in response.iter_pages():
-    yield page
 
 ```
 </dd>
@@ -4069,7 +4037,7 @@ for page in response.iter_pages():
 </dl>
 </details>
 
-<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">create</a>(...) -> Project</code></summary>
 <dl>
 <dd>
 
@@ -4097,13 +4065,14 @@ Create a new project for the authenticated workspace
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.projects.create(
     name="name",
 )
@@ -4166,7 +4135,7 @@ client.projects.create(
 </dl>
 </details>
 
-<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">retrieve</a>(...)</code></summary>
+<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">retrieve</a>(...) -> Project</code></summary>
 <dl>
 <dd>
 
@@ -4194,13 +4163,14 @@ Get the project details for a specific project
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.projects.retrieve(
     project_id="project_id",
 )
@@ -4267,13 +4237,14 @@ Delete a project owned by the authenticated workspace
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.projects.delete(
     project_id="project_id",
 )
@@ -4312,7 +4283,7 @@ client.projects.delete(
 </dl>
 </details>
 
-<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">update</a>(...)</code></summary>
+<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">update</a>(...) -> Project</code></summary>
 <dl>
 <dd>
 
@@ -4340,13 +4311,14 @@ Update project details or application information
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.projects.update(
     project_id="project_id",
 )
@@ -4445,13 +4417,14 @@ Upload or replace the project logo
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.projects.update_logo(
     project_id="project_id",
     logo="data:image/png;base64,AAAAAA...",
@@ -4499,7 +4472,7 @@ client.projects.update_logo(
 </dl>
 </details>
 
-<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">retrieve_info</a>()</code></summary>
+<details><summary><code>client.projects.<a href="src/pipedream/projects/client.py">retrieve_info</a>(...) -> ProjectInfoResponse</code></summary>
 <dl>
 <dd>
 
@@ -4527,13 +4500,14 @@ Retrieve project configuration and environment details
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.projects.retrieve_info()
 
 ```
@@ -4546,6 +4520,14 @@ client.projects.retrieve_info()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4563,7 +4545,7 @@ client.projects.retrieve_info()
 </details>
 
 ## FileStash
-<details><summary><code>client.file_stash.<a href="src/pipedream/file_stash/client.py">download_file</a>(...)</code></summary>
+<details><summary><code>client.file_stash.<a href="src/pipedream/file_stash/client.py">download_file</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -4591,13 +4573,14 @@ Download a file from File Stash
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.file_stash.download_file(
     s_3_key="s3_key",
 )
@@ -4616,6 +4599,14 @@ client.file_stash.download_file(
 <dl>
 <dd>
 
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **s_3_key:** `str` 
     
 </dd>
@@ -4624,7 +4615,7 @@ client.file_stash.download_file(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
@@ -4637,7 +4628,7 @@ client.file_stash.download_file(
 </details>
 
 ## Proxy
-<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">get</a>(...)</code></summary>
+<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">get</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -4665,13 +4656,14 @@ Forward an authenticated GET request to an external API using an external user's
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.proxy.get(
     url_64="url_64",
     external_user_id="external_user_id",
@@ -4688,6 +4680,14 @@ client.proxy.get(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4716,7 +4716,7 @@ client.proxy.get(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
@@ -4728,7 +4728,7 @@ client.proxy.get(
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">post</a>(...)</code></summary>
+<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">post</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -4756,18 +4756,21 @@ Forward an authenticated POST request to an external API using an external user'
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.proxy.post(
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
-    request={"string": {"key": "value"}},
+    request={
+        "string": {"key": "value"}
+    },
 )
 
 ```
@@ -4780,6 +4783,14 @@ client.proxy.post(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4808,7 +4819,7 @@ client.proxy.post(
 <dl>
 <dd>
 
-**request:** `typing.Dict[str, typing.Any]` 
+**request:** `typing.Dict[str, typing.Any]` — Request body to forward to the target API
     
 </dd>
 </dl>
@@ -4816,7 +4827,7 @@ client.proxy.post(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
@@ -4828,7 +4839,7 @@ client.proxy.post(
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">put</a>(...)</code></summary>
+<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">put</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -4856,18 +4867,21 @@ Forward an authenticated PUT request to an external API using an external user's
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.proxy.put(
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
-    request={"string": {"key": "value"}},
+    request={
+        "string": {"key": "value"}
+    },
 )
 
 ```
@@ -4880,6 +4894,14 @@ client.proxy.put(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -4908,7 +4930,7 @@ client.proxy.put(
 <dl>
 <dd>
 
-**request:** `typing.Dict[str, typing.Any]` 
+**request:** `typing.Dict[str, typing.Any]` — Request body to forward to the target API
     
 </dd>
 </dl>
@@ -4916,7 +4938,7 @@ client.proxy.put(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
@@ -4928,7 +4950,7 @@ client.proxy.put(
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">delete</a>(...)</code></summary>
+<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">delete</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -4956,13 +4978,14 @@ Forward an authenticated DELETE request to an external API using an external use
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.proxy.delete(
     url_64="url_64",
     external_user_id="external_user_id",
@@ -4979,6 +5002,14 @@ client.proxy.delete(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -5007,7 +5038,7 @@ client.proxy.delete(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
@@ -5019,7 +5050,7 @@ client.proxy.delete(
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">patch</a>(...)</code></summary>
+<details><summary><code>client.proxy.<a href="src/pipedream/proxy/client.py">patch</a>(...) -> typing.Iterator[bytes]</code></summary>
 <dl>
 <dd>
 
@@ -5047,18 +5078,21 @@ Forward an authenticated PATCH request to an external API using an external user
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.proxy.patch(
     url_64="url_64",
     external_user_id="external_user_id",
     account_id="account_id",
-    request={"string": {"key": "value"}},
+    request={
+        "string": {"key": "value"}
+    },
 )
 
 ```
@@ -5071,6 +5105,14 @@ client.proxy.patch(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -5099,7 +5141,7 @@ client.proxy.patch(
 <dl>
 <dd>
 
-**request:** `typing.Dict[str, typing.Any]` 
+**request:** `typing.Dict[str, typing.Any]` — Request body to forward to the target API
     
 </dd>
 </dl>
@@ -5107,7 +5149,7 @@ client.proxy.patch(
 <dl>
 <dd>
 
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration. You can pass in configuration such as `chunk_size`, and more to customize the request and response.
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
@@ -5120,7 +5162,7 @@ client.proxy.patch(
 </details>
 
 ## Tokens
-<details><summary><code>client.tokens.<a href="src/pipedream/tokens/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.tokens.<a href="src/pipedream/tokens/client.py">create</a>(...) -> CreateTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -5148,13 +5190,14 @@ Generate a Connect token to use for client-side authentication
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.tokens.create(
     external_user_id="external_user_id",
 )
@@ -5173,6 +5216,14 @@ client.tokens.create(
 <dl>
 <dd>
 
+**project_id:** `str` — The project ID, which starts with `proj_`.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **external_user_id:** `str` — Your end user ID, for whom you're creating the token
     
 </dd>
@@ -5181,7 +5232,7 @@ client.tokens.create(
 <dl>
 <dd>
 
-**allowed_origins:** `typing.Optional[typing.Sequence[str]]` — List of allowed origins for CORS
+**allowed_origins:** `typing.Optional[typing.List[str]]` — List of allowed origins for CORS
     
 </dd>
 </dl>
@@ -5229,6 +5280,14 @@ client.tokens.create(
 <dl>
 <dd>
 
+**allow_progressive_scopes:** `typing.Optional[bool]` — When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -5241,7 +5300,7 @@ client.tokens.create(
 </dl>
 </details>
 
-<details><summary><code>client.tokens.<a href="src/pipedream/tokens/client.py">validate</a>(...)</code></summary>
+<details><summary><code>client.tokens.<a href="src/pipedream/tokens/client.py">validate</a>(...) -> ValidateTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -5269,16 +5328,18 @@ Confirm the validity of a Connect token
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.tokens.validate(
     ctok="ctok",
     app_id="app_id",
+    account_id="account_id",
     oauth_app_id="oauth_app_id",
 )
 
@@ -5312,6 +5373,14 @@ client.tokens.validate(
 <dl>
 <dd>
 
+**account_id:** `typing.Optional[str]` — An existing account ID to reconnect. Must belong to the app identified by app_id.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **oauth_app_id:** `typing.Optional[str]` — The OAuth app ID to validate against (if the token is for an OAuth app)
     
 </dd>
@@ -5333,7 +5402,7 @@ client.tokens.validate(
 </details>
 
 ## Usage
-<details><summary><code>client.usage.<a href="src/pipedream/usage/client.py">list</a>(...)</code></summary>
+<details><summary><code>client.usage.<a href="src/pipedream/usage/client.py">list</a>(...) -> ConnectUsageResponse</code></summary>
 <dl>
 <dd>
 
@@ -5361,13 +5430,14 @@ Retrieve Connect usage records for a time window
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.usage.list(
     start_ts=1,
     end_ts=1,
@@ -5416,7 +5486,7 @@ client.usage.list(
 </details>
 
 ## OauthTokens
-<details><summary><code>client.oauth_tokens.<a href="src/pipedream/oauth_tokens/client.py">create</a>(...)</code></summary>
+<details><summary><code>client.oauth_tokens.<a href="src/pipedream/oauth_tokens/client.py">create</a>(...) -> CreateOAuthTokenResponse</code></summary>
 <dl>
 <dd>
 
@@ -5444,13 +5514,14 @@ Exchange OAuth credentials for an access token
 
 ```python
 from pipedream import Pipedream
+from pipedream.environment import PipedreamEnvironment
 
 client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id="<clientId>",
+    client_secret="<clientSecret>",
+    environment=PipedreamEnvironment.PROD,
 )
+
 client.oauth_tokens.create(
     client_id="client_id",
     client_secret="client_secret",
@@ -5466,6 +5537,14 @@ client.oauth_tokens.create(
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**grant_type:** `typing.Literal` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -5496,199 +5575,6 @@ client.oauth_tokens.create(
 
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-
-## Workflows
-<details><summary><code>client.workflows.<a href="src/pipedream/workflows/client.py">invoke</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from pipedream import Pipedream
-from pipedream.workflows.client import HTTPAuthType
-
-client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-)
-response = client.workflows.invoke(
-    url_or_endpoint="https://your-workflow.m.pipedream.net",
-    method="POST",
-    body={"key": "value"},
-    headers={"Content-Type": "application/json"},
-    auth_type=HTTPAuthType.NONE,
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**url_or_endpoint:** `str` — The URL of the workflow's HTTP interface or the ID of the endpoint
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**method:** `str` — HTTP method to use (default: "POST")
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**body:** `typing.Optional[typing.Any]` — Request body data
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**headers:** `typing.Optional[typing.Dict[str, str]]` — HTTP headers to include
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**auth_type:** `HTTPAuthType` — Type of authorization (default: HTTPAuthType.NONE)
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.<a href="src/pipedream/workflows/client.py">invoke_for_external_user</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from pipedream import Pipedream
-
-client = Pipedream(
-    project_id="YOUR_PROJECT_ID",
-    project_environment="YOUR_PROJECT_ENVIRONMENT",
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
-)
-response = client.workflows.invoke_for_external_user(
-    url_or_endpoint="en2r1n8a98np7",
-    external_user_id="user_123",
-    method="POST",
-    body={"message": "Hello from external user"},
-    headers={"Content-Type": "application/json"},
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**url_or_endpoint:** `str` — The URL of the workflow's HTTP interface or the ID of the endpoint
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**external_user_id:** `str` — The external user ID for whom the workflow is being invoked
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**method:** `str` — HTTP method to use (default: "POST")
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**body:** `typing.Optional[typing.Any]` — Request body data
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**headers:** `typing.Optional[typing.Dict[str, str]]` — HTTP headers to include
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-
 </dd>
 </dl>
 </dd>

@@ -6,13 +6,15 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.get_webhook_response import GetWebhookResponse
 from ..types.get_webhook_with_signing_key_response import GetWebhookWithSigningKeyResponse
 from ..types.set_webhook_response import SetWebhookResponse
+from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -39,7 +41,7 @@ class RawProjectEnvironmentClient:
             webhook retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook",
             method="GET",
             request_options=request_options,
         )
@@ -67,6 +69,10 @@ class RawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def update_webhook(
@@ -89,7 +95,7 @@ class RawProjectEnvironmentClient:
             webhook updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook",
             method="PUT",
             json={
                 "url": url,
@@ -124,6 +130,10 @@ class RawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete_webhook(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
@@ -140,7 +150,7 @@ class RawProjectEnvironmentClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook",
             method="DELETE",
             request_options=request_options,
         )
@@ -161,6 +171,10 @@ class RawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def regenerate_webhook_signing_key(
@@ -180,7 +194,7 @@ class RawProjectEnvironmentClient:
             signing key regenerated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook/regenerate_signing_key",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook/regenerate_signing_key",
             method="POST",
             request_options=request_options,
         )
@@ -208,6 +222,10 @@ class RawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
@@ -232,7 +250,7 @@ class AsyncRawProjectEnvironmentClient:
             webhook retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook",
             method="GET",
             request_options=request_options,
         )
@@ -260,6 +278,10 @@ class AsyncRawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def update_webhook(
@@ -282,7 +304,7 @@ class AsyncRawProjectEnvironmentClient:
             webhook updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook",
             method="PUT",
             json={
                 "url": url,
@@ -317,6 +339,10 @@ class AsyncRawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete_webhook(
@@ -335,7 +361,7 @@ class AsyncRawProjectEnvironmentClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook",
             method="DELETE",
             request_options=request_options,
         )
@@ -356,6 +382,10 @@ class AsyncRawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def regenerate_webhook_signing_key(
@@ -375,7 +405,7 @@ class AsyncRawProjectEnvironmentClient:
             signing key regenerated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/webhook/regenerate_signing_key",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/webhook/regenerate_signing_key",
             method="POST",
             request_options=request_options,
         )
@@ -403,4 +433,8 @@ class AsyncRawProjectEnvironmentClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

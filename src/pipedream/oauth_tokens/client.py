@@ -60,6 +60,8 @@ class OauthTokensClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.oauth_tokens.create(
             client_id="client_id",
@@ -123,6 +125,8 @@ class AsyncOauthTokensClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

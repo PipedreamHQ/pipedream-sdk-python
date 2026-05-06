@@ -5,3 +5,6 @@ import typing
 from .configured_prop_value import ConfiguredPropValue
 
 ConfiguredProps = typing.Dict[str, ConfiguredPropValue]
+"""
+The configured properties of the component
+"""

@@ -51,6 +51,8 @@ class UsageClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.usage.list(
             start_ts=1,
@@ -106,6 +108,8 @@ class AsyncUsageClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

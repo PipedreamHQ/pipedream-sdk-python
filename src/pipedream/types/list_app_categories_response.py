@@ -5,3 +5,6 @@ import typing
 from .app_category import AppCategory
 
 ListAppCategoriesResponse = typing.List[AppCategory]
+"""
+Response received when listing app categories
+"""

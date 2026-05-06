@@ -6,13 +6,15 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.pagination import AsyncPager, SyncPager
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.external_user import ExternalUser
 from ..types.get_users_response import GetUsersResponse
+from pydantic import ValidationError
 
 
 class RawUsersClient:
@@ -37,7 +39,7 @@ class RawUsersClient:
         HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users/{jsonable_encoder(external_user_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/users/{encode_path_param(external_user_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -58,6 +60,10 @@ class RawUsersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def list(
@@ -95,7 +101,7 @@ class RawUsersClient:
             users listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/users",
             method="GET",
             params={
                 "after": after,
@@ -142,6 +148,10 @@ class RawUsersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
@@ -167,7 +177,7 @@ class AsyncRawUsersClient:
         AsyncHttpResponse[None]
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users/{jsonable_encoder(external_user_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/users/{encode_path_param(external_user_id)}",
             method="DELETE",
             request_options=request_options,
         )
@@ -188,6 +198,10 @@ class AsyncRawUsersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def list(
@@ -225,7 +239,7 @@ class AsyncRawUsersClient:
             users listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{jsonable_encoder(self._client_wrapper._project_id)}/users",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/users",
             method="GET",
             params={
                 "after": after,
@@ -275,4 +289,8 @@ class AsyncRawUsersClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

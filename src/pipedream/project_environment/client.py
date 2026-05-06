@@ -48,6 +48,8 @@ class ProjectEnvironmentClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.project_environment.retrieve_webhook()
         """
@@ -79,6 +81,8 @@ class ProjectEnvironmentClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.project_environment.update_webhook(
             url="url",
@@ -106,6 +110,8 @@ class ProjectEnvironmentClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.project_environment.delete_webhook()
         """
@@ -134,6 +140,8 @@ class ProjectEnvironmentClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.project_environment.regenerate_webhook_signing_key()
         """
@@ -178,6 +186,8 @@ class AsyncProjectEnvironmentClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -217,6 +227,8 @@ class AsyncProjectEnvironmentClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -252,6 +264,8 @@ class AsyncProjectEnvironmentClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -288,6 +302,8 @@ class AsyncProjectEnvironmentClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

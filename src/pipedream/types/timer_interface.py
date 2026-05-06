@@ -30,6 +30,11 @@ class TimerInterface(UniversalBaseModel):
     The timestamp when the timer interface was last updated (epoch milliseconds)
     """
 
+    type: typing.Literal["TimerInterface"] = pydantic.Field(default="TimerInterface")
+    """
+    The discriminator field
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:
