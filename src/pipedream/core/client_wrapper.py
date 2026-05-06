@@ -34,12 +34,12 @@ class BaseClientWrapper:
         import platform
 
         headers: typing.Dict[str, str] = {
-            "User-Agent": "pipedream/1.1.13",
+            "User-Agent": "pipedream/2.0.0",
             "X-Fern-Language": "Python",
             "X-Fern-Runtime": f"python/{platform.python_version()}",
             "X-Fern-Platform": f"{platform.system().lower()}/{platform.release()}",
             "X-Fern-SDK-Name": "pipedream",
-            "X-Fern-SDK-Version": "1.1.13",
+            "X-Fern-SDK-Version": "2.0.0",
             **(self.get_custom_headers() or {}),
         }
         if self._project_environment is not None:

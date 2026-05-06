@@ -1,0 +1,67 @@
+name: Auto Close Empty PRs
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  check-and-close:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Check PR for changes
+        id: check_changes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+
+            // Check if there are any files changed
+            const hasChanges = files.length > 0;
+
+            // Also check if all changes are 0 (sometimes PRs show files but with 0 changes)
+            const hasActualChanges = files.some(file =>
+              file.additions > 0 || file.deletions > 0 || file.changes > 0
+            );
+
+            console.log(`Files changed: ${files.length}`);
+            console.log(`Has actual changes: ${hasActualChanges}`);
+
+            return { hasChanges: hasChanges && hasActualChanges };
+
+      - name: Close PR if empty
+        if: steps.check_changes.outputs.result == 'false' || fromJSON(steps.check_changes.outputs.result).hasChanges == false
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Add a comment explaining why the PR is being closed
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '⚠️ This pull request appears to contain no changes and will be automatically closed.\n\nIf you believe this is an error, please add your changes and push them to the branch.'
+            });
+
+            // Close the pull request
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              state: 'closed'
+            });
+
+            // Add a label (optional)
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['auto-closed', 'no-changes']
+            });
