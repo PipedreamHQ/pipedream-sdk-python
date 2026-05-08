@@ -180,6 +180,16 @@ When a Fern regen runs (`fern-bot` PR or local `fern generate`):
    `ValueError("Project ID is required")`.
 5. If the generator left the SDK version unchanged but you made customization
    changes, bump it manually per the checklist above.
+6. Diff `.github/workflows/ci.yml`'s `publish` job. The Fern generator emits a
+   `poetry publish --username/--password` step against `secrets.PYPI_USERNAME` /
+   `PYPI_PASSWORD`; this project actually publishes via **PyPI Trusted
+   Publishing (OIDC)** — `permissions: id-token: write` plus
+   `pypa/gh-action-pypi-publish@release/v1`. No `PYPI_*` secrets exist on the
+   repo or org, so if a regen reverts the auth shape (which already happened
+   once on v2.0.0 — see CI run 25577372729) the next tag push silently fails
+   with `403 Invalid or non-existent authentication information`. `.fernignore`
+   guards this file, but a temporary `.fernignore` disable + regen will re-open
+   the trapdoor.
 
 ## Known footguns
 
