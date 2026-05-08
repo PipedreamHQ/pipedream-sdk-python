@@ -28,7 +28,6 @@ from .configurable_prop_timer import ConfigurablePropTimer
 
 ConfigurableProp = typing.Union[
     ConfigurablePropAlert,
-    ConfigurablePropAny,
     ConfigurablePropApp,
     ConfigurablePropBoolean,
     ConfigurablePropDataStore,
@@ -47,7 +46,8 @@ ConfigurableProp = typing.Union[
     ConfigurablePropDiscordChannel,
     ConfigurablePropDiscordChannelArray,
     ConfigurablePropInteger,
-    ConfigurablePropObject,
     ConfigurablePropString,
     ConfigurablePropStringArray,
+    ConfigurablePropObject,
+    ConfigurablePropAny,
 ]

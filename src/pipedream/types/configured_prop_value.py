@@ -12,12 +12,12 @@ from .configured_prop_value_string import ConfiguredPropValueString
 from .configured_prop_value_string_array import ConfiguredPropValueStringArray
 
 ConfiguredPropValue = typing.Union[
-    ConfiguredPropValueAny,
     ConfiguredPropValueApp,
     ConfiguredPropValueBoolean,
     ConfiguredPropValueInteger,
-    ConfiguredPropValueObject,
     ConfiguredPropValueSql,
     ConfiguredPropValueString,
     ConfiguredPropValueStringArray,
+    ConfiguredPropValueObject,
+    ConfiguredPropValueAny,
 ]
