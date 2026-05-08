@@ -1,0 +1,87 @@
+name: Draft Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to release from"
+        required: false
+        default: "main"
+        type: string
+      tag:
+        description: "New tag (default: patch bump of latest tag, e.g. v1.0.1 -> v1.0.2)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Resolve tags and target SHA
+        id: vars
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          TARGET_SHA=$(git rev-parse HEAD)
+          if ! PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null); then
+            echo "::error::No previous tag found in history; cannot auto-bump. Pass 'tag' input explicitly."
+            exit 1
+          fi
+
+          if [ -n "$INPUT_TAG" ]; then
+            NEW_TAG="$INPUT_TAG"
+          else
+            if [[ "$PREV_TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+              NEW_TAG="v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.$((BASH_REMATCH[3]+1))"
+            else
+              echo "::error::Cannot parse previous tag '$PREV_TAG' for auto-bump (expected vX.Y.Z). Pass 'tag' input explicitly."
+              exit 1
+            fi
+          fi
+
+          echo "Previous tag: $PREV_TAG"
+          echo "New tag:      $NEW_TAG"
+          echo "Target SHA:   $TARGET_SHA"
+          {
+            echo "PREV_TAG=$PREV_TAG"
+            echo "NEW_TAG=$NEW_TAG"
+            echo "TARGET_SHA=$TARGET_SHA"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes
+        env:
+          PREV_TAG: ${{ steps.vars.outputs.PREV_TAG }}
+        run: |
+          set -euo pipefail
+          {
+            echo "# Changelog"
+            git log --reverse --no-merges --pretty=format:"* %s (%H)" "${PREV_TAG}..HEAD" \
+              | sed -E 's/ \(#[0-9]+\)( \([0-9a-f]{40}\))$/\1/'
+          } > release-notes.md
+          echo "::group::Generated release notes"
+          cat release-notes.md
+          echo "::endgroup::"
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NEW_TAG: ${{ steps.vars.outputs.NEW_TAG }}
+          TARGET_SHA: ${{ steps.vars.outputs.TARGET_SHA }}
+        run: |
+          set -euo pipefail
+          gh release create "$NEW_TAG" \
+            --draft \
+            --title "$NEW_TAG" \
+            --target "$TARGET_SHA" \
+            --notes-file release-notes.md
