@@ -29,6 +29,11 @@ class HttpInterface(UniversalBaseModel):
     The timestamp when the HTTP interface was last updated (epoch milliseconds)
     """
 
+    type: typing.Literal["HttpInterface"] = pydantic.Field(default="HttpInterface")
+    """
+    The discriminator field
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

@@ -92,6 +92,8 @@ class AppsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         response = client.apps.list(
             after="after",
@@ -100,6 +102,7 @@ class AppsClient:
             q="q",
             sort_key="name",
             sort_direction="asc",
+            category_ids=["category_ids"],
             has_components=True,
             has_actions=True,
             has_triggers=True,
@@ -147,6 +150,8 @@ class AppsClient:
 
         client = Pipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
         client.apps.retrieve(
             app_id="app_id",
@@ -237,6 +242,8 @@ class AsyncAppsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 
@@ -248,6 +255,7 @@ class AsyncAppsClient:
                 q="q",
                 sort_key="name",
                 sort_direction="asc",
+                category_ids=["category_ids"],
                 has_components=True,
                 has_actions=True,
                 has_triggers=True,
@@ -301,6 +309,8 @@ class AsyncAppsClient:
 
         client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
         )
 
 

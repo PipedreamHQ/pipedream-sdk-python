@@ -6,8 +6,9 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.jsonable_encoder import jsonable_encoder
+from ..core.jsonable_encoder import encode_path_param
 from ..core.pagination import AsyncPager, SyncPager
+from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..types.app import App
@@ -15,6 +16,7 @@ from ..types.get_app_response import GetAppResponse
 from ..types.list_apps_response import ListAppsResponse
 from .types.apps_list_request_sort_direction import AppsListRequestSortDirection
 from .types.apps_list_request_sort_key import AppsListRequestSortKey
+from pydantic import ValidationError
 
 
 class RawAppsClient:
@@ -128,6 +130,10 @@ class RawAppsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
@@ -150,7 +156,7 @@ class RawAppsClient:
             app retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/apps/{jsonable_encoder(app_id)}",
+            f"v1/connect/apps/{encode_path_param(app_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -167,6 +173,10 @@ class RawAppsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
@@ -284,6 +294,10 @@ class AsyncRawAppsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
@@ -306,7 +320,7 @@ class AsyncRawAppsClient:
             app retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/apps/{jsonable_encoder(app_id)}",
+            f"v1/connect/apps/{encode_path_param(app_id)}",
             method="GET",
             request_options=request_options,
         )
@@ -323,4 +337,8 @@ class AsyncRawAppsClient:
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

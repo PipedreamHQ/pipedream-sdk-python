@@ -3,3 +3,6 @@
 import typing
 
 StashId = typing.Optional[str]
+"""
+The ID of the File Stash
+"""

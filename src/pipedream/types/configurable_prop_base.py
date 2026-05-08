@@ -6,6 +6,7 @@ import pydantic
 import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from ..core.serialization import FieldMetadata
+from .configurable_prop_base_type import ConfigurablePropBaseType
 
 
 class ConfigurablePropBase(UniversalBaseModel):
@@ -18,6 +19,7 @@ class ConfigurablePropBase(UniversalBaseModel):
     When building `configuredProps`, make sure to use this field as the key when setting the prop value
     """
 
+    type: ConfigurablePropBaseType
     label: typing.Optional[str] = pydantic.Field(default=None)
     """
     Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead.

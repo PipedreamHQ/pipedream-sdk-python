@@ -1,7 +1,7 @@
 {
-  "cliVersion": "3.5.0",
+  "cliVersion": "5.17.0",
   "generatorName": "fernapi/fern-python-sdk",
-  "generatorVersion": "4.54.4",
+  "generatorVersion": "5.12.1",
   "generatorConfig": {
     "client": {
       "class_name": "Client",
@@ -10,5 +10,8 @@
       "exported_filename": "pipedream.py"
     }
   },
-  "sdkVersion": "1.1.12"
+  "originGitCommit": "ba238238cabee8772c6de87a362090b7248aa9ae",
+  "originGitCommitIsDirty": true,
+  "invokedBy": "manual",
+  "sdkVersion": "1.1.13"
 }

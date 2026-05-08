@@ -3,3 +3,6 @@
 import typing
 
 ProxyResponse = typing.Any
+"""
+The parsed response body from a proxied API request
+"""

@@ -17,32 +17,7 @@ if typing.TYPE_CHECKING:
     from .component import Component
     from .component_stash import ComponentStash
     from .component_type import ComponentType
-    from .configurable_prop import (
-        ConfigurableProp,
-        ConfigurableProp_AirtableBaseId,
-        ConfigurableProp_AirtableFieldId,
-        ConfigurableProp_AirtableTableId,
-        ConfigurableProp_AirtableViewId,
-        ConfigurableProp_Alert,
-        ConfigurableProp_Any,
-        ConfigurableProp_App,
-        ConfigurableProp_Boolean,
-        ConfigurableProp_DataStore,
-        ConfigurableProp_Dir,
-        ConfigurableProp_DiscordChannel,
-        ConfigurableProp_DiscordChannelArray,
-        ConfigurableProp_HttpRequest,
-        ConfigurableProp_Integer,
-        ConfigurableProp_IntegerArray,
-        ConfigurableProp_InterfaceApphook,
-        ConfigurableProp_InterfaceHttp,
-        ConfigurableProp_InterfaceTimer,
-        ConfigurableProp_Object,
-        ConfigurableProp_ServiceDb,
-        ConfigurableProp_Sql,
-        ConfigurableProp_String,
-        ConfigurableProp_StringArray,
-    )
+    from .configurable_prop import ConfigurableProp
     from .configurable_prop_airtable_base_id import ConfigurablePropAirtableBaseId
     from .configurable_prop_airtable_field_id import ConfigurablePropAirtableFieldId
     from .configurable_prop_airtable_table_id import ConfigurablePropAirtableTableId
@@ -54,13 +29,13 @@ if typing.TYPE_CHECKING:
     from .configurable_prop_app import ConfigurablePropApp
     from .configurable_prop_apphook import ConfigurablePropApphook
     from .configurable_prop_base import ConfigurablePropBase
+    from .configurable_prop_base_type import ConfigurablePropBaseType
     from .configurable_prop_boolean import ConfigurablePropBoolean
     from .configurable_prop_boolean_options_item import ConfigurablePropBooleanOptionsItem
     from .configurable_prop_data_store import ConfigurablePropDataStore
     from .configurable_prop_db import ConfigurablePropDb
     from .configurable_prop_dir import ConfigurablePropDir
     from .configurable_prop_dir_access_mode import ConfigurablePropDirAccessMode
-    from .configurable_prop_discord import ConfigurablePropDiscord
     from .configurable_prop_discord_channel import ConfigurablePropDiscordChannel
     from .configurable_prop_discord_channel_array import ConfigurablePropDiscordChannelArray
     from .configurable_prop_http import ConfigurablePropHttp
@@ -107,7 +82,7 @@ if typing.TYPE_CHECKING:
     from .deployed_component import DeployedComponent
     from .dynamic_props import DynamicProps
     from .emitted_event import EmittedEvent
-    from .emitter import Emitter, Emitter_DeployedComponent, Emitter_HttpInterface, Emitter_TimerInterface
+    from .emitter import Emitter
     from .emitter_type import EmitterType
     from .error_response import ErrorResponse
     from .external_user import ExternalUser
@@ -190,13 +165,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropApp": ".configurable_prop_app",
     "ConfigurablePropApphook": ".configurable_prop_apphook",
     "ConfigurablePropBase": ".configurable_prop_base",
+    "ConfigurablePropBaseType": ".configurable_prop_base_type",
     "ConfigurablePropBoolean": ".configurable_prop_boolean",
     "ConfigurablePropBooleanOptionsItem": ".configurable_prop_boolean_options_item",
     "ConfigurablePropDataStore": ".configurable_prop_data_store",
     "ConfigurablePropDb": ".configurable_prop_db",
     "ConfigurablePropDir": ".configurable_prop_dir",
     "ConfigurablePropDirAccessMode": ".configurable_prop_dir_access_mode",
-    "ConfigurablePropDiscord": ".configurable_prop_discord",
     "ConfigurablePropDiscordChannel": ".configurable_prop_discord_channel",
     "ConfigurablePropDiscordChannelArray": ".configurable_prop_discord_channel_array",
     "ConfigurablePropHttp": ".configurable_prop_http",
@@ -219,29 +194,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigurablePropTimerDefault": ".configurable_prop_timer_default",
     "ConfigurablePropTimerOption": ".configurable_prop_timer_option",
     "ConfigurablePropTimerStatic": ".configurable_prop_timer_static",
-    "ConfigurableProp_AirtableBaseId": ".configurable_prop",
-    "ConfigurableProp_AirtableFieldId": ".configurable_prop",
-    "ConfigurableProp_AirtableTableId": ".configurable_prop",
-    "ConfigurableProp_AirtableViewId": ".configurable_prop",
-    "ConfigurableProp_Alert": ".configurable_prop",
-    "ConfigurableProp_Any": ".configurable_prop",
-    "ConfigurableProp_App": ".configurable_prop",
-    "ConfigurableProp_Boolean": ".configurable_prop",
-    "ConfigurableProp_DataStore": ".configurable_prop",
-    "ConfigurableProp_Dir": ".configurable_prop",
-    "ConfigurableProp_DiscordChannel": ".configurable_prop",
-    "ConfigurableProp_DiscordChannelArray": ".configurable_prop",
-    "ConfigurableProp_HttpRequest": ".configurable_prop",
-    "ConfigurableProp_Integer": ".configurable_prop",
-    "ConfigurableProp_IntegerArray": ".configurable_prop",
-    "ConfigurableProp_InterfaceApphook": ".configurable_prop",
-    "ConfigurableProp_InterfaceHttp": ".configurable_prop",
-    "ConfigurableProp_InterfaceTimer": ".configurable_prop",
-    "ConfigurableProp_Object": ".configurable_prop",
-    "ConfigurableProp_ServiceDb": ".configurable_prop",
-    "ConfigurableProp_Sql": ".configurable_prop",
-    "ConfigurableProp_String": ".configurable_prop",
-    "ConfigurableProp_StringArray": ".configurable_prop",
     "ConfigurePropOptions": ".configure_prop_options",
     "ConfigurePropOptionsItem": ".configure_prop_options_item",
     "ConfigurePropOpts": ".configure_prop_opts",
@@ -268,9 +220,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EmittedEvent": ".emitted_event",
     "Emitter": ".emitter",
     "EmitterType": ".emitter_type",
-    "Emitter_DeployedComponent": ".emitter",
-    "Emitter_HttpInterface": ".emitter",
-    "Emitter_TimerInterface": ".emitter",
     "ErrorResponse": ".error_response",
     "ExternalUser": ".external_user",
     "GetAccountsResponse": ".get_accounts_response",
@@ -376,13 +325,13 @@ __all__ = [
     "ConfigurablePropApp",
     "ConfigurablePropApphook",
     "ConfigurablePropBase",
+    "ConfigurablePropBaseType",
     "ConfigurablePropBoolean",
     "ConfigurablePropBooleanOptionsItem",
     "ConfigurablePropDataStore",
     "ConfigurablePropDb",
     "ConfigurablePropDir",
     "ConfigurablePropDirAccessMode",
-    "ConfigurablePropDiscord",
     "ConfigurablePropDiscordChannel",
     "ConfigurablePropDiscordChannelArray",
     "ConfigurablePropHttp",
@@ -405,29 +354,6 @@ __all__ = [
     "ConfigurablePropTimerDefault",
     "ConfigurablePropTimerOption",
     "ConfigurablePropTimerStatic",
-    "ConfigurableProp_AirtableBaseId",
-    "ConfigurableProp_AirtableFieldId",
-    "ConfigurableProp_AirtableTableId",
-    "ConfigurableProp_AirtableViewId",
-    "ConfigurableProp_Alert",
-    "ConfigurableProp_Any",
-    "ConfigurableProp_App",
-    "ConfigurableProp_Boolean",
-    "ConfigurableProp_DataStore",
-    "ConfigurableProp_Dir",
-    "ConfigurableProp_DiscordChannel",
-    "ConfigurableProp_DiscordChannelArray",
-    "ConfigurableProp_HttpRequest",
-    "ConfigurableProp_Integer",
-    "ConfigurableProp_IntegerArray",
-    "ConfigurableProp_InterfaceApphook",
-    "ConfigurableProp_InterfaceHttp",
-    "ConfigurableProp_InterfaceTimer",
-    "ConfigurableProp_Object",
-    "ConfigurableProp_ServiceDb",
-    "ConfigurableProp_Sql",
-    "ConfigurableProp_String",
-    "ConfigurableProp_StringArray",
     "ConfigurePropOptions",
     "ConfigurePropOptionsItem",
     "ConfigurePropOpts",
@@ -454,9 +380,6 @@ __all__ = [
     "EmittedEvent",
     "Emitter",
     "EmitterType",
-    "Emitter_DeployedComponent",
-    "Emitter_HttpInterface",
-    "Emitter_TimerInterface",
     "ErrorResponse",
     "ExternalUser",
     "GetAccountsResponse",
