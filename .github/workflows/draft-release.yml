@@ -9,7 +9,7 @@ on:
         default: "main"
         type: string
       tag:
-        description: "New tag (default: patch bump of latest tag, e.g. v1.0.1 -> v1.0.2)"
+        description: "New tag (default: 'v' + version from pyproject.toml)"
         required: false
         type: string
 
@@ -42,12 +42,17 @@ jobs:
           if [ -n "$INPUT_TAG" ]; then
             NEW_TAG="$INPUT_TAG"
           else
-            if [[ "$PREV_TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-              NEW_TAG="v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.$((BASH_REMATCH[3]+1))"
-            else
-              echo "::error::Cannot parse previous tag '$PREV_TAG' for auto-bump (expected vX.Y.Z). Pass 'tag' input explicitly."
+            VERSION=$(grep -E '^version[[:space:]]*=[[:space:]]*"' pyproject.toml | head -1 | sed -E 's/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/')
+            if [ -z "$VERSION" ]; then
+              echo "::error::Could not read version from pyproject.toml. Pass 'tag' input explicitly."
               exit 1
             fi
+            NEW_TAG="v${VERSION}"
+          fi
+
+          if [ "$NEW_TAG" = "$PREV_TAG" ]; then
+            echo "::error::New tag ($NEW_TAG) matches the latest existing tag ($PREV_TAG). Bump the version in pyproject.toml (or pass an explicit 'tag') before drafting a release."
+            exit 1
           fi
 
           echo "Previous tag: $PREV_TAG"
