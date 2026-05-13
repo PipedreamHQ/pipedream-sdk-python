@@ -288,6 +288,53 @@ class AccountsClient:
         _response = self._raw_client.delete_by_app(app_id, request_options=request_options)
         return _response.data
 
+    def list_by_external_user(
+        self,
+        external_user_id: str,
+        *,
+        include_credentials: typing.Optional[bool] = None,
+        app: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.List[Account]:
+        """
+        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+
+        Parameters
+        ----------
+        external_user_id : str
+
+        include_credentials : typing.Optional[bool]
+
+        app : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[Account]
+            accounts listed
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.accounts.list_by_external_user(
+            external_user_id="external_user_id",
+            include_credentials=True,
+            app="app",
+        )
+        """
+        _response = self._raw_client.list_by_external_user(
+            external_user_id, include_credentials=include_credentials, app=app, request_options=request_options
+        )
+        return _response.data
+
 
 class AsyncAccountsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -603,4 +650,59 @@ class AsyncAccountsClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.delete_by_app(app_id, request_options=request_options)
+        return _response.data
+
+    async def list_by_external_user(
+        self,
+        external_user_id: str,
+        *,
+        include_credentials: typing.Optional[bool] = None,
+        app: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.List[Account]:
+        """
+        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+
+        Parameters
+        ----------
+        external_user_id : str
+
+        include_credentials : typing.Optional[bool]
+
+        app : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.List[Account]
+            accounts listed
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.accounts.list_by_external_user(
+                external_user_id="external_user_id",
+                include_credentials=True,
+                app="app",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.list_by_external_user(
+            external_user_id, include_credentials=include_credentials, app=app, request_options=request_options
+        )
         return _response.data
