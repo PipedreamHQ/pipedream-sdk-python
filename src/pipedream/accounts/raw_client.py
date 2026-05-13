@@ -375,6 +375,72 @@ class RawAccountsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def list_by_external_user(
+        self,
+        external_user_id: str,
+        *,
+        include_credentials: typing.Optional[bool] = None,
+        app: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[typing.List[Account]]:
+        """
+        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+
+        Parameters
+        ----------
+        external_user_id : str
+
+        include_credentials : typing.Optional[bool]
+
+        app : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.List[Account]]
+            accounts listed
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/users/{encode_path_param(external_user_id)}/accounts",
+            method="GET",
+            params={
+                "include_credentials": include_credentials,
+                "app": app,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.List[Account],
+                    parse_obj_as(
+                        type_=typing.List[Account],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
 
 class AsyncRawAccountsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -716,6 +782,72 @@ class AsyncRawAccountsClient:
         try:
             if 200 <= _response.status_code < 300:
                 return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def list_by_external_user(
+        self,
+        external_user_id: str,
+        *,
+        include_credentials: typing.Optional[bool] = None,
+        app: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[typing.List[Account]]:
+        """
+        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+
+        Parameters
+        ----------
+        external_user_id : str
+
+        include_credentials : typing.Optional[bool]
+
+        app : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.List[Account]]
+            accounts listed
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/users/{encode_path_param(external_user_id)}/accounts",
+            method="GET",
+            params={
+                "include_credentials": include_credentials,
+                "app": app,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.List[Account],
+                    parse_obj_as(
+                        type_=typing.List[Account],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
