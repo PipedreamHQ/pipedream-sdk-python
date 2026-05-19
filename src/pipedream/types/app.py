@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .app_auth_type import AppAuthType
+from .app_scope_profiles_item import AppScopeProfilesItem
 
 
 class App(UniversalBaseModel):
@@ -51,6 +52,11 @@ class App(UniversalBaseModel):
     featured_weight: float = pydantic.Field()
     """
     A rough directional ordering of app popularity, subject to changes by Pipedream
+    """
+
+    scope_profiles: typing.List[AppScopeProfilesItem] = pydantic.Field()
+    """
+    Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any.
     """
 
     if IS_PYDANTIC_V2:
