@@ -30,3 +30,6 @@ src/pipedream/workflows/client.py
 
 # Project-level documentation for AI assistants
 CLAUDE.md
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes

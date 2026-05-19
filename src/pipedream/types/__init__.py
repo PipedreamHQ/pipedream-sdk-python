@@ -12,6 +12,8 @@ if typing.TYPE_CHECKING:
     from .app import App
     from .app_auth_type import AppAuthType
     from .app_category import AppCategory
+    from .app_scope_profiles_item import AppScopeProfilesItem
+    from .app_scope_profiles_item_name import AppScopeProfilesItemName
     from .backend_client_opts import BackendClientOpts
     from .client_opts import ClientOpts
     from .component import Component
@@ -148,6 +150,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "App": ".app",
     "AppAuthType": ".app_auth_type",
     "AppCategory": ".app_category",
+    "AppScopeProfilesItem": ".app_scope_profiles_item",
+    "AppScopeProfilesItemName": ".app_scope_profiles_item_name",
     "BackendClientOpts": ".backend_client_opts",
     "ClientOpts": ".client_opts",
     "Component": ".component",
@@ -308,6 +312,8 @@ __all__ = [
     "App",
     "AppAuthType",
     "AppCategory",
+    "AppScopeProfilesItem",
+    "AppScopeProfilesItemName",
     "BackendClientOpts",
     "ClientOpts",
     "Component",
