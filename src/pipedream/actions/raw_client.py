@@ -283,9 +283,6 @@ class RawActionsClient:
                 "prev_context": prev_context,
                 "query": query,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -372,9 +369,6 @@ class RawActionsClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -758,9 +752,6 @@ class AsyncRawActionsClient:
                 "prev_context": prev_context,
                 "query": query,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -847,9 +838,6 @@ class AsyncRawActionsClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
