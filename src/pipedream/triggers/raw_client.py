@@ -283,9 +283,6 @@ class RawTriggersClient:
                 "prev_context": prev_context,
                 "query": query,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -372,9 +369,6 @@ class RawTriggersClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -768,9 +762,6 @@ class AsyncRawTriggersClient:
                 "prev_context": prev_context,
                 "query": query,
             },
-            headers={
-                "content-type": "application/json",
-            },
             request_options=request_options,
             omit=OMIT,
         )
@@ -857,9 +848,6 @@ class AsyncRawTriggersClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
-            },
-            headers={
-                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
