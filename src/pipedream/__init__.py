@@ -162,6 +162,7 @@ if typing.TYPE_CHECKING:
         triggers,
         usage,
         users,
+        workflows,
     )
     from ._default_clients import DefaultAioHttpClient, DefaultAsyncHttpxClient
     from .actions import ActionsListRequestRegistry
@@ -171,6 +172,7 @@ if typing.TYPE_CHECKING:
     from .pipedream import AsyncPipedream, Pipedream
     from .triggers import TriggersListRequestRegistry
     from .version import __version__
+    from .workflows.client import AsyncWorkflowsClient, WorkflowsClient
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".types",
     "AccountCredentials": ".types",
@@ -184,6 +186,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AppsListRequestSortDirection": ".apps",
     "AppsListRequestSortKey": ".apps",
     "AsyncPipedream": ".pipedream",
+    "AsyncWorkflowsClient": ".workflows.client",
     "BackendClientOpts": ".types",
     "BadRequestError": ".errors",
     "ClientOpts": ".types",
@@ -322,6 +325,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Webhook": ".types",
     "WebhookWithOptionalSigningKey": ".types",
     "WebhookWithSigningKey": ".types",
+    "WorkflowsClient": ".workflows.client",
     "__version__": ".version",
     "accounts": ".accounts",
     "actions": ".actions",
@@ -338,6 +342,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "triggers": ".triggers",
     "usage": ".usage",
     "users": ".users",
+    "workflows": ".workflows",
 }
 
 
@@ -375,6 +380,7 @@ __all__ = [
     "AppsListRequestSortDirection",
     "AppsListRequestSortKey",
     "AsyncPipedream",
+    "AsyncWorkflowsClient",
     "BackendClientOpts",
     "BadRequestError",
     "ClientOpts",
@@ -513,6 +519,7 @@ __all__ = [
     "Webhook",
     "WebhookWithOptionalSigningKey",
     "WebhookWithSigningKey",
+    "WorkflowsClient",
     "__version__",
     "accounts",
     "actions",
@@ -529,4 +536,5 @@ __all__ = [
     "triggers",
     "usage",
     "users",
+    "workflows",
 ]
