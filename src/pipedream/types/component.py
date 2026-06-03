@@ -17,12 +17,12 @@ class Component(UniversalBaseModel):
 
     name: str = pydantic.Field()
     """
-    The human-readable name of the component, e.g. 'GitLab: List Commits'
+    The human-readable name of the component
     """
 
     version: str = pydantic.Field()
     """
-    The latest version of the component, in SemVer format.
+    The latest version of the component, in semantic versioning format.
     """
 
     configurable_props: typing.List[ConfigurableProp]

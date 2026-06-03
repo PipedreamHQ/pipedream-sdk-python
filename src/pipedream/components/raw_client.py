@@ -65,7 +65,7 @@ class RawComponentsClient:
             The ID or name slug of the app to filter the components
 
         registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve components from
 
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
@@ -162,10 +162,10 @@ class RawComponentsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -244,7 +244,7 @@ class RawComponentsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -287,6 +287,9 @@ class RawComponentsClient:
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -344,7 +347,7 @@ class RawComponentsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -374,6 +377,9 @@ class RawComponentsClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -446,7 +452,7 @@ class AsyncRawComponentsClient:
             The ID or name slug of the app to filter the components
 
         registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve components from
 
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
@@ -546,10 +552,10 @@ class AsyncRawComponentsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -628,7 +634,7 @@ class AsyncRawComponentsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -671,6 +677,9 @@ class AsyncRawComponentsClient:
                 "page": page,
                 "prev_context": prev_context,
                 "query": query,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
@@ -728,7 +737,7 @@ class AsyncRawComponentsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -758,6 +767,9 @@ class AsyncRawComponentsClient:
                     object_=configured_props, annotation=ConfiguredProps, direction="write"
                 ),
                 "dynamic_props_id": dynamic_props_id,
+            },
+            headers={
+                "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,

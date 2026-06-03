@@ -19,7 +19,7 @@ class ConfigurePropOpts(UniversalBaseModel):
 
     version: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+    Component semantic version
     """
 
     external_user_id: str = pydantic.Field()
