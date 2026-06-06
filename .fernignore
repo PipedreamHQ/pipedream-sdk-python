@@ -2,6 +2,7 @@
 
 # Custom CI/CD
 .github/workflows/auto-close-empty-prs.yml
+.github/workflows/ci.yml
 .github/workflows/draft-release.yml
 
 .gitignore
@@ -9,12 +10,26 @@
 # Our own license
 LICENSE
 
+# References doc (we have additional use cases)
+reference.md
+
 # Migration doc
 MIGRATE.md
 
+# Custom Pipedream client files
+src/pipedream/__init__.py
+src/pipedream/pipedream.py
+
+# Custom Proxy files
+src/pipedream/proxy/client.py
+src/pipedream/proxy/raw_client.py
+
+# Custom Workflow files
+src/pipedream/workflows/__init__.py
+src/pipedream/workflows/client.py
+
 # Project-level documentation for AI assistants
 CLAUDE.md
-
 .fern/replay.lock
 .fern/replay.yml
 .gitattributes
