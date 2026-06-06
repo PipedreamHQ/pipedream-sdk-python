@@ -31,6 +31,11 @@ class EmittedEvent(UniversalBaseModel):
     The event's unique ID
     """
 
+    sum: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    A short summary of the event's payload
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

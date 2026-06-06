@@ -66,7 +66,7 @@ class ComponentsClient:
             The ID or name slug of the app to filter the components
 
         registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve components from
 
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
@@ -127,10 +127,10 @@ class ComponentsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -150,8 +150,8 @@ class ComponentsClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.components.retrieve(
-            component_id="component_id",
-            version="1.2.3",
+            component_id="slack-send-message",
+            version="1.0.0",
         )
         """
         _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
@@ -187,7 +187,7 @@ class ComponentsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -267,7 +267,7 @@ class ComponentsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -359,7 +359,7 @@ class AsyncComponentsClient:
             The ID or name slug of the app to filter the components
 
         registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve components from
 
         component_type : typing.Optional[ComponentType]
             The type of the component to filter the components
@@ -429,10 +429,10 @@ class AsyncComponentsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -457,8 +457,8 @@ class AsyncComponentsClient:
 
         async def main() -> None:
             await client.components.retrieve(
-                component_id="component_id",
-                version="1.2.3",
+                component_id="slack-send-message",
+                version="1.0.0",
             )
 
 
@@ -497,7 +497,7 @@ class AsyncComponentsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -585,7 +585,7 @@ class AsyncComponentsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion

@@ -12,7 +12,7 @@ class ConfigurablePropApp(UniversalBaseModel):
     type: typing.Literal["app"] = "app"
     app: str = pydantic.Field()
     """
-    The name slug of the app, e.g. 'github', 'slack', etc. This is used to identify the app for which the account is being configured.
+    The name slug of the app, used to identify the app for which the account is being configured.
     """
 
     name: str = pydantic.Field()
