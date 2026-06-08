@@ -66,7 +66,7 @@ class ActionsClient:
             The ID or name slug of the app to filter the actions
 
         registry : typing.Optional[ActionsListRequestRegistry]
-            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve actions from
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -116,10 +116,10 @@ class ActionsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -139,8 +139,8 @@ class ActionsClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.actions.retrieve(
-            component_id="component_id",
-            version="1.2.3",
+            component_id="slack-send-message",
+            version="1.0.0",
         )
         """
         _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
@@ -176,7 +176,7 @@ class ActionsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -256,7 +256,7 @@ class ActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -322,7 +322,7 @@ class ActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Action component semantic version
 
         configured_props : typing.Optional[ConfiguredProps]
 
@@ -412,7 +412,7 @@ class AsyncActionsClient:
             The ID or name slug of the app to filter the actions
 
         registry : typing.Optional[ActionsListRequestRegistry]
-            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve actions from
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -471,10 +471,10 @@ class AsyncActionsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -499,8 +499,8 @@ class AsyncActionsClient:
 
         async def main() -> None:
             await client.actions.retrieve(
-                component_id="component_id",
-                version="1.2.3",
+                component_id="slack-send-message",
+                version="1.0.0",
             )
 
 
@@ -539,7 +539,7 @@ class AsyncActionsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -627,7 +627,7 @@ class AsyncActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -701,7 +701,7 @@ class AsyncActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Action component semantic version
 
         configured_props : typing.Optional[ConfiguredProps]
 
