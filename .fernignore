@@ -19,6 +19,7 @@ MIGRATE.md
 # Custom Pipedream client files
 src/pipedream/__init__.py
 src/pipedream/pipedream.py
+tests/custom/test_connect_token_project_id.py
 
 # Custom Proxy files
 src/pipedream/proxy/client.py

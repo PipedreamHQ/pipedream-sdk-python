@@ -2,13 +2,33 @@ import os
 import typing
 
 import httpx
-
 from .client import AsyncClient, Client
+from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.logging import LogConfig, Logger
 from .types.project_environment import ProjectEnvironment
 from .workflows.client import AsyncWorkflowsClient, WorkflowsClient
 
 _PROD_BASE_URL = "https://api.pipedream.com"
+
+
+def normalize_url_path(request: httpx.Request) -> None:
+    request.url = request.url.copy_with(
+        path=request.url.path.replace("//", "/"),
+    )
+
+
+async def async_normalize_url_path(request: httpx.Request) -> None:
+    normalize_url_path(request)
+
+
+def install_request_hook(
+    client_wrapper: SyncClientWrapper | AsyncClientWrapper,
+    hook: typing.Callable,
+) -> None:
+    client_wrapper.httpx_client.httpx_client.event_hooks.setdefault(
+        "request",
+        [],
+    ).append(hook)
 
 
 class Pipedream(Client):
@@ -33,8 +53,8 @@ class Pipedream(Client):
         httpx_client: typing.Optional[httpx.Client] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
-        if not project_id:
-            raise ValueError("Project ID is required")
+        # Ensure that project IDs are strings
+        project_id = project_id or ""
 
         resolved_base_url = base_url or os.environ.get("PIPEDREAM_BASE_URL") or _PROD_BASE_URL
         resolved_workflow_domain = (
@@ -57,6 +77,8 @@ class Pipedream(Client):
             super().__init__(token=(lambda: access_token), **common_kwargs)
         else:
             super().__init__(client_id=client_id, client_secret=client_secret, **common_kwargs)
+
+        install_request_hook(self._client_wrapper, normalize_url_path)
 
         self.workflows = WorkflowsClient(
             client_wrapper=self._client_wrapper,
@@ -93,8 +115,8 @@ class AsyncPipedream(AsyncClient):
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
         logging: typing.Optional[typing.Union[LogConfig, Logger]] = None,
     ):
-        if not project_id:
-            raise ValueError("Project ID is required")
+        # Ensure that project IDs are strings
+        project_id = project_id or ""
 
         resolved_base_url = base_url or os.environ.get("PIPEDREAM_BASE_URL") or _PROD_BASE_URL
         resolved_workflow_domain = (
@@ -117,6 +139,8 @@ class AsyncPipedream(AsyncClient):
             super().__init__(token=(lambda: access_token), **common_kwargs)
         else:
             super().__init__(client_id=client_id, client_secret=client_secret, **common_kwargs)
+
+        install_request_hook(self._client_wrapper, async_normalize_url_path)
 
         self.workflows = AsyncWorkflowsClient(
             client_wrapper=self._client_wrapper,
