@@ -12,6 +12,9 @@ if typing.TYPE_CHECKING:
     from .app import App
     from .app_auth_type import AppAuthType
     from .app_category import AppCategory
+    from .app_override import AppOverride
+    from .app_scope_profiles_item import AppScopeProfilesItem
+    from .app_scope_profiles_item_name import AppScopeProfilesItemName
     from .backend_client_opts import BackendClientOpts
     from .client_opts import ClientOpts
     from .component import Component
@@ -110,8 +113,11 @@ if typing.TYPE_CHECKING:
     from .http_request_field import HttpRequestField
     from .list_accounts_response import ListAccountsResponse
     from .list_app_categories_response import ListAppCategoriesResponse
+    from .list_app_overrides_response import ListAppOverridesResponse
     from .list_apps_response import ListAppsResponse
+    from .list_oauth_apps_response import ListOauthAppsResponse
     from .list_projects_response import ListProjectsResponse
+    from .oauth_app import OauthApp
     from .observation import Observation
     from .observation_error import ObservationError
     from .page_info import PageInfo
@@ -148,6 +154,9 @@ _dynamic_imports: typing.Dict[str, str] = {
     "App": ".app",
     "AppAuthType": ".app_auth_type",
     "AppCategory": ".app_category",
+    "AppOverride": ".app_override",
+    "AppScopeProfilesItem": ".app_scope_profiles_item",
+    "AppScopeProfilesItemName": ".app_scope_profiles_item_name",
     "BackendClientOpts": ".backend_client_opts",
     "ClientOpts": ".client_opts",
     "Component": ".component",
@@ -246,8 +255,11 @@ _dynamic_imports: typing.Dict[str, str] = {
     "HttpRequestField": ".http_request_field",
     "ListAccountsResponse": ".list_accounts_response",
     "ListAppCategoriesResponse": ".list_app_categories_response",
+    "ListAppOverridesResponse": ".list_app_overrides_response",
     "ListAppsResponse": ".list_apps_response",
+    "ListOauthAppsResponse": ".list_oauth_apps_response",
     "ListProjectsResponse": ".list_projects_response",
+    "OauthApp": ".oauth_app",
     "Observation": ".observation",
     "ObservationError": ".observation_error",
     "PageInfo": ".page_info",
@@ -308,6 +320,9 @@ __all__ = [
     "App",
     "AppAuthType",
     "AppCategory",
+    "AppOverride",
+    "AppScopeProfilesItem",
+    "AppScopeProfilesItemName",
     "BackendClientOpts",
     "ClientOpts",
     "Component",
@@ -406,8 +421,11 @@ __all__ = [
     "HttpRequestField",
     "ListAccountsResponse",
     "ListAppCategoriesResponse",
+    "ListAppOverridesResponse",
     "ListAppsResponse",
+    "ListOauthAppsResponse",
     "ListProjectsResponse",
+    "OauthApp",
     "Observation",
     "ObservationError",
     "PageInfo",

@@ -11,24 +11,18 @@ from ..core.pagination import AsyncPager, SyncPager
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
+from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
-from ..types.component import Component
-from ..types.component_type import ComponentType
-from ..types.configure_prop_response import ConfigurePropResponse
-from ..types.configured_props import ConfiguredProps
-from ..types.get_component_response import GetComponentResponse
-from ..types.get_components_response import GetComponentsResponse
-from ..types.reload_props_response import ReloadPropsResponse
-from .types.components_list_request_registry import ComponentsListRequestRegistry
+from ..types.list_oauth_apps_response import ListOauthAppsResponse
+from ..types.oauth_app import OauthApp
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class RawComponentsClient:
+class RawOauthAppsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -38,14 +32,12 @@ class RawComponentsClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
-        q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
-        registry: typing.Optional[ComponentsListRequestRegistry] = None,
-        component_type: typing.Optional[ComponentType] = None,
+        q: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component, GetComponentsResponse]:
+    ) -> SyncPager[OauthApp, ListOauthAppsResponse]:
         """
-        Retrieve available components with optional search and app filtering
+        List the custom OAuth clients available to the project, including the parent workspace's
 
         Parameters
         ----------
@@ -58,46 +50,38 @@ class RawComponentsClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
-        q : typing.Optional[str]
-            A search query to filter the components
-
         app : typing.Optional[str]
-            The ID or name slug of the app to filter the components
+            Only return OAuth clients for this app (ID or name slug)
 
-        registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from
-
-        component_type : typing.Optional[ComponentType]
-            The type of the component to filter the components
+        q : typing.Optional[str]
+            A search query to filter the OAuth clients by name or description
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        SyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
+        SyncPager[OauthApp, ListOauthAppsResponse]
+            OAuth clients listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps",
             method="GET",
             params={
                 "after": after,
                 "before": before,
                 "limit": limit,
-                "q": q,
                 "app": app,
-                "registry": registry,
-                "component_type": component_type,
+                "q": q,
             },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    GetComponentsResponse,
+                    ListOauthAppsResponse,
                     parse_obj_as(
-                        type_=GetComponentsResponse,  # type: ignore
+                        type_=ListOauthAppsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -111,13 +95,116 @@ class RawComponentsClient:
                         after=_parsed_next,
                         before=before,
                         limit=limit,
-                        q=q,
                         app=app,
-                        registry=registry,
-                        component_type=component_type,
+                        q=q,
                         request_options=request_options,
                     )
                 return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def create(
+        self,
+        *,
+        app: str,
+        client_id: str,
+        client_secret: str,
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        scopes: typing.Optional[typing.Sequence[str]] = OMIT,
+        additional_scopes: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[OauthApp]:
+        """
+        Register a custom OAuth client for an app
+
+        Parameters
+        ----------
+        app : str
+            The app's ID or name slug. The app must have custom OAuth clients enabled.
+
+        client_id : str
+            The OAuth client ID registered with the upstream provider
+
+        client_secret : str
+            The OAuth client secret. Write-only; never returned in responses.
+
+        name : typing.Optional[str]
+            Display name of the OAuth client
+
+        description : typing.Optional[str]
+            Description of the OAuth client
+
+        scopes : typing.Optional[typing.Sequence[str]]
+            OAuth scopes to request when users connect through this client
+
+        additional_scopes : typing.Optional[typing.Sequence[str]]
+            Extra OAuth scopes users may grant on top of the base scopes
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[OauthApp]
+            OAuth client created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps",
+            method="POST",
+            json={
+                "app": app,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "name": name,
+                "description": description,
+                "scopes": scopes,
+                "additional_scopes": additional_scopes,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    OauthApp,
+                    parse_obj_as(
+                        type_=OauthApp,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
                     headers=dict(_response.headers),
@@ -149,50 +236,37 @@ class RawComponentsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def retrieve(
-        self,
-        component_id: str,
-        *,
-        version: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[Component]:
+    def retrieve(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[OauthApp]:
         """
-        Get detailed configuration for a specific component by its key
+        Get the configuration of a specific custom OAuth client
 
         Parameters
         ----------
-        component_id : str
-            The key that uniquely identifies the component
-
-        version : typing.Optional[str]
-            Optional semantic version of the component to retrieve
+        id : str
+            The OAuth client ID, which starts with `oa_`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[Component]
-            component retrieved
+        HttpResponse[OauthApp]
+            OAuth client retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/{encode_path_param(component_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps/{encode_path_param(id)}",
             method="GET",
-            params={
-                "version": version,
-            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    GetComponentResponse,
+                _data = typing.cast(
+                    OauthApp,
                     parse_obj_as(
-                        type_=GetComponentResponse,  # type: ignore
+                        type_=OauthApp,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
-                _data = _parsed_response.data
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
@@ -214,79 +288,62 @@ class RawComponentsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def configure_prop(
+    def update(
         self,
-        *,
         id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
+        *,
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
+        scopes: typing.Optional[typing.Sequence[str]] = OMIT,
+        additional_scopes: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ConfigurePropResponse]:
+    ) -> HttpResponse[OauthApp]:
         """
-        Retrieve remote options for a given prop for a component
+        Update a custom OAuth client's credentials or configuration
 
         Parameters
         ----------
         id : str
-            The component ID
+            The OAuth client ID, which starts with `oa_`.
 
-        external_user_id : str
-            The external user ID
+        name : typing.Optional[str]
+            Display name of the OAuth client
 
-        prop_name : str
-            The name of the prop to configure
+        description : typing.Optional[str]
+            Description of the OAuth client
 
-        version : typing.Optional[str]
-            Component semantic version
+        client_id : typing.Optional[str]
+            The OAuth client ID registered with the upstream provider
 
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
+        client_secret : typing.Optional[str]
+            The OAuth client secret. Write-only; blank values are ignored and the existing secret is kept.
 
-        configured_props : typing.Optional[ConfiguredProps]
+        scopes : typing.Optional[typing.Sequence[str]]
+            OAuth scopes to request when users connect through this client
 
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
+        additional_scopes : typing.Optional[typing.Sequence[str]]
+            Extra OAuth scopes users may grant on top of the base scopes
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[ConfigurePropResponse]
-            component configuration started
+        HttpResponse[OauthApp]
+            OAuth client updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/configure",
-            method="POST",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps/{encode_path_param(id)}",
+            method="PUT",
             json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "prop_name": prop_name,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-                "page": page,
-                "prev_context": prev_context,
-                "query": query,
+                "name": name,
+                "description": description,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "scopes": scopes,
+                "additional_scopes": additional_scopes,
             },
             headers={
                 "content-type": "application/json",
@@ -297,9 +354,9 @@ class RawComponentsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfigurePropResponse,
+                    OauthApp,
                     parse_obj_as(
-                        type_=ConfigurePropResponse,  # type: ignore
+                        type_=OauthApp,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -324,76 +381,41 @@ class RawComponentsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def reload_props(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ReloadPropsResponse]:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
         """
-        Reload the prop definition based on the currently configured props
+        Remove a custom OAuth client that is no longer in use
 
         Parameters
         ----------
         id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
+            The OAuth client ID, which starts with `oa_`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[ReloadPropsResponse]
-            component props reloaded
+        HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/props",
-            method="POST",
-            json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-            },
-            headers={
-                "content-type": "application/json",
-            },
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps/{encode_path_param(id)}",
+            method="DELETE",
             request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ReloadPropsResponse,
-                    parse_obj_as(
-                        type_=ReloadPropsResponse,  # type: ignore
-                        object_=_response.json(),
+                return HttpResponse(response=_response, data=None)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
                     ),
                 )
-                return HttpResponse(response=_response, data=_data)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -415,7 +437,7 @@ class RawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
-class AsyncRawComponentsClient:
+class AsyncRawOauthAppsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -425,14 +447,12 @@ class AsyncRawComponentsClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
-        q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
-        registry: typing.Optional[ComponentsListRequestRegistry] = None,
-        component_type: typing.Optional[ComponentType] = None,
+        q: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component, GetComponentsResponse]:
+    ) -> AsyncPager[OauthApp, ListOauthAppsResponse]:
         """
-        Retrieve available components with optional search and app filtering
+        List the custom OAuth clients available to the project, including the parent workspace's
 
         Parameters
         ----------
@@ -445,46 +465,38 @@ class AsyncRawComponentsClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
-        q : typing.Optional[str]
-            A search query to filter the components
-
         app : typing.Optional[str]
-            The ID or name slug of the app to filter the components
+            Only return OAuth clients for this app (ID or name slug)
 
-        registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from
-
-        component_type : typing.Optional[ComponentType]
-            The type of the component to filter the components
+        q : typing.Optional[str]
+            A search query to filter the OAuth clients by name or description
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
+        AsyncPager[OauthApp, ListOauthAppsResponse]
+            OAuth clients listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps",
             method="GET",
             params={
                 "after": after,
                 "before": before,
                 "limit": limit,
-                "q": q,
                 "app": app,
-                "registry": registry,
-                "component_type": component_type,
+                "q": q,
             },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    GetComponentsResponse,
+                    ListOauthAppsResponse,
                     parse_obj_as(
-                        type_=GetComponentsResponse,  # type: ignore
+                        type_=ListOauthAppsResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -500,14 +512,117 @@ class AsyncRawComponentsClient:
                             after=_parsed_next,
                             before=before,
                             limit=limit,
-                            q=q,
                             app=app,
-                            registry=registry,
-                            component_type=component_type,
+                            q=q,
                             request_options=request_options,
                         )
 
                 return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create(
+        self,
+        *,
+        app: str,
+        client_id: str,
+        client_secret: str,
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        scopes: typing.Optional[typing.Sequence[str]] = OMIT,
+        additional_scopes: typing.Optional[typing.Sequence[str]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[OauthApp]:
+        """
+        Register a custom OAuth client for an app
+
+        Parameters
+        ----------
+        app : str
+            The app's ID or name slug. The app must have custom OAuth clients enabled.
+
+        client_id : str
+            The OAuth client ID registered with the upstream provider
+
+        client_secret : str
+            The OAuth client secret. Write-only; never returned in responses.
+
+        name : typing.Optional[str]
+            Display name of the OAuth client
+
+        description : typing.Optional[str]
+            Description of the OAuth client
+
+        scopes : typing.Optional[typing.Sequence[str]]
+            OAuth scopes to request when users connect through this client
+
+        additional_scopes : typing.Optional[typing.Sequence[str]]
+            Extra OAuth scopes users may grant on top of the base scopes
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[OauthApp]
+            OAuth client created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps",
+            method="POST",
+            json={
+                "app": app,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "name": name,
+                "description": description,
+                "scopes": scopes,
+                "additional_scopes": additional_scopes,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    OauthApp,
+                    parse_obj_as(
+                        type_=OauthApp,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
                     headers=dict(_response.headers),
@@ -540,156 +655,35 @@ class AsyncRawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
-        self,
-        component_id: str,
-        *,
-        version: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[Component]:
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[OauthApp]:
         """
-        Get detailed configuration for a specific component by its key
+        Get the configuration of a specific custom OAuth client
 
         Parameters
         ----------
-        component_id : str
-            The key that uniquely identifies the component
-
-        version : typing.Optional[str]
-            Optional semantic version of the component to retrieve
+        id : str
+            The OAuth client ID, which starts with `oa_`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[Component]
-            component retrieved
+        AsyncHttpResponse[OauthApp]
+            OAuth client retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/{encode_path_param(component_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps/{encode_path_param(id)}",
             method="GET",
-            params={
-                "version": version,
-            },
             request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    GetComponentResponse,
-                    parse_obj_as(
-                        type_=GetComponentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _data = _parsed_response.data
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def configure_prop(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ConfigurePropResponse]:
-        """
-        Retrieve remote options for a given prop for a component
-
-        Parameters
-        ----------
-        id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        prop_name : str
-            The name of the prop to configure
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ConfigurePropResponse]
-            component configuration started
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/configure",
-            method="POST",
-            json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "prop_name": prop_name,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-                "page": page,
-                "prev_context": prev_context,
-                "query": query,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfigurePropResponse,
+                    OauthApp,
                     parse_obj_as(
-                        type_=ConfigurePropResponse,  # type: ignore
+                        type_=OauthApp,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -714,59 +708,62 @@ class AsyncRawComponentsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def reload_props(
+    async def update(
         self,
-        *,
         id: str,
-        external_user_id: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
+        *,
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
+        scopes: typing.Optional[typing.Sequence[str]] = OMIT,
+        additional_scopes: typing.Optional[typing.Sequence[str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ReloadPropsResponse]:
+    ) -> AsyncHttpResponse[OauthApp]:
         """
-        Reload the prop definition based on the currently configured props
+        Update a custom OAuth client's credentials or configuration
 
         Parameters
         ----------
         id : str
-            The component ID
+            The OAuth client ID, which starts with `oa_`.
 
-        external_user_id : str
-            The external user ID
+        name : typing.Optional[str]
+            Display name of the OAuth client
 
-        version : typing.Optional[str]
-            Component semantic version
+        description : typing.Optional[str]
+            Description of the OAuth client
 
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
+        client_id : typing.Optional[str]
+            The OAuth client ID registered with the upstream provider
 
-        configured_props : typing.Optional[ConfiguredProps]
+        client_secret : typing.Optional[str]
+            The OAuth client secret. Write-only; blank values are ignored and the existing secret is kept.
 
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
+        scopes : typing.Optional[typing.Sequence[str]]
+            OAuth scopes to request when users connect through this client
+
+        additional_scopes : typing.Optional[typing.Sequence[str]]
+            Extra OAuth scopes users may grant on top of the base scopes
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[ReloadPropsResponse]
-            component props reloaded
+        AsyncHttpResponse[OauthApp]
+            OAuth client updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/props",
-            method="POST",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps/{encode_path_param(id)}",
+            method="PUT",
             json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
+                "name": name,
+                "description": description,
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "scopes": scopes,
+                "additional_scopes": additional_scopes,
             },
             headers={
                 "content-type": "application/json",
@@ -777,13 +774,70 @@ class AsyncRawComponentsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ReloadPropsResponse,
+                    OauthApp,
                     parse_obj_as(
-                        type_=ReloadPropsResponse,  # type: ignore
+                        type_=OauthApp,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[None]:
+        """
+        Remove a custom OAuth client that is no longer in use
+
+        Parameters
+        ----------
+        id : str
+            The OAuth client ID, which starts with `oa_`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[None]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/oauth_apps/{encode_path_param(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return AsyncHttpResponse(response=_response, data=None)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),

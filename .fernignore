@@ -19,6 +19,7 @@ MIGRATE.md
 # Custom Pipedream client files
 src/pipedream/__init__.py
 src/pipedream/pipedream.py
+tests/custom/test_connect_token_project_id.py
 
 # Custom Proxy files
 src/pipedream/proxy/client.py
@@ -30,3 +31,6 @@ src/pipedream/workflows/client.py
 
 # Project-level documentation for AI assistants
 CLAUDE.md
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes

@@ -65,7 +65,7 @@ class TriggersClient:
             The ID or name slug of the app to filter the triggers
 
         registry : typing.Optional[TriggersListRequestRegistry]
-            The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve triggers from
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -115,10 +115,10 @@ class TriggersClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -138,8 +138,8 @@ class TriggersClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.triggers.retrieve(
-            component_id="component_id",
-            version="1.2.3",
+            component_id="slack-send-message",
+            version="1.0.0",
         )
         """
         _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
@@ -175,7 +175,7 @@ class TriggersClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -255,7 +255,7 @@ class TriggersClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -323,7 +323,7 @@ class TriggersClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Trigger component semantic version
 
         configured_props : typing.Optional[ConfiguredProps]
 
@@ -422,7 +422,7 @@ class AsyncTriggersClient:
             The ID or name slug of the app to filter the triggers
 
         registry : typing.Optional[TriggersListRequestRegistry]
-            The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve triggers from
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -481,10 +481,10 @@ class AsyncTriggersClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -509,8 +509,8 @@ class AsyncTriggersClient:
 
         async def main() -> None:
             await client.triggers.retrieve(
-                component_id="component_id",
-                version="1.2.3",
+                component_id="slack-send-message",
+                version="1.0.0",
             )
 
 
@@ -549,7 +549,7 @@ class AsyncTriggersClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -637,7 +637,7 @@ class AsyncTriggersClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -713,7 +713,7 @@ class AsyncTriggersClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Trigger component semantic version
 
         configured_props : typing.Optional[ConfiguredProps]
 

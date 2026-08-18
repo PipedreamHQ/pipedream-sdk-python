@@ -11,24 +11,18 @@ from ..core.pagination import AsyncPager, SyncPager
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
-from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.bad_request_error import BadRequestError
+from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
-from ..types.component import Component
-from ..types.component_type import ComponentType
-from ..types.configure_prop_response import ConfigurePropResponse
-from ..types.configured_props import ConfiguredProps
-from ..types.get_component_response import GetComponentResponse
-from ..types.get_components_response import GetComponentsResponse
-from ..types.reload_props_response import ReloadPropsResponse
-from .types.components_list_request_registry import ComponentsListRequestRegistry
+from ..types.app_override import AppOverride
+from ..types.list_app_overrides_response import ListAppOverridesResponse
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class RawComponentsClient:
+class RawAppOverridesClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -38,14 +32,11 @@ class RawComponentsClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
-        q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
-        registry: typing.Optional[ComponentsListRequestRegistry] = None,
-        component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component, GetComponentsResponse]:
+    ) -> SyncPager[AppOverride, ListAppOverridesResponse]:
         """
-        Retrieve available components with optional search and app filtering
+        List the app overrides available to the project, including the parent workspace's
 
         Parameters
         ----------
@@ -58,46 +49,34 @@ class RawComponentsClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
-        q : typing.Optional[str]
-            A search query to filter the components
-
         app : typing.Optional[str]
-            The ID or name slug of the app to filter the components
-
-        registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from
-
-        component_type : typing.Optional[ComponentType]
-            The type of the component to filter the components
+            Only return overrides for this app (ID or name slug)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        SyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
+        SyncPager[AppOverride, ListAppOverridesResponse]
+            app overrides listed
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides",
             method="GET",
             params={
                 "after": after,
                 "before": before,
                 "limit": limit,
-                "q": q,
                 "app": app,
-                "registry": registry,
-                "component_type": component_type,
             },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    GetComponentsResponse,
+                    ListAppOverridesResponse,
                     parse_obj_as(
-                        type_=GetComponentsResponse,  # type: ignore
+                        type_=ListAppOverridesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -111,13 +90,100 @@ class RawComponentsClient:
                         after=_parsed_next,
                         before=before,
                         limit=limit,
-                        q=q,
                         app=app,
-                        registry=registry,
-                        component_type=component_type,
                         request_options=request_options,
                     )
                 return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def create(
+        self,
+        *,
+        app: str,
+        name: str,
+        oauth_app_id: typing.Optional[str] = OMIT,
+        cfmap: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[AppOverride]:
+        """
+        Create an app override with pre-defined custom field values
+
+        Parameters
+        ----------
+        app : str
+            The app's ID or name slug
+
+        name : str
+            Name of the override, unique per owner
+
+        oauth_app_id : typing.Optional[str]
+            Hash ID of the custom OAuth client to use
+
+        cfmap : typing.Optional[typing.Dict[str, typing.Any]]
+            Pre-defined custom field values, keyed by the app's custom field names. Sensitive (password-type) fields are rejected.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[AppOverride]
+            app override created
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides",
+            method="POST",
+            json={
+                "app": app,
+                "name": name,
+                "oauth_app_id": oauth_app_id,
+                "cfmap": cfmap,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AppOverride,
+                    parse_obj_as(
+                        type_=AppOverride,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
                     headers=dict(_response.headers),
@@ -150,49 +216,38 @@ class RawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def retrieve(
-        self,
-        component_id: str,
-        *,
-        version: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[Component]:
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[AppOverride]:
         """
-        Get detailed configuration for a specific component by its key
+        Get the configuration of a specific app override
 
         Parameters
         ----------
-        component_id : str
-            The key that uniquely identifies the component
-
-        version : typing.Optional[str]
-            Optional semantic version of the component to retrieve
+        id : str
+            The app override ID, which starts with `ao_`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[Component]
-            component retrieved
+        HttpResponse[AppOverride]
+            app override retrieved
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/{encode_path_param(component_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides/{encode_path_param(id)}",
             method="GET",
-            params={
-                "version": version,
-            },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    GetComponentResponse,
+                _data = typing.cast(
+                    AppOverride,
                     parse_obj_as(
-                        type_=GetComponentResponse,  # type: ignore
+                        type_=AppOverride,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
-                _data = _parsed_response.data
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
@@ -214,79 +269,47 @@ class RawComponentsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def configure_prop(
+    def update(
         self,
-        *,
         id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
+        *,
+        name: typing.Optional[str] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
+        cfmap: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ConfigurePropResponse]:
+    ) -> HttpResponse[AppOverride]:
         """
-        Retrieve remote options for a given prop for a component
+        Update an app override's name, custom field values, or OAuth client selection
 
         Parameters
         ----------
         id : str
-            The component ID
+            The app override ID, which starts with `ao_`.
 
-        external_user_id : str
-            The external user ID
+        name : typing.Optional[str]
+            Name of the override, unique per owner
 
-        prop_name : str
-            The name of the prop to configure
+        oauth_app_id : typing.Optional[str]
+            Hash ID of the custom OAuth client to use. Pass null to clear it.
 
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
+        cfmap : typing.Optional[typing.Dict[str, typing.Any]]
+            Pre-defined custom field values, keyed by the app's custom field names. Sensitive (password-type) fields are rejected.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[ConfigurePropResponse]
-            component configuration started
+        HttpResponse[AppOverride]
+            app override updated
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/configure",
-            method="POST",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides/{encode_path_param(id)}",
+            method="PUT",
             json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "prop_name": prop_name,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-                "page": page,
-                "prev_context": prev_context,
-                "query": query,
+                "name": name,
+                "oauth_app_id": oauth_app_id,
+                "cfmap": cfmap,
             },
             headers={
                 "content-type": "application/json",
@@ -297,13 +320,24 @@ class RawComponentsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfigurePropResponse,
+                    AppOverride,
                     parse_obj_as(
-                        type_=ConfigurePropResponse,  # type: ignore
+                        type_=AppOverride,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -324,76 +358,30 @@ class RawComponentsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def reload_props(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ReloadPropsResponse]:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
         """
-        Reload the prop definition based on the currently configured props
+        Delete an app override without affecting accounts already connected with it
 
         Parameters
         ----------
         id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
+            The app override ID, which starts with `ao_`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[ReloadPropsResponse]
-            component props reloaded
+        HttpResponse[None]
         """
         _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/props",
-            method="POST",
-            json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-            },
-            headers={
-                "content-type": "application/json",
-            },
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides/{encode_path_param(id)}",
+            method="DELETE",
             request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ReloadPropsResponse,
-                    parse_obj_as(
-                        type_=ReloadPropsResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
+                return HttpResponse(response=_response, data=None)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -415,7 +403,7 @@ class RawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
-class AsyncRawComponentsClient:
+class AsyncRawAppOverridesClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
@@ -425,14 +413,11 @@ class AsyncRawComponentsClient:
         after: typing.Optional[str] = None,
         before: typing.Optional[str] = None,
         limit: typing.Optional[int] = None,
-        q: typing.Optional[str] = None,
         app: typing.Optional[str] = None,
-        registry: typing.Optional[ComponentsListRequestRegistry] = None,
-        component_type: typing.Optional[ComponentType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component, GetComponentsResponse]:
+    ) -> AsyncPager[AppOverride, ListAppOverridesResponse]:
         """
-        Retrieve available components with optional search and app filtering
+        List the app overrides available to the project, including the parent workspace's
 
         Parameters
         ----------
@@ -445,46 +430,34 @@ class AsyncRawComponentsClient:
         limit : typing.Optional[int]
             The maximum number of results to return
 
-        q : typing.Optional[str]
-            A search query to filter the components
-
         app : typing.Optional[str]
-            The ID or name slug of the app to filter the components
-
-        registry : typing.Optional[ComponentsListRequestRegistry]
-            The registry to retrieve components from
-
-        component_type : typing.Optional[ComponentType]
-            The type of the component to filter the components
+            Only return overrides for this app (ID or name slug)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
+        AsyncPager[AppOverride, ListAppOverridesResponse]
+            app overrides listed
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides",
             method="GET",
             params={
                 "after": after,
                 "before": before,
                 "limit": limit,
-                "q": q,
                 "app": app,
-                "registry": registry,
-                "component_type": component_type,
             },
             request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _parsed_response = typing.cast(
-                    GetComponentsResponse,
+                    ListAppOverridesResponse,
                     parse_obj_as(
-                        type_=GetComponentsResponse,  # type: ignore
+                        type_=ListAppOverridesResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -500,14 +473,101 @@ class AsyncRawComponentsClient:
                             after=_parsed_next,
                             before=before,
                             limit=limit,
-                            q=q,
                             app=app,
-                            registry=registry,
-                            component_type=component_type,
                             request_options=request_options,
                         )
 
                 return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create(
+        self,
+        *,
+        app: str,
+        name: str,
+        oauth_app_id: typing.Optional[str] = OMIT,
+        cfmap: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[AppOverride]:
+        """
+        Create an app override with pre-defined custom field values
+
+        Parameters
+        ----------
+        app : str
+            The app's ID or name slug
+
+        name : str
+            Name of the override, unique per owner
+
+        oauth_app_id : typing.Optional[str]
+            Hash ID of the custom OAuth client to use
+
+        cfmap : typing.Optional[typing.Dict[str, typing.Any]]
+            Pre-defined custom field values, keyed by the app's custom field names. Sensitive (password-type) fields are rejected.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[AppOverride]
+            app override created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides",
+            method="POST",
+            json={
+                "app": app,
+                "name": name,
+                "oauth_app_id": oauth_app_id,
+                "cfmap": cfmap,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    AppOverride,
+                    parse_obj_as(
+                        type_=AppOverride,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
                     headers=dict(_response.headers),
@@ -540,156 +600,35 @@ class AsyncRawComponentsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def retrieve(
-        self,
-        component_id: str,
-        *,
-        version: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[Component]:
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[AppOverride]:
         """
-        Get detailed configuration for a specific component by its key
+        Get the configuration of a specific app override
 
         Parameters
         ----------
-        component_id : str
-            The key that uniquely identifies the component
-
-        version : typing.Optional[str]
-            Optional semantic version of the component to retrieve
+        id : str
+            The app override ID, which starts with `ao_`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[Component]
-            component retrieved
+        AsyncHttpResponse[AppOverride]
+            app override retrieved
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/{encode_path_param(component_id)}",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides/{encode_path_param(id)}",
             method="GET",
-            params={
-                "version": version,
-            },
             request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    GetComponentResponse,
-                    parse_obj_as(
-                        type_=GetComponentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _data = _parsed_response.data
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def configure_prop(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ConfigurePropResponse]:
-        """
-        Retrieve remote options for a given prop for a component
-
-        Parameters
-        ----------
-        id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        prop_name : str
-            The name of the prop to configure
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ConfigurePropResponse]
-            component configuration started
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/configure",
-            method="POST",
-            json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "prop_name": prop_name,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-                "page": page,
-                "prev_context": prev_context,
-                "query": query,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfigurePropResponse,
+                    AppOverride,
                     parse_obj_as(
-                        type_=ConfigurePropResponse,  # type: ignore
+                        type_=AppOverride,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -714,59 +653,47 @@ class AsyncRawComponentsClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def reload_props(
+    async def update(
         self,
-        *,
         id: str,
-        external_user_id: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
+        *,
+        name: typing.Optional[str] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
+        cfmap: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ReloadPropsResponse]:
+    ) -> AsyncHttpResponse[AppOverride]:
         """
-        Reload the prop definition based on the currently configured props
+        Update an app override's name, custom field values, or OAuth client selection
 
         Parameters
         ----------
         id : str
-            The component ID
+            The app override ID, which starts with `ao_`.
 
-        external_user_id : str
-            The external user ID
+        name : typing.Optional[str]
+            Name of the override, unique per owner
 
-        version : typing.Optional[str]
-            Component semantic version
+        oauth_app_id : typing.Optional[str]
+            Hash ID of the custom OAuth client to use. Pass null to clear it.
 
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
+        cfmap : typing.Optional[typing.Dict[str, typing.Any]]
+            Pre-defined custom field values, keyed by the app's custom field names. Sensitive (password-type) fields are rejected.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[ReloadPropsResponse]
-            component props reloaded
+        AsyncHttpResponse[AppOverride]
+            app override updated
         """
         _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/components/props",
-            method="POST",
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides/{encode_path_param(id)}",
+            method="PUT",
             json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
+                "name": name,
+                "oauth_app_id": oauth_app_id,
+                "cfmap": cfmap,
             },
             headers={
                 "content-type": "application/json",
@@ -777,13 +704,70 @@ class AsyncRawComponentsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ReloadPropsResponse,
+                    AppOverride,
                     parse_obj_as(
-                        type_=ReloadPropsResponse,  # type: ignore
+                        type_=AppOverride,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[None]:
+        """
+        Delete an app override without affecting accounts already connected with it
+
+        Parameters
+        ----------
+        id : str
+            The app override ID, which starts with `ao_`.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[None]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/app_overrides/{encode_path_param(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return AsyncHttpResponse(response=_response, data=None)
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),

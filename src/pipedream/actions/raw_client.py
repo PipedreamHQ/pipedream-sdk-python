@@ -65,7 +65,7 @@ class RawActionsClient:
             The ID or name slug of the app to filter the actions
 
         registry : typing.Optional[ActionsListRequestRegistry]
-            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve actions from
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -157,10 +157,10 @@ class RawActionsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -239,7 +239,7 @@ class RawActionsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -342,7 +342,7 @@ class RawActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -432,7 +432,7 @@ class RawActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Action component semantic version
 
         configured_props : typing.Optional[ConfiguredProps]
 
@@ -537,7 +537,7 @@ class AsyncRawActionsClient:
             The ID or name slug of the app to filter the actions
 
         registry : typing.Optional[ActionsListRequestRegistry]
-            The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all')
+            The registry to retrieve actions from
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -632,10 +632,10 @@ class AsyncRawActionsClient:
         Parameters
         ----------
         component_id : str
-            The key that uniquely identifies the component (e.g., 'slack-send-message')
+            The key that uniquely identifies the component
 
         version : typing.Optional[str]
-            Optional semantic version of the component to retrieve (for example '1.0.0')
+            Optional semantic version of the component to retrieve
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -714,7 +714,7 @@ class AsyncRawActionsClient:
             The name of the prop to configure
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -817,7 +817,7 @@ class AsyncRawActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Component semantic version
 
         blocking : typing.Optional[bool]
             Whether this operation should block until completion
@@ -907,7 +907,7 @@ class AsyncRawActionsClient:
             The external user ID
 
         version : typing.Optional[str]
-            Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest
+            Action component semantic version
 
         configured_props : typing.Optional[ConfiguredProps]
 
