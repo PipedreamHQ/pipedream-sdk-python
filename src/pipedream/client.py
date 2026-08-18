@@ -17,10 +17,12 @@ if typing.TYPE_CHECKING:
     from .accounts.client import AccountsClient, AsyncAccountsClient
     from .actions.client import ActionsClient, AsyncActionsClient
     from .app_categories.client import AppCategoriesClient, AsyncAppCategoriesClient
+    from .app_overrides.client import AppOverridesClient, AsyncAppOverridesClient
     from .apps.client import AppsClient, AsyncAppsClient
     from .components.client import AsyncComponentsClient, ComponentsClient
     from .deployed_triggers.client import AsyncDeployedTriggersClient, DeployedTriggersClient
     from .file_stash.client import AsyncFileStashClient, FileStashClient
+    from .oauth_apps.client import AsyncOauthAppsClient, OauthAppsClient
     from .oauth_tokens.client import AsyncOauthTokensClient, OauthTokensClient
     from .project_environment.client import AsyncProjectEnvironmentClient, ProjectEnvironmentClient
     from .projects.client import AsyncProjectsClient, ProjectsClient
@@ -212,10 +214,12 @@ class Client:
         self._apps: typing.Optional[AppsClient] = None
         self._accounts: typing.Optional[AccountsClient] = None
         self._users: typing.Optional[UsersClient] = None
+        self._app_overrides: typing.Optional[AppOverridesClient] = None
         self._components: typing.Optional[ComponentsClient] = None
         self._actions: typing.Optional[ActionsClient] = None
         self._triggers: typing.Optional[TriggersClient] = None
         self._deployed_triggers: typing.Optional[DeployedTriggersClient] = None
+        self._oauth_apps: typing.Optional[OauthAppsClient] = None
         self._project_environment: typing.Optional[ProjectEnvironmentClient] = None
         self._projects: typing.Optional[ProjectsClient] = None
         self._file_stash: typing.Optional[FileStashClient] = None
@@ -257,6 +261,14 @@ class Client:
         return self._users
 
     @property
+    def app_overrides(self):
+        if self._app_overrides is None:
+            from .app_overrides.client import AppOverridesClient  # noqa: E402
+
+            self._app_overrides = AppOverridesClient(client_wrapper=self._client_wrapper)
+        return self._app_overrides
+
+    @property
     def components(self):
         if self._components is None:
             from .components.client import ComponentsClient  # noqa: E402
@@ -287,6 +299,14 @@ class Client:
 
             self._deployed_triggers = DeployedTriggersClient(client_wrapper=self._client_wrapper)
         return self._deployed_triggers
+
+    @property
+    def oauth_apps(self):
+        if self._oauth_apps is None:
+            from .oauth_apps.client import OauthAppsClient  # noqa: E402
+
+            self._oauth_apps = OauthAppsClient(client_wrapper=self._client_wrapper)
+        return self._oauth_apps
 
     @property
     def project_environment(self):
@@ -541,10 +561,12 @@ class AsyncClient:
         self._apps: typing.Optional[AsyncAppsClient] = None
         self._accounts: typing.Optional[AsyncAccountsClient] = None
         self._users: typing.Optional[AsyncUsersClient] = None
+        self._app_overrides: typing.Optional[AsyncAppOverridesClient] = None
         self._components: typing.Optional[AsyncComponentsClient] = None
         self._actions: typing.Optional[AsyncActionsClient] = None
         self._triggers: typing.Optional[AsyncTriggersClient] = None
         self._deployed_triggers: typing.Optional[AsyncDeployedTriggersClient] = None
+        self._oauth_apps: typing.Optional[AsyncOauthAppsClient] = None
         self._project_environment: typing.Optional[AsyncProjectEnvironmentClient] = None
         self._projects: typing.Optional[AsyncProjectsClient] = None
         self._file_stash: typing.Optional[AsyncFileStashClient] = None
@@ -586,6 +608,14 @@ class AsyncClient:
         return self._users
 
     @property
+    def app_overrides(self):
+        if self._app_overrides is None:
+            from .app_overrides.client import AsyncAppOverridesClient  # noqa: E402
+
+            self._app_overrides = AsyncAppOverridesClient(client_wrapper=self._client_wrapper)
+        return self._app_overrides
+
+    @property
     def components(self):
         if self._components is None:
             from .components.client import AsyncComponentsClient  # noqa: E402
@@ -616,6 +646,14 @@ class AsyncClient:
 
             self._deployed_triggers = AsyncDeployedTriggersClient(client_wrapper=self._client_wrapper)
         return self._deployed_triggers
+
+    @property
+    def oauth_apps(self):
+        if self._oauth_apps is None:
+            from .oauth_apps.client import AsyncOauthAppsClient  # noqa: E402
+
+            self._oauth_apps = AsyncOauthAppsClient(client_wrapper=self._client_wrapper)
+        return self._oauth_apps
 
     @property
     def project_environment(self):
