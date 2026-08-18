@@ -55,16 +55,32 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check if tag is on main
+        id: tag-on-main
+        run: |
+          if git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "on-main=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "on-main=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skipping publish: tag $GITHUB_REF_NAME is not on main"
+          fi
       - name: Set up python
+        if: steps.tag-on-main.outputs.on-main == 'true'
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
       - name: Bootstrap poetry
+        if: steps.tag-on-main.outputs.on-main == 'true'
         run: |
           curl -sSL https://install.python-poetry.org | python - -y --version 1.5.1
       - name: Install dependencies
+        if: steps.tag-on-main.outputs.on-main == 'true'
         run: poetry install
       - name: Build package
+        if: steps.tag-on-main.outputs.on-main == 'true'
         run: poetry --no-interaction -v build
       - name: Publish package
+        if: steps.tag-on-main.outputs.on-main == 'true'
         uses: pypa/gh-action-pypi-publish@release/v1
