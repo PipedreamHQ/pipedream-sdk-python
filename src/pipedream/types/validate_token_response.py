@@ -28,6 +28,11 @@ class ValidateTokenResponse(UniversalBaseModel):
     OAuth app ID if applicable
     """
 
+    oauth_app_workday_official: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    True when the resolved OAuth client is the app's Workday-official client
+    """
+
     project_app_name: typing.Optional[str] = pydantic.Field(default=None)
     """
     Name of the project app
