@@ -139,6 +139,7 @@ class RawAccountsClient:
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
         account_id: typing.Optional[str] = OMIT,
+        app_override_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Account]:
         """
@@ -166,6 +167,9 @@ class RawAccountsClient:
         account_id : typing.Optional[str]
             An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
 
+        app_override_id : typing.Optional[str]
+            An app override ID. The account is linked to the override and the override's pre-defined custom field values are merged over cfmap_json; with account_id, the account is re-linked to this override. Must belong to the app identified by app_slug, and must not select an OAuth client — overrides that do can only connect through the OAuth flow.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -187,6 +191,7 @@ class RawAccountsClient:
                 "connect_token": connect_token,
                 "name": name,
                 "account_id": account_id,
+                "app_override_id": app_override_id,
             },
             headers={
                 "content-type": "application/json",
@@ -564,6 +569,7 @@ class AsyncRawAccountsClient:
         oauth_app_id: typing.Optional[str] = None,
         name: typing.Optional[str] = OMIT,
         account_id: typing.Optional[str] = OMIT,
+        app_override_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Account]:
         """
@@ -591,6 +597,9 @@ class AsyncRawAccountsClient:
         account_id : typing.Optional[str]
             An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug.
 
+        app_override_id : typing.Optional[str]
+            An app override ID. The account is linked to the override and the override's pre-defined custom field values are merged over cfmap_json; with account_id, the account is re-linked to this override. Must belong to the app identified by app_slug, and must not select an OAuth client — overrides that do can only connect through the OAuth flow.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -612,6 +621,7 @@ class AsyncRawAccountsClient:
                 "connect_token": connect_token,
                 "name": name,
                 "account_id": account_id,
+                "app_override_id": app_override_id,
             },
             headers={
                 "content-type": "application/json",
