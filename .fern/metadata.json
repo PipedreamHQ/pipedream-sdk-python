@@ -10,9 +10,9 @@
       "exported_filename": "pipedream.py"
     }
   },
-  "originGitCommit": "729a65c6931057ef726cbf54bc9603b5d93c752a",
+  "originGitCommit": "4ec89179f0cd7c09cc536f40a9c42a089d9cd425",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "ciProvider": "github",
-  "sdkVersion": "2.1.19"
+  "sdkVersion": "2.1.20"
 }

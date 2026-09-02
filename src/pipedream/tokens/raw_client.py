@@ -35,6 +35,8 @@ class RawTokensClient:
         success_redirect_uri: typing.Optional[str] = OMIT,
         webhook_uri: typing.Optional[str] = OMIT,
         allow_progressive_scopes: typing.Optional[bool] = OMIT,
+        app_id: typing.Optional[str] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateTokenResponse]:
         """
@@ -66,6 +68,12 @@ class RawTokensClient:
         allow_progressive_scopes : typing.Optional[bool]
             When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
 
+        app_id : typing.Optional[str]
+            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
+
+        oauth_app_id : typing.Optional[str]
+            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -86,6 +94,8 @@ class RawTokensClient:
                 "success_redirect_uri": success_redirect_uri,
                 "webhook_uri": webhook_uri,
                 "allow_progressive_scopes": allow_progressive_scopes,
+                "app_id": app_id,
+                "oauth_app_id": oauth_app_id,
             },
             headers={
                 "content-type": "application/json",
@@ -127,9 +137,10 @@ class RawTokensClient:
         self,
         ctok: ConnectToken,
         *,
-        app_id: str,
+        app_id: typing.Optional[str] = None,
         account_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
+        app_override_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ValidateTokenResponse]:
         """
@@ -139,14 +150,17 @@ class RawTokensClient:
         ----------
         ctok : ConnectToken
 
-        app_id : str
-            The app ID to validate against
+        app_id : typing.Optional[str]
+            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
 
         account_id : typing.Optional[str]
             An existing account ID to reconnect. Must belong to the app identified by app_id.
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to validate against (if the token is for an OAuth app)
+
+        app_override_id : typing.Optional[str]
+            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -163,6 +177,7 @@ class RawTokensClient:
                 "app_id": app_id,
                 "account_id": account_id,
                 "oauth_app_id": oauth_app_id,
+                "app_override_id": app_override_id,
             },
             request_options=request_options,
         )
@@ -212,6 +227,8 @@ class AsyncRawTokensClient:
         success_redirect_uri: typing.Optional[str] = OMIT,
         webhook_uri: typing.Optional[str] = OMIT,
         allow_progressive_scopes: typing.Optional[bool] = OMIT,
+        app_id: typing.Optional[str] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateTokenResponse]:
         """
@@ -243,6 +260,12 @@ class AsyncRawTokensClient:
         allow_progressive_scopes : typing.Optional[bool]
             When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
 
+        app_id : typing.Optional[str]
+            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
+
+        oauth_app_id : typing.Optional[str]
+            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -263,6 +286,8 @@ class AsyncRawTokensClient:
                 "success_redirect_uri": success_redirect_uri,
                 "webhook_uri": webhook_uri,
                 "allow_progressive_scopes": allow_progressive_scopes,
+                "app_id": app_id,
+                "oauth_app_id": oauth_app_id,
             },
             headers={
                 "content-type": "application/json",
@@ -304,9 +329,10 @@ class AsyncRawTokensClient:
         self,
         ctok: ConnectToken,
         *,
-        app_id: str,
+        app_id: typing.Optional[str] = None,
         account_id: typing.Optional[str] = None,
         oauth_app_id: typing.Optional[str] = None,
+        app_override_id: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ValidateTokenResponse]:
         """
@@ -316,14 +342,17 @@ class AsyncRawTokensClient:
         ----------
         ctok : ConnectToken
 
-        app_id : str
-            The app ID to validate against
+        app_id : typing.Optional[str]
+            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
 
         account_id : typing.Optional[str]
             An existing account ID to reconnect. Must belong to the app identified by app_id.
 
         oauth_app_id : typing.Optional[str]
             The OAuth app ID to validate against (if the token is for an OAuth app)
+
+        app_override_id : typing.Optional[str]
+            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -340,6 +369,7 @@ class AsyncRawTokensClient:
                 "app_id": app_id,
                 "account_id": account_id,
                 "oauth_app_id": oauth_app_id,
+                "app_override_id": app_override_id,
             },
             request_options=request_options,
         )

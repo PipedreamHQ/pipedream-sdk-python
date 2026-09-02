@@ -13,6 +13,16 @@ class ValidateTokenResponse(UniversalBaseModel):
     """
 
     app: typing.Optional[App] = None
+    app_override_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of the resolved app override, echoed from the request
+    """
+
+    app_override_field_names: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    Names of the custom fields the resolved app override pre-defines
+    """
+
     error: typing.Optional[str] = pydantic.Field(default=None)
     """
     Error message if validation failed
@@ -31,6 +41,11 @@ class ValidateTokenResponse(UniversalBaseModel):
     oauth_app_workday_official: typing.Optional[bool] = pydantic.Field(default=None)
     """
     True when the resolved OAuth client is the app's Workday-official client
+    """
+
+    oauth_app_connect_base_url: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Base URL the Connect UI must run this client's OAuth flow on; null means the default API URL
     """
 
     project_app_name: typing.Optional[str] = pydantic.Field(default=None)
