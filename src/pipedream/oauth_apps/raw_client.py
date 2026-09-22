@@ -135,8 +135,8 @@ class RawOauthAppsClient:
         self,
         *,
         app: str,
-        client_id: str,
-        client_secret: str,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         scopes: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -151,11 +151,11 @@ class RawOauthAppsClient:
         app : str
             The app's ID or name slug. The app must have custom OAuth clients enabled.
 
-        client_id : str
-            The OAuth client ID registered with the upstream provider
+        client_id : typing.Optional[str]
+            The OAuth client ID registered with the upstream provider. Optional: providers that only issue credentials once they have a callback URL can be registered without one, and the client cannot connect accounts until it is set.
 
-        client_secret : str
-            The OAuth client secret. Write-only; never returned in responses.
+        client_secret : typing.Optional[str]
+            The OAuth client secret. Optional, like the client ID. Write-only; never returned in responses.
 
         name : typing.Optional[str]
             Display name of the OAuth client
@@ -315,7 +315,7 @@ class RawOauthAppsClient:
             Description of the OAuth client
 
         client_id : typing.Optional[str]
-            The OAuth client ID registered with the upstream provider
+            The OAuth client ID registered with the upstream provider. Blank values are ignored and the existing client ID is kept.
 
         client_secret : typing.Optional[str]
             The OAuth client secret. Write-only; blank values are ignored and the existing secret is kept.
@@ -553,8 +553,8 @@ class AsyncRawOauthAppsClient:
         self,
         *,
         app: str,
-        client_id: str,
-        client_secret: str,
+        client_id: typing.Optional[str] = OMIT,
+        client_secret: typing.Optional[str] = OMIT,
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         scopes: typing.Optional[typing.Sequence[str]] = OMIT,
@@ -569,11 +569,11 @@ class AsyncRawOauthAppsClient:
         app : str
             The app's ID or name slug. The app must have custom OAuth clients enabled.
 
-        client_id : str
-            The OAuth client ID registered with the upstream provider
+        client_id : typing.Optional[str]
+            The OAuth client ID registered with the upstream provider. Optional: providers that only issue credentials once they have a callback URL can be registered without one, and the client cannot connect accounts until it is set.
 
-        client_secret : str
-            The OAuth client secret. Write-only; never returned in responses.
+        client_secret : typing.Optional[str]
+            The OAuth client secret. Optional, like the client ID. Write-only; never returned in responses.
 
         name : typing.Optional[str]
             Display name of the OAuth client
@@ -735,7 +735,7 @@ class AsyncRawOauthAppsClient:
             Description of the OAuth client
 
         client_id : typing.Optional[str]
-            The OAuth client ID registered with the upstream provider
+            The OAuth client ID registered with the upstream provider. Blank values are ignored and the existing client ID is kept.
 
         client_secret : typing.Optional[str]
             The OAuth client secret. Write-only; blank values are ignored and the existing secret is kept.

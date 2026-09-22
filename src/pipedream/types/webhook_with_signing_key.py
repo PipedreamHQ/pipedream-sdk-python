@@ -4,6 +4,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .webhook_delivery_state import WebhookDeliveryState
+from .webhook_with_signing_key_delivery_backend import WebhookWithSigningKeyDeliveryBackend
 
 
 class WebhookWithSigningKey(UniversalBaseModel):
@@ -31,6 +33,9 @@ class WebhookWithSigningKey(UniversalBaseModel):
     Whether a signing key has been set for this webhook
     """
 
+    active: typing.Optional[bool] = None
+    delivery_backend: typing.Optional[WebhookWithSigningKeyDeliveryBackend] = None
+    delivery_state: typing.Optional[WebhookDeliveryState] = None
     created_at: int = pydantic.Field()
     """
     The time the webhook was created, in epoch seconds
