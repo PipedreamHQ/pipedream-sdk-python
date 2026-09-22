@@ -9,6 +9,7 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.bad_request_error import BadRequestError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..types.create_o_auth_token_response import CreateOAuthTokenResponse
 from pydantic import ValidationError
@@ -74,6 +75,17 @@ class RawOauthTokensClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -152,6 +164,17 @@ class AsyncRawOauthTokensClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),

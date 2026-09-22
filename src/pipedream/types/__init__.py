@@ -16,6 +16,7 @@ if typing.TYPE_CHECKING:
     from .app_scope_profiles_item import AppScopeProfilesItem
     from .app_scope_profiles_item_name import AppScopeProfilesItemName
     from .backend_client_opts import BackendClientOpts
+    from .bad_request_error_body import BadRequestErrorBody
     from .client_opts import ClientOpts
     from .component import Component
     from .component_stash import ComponentStash
@@ -143,10 +144,14 @@ if typing.TYPE_CHECKING:
     from .too_many_requests_error_body import TooManyRequestsErrorBody
     from .tool_annotations import ToolAnnotations
     from .trigger_webhook import TriggerWebhook
+    from .trigger_webhook_delivery_backend import TriggerWebhookDeliveryBackend
     from .validate_token_response import ValidateTokenResponse
     from .webhook import Webhook
+    from .webhook_delivery_state import WebhookDeliveryState
+    from .webhook_delivery_state_state import WebhookDeliveryStateState
     from .webhook_with_optional_signing_key import WebhookWithOptionalSigningKey
     from .webhook_with_signing_key import WebhookWithSigningKey
+    from .webhook_with_signing_key_delivery_backend import WebhookWithSigningKeyDeliveryBackend
 _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
     "AccountCredentials": ".account_credentials",
@@ -158,6 +163,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AppScopeProfilesItem": ".app_scope_profiles_item",
     "AppScopeProfilesItemName": ".app_scope_profiles_item_name",
     "BackendClientOpts": ".backend_client_opts",
+    "BadRequestErrorBody": ".bad_request_error_body",
     "ClientOpts": ".client_opts",
     "Component": ".component",
     "ComponentStash": ".component_stash",
@@ -285,10 +291,14 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TooManyRequestsErrorBody": ".too_many_requests_error_body",
     "ToolAnnotations": ".tool_annotations",
     "TriggerWebhook": ".trigger_webhook",
+    "TriggerWebhookDeliveryBackend": ".trigger_webhook_delivery_backend",
     "ValidateTokenResponse": ".validate_token_response",
     "Webhook": ".webhook",
+    "WebhookDeliveryState": ".webhook_delivery_state",
+    "WebhookDeliveryStateState": ".webhook_delivery_state_state",
     "WebhookWithOptionalSigningKey": ".webhook_with_optional_signing_key",
     "WebhookWithSigningKey": ".webhook_with_signing_key",
+    "WebhookWithSigningKeyDeliveryBackend": ".webhook_with_signing_key_delivery_backend",
 }
 
 
@@ -324,6 +334,7 @@ __all__ = [
     "AppScopeProfilesItem",
     "AppScopeProfilesItemName",
     "BackendClientOpts",
+    "BadRequestErrorBody",
     "ClientOpts",
     "Component",
     "ComponentStash",
@@ -451,8 +462,12 @@ __all__ = [
     "TooManyRequestsErrorBody",
     "ToolAnnotations",
     "TriggerWebhook",
+    "TriggerWebhookDeliveryBackend",
     "ValidateTokenResponse",
     "Webhook",
+    "WebhookDeliveryState",
+    "WebhookDeliveryStateState",
     "WebhookWithOptionalSigningKey",
     "WebhookWithSigningKey",
+    "WebhookWithSigningKeyDeliveryBackend",
 ]

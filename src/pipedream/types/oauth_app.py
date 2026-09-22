@@ -19,9 +19,9 @@ class OauthApp(UniversalBaseModel):
     Hash ID for the OAuth client
     """
 
-    client_id: str = pydantic.Field()
+    client_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The OAuth client ID registered with the upstream provider
+    The OAuth client ID registered with the upstream provider. Null for a client registered before its provider issued credentials.
     """
 
     scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
