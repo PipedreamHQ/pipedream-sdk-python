@@ -739,6 +739,72 @@ class RawDeployedTriggersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    def reset_webhook_delivery_state(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[GetWebhookWithSigningKeyResponse]:
+        """
+        Reactivate a disabled webhook and clear its delivery failure evidence
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[GetWebhookWithSigningKeyResponse]
+            webhook delivery state reset
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks/{encode_path_param(webhook_id)}/reset_delivery_state",
+            method="POST",
+            params={
+                "external_user_id": external_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetWebhookWithSigningKeyResponse,
+                    parse_obj_as(
+                        type_=GetWebhookWithSigningKeyResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     def regenerate_webhook_signing_key(
         self,
         trigger_id: str,
@@ -1484,6 +1550,72 @@ class AsyncRawDeployedTriggersClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks/{encode_path_param(webhook_id)}",
             method="GET",
+            params={
+                "external_user_id": external_user_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    GetWebhookWithSigningKeyResponse,
+                    parse_obj_as(
+                        type_=GetWebhookWithSigningKeyResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def reset_webhook_delivery_state(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[GetWebhookWithSigningKeyResponse]:
+        """
+        Reactivate a disabled webhook and clear its delivery failure evidence
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[GetWebhookWithSigningKeyResponse]
+            webhook delivery state reset
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/deployed-triggers/{encode_path_param(trigger_id)}/webhooks/{encode_path_param(webhook_id)}/reset_delivery_state",
+            method="POST",
             params={
                 "external_user_id": external_user_id,
             },
