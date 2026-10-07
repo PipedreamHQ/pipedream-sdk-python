@@ -1274,7 +1274,6 @@ files = [
 ]
 
 [package.dependencies]
-cryptography = {version = ">=3.4.0", optional = true, markers = "extra == \"crypto\""}
 typing_extensions = {version = ">=4.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
@@ -1624,9 +1623,9 @@ propcache = ">=0.2.1"
 
 [extras]
 aiohttp = ["aiohttp", "httpx-aiohttp"]
-private-key = ["pyjwt"]
+private-key = ["cryptography", "pyjwt"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "6d9c4c1a1e9d6521731fbebde2c56142bd0a81dc7031967ddd6ddfc12ea205dd"
+content-hash = "6507fc8ed6e774f4c376e22ef42da17ab125fd2cdf768d5a28a57ab1da52d788"

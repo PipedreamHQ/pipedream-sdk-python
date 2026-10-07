@@ -76,7 +76,6 @@ class OauthTokensClient:
         )
         client.oauth_tokens.create(
             client_id="client_id",
-            client_secret="client_secret",
         )
         """
         _response = self._raw_client.create(
@@ -160,7 +159,6 @@ class AsyncOauthTokensClient:
         async def main() -> None:
             await client.oauth_tokens.create(
                 client_id="client_id",
-                client_secret="client_secret",
             )
 
 
