@@ -4,7 +4,7 @@ dynamic = ["version"]
 
 [tool.poetry]
 name = "pipedream"
-version = "2.1.20"
+version = "2.2.0"
 description = ""
 readme = "README.md"
 authors = []
@@ -43,6 +43,7 @@ httpx-aiohttp = { version = "0.1.8", optional = true, python = ">=3.9"}
 pydantic = ">= 1.9.2"
 pydantic-core = ">=2.18.2,<3.0.0"
 typing_extensions = ">= 4.0.0"
+pyjwt = { version = ">=2.8.0,<3", optional = true, extras = ["crypto"] }
 
 [tool.poetry.group.dev.dependencies]
 mypy = "==1.13.0"
@@ -94,3 +95,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.extras]
 aiohttp=["aiohttp", "httpx-aiohttp"]
+private-key=["pyjwt"]

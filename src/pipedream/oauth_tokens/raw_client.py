@@ -25,7 +25,11 @@ class RawOauthTokensClient:
         self,
         *,
         client_id: str,
-        client_secret: str,
+        client_secret: typing.Optional[str] = OMIT,
+        client_assertion_type: typing.Optional[
+            typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
+        ] = OMIT,
+        client_assertion: typing.Optional[str] = OMIT,
         scope: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateOAuthTokenResponse]:
@@ -36,7 +40,14 @@ class RawOauthTokensClient:
         ----------
         client_id : str
 
-        client_secret : str
+        client_secret : typing.Optional[str]
+            The client secret, for clients that authenticate with a client secret.
+
+        client_assertion_type : typing.Optional[typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]]
+            Required with `client_assertion`.
+
+        client_assertion : typing.Optional[str]
+            For clients that authenticate with a public key: a JWT signed with the client's private key (ES256 or RS256). Claims: `iss` and `sub` set to the client ID, `aud` set to `https://api.pipedream.com`, `exp` at most 1 hour ahead, and a unique `jti`. Sign a new assertion for every request, including retries.
 
         scope : typing.Optional[str]
             Optional space-separated scopes for the access token. Defaults to `*`.
@@ -55,6 +66,8 @@ class RawOauthTokensClient:
             json={
                 "client_id": client_id,
                 "client_secret": client_secret,
+                "client_assertion_type": client_assertion_type,
+                "client_assertion": client_assertion,
                 "scope": scope,
                 "grant_type": "client_credentials",
             },
@@ -103,7 +116,11 @@ class AsyncRawOauthTokensClient:
         self,
         *,
         client_id: str,
-        client_secret: str,
+        client_secret: typing.Optional[str] = OMIT,
+        client_assertion_type: typing.Optional[
+            typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
+        ] = OMIT,
+        client_assertion: typing.Optional[str] = OMIT,
         scope: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateOAuthTokenResponse]:
@@ -114,7 +131,14 @@ class AsyncRawOauthTokensClient:
         ----------
         client_id : str
 
-        client_secret : str
+        client_secret : typing.Optional[str]
+            The client secret, for clients that authenticate with a client secret.
+
+        client_assertion_type : typing.Optional[typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]]
+            Required with `client_assertion`.
+
+        client_assertion : typing.Optional[str]
+            For clients that authenticate with a public key: a JWT signed with the client's private key (ES256 or RS256). Claims: `iss` and `sub` set to the client ID, `aud` set to `https://api.pipedream.com`, `exp` at most 1 hour ahead, and a unique `jti`. Sign a new assertion for every request, including retries.
 
         scope : typing.Optional[str]
             Optional space-separated scopes for the access token. Defaults to `*`.
@@ -133,6 +157,8 @@ class AsyncRawOauthTokensClient:
             json={
                 "client_id": client_id,
                 "client_secret": client_secret,
+                "client_assertion_type": client_assertion_type,
+                "client_assertion": client_assertion,
                 "scope": scope,
                 "grant_type": "client_credentials",
             },
