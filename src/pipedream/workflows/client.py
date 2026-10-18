@@ -3,7 +3,6 @@ import re
 import typing
 
 import httpx
-
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 
@@ -134,7 +133,8 @@ class WorkflowsClient:
         request_headers = _prepare_headers(headers, auth_type)
 
         response = self._client_wrapper.httpx_client.request(
-            workflow_url,
+            None,
+            base_url=workflow_url,
             method=method,
             data=body,
             json=body,
@@ -238,7 +238,8 @@ class AsyncWorkflowsClient:
         request_headers = _prepare_headers(headers, auth_type)
 
         response = await self._client_wrapper.httpx_client.request(
-            workflow_url,
+            None,
+            base_url=workflow_url,
             method=method,
             data=body,
             json=body,
