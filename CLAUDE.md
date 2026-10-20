@@ -36,7 +36,8 @@ Two layers of clients exist:
   pipedream import Pipedream`).
 
 The wrapper adds: env-var resolution (`PIPEDREAM_ACCESS_TOKEN`,
-`PIPEDREAM_CLIENT_ID`, `PIPEDREAM_CLIENT_SECRET`, `PIPEDREAM_PROJECT_ID`,
+`PIPEDREAM_CLIENT_ID`, `PIPEDREAM_CLIENT_SECRET`, `PIPEDREAM_PRIVATE_KEY`,
+`PIPEDREAM_KEY_ID`, `PIPEDREAM_PROJECT_ID`,
 `PIPEDREAM_PROJECT_ENVIRONMENT`, `PIPEDREAM_BASE_URL`,
 `PIPEDREAM_WORKFLOW_DOMAIN`), the `access_token` shorthand (turns into a
 `token=lambda: …` callable when calling `super().__init__`), `project_id`
@@ -86,6 +87,24 @@ The OAuth flow (`client_id` + `client_secret`) is owned entirely by the
 generated base — `Client` constructs an `OAuthTokenProvider` and threads its
 `get_token` into a `SyncClientWrapper`. The wrapper does **not** override this;
 it just decides which branch to take.
+
+**Private key (`private_key`, optional `key_id`)**: the client authenticates
+with RFC 7523 client assertions instead of a secret. This path is custom
+(`src/pipedream/private_key_jwt.py`, in `.fernignore`): `ClientAssertionSigner`
+infers ES256/RS256 from the key, sets `aud` to the base URL's origin, and signs
+a new single-use `jti` per token request. `PrivateKeyJwtTokenProvider` /
+`AsyncPrivateKeyJwtTokenProvider` cache the token like the generated provider,
+but send token requests with `max_retries: 0` and retry them themselves with a
+**newly signed** assertion, because the API rejects a reused `jti`. They use
+their own token-less client wrapper over the same `httpx` client. The sync
+wrapper passes `token=provider.get_token`. The async wrapper sets
+`_async_token`, mirroring the generated async OAuth wiring, so
+`AsyncPipedream.raw_access_token` is `None` there, as it is for async client
+secrets. Signing needs the optional `private-key` extra (`pyjwt[crypto]`),
+imported lazily. Install it in CI, and declare it in Fern's `generators.yml`
+`extras` so a regen doesn't drop it from `pyproject.toml`. `client_secret` and
+`private_key` are mutually exclusive (`_resolve_credentials` in
+`pipedream.py`).
 
 `raw_access_token` reaches into `self._client_wrapper._get_token()` to expose
 the current bearer token regardless of which branch was taken. Don't make
