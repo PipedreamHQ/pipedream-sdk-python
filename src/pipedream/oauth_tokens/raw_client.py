@@ -9,8 +9,11 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.bad_request_error import BadRequestError
 from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..types.create_o_auth_token_response import CreateOAuthTokenResponse
+from ..types.unauthorized_error_body import UnauthorizedErrorBody
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -25,7 +28,11 @@ class RawOauthTokensClient:
         self,
         *,
         client_id: str,
-        client_secret: str,
+        client_secret: typing.Optional[str] = OMIT,
+        client_assertion_type: typing.Optional[
+            typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
+        ] = OMIT,
+        client_assertion: typing.Optional[str] = OMIT,
         scope: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[CreateOAuthTokenResponse]:
@@ -36,7 +43,14 @@ class RawOauthTokensClient:
         ----------
         client_id : str
 
-        client_secret : str
+        client_secret : typing.Optional[str]
+            The client secret, for clients that authenticate with a client secret.
+
+        client_assertion_type : typing.Optional[typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]]
+            Required with `client_assertion`.
+
+        client_assertion : typing.Optional[str]
+            For clients that authenticate with a public key: a JWT signed with the client's private key (ES256 or RS256). Claims: `iss` and `sub` set to the client ID, `aud` set to `https://api.pipedream.com`, `exp` at most 1 hour ahead, and a unique `jti`. Sign a new assertion for every request, including retries.
 
         scope : typing.Optional[str]
             Optional space-separated scopes for the access token. Defaults to `*`.
@@ -55,6 +69,8 @@ class RawOauthTokensClient:
             json={
                 "client_id": client_id,
                 "client_secret": client_secret,
+                "client_assertion_type": client_assertion_type,
+                "client_assertion": client_assertion,
                 "scope": scope,
                 "grant_type": "client_credentials",
             },
@@ -74,6 +90,28 @@ class RawOauthTokensClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        UnauthorizedErrorBody,
+                        parse_obj_as(
+                            type_=UnauthorizedErrorBody,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -103,7 +141,11 @@ class AsyncRawOauthTokensClient:
         self,
         *,
         client_id: str,
-        client_secret: str,
+        client_secret: typing.Optional[str] = OMIT,
+        client_assertion_type: typing.Optional[
+            typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
+        ] = OMIT,
+        client_assertion: typing.Optional[str] = OMIT,
         scope: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[CreateOAuthTokenResponse]:
@@ -114,7 +156,14 @@ class AsyncRawOauthTokensClient:
         ----------
         client_id : str
 
-        client_secret : str
+        client_secret : typing.Optional[str]
+            The client secret, for clients that authenticate with a client secret.
+
+        client_assertion_type : typing.Optional[typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]]
+            Required with `client_assertion`.
+
+        client_assertion : typing.Optional[str]
+            For clients that authenticate with a public key: a JWT signed with the client's private key (ES256 or RS256). Claims: `iss` and `sub` set to the client ID, `aud` set to `https://api.pipedream.com`, `exp` at most 1 hour ahead, and a unique `jti`. Sign a new assertion for every request, including retries.
 
         scope : typing.Optional[str]
             Optional space-separated scopes for the access token. Defaults to `*`.
@@ -133,6 +182,8 @@ class AsyncRawOauthTokensClient:
             json={
                 "client_id": client_id,
                 "client_secret": client_secret,
+                "client_assertion_type": client_assertion_type,
+                "client_assertion": client_assertion,
                 "scope": scope,
                 "grant_type": "client_credentials",
             },
@@ -152,6 +203,28 @@ class AsyncRawOauthTokensClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        UnauthorizedErrorBody,
+                        parse_obj_as(
+                            type_=UnauthorizedErrorBody,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),

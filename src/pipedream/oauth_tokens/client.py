@@ -30,7 +30,11 @@ class OauthTokensClient:
         self,
         *,
         client_id: str,
-        client_secret: str,
+        client_secret: typing.Optional[str] = OMIT,
+        client_assertion_type: typing.Optional[
+            typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
+        ] = OMIT,
+        client_assertion: typing.Optional[str] = OMIT,
         scope: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateOAuthTokenResponse:
@@ -41,7 +45,14 @@ class OauthTokensClient:
         ----------
         client_id : str
 
-        client_secret : str
+        client_secret : typing.Optional[str]
+            The client secret, for clients that authenticate with a client secret.
+
+        client_assertion_type : typing.Optional[typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]]
+            Required with `client_assertion`.
+
+        client_assertion : typing.Optional[str]
+            For clients that authenticate with a public key: a JWT signed with the client's private key (ES256 or RS256). Claims: `iss` and `sub` set to the client ID, `aud` set to `https://api.pipedream.com`, `exp` at most 1 hour ahead, and a unique `jti`. Sign a new assertion for every request, including retries.
 
         scope : typing.Optional[str]
             Optional space-separated scopes for the access token. Defaults to `*`.
@@ -65,11 +76,15 @@ class OauthTokensClient:
         )
         client.oauth_tokens.create(
             client_id="client_id",
-            client_secret="client_secret",
         )
         """
         _response = self._raw_client.create(
-            client_id=client_id, client_secret=client_secret, scope=scope, request_options=request_options
+            client_id=client_id,
+            client_secret=client_secret,
+            client_assertion_type=client_assertion_type,
+            client_assertion=client_assertion,
+            scope=scope,
+            request_options=request_options,
         )
         return _response.data
 
@@ -93,7 +108,11 @@ class AsyncOauthTokensClient:
         self,
         *,
         client_id: str,
-        client_secret: str,
+        client_secret: typing.Optional[str] = OMIT,
+        client_assertion_type: typing.Optional[
+            typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]
+        ] = OMIT,
+        client_assertion: typing.Optional[str] = OMIT,
         scope: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> CreateOAuthTokenResponse:
@@ -104,7 +123,14 @@ class AsyncOauthTokensClient:
         ----------
         client_id : str
 
-        client_secret : str
+        client_secret : typing.Optional[str]
+            The client secret, for clients that authenticate with a client secret.
+
+        client_assertion_type : typing.Optional[typing.Literal["urn:ietf:params:oauth:client-assertion-type:jwt-bearer"]]
+            Required with `client_assertion`.
+
+        client_assertion : typing.Optional[str]
+            For clients that authenticate with a public key: a JWT signed with the client's private key (ES256 or RS256). Claims: `iss` and `sub` set to the client ID, `aud` set to `https://api.pipedream.com`, `exp` at most 1 hour ahead, and a unique `jti`. Sign a new assertion for every request, including retries.
 
         scope : typing.Optional[str]
             Optional space-separated scopes for the access token. Defaults to `*`.
@@ -133,13 +159,17 @@ class AsyncOauthTokensClient:
         async def main() -> None:
             await client.oauth_tokens.create(
                 client_id="client_id",
-                client_secret="client_secret",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            client_id=client_id, client_secret=client_secret, scope=scope, request_options=request_options
+            client_id=client_id,
+            client_secret=client_secret,
+            client_assertion_type=client_assertion_type,
+            client_assertion=client_assertion,
+            scope=scope,
+            request_options=request_options,
         )
         return _response.data

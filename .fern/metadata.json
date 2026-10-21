@@ -8,11 +8,27 @@
       "filename": "client.py",
       "exported_class_name": "Pipedream",
       "exported_filename": "pipedream.py"
+    },
+    "extra_dependencies": {
+      "pyjwt": {
+        "version": ">=2.8.0,<3",
+        "optional": true
+      },
+      "cryptography": {
+        "version": ">=3.4.0",
+        "optional": true
+      }
+    },
+    "extras": {
+      "private-key": [
+        "pyjwt",
+        "cryptography"
+      ]
     }
   },
-  "originGitCommit": "4ec89179f0cd7c09cc536f40a9c42a089d9cd425",
+  "originGitCommit": "c2e5677e51c00b8d3b0c89f56c00a2ddadb4c490",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "ciProvider": "github",
-  "sdkVersion": "2.1.20"
+  "sdkVersion": "2.2.1"
 }
