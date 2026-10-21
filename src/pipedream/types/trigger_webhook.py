@@ -4,6 +4,8 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .trigger_webhook_delivery_backend import TriggerWebhookDeliveryBackend
+from .webhook_delivery_state import WebhookDeliveryState
 
 
 class TriggerWebhook(UniversalBaseModel):
@@ -30,6 +32,10 @@ class TriggerWebhook(UniversalBaseModel):
     """
     Whether a signing key has been set for this webhook
     """
+
+    active: typing.Optional[bool] = None
+    delivery_backend: typing.Optional[TriggerWebhookDeliveryBackend] = None
+    delivery_state: typing.Optional[WebhookDeliveryState] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
