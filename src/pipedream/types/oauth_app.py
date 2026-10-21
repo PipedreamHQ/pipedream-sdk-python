@@ -11,7 +11,7 @@ from .app_scope_profiles_item import AppScopeProfilesItem
 
 class OauthApp(UniversalBaseModel):
     """
-    A custom OAuth client (bring your own app), presented as its app's metadata merged with the client's own fields. `name` and `description` fall back to the app's when the client doesn't set them. The client secret is write-only and never returned.
+    An OAuth client, either a custom client (bring your own app) or a Pipedream official client, presented as its app's metadata merged with the client's own fields. `name` and `description` fall back to the app's when the client doesn't set them. The client secret is write-only and never returned.
     """
 
     id: typing.Optional[str] = pydantic.Field(default=None)
@@ -19,9 +19,9 @@ class OauthApp(UniversalBaseModel):
     Hash ID for the OAuth client
     """
 
-    client_id: str = pydantic.Field()
+    client_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    The OAuth client ID registered with the upstream provider
+    The OAuth client ID registered with the upstream provider. Null for a client registered before its provider issued credentials.
     """
 
     scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
@@ -39,9 +39,9 @@ class OauthApp(UniversalBaseModel):
     The redirect URI to register with the upstream OAuth provider
     """
 
-    owner_id: str = pydantic.Field()
+    owner_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Hash ID of the owner: the workspace (o_...) or the project (proj_...)
+    Hash ID of the owner: the workspace (o_...) or the project (proj_...). Null for Pipedream official clients.
     """
 
     created_at: typing.Optional[dt.datetime] = None
@@ -85,6 +85,11 @@ class OauthApp(UniversalBaseModel):
     scope_profiles: typing.List[AppScopeProfilesItem] = pydantic.Field()
     """
     Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any.
+    """
+
+    oauth_app_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints.
     """
 
     if IS_PYDANTIC_V2:

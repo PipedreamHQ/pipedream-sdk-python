@@ -59,6 +59,11 @@ class App(UniversalBaseModel):
     Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any.
     """
 
+    oauth_app_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

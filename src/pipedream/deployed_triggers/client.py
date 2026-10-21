@@ -534,6 +534,54 @@ class DeployedTriggersClient:
         )
         return _response.data
 
+    def reset_webhook_delivery_state(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetWebhookWithSigningKeyResponse:
+        """
+        Reactivate a disabled webhook and clear its delivery failure evidence
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWebhookWithSigningKeyResponse
+            webhook delivery state reset
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.deployed_triggers.reset_webhook_delivery_state(
+            trigger_id="trigger_id",
+            webhook_id="webhook_id",
+            external_user_id="external_user_id",
+        )
+        """
+        _response = self._raw_client.reset_webhook_delivery_state(
+            trigger_id, webhook_id, external_user_id=external_user_id, request_options=request_options
+        )
+        return _response.data
+
     def regenerate_webhook_signing_key(
         self,
         trigger_id: str,
@@ -1175,6 +1223,62 @@ class AsyncDeployedTriggersClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.retrieve_webhook(
+            trigger_id, webhook_id, external_user_id=external_user_id, request_options=request_options
+        )
+        return _response.data
+
+    async def reset_webhook_delivery_state(
+        self,
+        trigger_id: str,
+        webhook_id: str,
+        *,
+        external_user_id: str,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> GetWebhookWithSigningKeyResponse:
+        """
+        Reactivate a disabled webhook and clear its delivery failure evidence
+
+        Parameters
+        ----------
+        trigger_id : str
+
+        webhook_id : str
+
+        external_user_id : str
+            The external user ID who owns the trigger
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        GetWebhookWithSigningKeyResponse
+            webhook delivery state reset
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.deployed_triggers.reset_webhook_delivery_state(
+                trigger_id="trigger_id",
+                webhook_id="webhook_id",
+                external_user_id="external_user_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.reset_webhook_delivery_state(
             trigger_id, webhook_id, external_user_id=external_user_id, request_options=request_options
         )
         return _response.data
