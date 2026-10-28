@@ -6,6 +6,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .app_auth_type import AppAuthType
+from .app_scope_labels import AppScopeLabels
 from .app_scope_profiles_item import AppScopeProfilesItem
 
 
@@ -22,16 +23,6 @@ class OauthApp(UniversalBaseModel):
     client_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     The OAuth client ID registered with the upstream provider. Null for a client registered before its provider issued credentials.
-    """
-
-    scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
-    OAuth scopes requested when users connect through this client
-    """
-
-    additional_scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
-    Extra OAuth scopes users may grant on top of the base scopes
     """
 
     redirect_uri: typing.Optional[str] = pydantic.Field(default=None)
@@ -89,7 +80,22 @@ class OauthApp(UniversalBaseModel):
 
     oauth_app_id: typing.Optional[str] = pydantic.Field(default=None)
     """
-    ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints.
+    ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Useful for retrieving the OAuth client's `client_id` and redirect URI with the Retrieve OAuth client endpoint.
+    """
+
+    scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    The OAuth scopes requested when an account connects through this OAuth client, or, on an app, through the app's Pipedream official OAuth client and no `oauth_scope_profile`. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account.
+    """
+
+    additional_scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
+    """
+    A second list of scopes requested alongside `scopes`. The connection does not require the user to grant them. `scope_labels` names both lists. `null` when there are none, or when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account.
+    """
+
+    scope_labels: typing.Optional[AppScopeLabels] = pydantic.Field(default=None)
+    """
+    Display names for `scopes` and `additional_scopes`; their meaning depends on the app. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account.
     """
 
     if IS_PYDANTIC_V2:
