@@ -26,9 +26,9 @@
       ]
     }
   },
-  "originGitCommit": "c2e5677e51c00b8d3b0c89f56c00a2ddadb4c490",
+  "originGitCommit": "bfc6000d6f87d0cea73a28d44356a3277b72e62d",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "ciProvider": "github",
-  "sdkVersion": "2.3.0"
+  "sdkVersion": "2.3.1"
 }
