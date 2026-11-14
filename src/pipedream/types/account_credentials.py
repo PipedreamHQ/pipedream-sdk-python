@@ -11,14 +11,14 @@ class AccountCredentials(UniversalBaseModel):
     The credentials associated with the account, if the `include_credentials` parameter was set to true in the request (only applicable for BYOA apps). In addition to the well-known OAuth fields listed below, this object may contain app-specific custom fields (e.g. `base_url`).
     """
 
-    oauth_client_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The OAuth client ID for the app, if applicable
-    """
-
     oauth_access_token: typing.Optional[str] = pydantic.Field(default=None)
     """
     The OAuth access token
+    """
+
+    oauth_client_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The OAuth client ID for the app, if applicable
     """
 
     oauth_refresh_token: typing.Optional[str] = pydantic.Field(default=None)
@@ -26,14 +26,14 @@ class AccountCredentials(UniversalBaseModel):
     The OAuth refresh token
     """
 
-    oauth_uid: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The unique OAuth user identifier
-    """
-
     oauth_signer_uri: typing.Optional[str] = pydantic.Field(default=None)
     """
     The OAuth signer URI, if the app uses a custom OAuth signer
+    """
+
+    oauth_uid: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The unique OAuth user identifier
     """
 
     if IS_PYDANTIC_V2:

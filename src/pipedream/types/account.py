@@ -15,10 +15,35 @@ class Account(UniversalBaseModel):
     End user account data, returned from the API.
     """
 
-    id: AccountId
-    name: typing.Optional[str] = pydantic.Field(default=None)
+    app: typing.Optional[App] = None
+    authorized_scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    The custom name of the account if set.
+    The OAuth scopes effectively granted to this account. Empty for non-OAuth apps.
+    """
+
+    created_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    The date and time the account was created, an ISO 8601 formatted string
+    """
+
+    credentials: typing.Optional[AccountCredentials] = pydantic.Field(default=None)
+    """
+    The credentials associated with the account, if the `include_credentials` parameter was set to true in the request (only applicable for BYOA apps). In addition to the well-known OAuth fields listed below, this object may contain app-specific custom fields (e.g. `base_url`).
+    """
+
+    dead: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Indicates if the account is no longer active
+    """
+
+    error: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The error message if the account is unhealthy or dead, null otherwise
+    """
+
+    expires_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    The date and time the account's credentials expiration, an ISO 8601 formatted string
     """
 
     external_id: typing.Optional[str] = pydantic.Field(default=None)
@@ -31,50 +56,25 @@ class Account(UniversalBaseModel):
     Indicates if the account is healthy. Pipedream will periodically retry token refresh and test requests for unhealthy accounts
     """
 
-    dead: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Indicates if the account is no longer active
-    """
-
-    app: typing.Optional[App] = None
-    created_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
-    """
-    The date and time the account was created, an ISO 8601 formatted string
-    """
-
-    updated_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
-    """
-    The date and time the account was last updated, an ISO 8601 formatted string
-    """
-
-    authorized_scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
-    """
-    The OAuth scopes effectively granted to this account. Empty for non-OAuth apps.
-    """
-
-    credentials: typing.Optional[AccountCredentials] = pydantic.Field(default=None)
-    """
-    The credentials associated with the account, if the `include_credentials` parameter was set to true in the request (only applicable for BYOA apps). In addition to the well-known OAuth fields listed below, this object may contain app-specific custom fields (e.g. `base_url`).
-    """
-
-    expires_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
-    """
-    The date and time the account's credentials expiration, an ISO 8601 formatted string
-    """
-
-    error: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The error message if the account is unhealthy or dead, null otherwise
-    """
-
+    id: AccountId
     last_refreshed_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     The date and time the account was last refreshed, an ISO 8601 formatted string
     """
 
+    name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The custom name of the account if set.
+    """
+
     next_refresh_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
     """
     The date and time the account will next be refreshed, an ISO 8601 formatted string
+    """
+
+    updated_at: typing.Optional[dt.datetime] = pydantic.Field(default=None)
+    """
+    The date and time the account was last updated, an ISO 8601 formatted string
     """
 
     if IS_PYDANTIC_V2:

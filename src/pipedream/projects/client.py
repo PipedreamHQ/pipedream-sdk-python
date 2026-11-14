@@ -5,6 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
+from ..types.allowed_email_domains import AllowedEmailDomains
 from ..types.list_projects_response import ListProjectsResponse
 from ..types.project import Project
 from ..types.project_info_response import ProjectInfoResponse
@@ -92,6 +93,8 @@ class ProjectsClient:
         name: str,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        allowed_email_domains: typing.Optional[AllowedEmailDomains] = OMIT,
+        skip_missing_email: typing.Optional[bool] = OMIT,
         connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
@@ -108,6 +111,11 @@ class ProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        allowed_email_domains : typing.Optional[AllowedEmailDomains]
+
+        skip_missing_email : typing.Optional[bool]
+            Skip this project's domain allowlist when the app does not return an account email. Organization restrictions still apply.
 
         connect_require_key_auth_test : typing.Optional[bool]
             Send a test request to the upstream API when adding Connect accounts for key-based apps
@@ -137,6 +145,8 @@ class ProjectsClient:
             name=name,
             app_name=app_name,
             support_email=support_email,
+            allowed_email_domains=allowed_email_domains,
+            skip_missing_email=skip_missing_email,
             connect_require_key_auth_test=connect_require_key_auth_test,
             request_options=request_options,
         )
@@ -214,6 +224,8 @@ class ProjectsClient:
         name: typing.Optional[str] = OMIT,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        allowed_email_domains: typing.Optional[AllowedEmailDomains] = OMIT,
+        skip_missing_email: typing.Optional[bool] = OMIT,
         connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
@@ -233,6 +245,11 @@ class ProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        allowed_email_domains : typing.Optional[AllowedEmailDomains]
+
+        skip_missing_email : typing.Optional[bool]
+            Skip this project's domain allowlist when the app does not return an account email. Organization restrictions still apply.
 
         connect_require_key_auth_test : typing.Optional[bool]
             Send a test request to the upstream API when adding Connect accounts for key-based apps
@@ -263,6 +280,8 @@ class ProjectsClient:
             name=name,
             app_name=app_name,
             support_email=support_email,
+            allowed_email_domains=allowed_email_domains,
+            skip_missing_email=skip_missing_email,
             connect_require_key_auth_test=connect_require_key_auth_test,
             request_options=request_options,
         )
@@ -424,6 +443,8 @@ class AsyncProjectsClient:
         name: str,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        allowed_email_domains: typing.Optional[AllowedEmailDomains] = OMIT,
+        skip_missing_email: typing.Optional[bool] = OMIT,
         connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
@@ -440,6 +461,11 @@ class AsyncProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        allowed_email_domains : typing.Optional[AllowedEmailDomains]
+
+        skip_missing_email : typing.Optional[bool]
+            Skip this project's domain allowlist when the app does not return an account email. Organization restrictions still apply.
 
         connect_require_key_auth_test : typing.Optional[bool]
             Send a test request to the upstream API when adding Connect accounts for key-based apps
@@ -477,6 +503,8 @@ class AsyncProjectsClient:
             name=name,
             app_name=app_name,
             support_email=support_email,
+            allowed_email_domains=allowed_email_domains,
+            skip_missing_email=skip_missing_email,
             connect_require_key_auth_test=connect_require_key_auth_test,
             request_options=request_options,
         )
@@ -570,6 +598,8 @@ class AsyncProjectsClient:
         name: typing.Optional[str] = OMIT,
         app_name: typing.Optional[str] = OMIT,
         support_email: typing.Optional[str] = OMIT,
+        allowed_email_domains: typing.Optional[AllowedEmailDomains] = OMIT,
+        skip_missing_email: typing.Optional[bool] = OMIT,
         connect_require_key_auth_test: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Project:
@@ -589,6 +619,11 @@ class AsyncProjectsClient:
 
         support_email : typing.Optional[str]
             Support email displayed to end users
+
+        allowed_email_domains : typing.Optional[AllowedEmailDomains]
+
+        skip_missing_email : typing.Optional[bool]
+            Skip this project's domain allowlist when the app does not return an account email. Organization restrictions still apply.
 
         connect_require_key_auth_test : typing.Optional[bool]
             Send a test request to the upstream API when adding Connect accounts for key-based apps
@@ -627,6 +662,8 @@ class AsyncProjectsClient:
             name=name,
             app_name=app_name,
             support_email=support_email,
+            allowed_email_domains=allowed_email_domains,
+            skip_missing_email=skip_missing_email,
             connect_require_key_auth_test=connect_require_key_auth_test,
             request_options=request_options,
         )

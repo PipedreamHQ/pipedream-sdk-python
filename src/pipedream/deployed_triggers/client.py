@@ -62,7 +62,7 @@ class DeployedTriggersClient:
             The maximum number of results to return
 
         emitter_type : typing.Optional[EmitterType]
-            Filter deployed triggers by emitter type (defaults to 'source' if not provided)
+            Filter deployed triggers by emitter type. Returns all types when omitted.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -674,7 +674,7 @@ class AsyncDeployedTriggersClient:
             The maximum number of results to return
 
         emitter_type : typing.Optional[EmitterType]
-            Filter deployed triggers by emitter type (defaults to 'source' if not provided)
+            Filter deployed triggers by emitter type. Returns all types when omitted.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

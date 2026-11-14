@@ -12,13 +12,19 @@ from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..errors.bad_gateway_error import BadGatewayError
 from ..errors.bad_request_error import BadRequestError
+from ..errors.internal_server_error import InternalServerError
+from ..errors.not_found_error import NotFoundError
+from ..errors.service_unavailable_error import ServiceUnavailableError
 from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..types.component import Component
 from ..types.configure_prop_response import ConfigurePropResponse
 from ..types.configured_props import ConfiguredProps
 from ..types.deploy_trigger_response import DeployTriggerResponse
 from ..types.emitter import Emitter
+from ..types.error_response import ErrorResponse
 from ..types.get_component_response import GetComponentResponse
 from ..types.get_components_response import GetComponentsResponse
 from ..types.reload_props_response import ReloadPropsResponse
@@ -32,292 +38,6 @@ OMIT = typing.cast(typing.Any, ...)
 class RawTriggersClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
-
-    def list(
-        self,
-        *,
-        after: typing.Optional[str] = None,
-        before: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        q: typing.Optional[str] = None,
-        app: typing.Optional[str] = None,
-        registry: typing.Optional[TriggersListRequestRegistry] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component, GetComponentsResponse]:
-        """
-        Retrieve available triggers with optional search and app filtering
-
-        Parameters
-        ----------
-        after : typing.Optional[str]
-            The cursor to start from for pagination
-
-        before : typing.Optional[str]
-            The cursor to end before for pagination
-
-        limit : typing.Optional[int]
-            The maximum number of results to return
-
-        q : typing.Optional[str]
-            A search query to filter the triggers
-
-        app : typing.Optional[str]
-            The ID or name slug of the app to filter the triggers
-
-        registry : typing.Optional[TriggersListRequestRegistry]
-            The registry to retrieve triggers from
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers",
-            method="GET",
-            params={
-                "after": after,
-                "before": before,
-                "limit": limit,
-                "q": q,
-                "app": app,
-                "registry": registry,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    GetComponentsResponse,
-                    parse_obj_as(
-                        type_=GetComponentsResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _items = _parsed_response.data
-                _has_next = False
-                _get_next = None
-                if _parsed_response.page_info is not None:
-                    _parsed_next = _parsed_response.page_info.end_cursor
-                    _has_next = _parsed_next is not None and _parsed_next != ""
-                    _get_next = lambda: self.list(
-                        after=_parsed_next,
-                        before=before,
-                        limit=limit,
-                        q=q,
-                        app=app,
-                        registry=registry,
-                        request_options=request_options,
-                    )
-                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def retrieve(
-        self,
-        component_id: str,
-        *,
-        version: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[Component]:
-        """
-        Get detailed configuration for a specific trigger by its key
-
-        Parameters
-        ----------
-        component_id : str
-            The key that uniquely identifies the component
-
-        version : typing.Optional[str]
-            Optional semantic version of the component to retrieve
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[Component]
-            trigger retrieved
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers/{encode_path_param(component_id)}",
-            method="GET",
-            params={
-                "version": version,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _parsed_response = typing.cast(
-                    GetComponentResponse,
-                    parse_obj_as(
-                        type_=GetComponentResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                _data = _parsed_response.data
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def configure_prop(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ConfigurePropResponse]:
-        """
-        Retrieve remote options for a given prop for a trigger
-
-        Parameters
-        ----------
-        id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        prop_name : str
-            The name of the prop to configure
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ConfigurePropResponse]
-            trigger configuration started
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers/configure",
-            method="POST",
-            json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "prop_name": prop_name,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-                "page": page,
-                "prev_context": prev_context,
-                "query": query,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ConfigurePropResponse,
-                    parse_obj_as(
-                        type_=ConfigurePropResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def reload_props(
         self,
@@ -510,12 +230,7 @@ class RawTriggersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-
-class AsyncRawTriggersClient:
-    def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
-
-    async def list(
+    def list(
         self,
         *,
         after: typing.Optional[str] = None,
@@ -525,7 +240,7 @@ class AsyncRawTriggersClient:
         app: typing.Optional[str] = None,
         registry: typing.Optional[TriggersListRequestRegistry] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component, GetComponentsResponse]:
+    ) -> SyncPager[Component, GetComponentsResponse]:
         """
         Retrieve available triggers with optional search and app filtering
 
@@ -541,7 +256,7 @@ class AsyncRawTriggersClient:
             The maximum number of results to return
 
         q : typing.Optional[str]
-            A search query to filter the triggers
+            A full-text search query matched against the name, key and description of the triggers
 
         app : typing.Optional[str]
             The ID or name slug of the app to filter the triggers
@@ -554,10 +269,10 @@ class AsyncRawTriggersClient:
 
         Returns
         -------
-        AsyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
+        SyncPager[Component, GetComponentsResponse]
+            triggers listed
         """
-        _response = await self._client_wrapper.httpx_client.request(
+        _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers",
             method="GET",
             params={
@@ -585,21 +300,199 @@ class AsyncRawTriggersClient:
                 if _parsed_response.page_info is not None:
                     _parsed_next = _parsed_response.page_info.end_cursor
                     _has_next = _parsed_next is not None and _parsed_next != ""
-
-                    async def _get_next():
-                        return await self.list(
-                            after=_parsed_next,
-                            before=before,
-                            limit=limit,
-                            q=q,
-                            app=app,
-                            registry=registry,
-                            request_options=request_options,
-                        )
-
-                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+                    _get_next = lambda: self.list(
+                        after=_parsed_next,
+                        before=before,
+                        limit=limit,
+                        q=q,
+                        app=app,
+                        registry=registry,
+                        request_options=request_options,
+                    )
+                return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
             if _response.status_code == 400:
                 raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def configure_prop(
+        self,
+        *,
+        external_user_id: str,
+        id: str,
+        prop_name: str,
+        blocking: typing.Optional[bool] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        dynamic_props_id: typing.Optional[str] = OMIT,
+        page: typing.Optional[float] = OMIT,
+        platform_version: typing.Optional[str] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ConfigurePropResponse]:
+        """
+        Configure a prop of a trigger to retrieve its options or validate its configuration
+
+        Parameters
+        ----------
+        external_user_id : str
+            The external user ID
+
+        id : str
+            The component ID
+
+        prop_name : str
+            The name of the prop to configure
+
+        blocking : typing.Optional[bool]
+            Whether this operation should block until completion
+
+        configured_props : typing.Optional[ConfiguredProps]
+
+        dynamic_props_id : typing.Optional[str]
+            The ID for dynamic props
+
+        page : typing.Optional[float]
+            Page number for paginated results
+
+        platform_version : typing.Optional[str]
+            Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
+
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
+            Previous context for pagination
+
+        query : typing.Optional[str]
+            Search query for filtering options
+
+        version : typing.Optional[str]
+            Component semantic version
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ConfigurePropResponse]
+            trigger configuration started
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers/configure",
+            method="POST",
+            json={
+                "blocking": blocking,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProps, direction="write"
+                ),
+                "dynamic_props_id": dynamic_props_id,
+                "external_user_id": external_user_id,
+                "id": id,
+                "page": page,
+                "platform_version": platform_version,
+                "prev_context": prev_context,
+                "prop_name": prop_name,
+                "query": query,
+                "version": version,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ConfigurePropResponse,
+                    parse_obj_as(
+                        type_=ConfigurePropResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -629,13 +522,13 @@ class AsyncRawTriggersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def retrieve(
+    def retrieve(
         self,
         component_id: str,
         *,
         version: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[Component]:
+    ) -> HttpResponse[Component]:
         """
         Get detailed configuration for a specific trigger by its key
 
@@ -652,10 +545,10 @@ class AsyncRawTriggersClient:
 
         Returns
         -------
-        AsyncHttpResponse[Component]
+        HttpResponse[Component]
             trigger retrieved
         """
-        _response = await self._client_wrapper.httpx_client.request(
+        _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers/{encode_path_param(component_id)}",
             method="GET",
             params={
@@ -673,7 +566,40 @@ class AsyncRawTriggersClient:
                     ),
                 )
                 _data = _parsed_response.data
-                return AsyncHttpResponse(response=_response, data=_data)
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -681,6 +607,39 @@ class AsyncRawTriggersClient:
                         typing.Any,
                         parse_obj_as(
                             type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -694,115 +653,10 @@ class AsyncRawTriggersClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def configure_prop(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ConfigurePropResponse]:
-        """
-        Retrieve remote options for a given prop for a trigger
 
-        Parameters
-        ----------
-        id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        prop_name : str
-            The name of the prop to configure
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ConfigurePropResponse]
-            trigger configuration started
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers/configure",
-            method="POST",
-            json={
-                "id": id,
-                "version": version,
-                "external_user_id": external_user_id,
-                "prop_name": prop_name,
-                "blocking": blocking,
-                "configured_props": convert_and_respect_annotation_metadata(
-                    object_=configured_props, annotation=ConfiguredProps, direction="write"
-                ),
-                "dynamic_props_id": dynamic_props_id,
-                "page": page,
-                "prev_context": prev_context,
-                "query": query,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ConfigurePropResponse,
-                    parse_obj_as(
-                        type_=ConfigurePropResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+class AsyncRawTriggersClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
 
     async def reload_props(
         self,
@@ -982,6 +836,432 @@ class AsyncRawTriggersClient:
                         typing.Any,
                         parse_obj_as(
                             type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
+        registry: typing.Optional[TriggersListRequestRegistry] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[Component, GetComponentsResponse]:
+        """
+        Retrieve available triggers with optional search and app filtering
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            A full-text search query matched against the name, key and description of the triggers
+
+        app : typing.Optional[str]
+            The ID or name slug of the app to filter the triggers
+
+        registry : typing.Optional[TriggersListRequestRegistry]
+            The registry to retrieve triggers from
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[Component, GetComponentsResponse]
+            triggers listed
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers",
+            method="GET",
+            params={
+                "after": after,
+                "before": before,
+                "limit": limit,
+                "q": q,
+                "app": app,
+                "registry": registry,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    GetComponentsResponse,
+                    parse_obj_as(
+                        type_=GetComponentsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _items = _parsed_response.data
+                _has_next = False
+                _get_next = None
+                if _parsed_response.page_info is not None:
+                    _parsed_next = _parsed_response.page_info.end_cursor
+                    _has_next = _parsed_next is not None and _parsed_next != ""
+
+                    async def _get_next():
+                        return await self.list(
+                            after=_parsed_next,
+                            before=before,
+                            limit=limit,
+                            q=q,
+                            app=app,
+                            registry=registry,
+                            request_options=request_options,
+                        )
+
+                return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def configure_prop(
+        self,
+        *,
+        external_user_id: str,
+        id: str,
+        prop_name: str,
+        blocking: typing.Optional[bool] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        dynamic_props_id: typing.Optional[str] = OMIT,
+        page: typing.Optional[float] = OMIT,
+        platform_version: typing.Optional[str] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ConfigurePropResponse]:
+        """
+        Configure a prop of a trigger to retrieve its options or validate its configuration
+
+        Parameters
+        ----------
+        external_user_id : str
+            The external user ID
+
+        id : str
+            The component ID
+
+        prop_name : str
+            The name of the prop to configure
+
+        blocking : typing.Optional[bool]
+            Whether this operation should block until completion
+
+        configured_props : typing.Optional[ConfiguredProps]
+
+        dynamic_props_id : typing.Optional[str]
+            The ID for dynamic props
+
+        page : typing.Optional[float]
+            Page number for paginated results
+
+        platform_version : typing.Optional[str]
+            Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
+
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
+            Previous context for pagination
+
+        query : typing.Optional[str]
+            Search query for filtering options
+
+        version : typing.Optional[str]
+            Component semantic version
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ConfigurePropResponse]
+            trigger configuration started
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers/configure",
+            method="POST",
+            json={
+                "blocking": blocking,
+                "configured_props": convert_and_respect_annotation_metadata(
+                    object_=configured_props, annotation=ConfiguredProps, direction="write"
+                ),
+                "dynamic_props_id": dynamic_props_id,
+                "external_user_id": external_user_id,
+                "id": id,
+                "page": page,
+                "platform_version": platform_version,
+                "prev_context": prev_context,
+                "prop_name": prop_name,
+                "query": query,
+                "version": version,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ConfigurePropResponse,
+                    parse_obj_as(
+                        type_=ConfigurePropResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def retrieve(
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[Component]:
+        """
+        Get detailed configuration for a specific trigger by its key
+
+        Parameters
+        ----------
+        component_id : str
+            The key that uniquely identifies the component
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[Component]
+            trigger retrieved
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/triggers/{encode_path_param(component_id)}",
+            method="GET",
+            params={
+                "version": version,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _parsed_response = typing.cast(
+                    GetComponentResponse,
+                    parse_obj_as(
+                        type_=GetComponentResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                _data = _parsed_response.data
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

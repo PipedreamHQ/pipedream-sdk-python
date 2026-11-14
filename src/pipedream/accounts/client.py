@@ -122,7 +122,7 @@ class AccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
-        Connect a new account for an external user in the project
+        Connect a new account for an external user in the project.
 
         Parameters
         ----------
@@ -302,15 +302,18 @@ class AccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[Account]:
         """
-        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+        List all connected accounts for a specific external user, unpaginated and newest first
 
         Parameters
         ----------
         external_user_id : str
+            The external user ID to list accounts for, or `me` for the requesting Connect token's own user.
 
         include_credentials : typing.Optional[bool]
+            Set to `true` to include account credentials in the response (BYOA and key-based accounts only)
 
         app : typing.Optional[str]
+            Only return accounts connected to this app, identified by its `name_slug`
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -459,7 +462,7 @@ class AsyncAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> Account:
         """
-        Connect a new account for an external user in the project
+        Connect a new account for an external user in the project.
 
         Parameters
         ----------
@@ -671,15 +674,18 @@ class AsyncAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.List[Account]:
         """
-        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+        List all connected accounts for a specific external user, unpaginated and newest first
 
         Parameters
         ----------
         external_user_id : str
+            The external user ID to list accounts for, or `me` for the requesting Connect token's own user.
 
         include_credentials : typing.Optional[bool]
+            Set to `true` to include account credentials in the response (BYOA and key-based accounts only)
 
         app : typing.Optional[str]
+            Only return accounts connected to this app, identified by its `name_slug`
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.

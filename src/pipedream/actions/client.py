@@ -34,205 +34,6 @@ class ActionsClient:
         """
         return self._raw_client
 
-    def list(
-        self,
-        *,
-        after: typing.Optional[str] = None,
-        before: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        q: typing.Optional[str] = None,
-        app: typing.Optional[str] = None,
-        registry: typing.Optional[ActionsListRequestRegistry] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> SyncPager[Component, GetComponentsResponse]:
-        """
-        Retrieve available actions with optional search and app filtering
-
-        Parameters
-        ----------
-        after : typing.Optional[str]
-            The cursor to start from for pagination
-
-        before : typing.Optional[str]
-            The cursor to end before for pagination
-
-        limit : typing.Optional[int]
-            The maximum number of results to return
-
-        q : typing.Optional[str]
-            A search query to filter the actions
-
-        app : typing.Optional[str]
-            The ID or name slug of the app to filter the actions
-
-        registry : typing.Optional[ActionsListRequestRegistry]
-            The registry to retrieve actions from
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        SyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
-
-        Examples
-        --------
-        from pipedream import Pipedream
-
-        client = Pipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        response = client.actions.list(
-            after="after",
-            before="before",
-            limit=1,
-            q="q",
-            app="app",
-            registry="public",
-        )
-        for item in response:
-            yield item
-        # alternatively, you can paginate page-by-page
-        for page in response.iter_pages():
-            yield page
-        """
-        return self._raw_client.list(
-            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
-        )
-
-    def retrieve(
-        self,
-        component_id: str,
-        *,
-        version: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> Component:
-        """
-        Get detailed configuration for a specific action by its key
-
-        Parameters
-        ----------
-        component_id : str
-            The key that uniquely identifies the component
-
-        version : typing.Optional[str]
-            Optional semantic version of the component to retrieve
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        Component
-            action retrieved
-
-        Examples
-        --------
-        from pipedream import Pipedream
-
-        client = Pipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.actions.retrieve(
-            component_id="slack-send-message",
-            version="1.0.0",
-        )
-        """
-        _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
-        return _response.data
-
-    def configure_prop(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ConfigurePropResponse:
-        """
-        Retrieve remote options for a given prop for a action
-
-        Parameters
-        ----------
-        id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        prop_name : str
-            The name of the prop to configure
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ConfigurePropResponse
-            action configuration started
-
-        Examples
-        --------
-        from pipedream import Pipedream
-
-        client = Pipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.actions.configure_prop(
-            id="id",
-            external_user_id="external_user_id",
-            prop_name="prop_name",
-        )
-        """
-        _response = self._raw_client.configure_prop(
-            id=id,
-            external_user_id=external_user_id,
-            prop_name=prop_name,
-            version=version,
-            blocking=blocking,
-            configured_props=configured_props,
-            dynamic_props_id=dynamic_props_id,
-            page=page,
-            prev_context=prev_context,
-            query=query,
-            request_options=request_options,
-        )
-        return _response.data
-
     def reload_props(
         self,
         *,
@@ -299,15 +100,178 @@ class ActionsClient:
         )
         return _response.data
 
+    def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> SyncPager[Component, GetComponentsResponse]:
+        """
+        Retrieve available actions with optional search and app filtering
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            A full-text search query matched against the name, key and description of the actions
+
+        app : typing.Optional[str]
+            The ID or name slug of the app to filter the actions
+
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        SyncPager[Component, GetComponentsResponse]
+            actions listed
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        response = client.actions.list(
+            after="after",
+            before="before",
+            limit=1,
+            q="q",
+            app="app",
+            registry="public",
+        )
+        for item in response:
+            yield item
+        # alternatively, you can paginate page-by-page
+        for page in response.iter_pages():
+            yield page
+        """
+        return self._raw_client.list(
+            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
+        )
+
+    def configure_prop(
+        self,
+        *,
+        external_user_id: str,
+        id: str,
+        prop_name: str,
+        blocking: typing.Optional[bool] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        dynamic_props_id: typing.Optional[str] = OMIT,
+        page: typing.Optional[float] = OMIT,
+        platform_version: typing.Optional[str] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ConfigurePropResponse:
+        """
+        Configure a prop of an action to retrieve its options or validate its configuration
+
+        Parameters
+        ----------
+        external_user_id : str
+            The external user ID
+
+        id : str
+            The component ID
+
+        prop_name : str
+            The name of the prop to configure
+
+        blocking : typing.Optional[bool]
+            Whether this operation should block until completion
+
+        configured_props : typing.Optional[ConfiguredProps]
+
+        dynamic_props_id : typing.Optional[str]
+            The ID for dynamic props
+
+        page : typing.Optional[float]
+            Page number for paginated results
+
+        platform_version : typing.Optional[str]
+            Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
+
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
+            Previous context for pagination
+
+        query : typing.Optional[str]
+            Search query for filtering options
+
+        version : typing.Optional[str]
+            Component semantic version
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ConfigurePropResponse
+            action configuration started
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.actions.configure_prop(
+            external_user_id="external_user_id",
+            id="id",
+            prop_name="prop_name",
+        )
+        """
+        _response = self._raw_client.configure_prop(
+            external_user_id=external_user_id,
+            id=id,
+            prop_name=prop_name,
+            blocking=blocking,
+            configured_props=configured_props,
+            dynamic_props_id=dynamic_props_id,
+            page=page,
+            platform_version=platform_version,
+            prev_context=prev_context,
+            query=query,
+            version=version,
+            request_options=request_options,
+        )
+        return _response.data
+
     def run(
         self,
         *,
-        id: str,
         external_user_id: str,
-        version: typing.Optional[str] = OMIT,
+        id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        debug: typing.Optional[bool] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        platform_version: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
+        version: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
@@ -315,21 +279,27 @@ class ActionsClient:
 
         Parameters
         ----------
-        id : str
-            The action component ID
-
         external_user_id : str
             The external user ID
 
-        version : typing.Optional[str]
-            Action component semantic version
+        id : str
+            The action component ID
 
         configured_props : typing.Optional[ConfiguredProps]
+
+        debug : typing.Optional[bool]
+            Enable verbose debug logging for this execution. Defaults to false.
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
+        platform_version : typing.Optional[str]
+            Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
+
         stash_id : typing.Optional[RunActionOptsStashId]
+
+        version : typing.Optional[str]
+            Action component semantic version
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -349,116 +319,24 @@ class ActionsClient:
             client_secret="YOUR_CLIENT_SECRET",
         )
         client.actions.run(
-            id="id",
             external_user_id="external_user_id",
+            id="id",
         )
         """
         _response = self._raw_client.run(
-            id=id,
             external_user_id=external_user_id,
-            version=version,
+            id=id,
             configured_props=configured_props,
+            debug=debug,
             dynamic_props_id=dynamic_props_id,
+            platform_version=platform_version,
             stash_id=stash_id,
+            version=version,
             request_options=request_options,
         )
         return _response.data
 
-
-class AsyncActionsClient:
-    def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._raw_client = AsyncRawActionsClient(client_wrapper=client_wrapper)
-
-    @property
-    def with_raw_response(self) -> AsyncRawActionsClient:
-        """
-        Retrieves a raw implementation of this client that returns raw responses.
-
-        Returns
-        -------
-        AsyncRawActionsClient
-        """
-        return self._raw_client
-
-    async def list(
-        self,
-        *,
-        after: typing.Optional[str] = None,
-        before: typing.Optional[str] = None,
-        limit: typing.Optional[int] = None,
-        q: typing.Optional[str] = None,
-        app: typing.Optional[str] = None,
-        registry: typing.Optional[ActionsListRequestRegistry] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncPager[Component, GetComponentsResponse]:
-        """
-        Retrieve available actions with optional search and app filtering
-
-        Parameters
-        ----------
-        after : typing.Optional[str]
-            The cursor to start from for pagination
-
-        before : typing.Optional[str]
-            The cursor to end before for pagination
-
-        limit : typing.Optional[int]
-            The maximum number of results to return
-
-        q : typing.Optional[str]
-            A search query to filter the actions
-
-        app : typing.Optional[str]
-            The ID or name slug of the app to filter the actions
-
-        registry : typing.Optional[ActionsListRequestRegistry]
-            The registry to retrieve actions from
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncPager[Component, GetComponentsResponse]
-            returns public + private without permission
-
-        Examples
-        --------
-        import asyncio
-
-        from pipedream import AsyncPipedream
-
-        client = AsyncPipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            response = await client.actions.list(
-                after="after",
-                before="before",
-                limit=1,
-                q="q",
-                app="app",
-                registry="public",
-            )
-            async for item in response:
-                yield item
-
-            # alternatively, you can paginate page-by-page
-            async for page in response.iter_pages():
-                yield page
-
-
-        asyncio.run(main())
-        """
-        return await self._raw_client.list(
-            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
-        )
-
-    async def retrieve(
+    def retrieve(
         self,
         component_id: str,
         *,
@@ -486,123 +364,36 @@ class AsyncActionsClient:
 
         Examples
         --------
-        import asyncio
+        from pipedream import Pipedream
 
-        from pipedream import AsyncPipedream
-
-        client = AsyncPipedream(
+        client = Pipedream(
             project_id="YOUR_PROJECT_ID",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-
-
-        async def main() -> None:
-            await client.actions.retrieve(
-                component_id="slack-send-message",
-                version="1.0.0",
-            )
-
-
-        asyncio.run(main())
+        client.actions.retrieve(
+            component_id="slack-send-message",
+            version="1.0.0",
+        )
         """
-        _response = await self._raw_client.retrieve(component_id, version=version, request_options=request_options)
+        _response = self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data
 
-    async def configure_prop(
-        self,
-        *,
-        id: str,
-        external_user_id: str,
-        prop_name: str,
-        version: typing.Optional[str] = OMIT,
-        blocking: typing.Optional[bool] = OMIT,
-        configured_props: typing.Optional[ConfiguredProps] = OMIT,
-        dynamic_props_id: typing.Optional[str] = OMIT,
-        page: typing.Optional[float] = OMIT,
-        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
-        query: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ConfigurePropResponse:
+
+class AsyncActionsClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._raw_client = AsyncRawActionsClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawActionsClient:
         """
-        Retrieve remote options for a given prop for a action
-
-        Parameters
-        ----------
-        id : str
-            The component ID
-
-        external_user_id : str
-            The external user ID
-
-        prop_name : str
-            The name of the prop to configure
-
-        version : typing.Optional[str]
-            Component semantic version
-
-        blocking : typing.Optional[bool]
-            Whether this operation should block until completion
-
-        configured_props : typing.Optional[ConfiguredProps]
-
-        dynamic_props_id : typing.Optional[str]
-            The ID for dynamic props
-
-        page : typing.Optional[float]
-            Page number for paginated results
-
-        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
-            Previous context for pagination
-
-        query : typing.Optional[str]
-            Search query for filtering options
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
+        Retrieves a raw implementation of this client that returns raw responses.
 
         Returns
         -------
-        ConfigurePropResponse
-            action configuration started
-
-        Examples
-        --------
-        import asyncio
-
-        from pipedream import AsyncPipedream
-
-        client = AsyncPipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.actions.configure_prop(
-                id="id",
-                external_user_id="external_user_id",
-                prop_name="prop_name",
-            )
-
-
-        asyncio.run(main())
+        AsyncRawActionsClient
         """
-        _response = await self._raw_client.configure_prop(
-            id=id,
-            external_user_id=external_user_id,
-            prop_name=prop_name,
-            version=version,
-            blocking=blocking,
-            configured_props=configured_props,
-            dynamic_props_id=dynamic_props_id,
-            page=page,
-            prev_context=prev_context,
-            query=query,
-            request_options=request_options,
-        )
-        return _response.data
+        return self._raw_client
 
     async def reload_props(
         self,
@@ -678,15 +469,195 @@ class AsyncActionsClient:
         )
         return _response.data
 
+    async def list(
+        self,
+        *,
+        after: typing.Optional[str] = None,
+        before: typing.Optional[str] = None,
+        limit: typing.Optional[int] = None,
+        q: typing.Optional[str] = None,
+        app: typing.Optional[str] = None,
+        registry: typing.Optional[ActionsListRequestRegistry] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncPager[Component, GetComponentsResponse]:
+        """
+        Retrieve available actions with optional search and app filtering
+
+        Parameters
+        ----------
+        after : typing.Optional[str]
+            The cursor to start from for pagination
+
+        before : typing.Optional[str]
+            The cursor to end before for pagination
+
+        limit : typing.Optional[int]
+            The maximum number of results to return
+
+        q : typing.Optional[str]
+            A full-text search query matched against the name, key and description of the actions
+
+        app : typing.Optional[str]
+            The ID or name slug of the app to filter the actions
+
+        registry : typing.Optional[ActionsListRequestRegistry]
+            The registry to retrieve actions from
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncPager[Component, GetComponentsResponse]
+            actions listed
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            response = await client.actions.list(
+                after="after",
+                before="before",
+                limit=1,
+                q="q",
+                app="app",
+                registry="public",
+            )
+            async for item in response:
+                yield item
+
+            # alternatively, you can paginate page-by-page
+            async for page in response.iter_pages():
+                yield page
+
+
+        asyncio.run(main())
+        """
+        return await self._raw_client.list(
+            after=after, before=before, limit=limit, q=q, app=app, registry=registry, request_options=request_options
+        )
+
+    async def configure_prop(
+        self,
+        *,
+        external_user_id: str,
+        id: str,
+        prop_name: str,
+        blocking: typing.Optional[bool] = OMIT,
+        configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        dynamic_props_id: typing.Optional[str] = OMIT,
+        page: typing.Optional[float] = OMIT,
+        platform_version: typing.Optional[str] = OMIT,
+        prev_context: typing.Optional[typing.Dict[str, typing.Any]] = OMIT,
+        query: typing.Optional[str] = OMIT,
+        version: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ConfigurePropResponse:
+        """
+        Configure a prop of an action to retrieve its options or validate its configuration
+
+        Parameters
+        ----------
+        external_user_id : str
+            The external user ID
+
+        id : str
+            The component ID
+
+        prop_name : str
+            The name of the prop to configure
+
+        blocking : typing.Optional[bool]
+            Whether this operation should block until completion
+
+        configured_props : typing.Optional[ConfiguredProps]
+
+        dynamic_props_id : typing.Optional[str]
+            The ID for dynamic props
+
+        page : typing.Optional[float]
+            Page number for paginated results
+
+        platform_version : typing.Optional[str]
+            Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
+
+        prev_context : typing.Optional[typing.Dict[str, typing.Any]]
+            Previous context for pagination
+
+        query : typing.Optional[str]
+            Search query for filtering options
+
+        version : typing.Optional[str]
+            Component semantic version
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ConfigurePropResponse
+            action configuration started
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.actions.configure_prop(
+                external_user_id="external_user_id",
+                id="id",
+                prop_name="prop_name",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.configure_prop(
+            external_user_id=external_user_id,
+            id=id,
+            prop_name=prop_name,
+            blocking=blocking,
+            configured_props=configured_props,
+            dynamic_props_id=dynamic_props_id,
+            page=page,
+            platform_version=platform_version,
+            prev_context=prev_context,
+            query=query,
+            version=version,
+            request_options=request_options,
+        )
+        return _response.data
+
     async def run(
         self,
         *,
-        id: str,
         external_user_id: str,
-        version: typing.Optional[str] = OMIT,
+        id: str,
         configured_props: typing.Optional[ConfiguredProps] = OMIT,
+        debug: typing.Optional[bool] = OMIT,
         dynamic_props_id: typing.Optional[str] = OMIT,
+        platform_version: typing.Optional[str] = OMIT,
         stash_id: typing.Optional[RunActionOptsStashId] = OMIT,
+        version: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> RunActionResponse:
         """
@@ -694,21 +665,27 @@ class AsyncActionsClient:
 
         Parameters
         ----------
-        id : str
-            The action component ID
-
         external_user_id : str
             The external user ID
 
-        version : typing.Optional[str]
-            Action component semantic version
+        id : str
+            The action component ID
 
         configured_props : typing.Optional[ConfiguredProps]
+
+        debug : typing.Optional[bool]
+            Enable verbose debug logging for this execution. Defaults to false.
 
         dynamic_props_id : typing.Optional[str]
             The ID for dynamic props
 
+        platform_version : typing.Optional[str]
+            Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
+
         stash_id : typing.Optional[RunActionOptsStashId]
+
+        version : typing.Optional[str]
+            Action component semantic version
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -733,20 +710,73 @@ class AsyncActionsClient:
 
         async def main() -> None:
             await client.actions.run(
-                id="id",
                 external_user_id="external_user_id",
+                id="id",
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.run(
-            id=id,
             external_user_id=external_user_id,
-            version=version,
+            id=id,
             configured_props=configured_props,
+            debug=debug,
             dynamic_props_id=dynamic_props_id,
+            platform_version=platform_version,
             stash_id=stash_id,
+            version=version,
             request_options=request_options,
         )
+        return _response.data
+
+    async def retrieve(
+        self,
+        component_id: str,
+        *,
+        version: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> Component:
+        """
+        Get detailed configuration for a specific action by its key
+
+        Parameters
+        ----------
+        component_id : str
+            The key that uniquely identifies the component
+
+        version : typing.Optional[str]
+            Optional semantic version of the component to retrieve
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        Component
+            action retrieved
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.actions.retrieve(
+                component_id="slack-send-message",
+                version="1.0.0",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.retrieve(component_id, version=version, request_options=request_options)
         return _response.data

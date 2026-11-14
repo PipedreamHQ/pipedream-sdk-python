@@ -12,18 +12,28 @@ from .configured_prop_value_string import ConfiguredPropValueString
 
 
 class ConfigurablePropString(UniversalBaseModel):
-    type: typing.Literal["string"] = "string"
+    default: typing.Optional[ConfiguredPropValueString] = None
+    format: typing.Optional[ConfigurablePropStringFormat] = None
+    options: typing.Optional[typing.List[ConfigurablePropStringOptionsItem]] = None
     secret: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If true, this prop is a secret and should not be displayed in plain text.
     """
 
-    format: typing.Optional[ConfigurablePropStringFormat] = None
-    default: typing.Optional[ConfiguredPropValueString] = None
-    options: typing.Optional[typing.List[ConfigurablePropStringOptionsItem]] = None
-    name: str = pydantic.Field()
+    type: typing.Literal["string"] = "string"
+    description: typing.Optional[str] = pydantic.Field(default=None)
     """
-    When building `configuredProps`, make sure to use this field as the key when setting the prop value
+    A description of the prop, shown to the user when configuring the component.
+    """
+
+    disabled: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, this prop will be ignored.
+    """
+
+    hidden: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    If true, should not expose this prop to the user
     """
 
     label: typing.Optional[str] = pydantic.Field(default=None)
@@ -31,19 +41,14 @@ class ConfigurablePropString(UniversalBaseModel):
     Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead.
     """
 
-    description: typing.Optional[str] = pydantic.Field(default=None)
+    name: str = pydantic.Field()
     """
-    A description of the prop, shown to the user when configuring the component.
+    When building `configuredProps`, make sure to use this field as the key when setting the prop value
     """
 
     optional: typing.Optional[bool] = pydantic.Field(default=None)
     """
     If true, this prop does not need to be specified.
-    """
-
-    disabled: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    If true, this prop will be ignored.
     """
 
     read_only: typing_extensions.Annotated[
@@ -54,11 +59,14 @@ class ConfigurablePropString(UniversalBaseModel):
             description="If true, this prop is read-only — its value is either fixed by the component author (`static`) or the prop is purely informational (e.g. `alert`, `dir`). Connect clients should render it without treating it as a configurable input.",
         ),
     ] = None
-    hidden: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    If true, should not expose this prop to the user
-    """
-
+    reload_props: typing_extensions.Annotated[
+        typing.Optional[bool],
+        FieldMetadata(alias="reloadProps"),
+        pydantic.Field(
+            alias="reloadProps",
+            description="If true, after setting a value for this prop, a call to `reloadComponentProps` is required as the component has dynamic configurable props dependent on this one",
+        ),
+    ] = None
     remote_options: typing_extensions.Annotated[
         typing.Optional[bool],
         FieldMetadata(alias="remoteOptions"),
@@ -73,14 +81,6 @@ class ConfigurablePropString(UniversalBaseModel):
         pydantic.Field(
             alias="useQuery",
             description="If true, calls to `configureComponent` for this prop support receiving a `query` parameter to filter remote options",
-        ),
-    ] = None
-    reload_props: typing_extensions.Annotated[
-        typing.Optional[bool],
-        FieldMetadata(alias="reloadProps"),
-        pydantic.Field(
-            alias="reloadProps",
-            description="If true, after setting a value for this prop, a call to `reloadComponentProps` is required as the component has dynamic configurable props dependent on this one",
         ),
     ] = None
     with_label: typing_extensions.Annotated[

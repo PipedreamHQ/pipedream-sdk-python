@@ -12,9 +12,9 @@ class PageInfo(UniversalBaseModel):
     Number of items returned
     """
 
-    total_count: typing.Optional[int] = pydantic.Field(default=None)
+    end_cursor: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Total number of items
+    Used to fetch the next page of items
     """
 
     start_cursor: typing.Optional[str] = pydantic.Field(default=None)
@@ -22,9 +22,9 @@ class PageInfo(UniversalBaseModel):
     Used to fetch the previous page of items
     """
 
-    end_cursor: typing.Optional[str] = pydantic.Field(default=None)
+    total_count: typing.Optional[int] = pydantic.Field(default=None)
     """
-    Used to fetch the next page of items
+    Total number of items
     """
 
     if IS_PYDANTIC_V2:

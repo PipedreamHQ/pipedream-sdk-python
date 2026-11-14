@@ -11,8 +11,12 @@ from ..core.pagination import AsyncPager, SyncPager
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.content_too_large_error import ContentTooLargeError
+from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.account import Account
+from ..types.account_limit_reached import AccountLimitReached
 from ..types.list_accounts_response import ListAccountsResponse
 from pydantic import ValidationError
 
@@ -143,7 +147,7 @@ class RawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[Account]:
         """
-        Connect a new account for an external user in the project
+        Connect a new account for an external user in the project.
 
         Parameters
         ----------
@@ -209,6 +213,17 @@ class RawAccountsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -389,15 +404,18 @@ class RawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[typing.List[Account]]:
         """
-        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+        List all connected accounts for a specific external user, unpaginated and newest first
 
         Parameters
         ----------
         external_user_id : str
+            The external user ID to list accounts for, or `me` for the requesting Connect token's own user.
 
         include_credentials : typing.Optional[bool]
+            Set to `true` to include account credentials in the response (BYOA and key-based accounts only)
 
         app : typing.Optional[str]
+            Only return accounts connected to this app, identified by its `name_slug`
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -426,6 +444,28 @@ class RawAccountsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 413:
+                raise ContentTooLargeError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        AccountLimitReached,
+                        parse_obj_as(
+                            type_=AccountLimitReached,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -573,7 +613,7 @@ class AsyncRawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[Account]:
         """
-        Connect a new account for an external user in the project
+        Connect a new account for an external user in the project.
 
         Parameters
         ----------
@@ -639,6 +679,17 @@ class AsyncRawAccountsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 422:
+                raise UnprocessableEntityError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -821,15 +872,18 @@ class AsyncRawAccountsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[typing.List[Account]]:
         """
-        List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+        List all connected accounts for a specific external user, unpaginated and newest first
 
         Parameters
         ----------
         external_user_id : str
+            The external user ID to list accounts for, or `me` for the requesting Connect token's own user.
 
         include_credentials : typing.Optional[bool]
+            Set to `true` to include account credentials in the response (BYOA and key-based accounts only)
 
         app : typing.Optional[str]
+            Only return accounts connected to this app, identified by its `name_slug`
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -858,6 +912,28 @@ class AsyncRawAccountsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 413:
+                raise ContentTooLargeError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        AccountLimitReached,
+                        parse_obj_as(
+                            type_=AccountLimitReached,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
