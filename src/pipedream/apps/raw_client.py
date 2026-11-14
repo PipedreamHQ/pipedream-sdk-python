@@ -11,7 +11,16 @@ from ..core.pagination import AsyncPager, SyncPager
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.bad_gateway_error import BadGatewayError
+from ..errors.bad_request_error import BadRequestError
+from ..errors.internal_server_error import InternalServerError
+from ..errors.not_found_error import NotFoundError
+from ..errors.not_implemented_error import NotImplementedError
+from ..errors.service_unavailable_error import ServiceUnavailableError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..types.app import App
+from ..types.error_response import ErrorResponse
+from ..types.facets_response import FacetsResponse
 from ..types.get_app_response import GetAppResponse
 from ..types.list_apps_response import ListAppsResponse
 from .types.apps_list_request_sort_direction import AppsListRequestSortDirection
@@ -32,10 +41,13 @@ class RawAppsClient:
         q: typing.Optional[str] = None,
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
-        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_components: typing.Optional[bool] = None,
         has_actions: typing.Optional[bool] = None,
         has_triggers: typing.Optional[bool] = None,
+        page: typing.Optional[int] = None,
+        category_name: typing.Optional[str] = None,
+        auth_type: typing.Optional[str] = None,
+        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[App, ListAppsResponse]:
         """
@@ -61,9 +73,6 @@ class RawAppsClient:
         sort_direction : typing.Optional[AppsListRequestSortDirection]
             The direction to sort the apps
 
-        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Only return apps in these categories
-
         has_components : typing.Optional[bool]
             Only return apps that have components (actions or triggers)
 
@@ -72,6 +81,19 @@ class RawAppsClient:
 
         has_triggers : typing.Optional[bool]
             Only return apps that have triggers
+
+        page : typing.Optional[int]
+            The page of results to return, 1-based. An alternative to `after`/
+            `before` cursor pagination; ignored when either cursor is supplied.
+
+        category_name : typing.Optional[str]
+            Only return apps in this category, by name (e.g. `Developer Tools`)
+
+        auth_type : typing.Optional[str]
+            Only return apps using this authentication type
+
+        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Only return apps in these categories
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -91,10 +113,13 @@ class RawAppsClient:
                 "q": q,
                 "sort_key": sort_key,
                 "sort_direction": sort_direction,
-                "category_ids": category_ids,
                 "has_components": has_components,
                 "has_actions": has_actions,
                 "has_triggers": has_triggers,
+                "page": page,
+                "category_name": category_name,
+                "auth_type": auth_type,
+                "category_ids": category_ids,
             },
             request_options=request_options,
         )
@@ -120,13 +145,164 @@ class RawAppsClient:
                         q=q,
                         sort_key=sort_key,
                         sort_direction=sort_direction,
-                        category_ids=category_ids,
                         has_components=has_components,
                         has_actions=has_actions,
                         has_triggers=has_triggers,
+                        page=page,
+                        category_name=category_name,
+                        auth_type=auth_type,
+                        category_ids=category_ids,
                         request_options=request_options,
                     )
                 return SyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 501:
+                raise NotImplementedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def facets(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[FacetsResponse]:
+        """
+        Retrieve the available filter values for apps, and how many apps carry each one
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[FacetsResponse]
+            app facets listed
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "v1/connect/apps/facets",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FacetsResponse,
+                    parse_obj_as(
+                        type_=FacetsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -170,6 +346,61 @@ class RawAppsClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -193,10 +424,13 @@ class AsyncRawAppsClient:
         q: typing.Optional[str] = None,
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
-        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_components: typing.Optional[bool] = None,
         has_actions: typing.Optional[bool] = None,
         has_triggers: typing.Optional[bool] = None,
+        page: typing.Optional[int] = None,
+        category_name: typing.Optional[str] = None,
+        auth_type: typing.Optional[str] = None,
+        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[App, ListAppsResponse]:
         """
@@ -222,9 +456,6 @@ class AsyncRawAppsClient:
         sort_direction : typing.Optional[AppsListRequestSortDirection]
             The direction to sort the apps
 
-        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Only return apps in these categories
-
         has_components : typing.Optional[bool]
             Only return apps that have components (actions or triggers)
 
@@ -233,6 +464,19 @@ class AsyncRawAppsClient:
 
         has_triggers : typing.Optional[bool]
             Only return apps that have triggers
+
+        page : typing.Optional[int]
+            The page of results to return, 1-based. An alternative to `after`/
+            `before` cursor pagination; ignored when either cursor is supplied.
+
+        category_name : typing.Optional[str]
+            Only return apps in this category, by name (e.g. `Developer Tools`)
+
+        auth_type : typing.Optional[str]
+            Only return apps using this authentication type
+
+        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Only return apps in these categories
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -252,10 +496,13 @@ class AsyncRawAppsClient:
                 "q": q,
                 "sort_key": sort_key,
                 "sort_direction": sort_direction,
-                "category_ids": category_ids,
                 "has_components": has_components,
                 "has_actions": has_actions,
                 "has_triggers": has_triggers,
+                "page": page,
+                "category_name": category_name,
+                "auth_type": auth_type,
+                "category_ids": category_ids,
             },
             request_options=request_options,
         )
@@ -283,14 +530,167 @@ class AsyncRawAppsClient:
                             q=q,
                             sort_key=sort_key,
                             sort_direction=sort_direction,
-                            category_ids=category_ids,
                             has_components=has_components,
                             has_actions=has_actions,
                             has_triggers=has_triggers,
+                            page=page,
+                            category_name=category_name,
+                            auth_type=auth_type,
+                            category_ids=category_ids,
                             request_options=request_options,
                         )
 
                 return AsyncPager(has_next=_has_next, items=_items, get_next=_get_next, response=_parsed_response)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 501:
+                raise NotImplementedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def facets(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[FacetsResponse]:
+        """
+        Retrieve the available filter values for apps, and how many apps carry each one
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[FacetsResponse]
+            app facets listed
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "v1/connect/apps/facets",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    FacetsResponse,
+                    parse_obj_as(
+                        type_=FacetsResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -334,6 +734,61 @@ class AsyncRawAppsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 500:
+                raise InternalServerError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 502:
+                raise BadGatewayError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 503:
+                raise ServiceUnavailableError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        parse_obj_as(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

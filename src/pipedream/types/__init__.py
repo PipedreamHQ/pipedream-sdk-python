@@ -9,10 +9,13 @@ if typing.TYPE_CHECKING:
     from .account import Account
     from .account_credentials import AccountCredentials
     from .account_id import AccountId
+    from .account_limit_reached import AccountLimitReached
+    from .allowed_email_domains import AllowedEmailDomains
     from .app import App
     from .app_auth_type import AppAuthType
     from .app_category import AppCategory
     from .app_override import AppOverride
+    from .app_scope_labels import AppScopeLabels
     from .app_scope_profiles_item import AppScopeProfilesItem
     from .app_scope_profiles_item_name import AppScopeProfilesItemName
     from .backend_client_opts import BackendClientOpts
@@ -90,6 +93,8 @@ if typing.TYPE_CHECKING:
     from .emitter_type import EmitterType
     from .error_response import ErrorResponse
     from .external_user import ExternalUser
+    from .facet_value import FacetValue
+    from .facets_response import FacetsResponse
     from .get_accounts_response import GetAccountsResponse
     from .get_app_category_response import GetAppCategoryResponse
     from .get_app_response import GetAppResponse
@@ -157,10 +162,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Account": ".account",
     "AccountCredentials": ".account_credentials",
     "AccountId": ".account_id",
+    "AccountLimitReached": ".account_limit_reached",
+    "AllowedEmailDomains": ".allowed_email_domains",
     "App": ".app",
     "AppAuthType": ".app_auth_type",
     "AppCategory": ".app_category",
     "AppOverride": ".app_override",
+    "AppScopeLabels": ".app_scope_labels",
     "AppScopeProfilesItem": ".app_scope_profiles_item",
     "AppScopeProfilesItemName": ".app_scope_profiles_item_name",
     "BackendClientOpts": ".backend_client_opts",
@@ -238,6 +246,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "EmitterType": ".emitter_type",
     "ErrorResponse": ".error_response",
     "ExternalUser": ".external_user",
+    "FacetValue": ".facet_value",
+    "FacetsResponse": ".facets_response",
     "GetAccountsResponse": ".get_accounts_response",
     "GetAppCategoryResponse": ".get_app_category_response",
     "GetAppResponse": ".get_app_response",
@@ -329,10 +339,13 @@ __all__ = [
     "Account",
     "AccountCredentials",
     "AccountId",
+    "AccountLimitReached",
+    "AllowedEmailDomains",
     "App",
     "AppAuthType",
     "AppCategory",
     "AppOverride",
+    "AppScopeLabels",
     "AppScopeProfilesItem",
     "AppScopeProfilesItemName",
     "BackendClientOpts",
@@ -410,6 +423,8 @@ __all__ = [
     "EmitterType",
     "ErrorResponse",
     "ExternalUser",
+    "FacetValue",
+    "FacetsResponse",
     "GetAccountsResponse",
     "GetAppCategoryResponse",
     "GetAppResponse",

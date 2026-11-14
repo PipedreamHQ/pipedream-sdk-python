@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 from .app_auth_type import AppAuthType
+from .app_scope_labels import AppScopeLabels
 from .app_scope_profiles_item import AppScopeProfilesItem
 
 
@@ -13,30 +14,15 @@ class App(UniversalBaseModel):
     Response object for a Pipedream app's metadata
     """
 
-    id: typing.Optional[str] = pydantic.Field(default=None)
+    additional_scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    ID of the app. Only applies for OAuth apps.
-    """
-
-    name_slug: str = pydantic.Field()
-    """
-    The name slug of the target app (see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug)
-    """
-
-    name: str = pydantic.Field()
-    """
-    The human-readable name of the app
+    A second list of scopes requested alongside `scopes`. The connection does not require the user to grant them. `scope_labels` names both lists. `null` when there are none, or when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account.
     """
 
     auth_type: typing.Optional[AppAuthType] = None
-    description: typing.Optional[str] = pydantic.Field(default=None)
+    categories: typing.List[str] = pydantic.Field()
     """
-    A short description of the app
-    """
-
-    img_src: str = pydantic.Field()
-    """
-    The URL to the app's logo
+    Categories associated with the app
     """
 
     custom_fields_json: typing.Optional[str] = pydantic.Field(default=None)
@@ -44,9 +30,9 @@ class App(UniversalBaseModel):
     A JSON string representing the custom fields for the app
     """
 
-    categories: typing.List[str] = pydantic.Field()
+    description: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Categories associated with the app
+    A short description of the app
     """
 
     featured_weight: float = pydantic.Field()
@@ -54,14 +40,44 @@ class App(UniversalBaseModel):
     A rough directional ordering of app popularity, subject to changes by Pipedream
     """
 
+    id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of the app. Only applies for OAuth apps.
+    """
+
+    img_src: str = pydantic.Field()
+    """
+    The URL to the app's logo
+    """
+
+    name: str = pydantic.Field()
+    """
+    The human-readable name of the app
+    """
+
+    name_slug: str = pydantic.Field()
+    """
+    The name slug of the target app (see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug)
+    """
+
+    oauth_app_id: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Useful for retrieving the OAuth client's `client_id` and redirect URI with the Retrieve OAuth client endpoint.
+    """
+
+    scope_labels: typing.Optional[AppScopeLabels] = pydantic.Field(default=None)
+    """
+    Display names for `scopes` and `additional_scopes`; their meaning depends on the app. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account.
+    """
+
     scope_profiles: typing.List[AppScopeProfilesItem] = pydantic.Field()
     """
     Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any.
     """
 
-    oauth_app_id: typing.Optional[str] = pydantic.Field(default=None)
+    scopes: typing.Optional[typing.List[str]] = pydantic.Field(default=None)
     """
-    ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints.
+    The OAuth scopes requested when an account connects through this OAuth client, or, on an app, through the app's Pipedream official OAuth client and no `oauth_scope_profile`. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account.
     """
 
     if IS_PYDANTIC_V2:

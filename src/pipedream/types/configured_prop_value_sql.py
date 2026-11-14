@@ -9,19 +9,14 @@ from ..core.serialization import FieldMetadata
 
 
 class ConfiguredPropValueSql(UniversalBaseModel):
-    value: str = pydantic.Field()
+    params: typing.List[str] = pydantic.Field()
     """
-    The raw SQL query, as provided by the user
+    The list of parameters for the prepared statement
     """
 
     query: str = pydantic.Field()
     """
     The SQL query to execute
-    """
-
-    params: typing.List[str] = pydantic.Field()
-    """
-    The list of parameters for the prepared statement
     """
 
     use_prepared_statements: typing_extensions.Annotated[
@@ -31,6 +26,10 @@ class ConfiguredPropValueSql(UniversalBaseModel):
             alias="usePreparedStatements", description="Whether to use prepared statements for the query or not"
         ),
     ]
+    value: str = pydantic.Field()
+    """
+    The raw SQL query, as provided by the user
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

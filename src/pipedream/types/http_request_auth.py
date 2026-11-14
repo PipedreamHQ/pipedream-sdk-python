@@ -12,14 +12,14 @@ class HttpRequestAuth(UniversalBaseModel):
     Authentication configuration for HTTP request
     """
 
+    password: typing.Optional[str] = None
+    token: typing.Optional[str] = None
     type: typing.Optional[HttpRequestAuthType] = pydantic.Field(default=None)
     """
     The authentication type
     """
 
     username: typing.Optional[str] = None
-    password: typing.Optional[str] = None
-    token: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
