@@ -13,7 +13,6 @@ from ..errors.bad_request_error import BadRequestError
 from ..errors.too_many_requests_error import TooManyRequestsError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.create_o_auth_token_response import CreateOAuthTokenResponse
-from ..types.unauthorized_error_body import UnauthorizedErrorBody
 from pydantic import ValidationError
 
 # this is used as the default value for optional parameters
@@ -105,9 +104,9 @@ class RawOauthTokensClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        UnauthorizedErrorBody,
+                        typing.Any,
                         parse_obj_as(
-                            type_=UnauthorizedErrorBody,  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -218,9 +217,9 @@ class AsyncRawOauthTokensClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        UnauthorizedErrorBody,
+                        typing.Any,
                         parse_obj_as(
-                            type_=UnauthorizedErrorBody,  # type: ignore
+                            type_=typing.Any,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

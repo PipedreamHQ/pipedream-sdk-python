@@ -10,6 +10,18 @@ from .tool_annotations import ToolAnnotations
 
 
 class Component(UniversalBaseModel):
+    annotations: typing.Optional[ToolAnnotations] = None
+    component_type: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The type of component (trigger or action)
+    """
+
+    configurable_props: typing.List[ConfigurableProp]
+    description: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    A description of the component
+    """
+
     key: str = pydantic.Field()
     """
     The key that uniquely identifies the component.
@@ -20,24 +32,11 @@ class Component(UniversalBaseModel):
     The human-readable name of the component
     """
 
+    stash: typing.Optional[ComponentStash] = None
     version: str = pydantic.Field()
     """
     The latest version of the component, in semantic versioning format.
     """
-
-    configurable_props: typing.List[ConfigurableProp]
-    description: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    A description of the component
-    """
-
-    component_type: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The type of component (trigger or action)
-    """
-
-    stash: typing.Optional[ComponentStash] = None
-    annotations: typing.Optional[ToolAnnotations] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

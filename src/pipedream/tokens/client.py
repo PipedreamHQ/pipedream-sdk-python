@@ -28,92 +28,6 @@ class TokensClient:
         """
         return self._raw_client
 
-    def create(
-        self,
-        *,
-        external_user_id: str,
-        allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
-        error_redirect_uri: typing.Optional[str] = OMIT,
-        expires_in: typing.Optional[int] = OMIT,
-        scope: typing.Optional[str] = OMIT,
-        success_redirect_uri: typing.Optional[str] = OMIT,
-        webhook_uri: typing.Optional[str] = OMIT,
-        allow_progressive_scopes: typing.Optional[bool] = OMIT,
-        app_id: typing.Optional[str] = OMIT,
-        oauth_app_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateTokenResponse:
-        """
-        Generate a Connect token to use for client-side authentication
-
-        Parameters
-        ----------
-        external_user_id : str
-            Your end user ID, for whom you're creating the token
-
-        allowed_origins : typing.Optional[typing.Sequence[str]]
-            List of allowed origins for CORS
-
-        error_redirect_uri : typing.Optional[str]
-            URI to redirect to on error
-
-        expires_in : typing.Optional[int]
-            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
-
-        scope : typing.Optional[str]
-            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
-
-        success_redirect_uri : typing.Optional[str]
-            URI to redirect to on success
-
-        webhook_uri : typing.Optional[str]
-            Webhook URI for notifications
-
-        allow_progressive_scopes : typing.Optional[bool]
-            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
-
-        app_id : typing.Optional[str]
-            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
-
-        oauth_app_id : typing.Optional[str]
-            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateTokenResponse
-            connect token created
-
-        Examples
-        --------
-        from pipedream import Pipedream
-
-        client = Pipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-        client.tokens.create(
-            external_user_id="external_user_id",
-        )
-        """
-        _response = self._raw_client.create(
-            external_user_id=external_user_id,
-            allowed_origins=allowed_origins,
-            error_redirect_uri=error_redirect_uri,
-            expires_in=expires_in,
-            scope=scope,
-            success_redirect_uri=success_redirect_uri,
-            webhook_uri=webhook_uri,
-            allow_progressive_scopes=allow_progressive_scopes,
-            app_id=app_id,
-            oauth_app_id=oauth_app_id,
-            request_options=request_options,
-        )
-        return _response.data
-
     def validate(
         self,
         ctok: ConnectToken,
@@ -132,7 +46,7 @@ class TokensClient:
         ctok : ConnectToken
 
         app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
 
         account_id : typing.Optional[str]
             An existing account ID to reconnect. Must belong to the app identified by app_id.
@@ -141,7 +55,7 @@ class TokensClient:
             The OAuth app ID to validate against (if the token is for an OAuth app)
 
         app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -178,6 +92,92 @@ class TokensClient:
         )
         return _response.data
 
+    def create(
+        self,
+        *,
+        external_user_id: str,
+        allow_progressive_scopes: typing.Optional[bool] = OMIT,
+        allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
+        app_id: typing.Optional[str] = OMIT,
+        error_redirect_uri: typing.Optional[str] = OMIT,
+        expires_in: typing.Optional[int] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
+        scope: typing.Optional[str] = OMIT,
+        success_redirect_uri: typing.Optional[str] = OMIT,
+        webhook_uri: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateTokenResponse:
+        """
+        Generate a Connect token to use for client-side authentication
+
+        Parameters
+        ----------
+        external_user_id : str
+            Your end user ID, for whom you're creating the token
+
+        allow_progressive_scopes : typing.Optional[bool]
+            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
+
+        allowed_origins : typing.Optional[typing.Sequence[str]]
+            List of allowed origins for CORS
+
+        app_id : typing.Optional[str]
+            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
+
+        error_redirect_uri : typing.Optional[str]
+            URI to redirect to on error
+
+        expires_in : typing.Optional[int]
+            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
+
+        oauth_app_id : typing.Optional[str]
+            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
+
+        scope : typing.Optional[str]
+            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
+
+        success_redirect_uri : typing.Optional[str]
+            URI to redirect to on success
+
+        webhook_uri : typing.Optional[str]
+            Webhook URI for notifications
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateTokenResponse
+            connect token created
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.tokens.create(
+            external_user_id="external_user_id",
+        )
+        """
+        _response = self._raw_client.create(
+            external_user_id=external_user_id,
+            allow_progressive_scopes=allow_progressive_scopes,
+            allowed_origins=allowed_origins,
+            app_id=app_id,
+            error_redirect_uri=error_redirect_uri,
+            expires_in=expires_in,
+            oauth_app_id=oauth_app_id,
+            scope=scope,
+            success_redirect_uri=success_redirect_uri,
+            webhook_uri=webhook_uri,
+            request_options=request_options,
+        )
+        return _response.data
+
 
 class AsyncTokensClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -193,100 +193,6 @@ class AsyncTokensClient:
         AsyncRawTokensClient
         """
         return self._raw_client
-
-    async def create(
-        self,
-        *,
-        external_user_id: str,
-        allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
-        error_redirect_uri: typing.Optional[str] = OMIT,
-        expires_in: typing.Optional[int] = OMIT,
-        scope: typing.Optional[str] = OMIT,
-        success_redirect_uri: typing.Optional[str] = OMIT,
-        webhook_uri: typing.Optional[str] = OMIT,
-        allow_progressive_scopes: typing.Optional[bool] = OMIT,
-        app_id: typing.Optional[str] = OMIT,
-        oauth_app_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> CreateTokenResponse:
-        """
-        Generate a Connect token to use for client-side authentication
-
-        Parameters
-        ----------
-        external_user_id : str
-            Your end user ID, for whom you're creating the token
-
-        allowed_origins : typing.Optional[typing.Sequence[str]]
-            List of allowed origins for CORS
-
-        error_redirect_uri : typing.Optional[str]
-            URI to redirect to on error
-
-        expires_in : typing.Optional[int]
-            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
-
-        scope : typing.Optional[str]
-            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
-
-        success_redirect_uri : typing.Optional[str]
-            URI to redirect to on success
-
-        webhook_uri : typing.Optional[str]
-            Webhook URI for notifications
-
-        allow_progressive_scopes : typing.Optional[bool]
-            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
-
-        app_id : typing.Optional[str]
-            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
-
-        oauth_app_id : typing.Optional[str]
-            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        CreateTokenResponse
-            connect token created
-
-        Examples
-        --------
-        import asyncio
-
-        from pipedream import AsyncPipedream
-
-        client = AsyncPipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.tokens.create(
-                external_user_id="external_user_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.create(
-            external_user_id=external_user_id,
-            allowed_origins=allowed_origins,
-            error_redirect_uri=error_redirect_uri,
-            expires_in=expires_in,
-            scope=scope,
-            success_redirect_uri=success_redirect_uri,
-            webhook_uri=webhook_uri,
-            allow_progressive_scopes=allow_progressive_scopes,
-            app_id=app_id,
-            oauth_app_id=oauth_app_id,
-            request_options=request_options,
-        )
-        return _response.data
 
     async def validate(
         self,
@@ -306,7 +212,7 @@ class AsyncTokensClient:
         ctok : ConnectToken
 
         app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
 
         account_id : typing.Optional[str]
             An existing account ID to reconnect. Must belong to the app identified by app_id.
@@ -315,7 +221,7 @@ class AsyncTokensClient:
             The OAuth app ID to validate against (if the token is for an OAuth app)
 
         app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -356,6 +262,100 @@ class AsyncTokensClient:
             account_id=account_id,
             oauth_app_id=oauth_app_id,
             app_override_id=app_override_id,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def create(
+        self,
+        *,
+        external_user_id: str,
+        allow_progressive_scopes: typing.Optional[bool] = OMIT,
+        allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
+        app_id: typing.Optional[str] = OMIT,
+        error_redirect_uri: typing.Optional[str] = OMIT,
+        expires_in: typing.Optional[int] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
+        scope: typing.Optional[str] = OMIT,
+        success_redirect_uri: typing.Optional[str] = OMIT,
+        webhook_uri: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateTokenResponse:
+        """
+        Generate a Connect token to use for client-side authentication
+
+        Parameters
+        ----------
+        external_user_id : str
+            Your end user ID, for whom you're creating the token
+
+        allow_progressive_scopes : typing.Optional[bool]
+            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
+
+        allowed_origins : typing.Optional[typing.Sequence[str]]
+            List of allowed origins for CORS
+
+        app_id : typing.Optional[str]
+            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
+
+        error_redirect_uri : typing.Optional[str]
+            URI to redirect to on error
+
+        expires_in : typing.Optional[int]
+            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
+
+        oauth_app_id : typing.Optional[str]
+            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
+
+        scope : typing.Optional[str]
+            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
+
+        success_redirect_uri : typing.Optional[str]
+            URI to redirect to on success
+
+        webhook_uri : typing.Optional[str]
+            Webhook URI for notifications
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateTokenResponse
+            connect token created
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.tokens.create(
+                external_user_id="external_user_id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.create(
+            external_user_id=external_user_id,
+            allow_progressive_scopes=allow_progressive_scopes,
+            allowed_origins=allowed_origins,
+            app_id=app_id,
+            error_redirect_uri=error_redirect_uri,
+            expires_in=expires_in,
+            oauth_app_id=oauth_app_id,
+            scope=scope,
+            success_redirect_uri=success_redirect_uri,
+            webhook_uri=webhook_uri,
             request_options=request_options,
         )
         return _response.data

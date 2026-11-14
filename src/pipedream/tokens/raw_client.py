@@ -10,7 +10,10 @@ from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.bad_request_error import BadRequestError
+from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..types.connect_token import ConnectToken
 from ..types.create_token_response import CreateTokenResponse
 from ..types.validate_token_response import ValidateTokenResponse
@@ -23,115 +26,6 @@ OMIT = typing.cast(typing.Any, ...)
 class RawTokensClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
-
-    def create(
-        self,
-        *,
-        external_user_id: str,
-        allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
-        error_redirect_uri: typing.Optional[str] = OMIT,
-        expires_in: typing.Optional[int] = OMIT,
-        scope: typing.Optional[str] = OMIT,
-        success_redirect_uri: typing.Optional[str] = OMIT,
-        webhook_uri: typing.Optional[str] = OMIT,
-        allow_progressive_scopes: typing.Optional[bool] = OMIT,
-        app_id: typing.Optional[str] = OMIT,
-        oauth_app_id: typing.Optional[str] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[CreateTokenResponse]:
-        """
-        Generate a Connect token to use for client-side authentication
-
-        Parameters
-        ----------
-        external_user_id : str
-            Your end user ID, for whom you're creating the token
-
-        allowed_origins : typing.Optional[typing.Sequence[str]]
-            List of allowed origins for CORS
-
-        error_redirect_uri : typing.Optional[str]
-            URI to redirect to on error
-
-        expires_in : typing.Optional[int]
-            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
-
-        scope : typing.Optional[str]
-            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
-
-        success_redirect_uri : typing.Optional[str]
-            URI to redirect to on success
-
-        webhook_uri : typing.Optional[str]
-            Webhook URI for notifications
-
-        allow_progressive_scopes : typing.Optional[bool]
-            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
-
-        app_id : typing.Optional[str]
-            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
-
-        oauth_app_id : typing.Optional[str]
-            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[CreateTokenResponse]
-            connect token created
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/tokens",
-            method="POST",
-            json={
-                "allowed_origins": allowed_origins,
-                "error_redirect_uri": error_redirect_uri,
-                "expires_in": expires_in,
-                "external_user_id": external_user_id,
-                "scope": scope,
-                "success_redirect_uri": success_redirect_uri,
-                "webhook_uri": webhook_uri,
-                "allow_progressive_scopes": allow_progressive_scopes,
-                "app_id": app_id,
-                "oauth_app_id": oauth_app_id,
-            },
-            headers={
-                "content-type": "application/json",
-            },
-            request_options=request_options,
-            omit=OMIT,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    CreateTokenResponse,
-                    parse_obj_as(
-                        type_=CreateTokenResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        typing.Any,
-                        parse_obj_as(
-                            type_=typing.Any,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def validate(
         self,
@@ -151,7 +45,7 @@ class RawTokensClient:
         ctok : ConnectToken
 
         app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
 
         account_id : typing.Optional[str]
             An existing account ID to reconnect. Must belong to the app identified by app_id.
@@ -160,7 +54,7 @@ class RawTokensClient:
             The OAuth app ID to validate against (if the token is for an OAuth app)
 
         app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -211,26 +105,21 @@ class RawTokensClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-
-class AsyncRawTokensClient:
-    def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._client_wrapper = client_wrapper
-
-    async def create(
+    def create(
         self,
         *,
         external_user_id: str,
+        allow_progressive_scopes: typing.Optional[bool] = OMIT,
         allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
+        app_id: typing.Optional[str] = OMIT,
         error_redirect_uri: typing.Optional[str] = OMIT,
         expires_in: typing.Optional[int] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
         scope: typing.Optional[str] = OMIT,
         success_redirect_uri: typing.Optional[str] = OMIT,
         webhook_uri: typing.Optional[str] = OMIT,
-        allow_progressive_scopes: typing.Optional[bool] = OMIT,
-        app_id: typing.Optional[str] = OMIT,
-        oauth_app_id: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[CreateTokenResponse]:
+    ) -> HttpResponse[CreateTokenResponse]:
         """
         Generate a Connect token to use for client-side authentication
 
@@ -239,14 +128,23 @@ class AsyncRawTokensClient:
         external_user_id : str
             Your end user ID, for whom you're creating the token
 
+        allow_progressive_scopes : typing.Optional[bool]
+            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
+
         allowed_origins : typing.Optional[typing.Sequence[str]]
             List of allowed origins for CORS
+
+        app_id : typing.Optional[str]
+            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
 
         error_redirect_uri : typing.Optional[str]
             URI to redirect to on error
 
         expires_in : typing.Optional[int]
             Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
+
+        oauth_app_id : typing.Optional[str]
+            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
 
         scope : typing.Optional[str]
             Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
@@ -257,37 +155,28 @@ class AsyncRawTokensClient:
         webhook_uri : typing.Optional[str]
             Webhook URI for notifications
 
-        allow_progressive_scopes : typing.Optional[bool]
-            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
-
-        app_id : typing.Optional[str]
-            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
-
-        oauth_app_id : typing.Optional[str]
-            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[CreateTokenResponse]
+        HttpResponse[CreateTokenResponse]
             connect token created
         """
-        _response = await self._client_wrapper.httpx_client.request(
+        _response = self._client_wrapper.httpx_client.request(
             f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/tokens",
             method="POST",
             json={
+                "allow_progressive_scopes": allow_progressive_scopes,
                 "allowed_origins": allowed_origins,
+                "app_id": app_id,
                 "error_redirect_uri": error_redirect_uri,
                 "expires_in": expires_in,
                 "external_user_id": external_user_id,
+                "oauth_app_id": oauth_app_id,
                 "scope": scope,
                 "success_redirect_uri": success_redirect_uri,
                 "webhook_uri": webhook_uri,
-                "allow_progressive_scopes": allow_progressive_scopes,
-                "app_id": app_id,
-                "oauth_app_id": oauth_app_id,
             },
             headers={
                 "content-type": "application/json",
@@ -304,7 +193,40 @@ class AsyncRawTokensClient:
                         object_=_response.json(),
                     ),
                 )
-                return AsyncHttpResponse(response=_response, data=_data)
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -325,6 +247,11 @@ class AsyncRawTokensClient:
             )
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+
+class AsyncRawTokensClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._client_wrapper = client_wrapper
+
     async def validate(
         self,
         ctok: ConnectToken,
@@ -343,7 +270,7 @@ class AsyncRawTokensClient:
         ctok : ConnectToken
 
         app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
 
         account_id : typing.Optional[str]
             An existing account ID to reconnect. Must belong to the app identified by app_id.
@@ -352,7 +279,7 @@ class AsyncRawTokensClient:
             The OAuth app ID to validate against (if the token is for an OAuth app)
 
         app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -383,6 +310,148 @@ class AsyncRawTokensClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def create(
+        self,
+        *,
+        external_user_id: str,
+        allow_progressive_scopes: typing.Optional[bool] = OMIT,
+        allowed_origins: typing.Optional[typing.Sequence[str]] = OMIT,
+        app_id: typing.Optional[str] = OMIT,
+        error_redirect_uri: typing.Optional[str] = OMIT,
+        expires_in: typing.Optional[int] = OMIT,
+        oauth_app_id: typing.Optional[str] = OMIT,
+        scope: typing.Optional[str] = OMIT,
+        success_redirect_uri: typing.Optional[str] = OMIT,
+        webhook_uri: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[CreateTokenResponse]:
+        """
+        Generate a Connect token to use for client-side authentication
+
+        Parameters
+        ----------
+        external_user_id : str
+            Your end user ID, for whom you're creating the token
+
+        allow_progressive_scopes : typing.Optional[bool]
+            When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false.
+
+        allowed_origins : typing.Optional[typing.Sequence[str]]
+            List of allowed origins for CORS
+
+        app_id : typing.Optional[str]
+            Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional.
+
+        error_redirect_uri : typing.Optional[str]
+            URI to redirect to on error
+
+        expires_in : typing.Optional[int]
+            Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified.
+
+        oauth_app_id : typing.Optional[str]
+            Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional.
+
+        scope : typing.Optional[str]
+            Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information.
+
+        success_redirect_uri : typing.Optional[str]
+            URI to redirect to on success
+
+        webhook_uri : typing.Optional[str]
+            Webhook URI for notifications
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[CreateTokenResponse]
+            connect token created
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/{encode_path_param(self._client_wrapper._project_id)}/tokens",
+            method="POST",
+            json={
+                "allow_progressive_scopes": allow_progressive_scopes,
+                "allowed_origins": allowed_origins,
+                "app_id": app_id,
+                "error_redirect_uri": error_redirect_uri,
+                "expires_in": expires_in,
+                "external_user_id": external_user_id,
+                "oauth_app_id": oauth_app_id,
+                "scope": scope,
+                "success_redirect_uri": success_redirect_uri,
+                "webhook_uri": webhook_uri,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    CreateTokenResponse,
+                    parse_obj_as(
+                        type_=CreateTokenResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),

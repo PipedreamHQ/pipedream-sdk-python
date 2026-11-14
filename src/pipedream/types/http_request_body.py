@@ -16,13 +16,13 @@ class HttpRequestBody(UniversalBaseModel):
     Body configuration for HTTP request
     """
 
-    type: typing.Optional[HttpRequestBodyType] = None
     content_type: typing_extensions.Annotated[
         typing.Optional[str], FieldMetadata(alias="contentType"), pydantic.Field(alias="contentType")
     ] = None
     fields: typing.Optional[typing.List[HttpRequestField]] = None
     mode: typing.Optional[HttpRequestBodyMode] = None
     raw: typing.Optional[str] = None
+    type: typing.Optional[HttpRequestBodyType] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

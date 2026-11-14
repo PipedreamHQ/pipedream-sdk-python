@@ -45,8 +45,8 @@ client = Pipedream(
 )
 
 client.actions.run(
-    id="id",
     external_user_id="external_user_id",
+    id="id",
 )
 ```
 
@@ -80,8 +80,8 @@ client = AsyncPipedream(
 
 async def main() -> None:
     await client.actions.run(
-        id="id",
         external_user_id="external_user_id",
+        id="id",
     )
 
 
@@ -115,25 +115,20 @@ client = Pipedream(
     client_secret="<clientSecret>",
 )
 
-client.apps.list(
+client.accounts.list(
+    external_user_id="external_user_id",
+    oauth_app_id="oauth_app_id",
     after="after",
     before="before",
     limit=1,
-    q="q",
-    sort_key="name",
-    sort_direction="asc",
-    category_ids=[
-        "category_ids"
-    ],
-    has_components=True,
-    has_actions=True,
-    has_triggers=True,
+    app="app",
+    include_credentials=True,
 )
 ```
 
 ```python
 # You can also iterate through pages and access the typed response per page
-pager = client.apps.list(...)
+pager = client.accounts.list(...)
 for page in pager.iter_pages():
     print(page.response)  # access the typed response for each page
     for item in page:

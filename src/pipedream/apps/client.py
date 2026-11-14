@@ -6,6 +6,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.pagination import AsyncPager, SyncPager
 from ..core.request_options import RequestOptions
 from ..types.app import App
+from ..types.facets_response import FacetsResponse
 from ..types.get_app_response import GetAppResponse
 from ..types.list_apps_response import ListAppsResponse
 from .raw_client import AsyncRawAppsClient, RawAppsClient
@@ -37,10 +38,13 @@ class AppsClient:
         q: typing.Optional[str] = None,
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
-        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_components: typing.Optional[bool] = None,
         has_actions: typing.Optional[bool] = None,
         has_triggers: typing.Optional[bool] = None,
+        page: typing.Optional[int] = None,
+        category_name: typing.Optional[str] = None,
+        auth_type: typing.Optional[str] = None,
+        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SyncPager[App, ListAppsResponse]:
         """
@@ -66,9 +70,6 @@ class AppsClient:
         sort_direction : typing.Optional[AppsListRequestSortDirection]
             The direction to sort the apps
 
-        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Only return apps in these categories
-
         has_components : typing.Optional[bool]
             Only return apps that have components (actions or triggers)
 
@@ -77,6 +78,19 @@ class AppsClient:
 
         has_triggers : typing.Optional[bool]
             Only return apps that have triggers
+
+        page : typing.Optional[int]
+            The page of results to return, 1-based. An alternative to `after`/
+            `before` cursor pagination; ignored when either cursor is supplied.
+
+        category_name : typing.Optional[str]
+            Only return apps in this category, by name (e.g. `Developer Tools`)
+
+        auth_type : typing.Optional[str]
+            Only return apps using this authentication type
+
+        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Only return apps in these categories
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -102,10 +116,13 @@ class AppsClient:
             q="q",
             sort_key="name",
             sort_direction="asc",
-            category_ids=["category_ids"],
             has_components=True,
             has_actions=True,
             has_triggers=True,
+            page=1,
+            category_name="category_name",
+            auth_type="auth_type",
+            category_ids=["category_ids"],
         )
         for item in response:
             yield item
@@ -120,12 +137,43 @@ class AppsClient:
             q=q,
             sort_key=sort_key,
             sort_direction=sort_direction,
-            category_ids=category_ids,
             has_components=has_components,
             has_actions=has_actions,
             has_triggers=has_triggers,
+            page=page,
+            category_name=category_name,
+            auth_type=auth_type,
+            category_ids=category_ids,
             request_options=request_options,
         )
+
+    def facets(self, *, request_options: typing.Optional[RequestOptions] = None) -> FacetsResponse:
+        """
+        Retrieve the available filter values for apps, and how many apps carry each one
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FacetsResponse
+            app facets listed
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.apps.facets()
+        """
+        _response = self._raw_client.facets(request_options=request_options)
+        return _response.data
 
     def retrieve(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetAppResponse:
         """
@@ -185,10 +233,13 @@ class AsyncAppsClient:
         q: typing.Optional[str] = None,
         sort_key: typing.Optional[AppsListRequestSortKey] = None,
         sort_direction: typing.Optional[AppsListRequestSortDirection] = None,
-        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         has_components: typing.Optional[bool] = None,
         has_actions: typing.Optional[bool] = None,
         has_triggers: typing.Optional[bool] = None,
+        page: typing.Optional[int] = None,
+        category_name: typing.Optional[str] = None,
+        auth_type: typing.Optional[str] = None,
+        category_ids: typing.Optional[typing.Union[str, typing.Sequence[str]]] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncPager[App, ListAppsResponse]:
         """
@@ -214,9 +265,6 @@ class AsyncAppsClient:
         sort_direction : typing.Optional[AppsListRequestSortDirection]
             The direction to sort the apps
 
-        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
-            Only return apps in these categories
-
         has_components : typing.Optional[bool]
             Only return apps that have components (actions or triggers)
 
@@ -225,6 +273,19 @@ class AsyncAppsClient:
 
         has_triggers : typing.Optional[bool]
             Only return apps that have triggers
+
+        page : typing.Optional[int]
+            The page of results to return, 1-based. An alternative to `after`/
+            `before` cursor pagination; ignored when either cursor is supplied.
+
+        category_name : typing.Optional[str]
+            Only return apps in this category, by name (e.g. `Developer Tools`)
+
+        auth_type : typing.Optional[str]
+            Only return apps using this authentication type
+
+        category_ids : typing.Optional[typing.Union[str, typing.Sequence[str]]]
+            Only return apps in these categories
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -255,10 +316,13 @@ class AsyncAppsClient:
                 q="q",
                 sort_key="name",
                 sort_direction="asc",
-                category_ids=["category_ids"],
                 has_components=True,
                 has_actions=True,
                 has_triggers=True,
+                page=1,
+                category_name="category_name",
+                auth_type="auth_type",
+                category_ids=["category_ids"],
             )
             async for item in response:
                 yield item
@@ -277,12 +341,51 @@ class AsyncAppsClient:
             q=q,
             sort_key=sort_key,
             sort_direction=sort_direction,
-            category_ids=category_ids,
             has_components=has_components,
             has_actions=has_actions,
             has_triggers=has_triggers,
+            page=page,
+            category_name=category_name,
+            auth_type=auth_type,
+            category_ids=category_ids,
             request_options=request_options,
         )
+
+    async def facets(self, *, request_options: typing.Optional[RequestOptions] = None) -> FacetsResponse:
+        """
+        Retrieve the available filter values for apps, and how many apps carry each one
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        FacetsResponse
+            app facets listed
+
+        Examples
+        --------
+        import asyncio
+
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+
+
+        async def main() -> None:
+            await client.apps.facets()
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.facets(request_options=request_options)
+        return _response.data
 
     async def retrieve(self, app_id: str, *, request_options: typing.Optional[RequestOptions] = None) -> GetAppResponse:
         """

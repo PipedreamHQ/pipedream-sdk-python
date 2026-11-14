@@ -17,9 +17,9 @@ class HttpRequestConfig(UniversalBaseModel):
     auth: typing.Optional[HttpRequestAuth] = None
     body: typing.Optional[HttpRequestBody] = None
     headers: typing.Optional[typing.List[HttpRequestField]] = None
+    method: typing.Optional[str] = None
     params: typing.Optional[typing.List[HttpRequestField]] = None
     tab: typing.Optional[str] = None
-    method: typing.Optional[str] = None
     url: typing.Optional[str] = None
 
     if IS_PYDANTIC_V2:

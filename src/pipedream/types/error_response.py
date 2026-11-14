@@ -11,11 +11,6 @@ class ErrorResponse(UniversalBaseModel):
     Error response returned by the API in case of an error
     """
 
-    error: str = pydantic.Field()
-    """
-    The error message
-    """
-
     code: typing.Optional[str] = pydantic.Field(default=None)
     """
     The error code
@@ -24,6 +19,11 @@ class ErrorResponse(UniversalBaseModel):
     details: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     Additional error details
+    """
+
+    error: str = pydantic.Field()
+    """
+    The error message
     """
 
     if IS_PYDANTIC_V2:

@@ -12,26 +12,6 @@ class ConfigurePropOpts(UniversalBaseModel):
     Request options for configuring a component's prop
     """
 
-    id: str = pydantic.Field()
-    """
-    The component ID
-    """
-
-    version: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Component semantic version
-    """
-
-    external_user_id: str = pydantic.Field()
-    """
-    The external user ID
-    """
-
-    prop_name: str = pydantic.Field()
-    """
-    The name of the prop to configure
-    """
-
     blocking: typing.Optional[bool] = pydantic.Field(default=None)
     """
     Whether this operation should block until completion
@@ -43,9 +23,24 @@ class ConfigurePropOpts(UniversalBaseModel):
     The ID for dynamic props
     """
 
+    external_user_id: str = pydantic.Field()
+    """
+    The external user ID
+    """
+
+    id: str = pydantic.Field()
+    """
+    The component ID
+    """
+
     page: typing.Optional[float] = pydantic.Field(default=None)
     """
     Page number for paginated results
+    """
+
+    platform_version: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
     """
 
     prev_context: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
@@ -53,9 +48,19 @@ class ConfigurePropOpts(UniversalBaseModel):
     Previous context for pagination
     """
 
+    prop_name: str = pydantic.Field()
+    """
+    The name of the prop to configure
+    """
+
     query: typing.Optional[str] = pydantic.Field(default=None)
     """
     Search query for filtering options
+    """
+
+    version: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Component semantic version
     """
 
     if IS_PYDANTIC_V2:

@@ -15,13 +15,6 @@ class ConfigurePropResponse(UniversalBaseModel):
     Response received after configuring a component's prop
     """
 
-    options: typing.Optional[ConfigurePropOptions] = None
-    string_options: typing_extensions.Annotated[
-        typing.Optional[typing.List[str]],
-        FieldMetadata(alias="stringOptions"),
-        pydantic.Field(alias="stringOptions", description="Available options for the configured prop"),
-    ] = None
-    observations: typing.Optional[typing.List[Observation]] = None
     context: typing.Optional[typing.Dict[str, typing.Any]] = pydantic.Field(default=None)
     """
     New context after configuring the prop
@@ -31,6 +24,14 @@ class ConfigurePropResponse(UniversalBaseModel):
     """
     Any errors that occurred during configuration
     """
+
+    observations: typing.Optional[typing.List[Observation]] = None
+    options: typing.Optional[ConfigurePropOptions] = None
+    string_options: typing_extensions.Annotated[
+        typing.Optional[typing.List[str]],
+        FieldMetadata(alias="stringOptions"),
+        pydantic.Field(alias="stringOptions", description="Available options for the configured prop"),
+    ] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -11,14 +11,14 @@ class ObservationError(UniversalBaseModel):
     Details about an observed error message
     """
 
-    name: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The name of the error/exception
-    """
-
     message: typing.Optional[str] = pydantic.Field(default=None)
     """
     The error message
+    """
+
+    name: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    The name of the error/exception
     """
 
     stack: typing.Optional[str] = pydantic.Field(default=None)

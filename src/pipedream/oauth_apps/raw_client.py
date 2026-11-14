@@ -167,7 +167,7 @@ class RawOauthAppsClient:
             OAuth scopes to request when users connect through this client
 
         additional_scopes : typing.Optional[typing.Sequence[str]]
-            Extra OAuth scopes users may grant on top of the base scopes
+            A second scope list to request alongside `scopes`. Its meaning depends on the app; the app's `scope_labels` names both lists. If omitted, the client uses the app's Pipedream official client's additional scopes.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -324,7 +324,7 @@ class RawOauthAppsClient:
             OAuth scopes to request when users connect through this client
 
         additional_scopes : typing.Optional[typing.Sequence[str]]
-            Extra OAuth scopes users may grant on top of the base scopes
+            A second scope list to request alongside `scopes`. Its meaning depends on the app; the app's `scope_labels` names both lists.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -585,7 +585,7 @@ class AsyncRawOauthAppsClient:
             OAuth scopes to request when users connect through this client
 
         additional_scopes : typing.Optional[typing.Sequence[str]]
-            Extra OAuth scopes users may grant on top of the base scopes
+            A second scope list to request alongside `scopes`. Its meaning depends on the app; the app's `scope_labels` names both lists. If omitted, the client uses the app's Pipedream official client's additional scopes.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -744,7 +744,7 @@ class AsyncRawOauthAppsClient:
             OAuth scopes to request when users connect through this client
 
         additional_scopes : typing.Optional[typing.Sequence[str]]
-            Extra OAuth scopes users may grant on top of the base scopes
+            A second scope list to request alongside `scopes`. Its meaning depends on the app; the app's `scope_labels` names both lists.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
