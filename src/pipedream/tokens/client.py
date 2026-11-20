@@ -28,6 +28,70 @@ class TokensClient:
         """
         return self._raw_client
 
+    def validate(
+        self,
+        ctok: ConnectToken,
+        *,
+        app_id: typing.Optional[str] = None,
+        account_id: typing.Optional[str] = None,
+        oauth_app_id: typing.Optional[str] = None,
+        app_override_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> ValidateTokenResponse:
+        """
+        Confirm the validity of a Connect token
+
+        Parameters
+        ----------
+        ctok : ConnectToken
+
+        app_id : typing.Optional[str]
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
+
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. Must belong to the app identified by app_id.
+
+        oauth_app_id : typing.Optional[str]
+            The OAuth app ID to validate against (if the token is for an OAuth app)
+
+        app_override_id : typing.Optional[str]
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        ValidateTokenResponse
+            connect token validated
+
+        Examples
+        --------
+        from pipedream import Pipedream
+
+        client = Pipedream(
+            project_id="YOUR_PROJECT_ID",
+            client_id="YOUR_CLIENT_ID",
+            client_secret="YOUR_CLIENT_SECRET",
+        )
+        client.tokens.validate(
+            ctok="ctok",
+            app_id="app_id",
+            account_id="account_id",
+            oauth_app_id="oauth_app_id",
+            app_override_id="app_override_id",
+        )
+        """
+        _response = self._raw_client.validate(
+            ctok,
+            app_id=app_id,
+            account_id=account_id,
+            oauth_app_id=oauth_app_id,
+            app_override_id=app_override_id,
+            request_options=request_options,
+        )
+        return _response.data
+
     def create(
         self,
         *,
@@ -114,7 +178,23 @@ class TokensClient:
         )
         return _response.data
 
-    def validate(
+
+class AsyncTokensClient:
+    def __init__(self, *, client_wrapper: AsyncClientWrapper):
+        self._raw_client = AsyncRawTokensClient(client_wrapper=client_wrapper)
+
+    @property
+    def with_raw_response(self) -> AsyncRawTokensClient:
+        """
+        Retrieves a raw implementation of this client that returns raw responses.
+
+        Returns
+        -------
+        AsyncRawTokensClient
+        """
+        return self._raw_client
+
+    async def validate(
         self,
         ctok: ConnectToken,
         *,
@@ -132,7 +212,7 @@ class TokensClient:
         ctok : ConnectToken
 
         app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
 
         account_id : typing.Optional[str]
             An existing account ID to reconnect. Must belong to the app identified by app_id.
@@ -141,7 +221,7 @@ class TokensClient:
             The OAuth app ID to validate against (if the token is for an OAuth app)
 
         app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -153,22 +233,30 @@ class TokensClient:
 
         Examples
         --------
-        from pipedream import Pipedream
+        import asyncio
 
-        client = Pipedream(
+        from pipedream import AsyncPipedream
+
+        client = AsyncPipedream(
             project_id="YOUR_PROJECT_ID",
             client_id="YOUR_CLIENT_ID",
             client_secret="YOUR_CLIENT_SECRET",
         )
-        client.tokens.validate(
-            ctok="ctok",
-            app_id="app_id",
-            account_id="account_id",
-            oauth_app_id="oauth_app_id",
-            app_override_id="app_override_id",
-        )
+
+
+        async def main() -> None:
+            await client.tokens.validate(
+                ctok="ctok",
+                app_id="app_id",
+                account_id="account_id",
+                oauth_app_id="oauth_app_id",
+                app_override_id="app_override_id",
+            )
+
+
+        asyncio.run(main())
         """
-        _response = self._raw_client.validate(
+        _response = await self._raw_client.validate(
             ctok,
             app_id=app_id,
             account_id=account_id,
@@ -177,22 +265,6 @@ class TokensClient:
             request_options=request_options,
         )
         return _response.data
-
-
-class AsyncTokensClient:
-    def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._raw_client = AsyncRawTokensClient(client_wrapper=client_wrapper)
-
-    @property
-    def with_raw_response(self) -> AsyncRawTokensClient:
-        """
-        Retrieves a raw implementation of this client that returns raw responses.
-
-        Returns
-        -------
-        AsyncRawTokensClient
-        """
-        return self._raw_client
 
     async def create(
         self,
@@ -284,78 +356,6 @@ class AsyncTokensClient:
             allow_progressive_scopes=allow_progressive_scopes,
             app_id=app_id,
             oauth_app_id=oauth_app_id,
-            request_options=request_options,
-        )
-        return _response.data
-
-    async def validate(
-        self,
-        ctok: ConnectToken,
-        *,
-        app_id: typing.Optional[str] = None,
-        account_id: typing.Optional[str] = None,
-        oauth_app_id: typing.Optional[str] = None,
-        app_override_id: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> ValidateTokenResponse:
-        """
-        Confirm the validity of a Connect token
-
-        Parameters
-        ----------
-        ctok : ConnectToken
-
-        app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
-
-        account_id : typing.Optional[str]
-            An existing account ID to reconnect. Must belong to the app identified by app_id.
-
-        oauth_app_id : typing.Optional[str]
-            The OAuth app ID to validate against (if the token is for an OAuth app)
-
-        app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        ValidateTokenResponse
-            connect token validated
-
-        Examples
-        --------
-        import asyncio
-
-        from pipedream import AsyncPipedream
-
-        client = AsyncPipedream(
-            project_id="YOUR_PROJECT_ID",
-            client_id="YOUR_CLIENT_ID",
-            client_secret="YOUR_CLIENT_SECRET",
-        )
-
-
-        async def main() -> None:
-            await client.tokens.validate(
-                ctok="ctok",
-                app_id="app_id",
-                account_id="account_id",
-                oauth_app_id="oauth_app_id",
-                app_override_id="app_override_id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.validate(
-            ctok,
-            app_id=app_id,
-            account_id=account_id,
-            oauth_app_id=oauth_app_id,
-            app_override_id=app_override_id,
             request_options=request_options,
         )
         return _response.data

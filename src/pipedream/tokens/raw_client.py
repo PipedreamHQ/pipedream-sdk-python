@@ -10,7 +10,10 @@ from ..core.jsonable_encoder import encode_path_param
 from ..core.parse_error import ParsingError
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..errors.bad_request_error import BadRequestError
+from ..errors.not_found_error import NotFoundError
 from ..errors.too_many_requests_error import TooManyRequestsError
+from ..errors.unauthorized_error import UnauthorizedError
 from ..types.connect_token import ConnectToken
 from ..types.create_token_response import CreateTokenResponse
 from ..types.validate_token_response import ValidateTokenResponse
@@ -23,6 +26,84 @@ OMIT = typing.cast(typing.Any, ...)
 class RawTokensClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    def validate(
+        self,
+        ctok: ConnectToken,
+        *,
+        app_id: typing.Optional[str] = None,
+        account_id: typing.Optional[str] = None,
+        oauth_app_id: typing.Optional[str] = None,
+        app_override_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[ValidateTokenResponse]:
+        """
+        Confirm the validity of a Connect token
+
+        Parameters
+        ----------
+        ctok : ConnectToken
+
+        app_id : typing.Optional[str]
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
+
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. Must belong to the app identified by app_id.
+
+        oauth_app_id : typing.Optional[str]
+            The OAuth app ID to validate against (if the token is for an OAuth app)
+
+        app_override_id : typing.Optional[str]
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ValidateTokenResponse]
+            connect token validated
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"v1/connect/tokens/{encode_path_param(ctok)}/validate",
+            method="GET",
+            params={
+                "app_id": app_id,
+                "account_id": account_id,
+                "oauth_app_id": oauth_app_id,
+                "app_override_id": app_override_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ValidateTokenResponse,
+                    parse_obj_as(
+                        type_=ValidateTokenResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def create(
         self,
@@ -113,8 +194,8 @@ class RawTokensClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
+            if _response.status_code == 400:
+                raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -124,73 +205,28 @@ class RawTokensClient:
                         ),
                     ),
                 )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    def validate(
-        self,
-        ctok: ConnectToken,
-        *,
-        app_id: typing.Optional[str] = None,
-        account_id: typing.Optional[str] = None,
-        oauth_app_id: typing.Optional[str] = None,
-        app_override_id: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[ValidateTokenResponse]:
-        """
-        Confirm the validity of a Connect token
-
-        Parameters
-        ----------
-        ctok : ConnectToken
-
-        app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
-
-        account_id : typing.Optional[str]
-            An existing account ID to reconnect. Must belong to the app identified by app_id.
-
-        oauth_app_id : typing.Optional[str]
-            The OAuth app ID to validate against (if the token is for an OAuth app)
-
-        app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[ValidateTokenResponse]
-            connect token validated
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"v1/connect/tokens/{encode_path_param(ctok)}/validate",
-            method="GET",
-            params={
-                "app_id": app_id,
-                "account_id": account_id,
-                "oauth_app_id": oauth_app_id,
-                "app_override_id": app_override_id,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ValidateTokenResponse,
-                    parse_obj_as(
-                        type_=ValidateTokenResponse,  # type: ignore
-                        object_=_response.json(),
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
                     ),
                 )
-                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
@@ -215,6 +251,84 @@ class RawTokensClient:
 class AsyncRawTokensClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
+
+    async def validate(
+        self,
+        ctok: ConnectToken,
+        *,
+        app_id: typing.Optional[str] = None,
+        account_id: typing.Optional[str] = None,
+        oauth_app_id: typing.Optional[str] = None,
+        app_override_id: typing.Optional[str] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[ValidateTokenResponse]:
+        """
+        Confirm the validity of a Connect token
+
+        Parameters
+        ----------
+        ctok : ConnectToken
+
+        app_id : typing.Optional[str]
+            The app ID to validate against. One of `app_id`, `account_id` or `app_override_id` must be provided.
+
+        account_id : typing.Optional[str]
+            An existing account ID to reconnect. Must belong to the app identified by app_id.
+
+        oauth_app_id : typing.Optional[str]
+            The OAuth app ID to validate against (if the token is for an OAuth app)
+
+        app_override_id : typing.Optional[str]
+            An app override to connect through; resolves the app and any pinned OAuth client from the override.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ValidateTokenResponse]
+            connect token validated
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"v1/connect/tokens/{encode_path_param(ctok)}/validate",
+            method="GET",
+            params={
+                "app_id": app_id,
+                "account_id": account_id,
+                "oauth_app_id": oauth_app_id,
+                "app_override_id": app_override_id,
+            },
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ValidateTokenResponse,
+                    parse_obj_as(
+                        type_=ValidateTokenResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 429:
+                raise TooManyRequestsError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        except ValidationError as e:
+            raise ParsingError(
+                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
+            )
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
         self,
@@ -305,8 +419,8 @@ class AsyncRawTokensClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 429:
-                raise TooManyRequestsError(
+            if _response.status_code == 400:
+                raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Any,
@@ -316,73 +430,28 @@ class AsyncRawTokensClient:
                         ),
                     ),
                 )
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        except ValidationError as e:
-            raise ParsingError(
-                status_code=_response.status_code, headers=dict(_response.headers), body=_response.json(), cause=e
-            )
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def validate(
-        self,
-        ctok: ConnectToken,
-        *,
-        app_id: typing.Optional[str] = None,
-        account_id: typing.Optional[str] = None,
-        oauth_app_id: typing.Optional[str] = None,
-        app_override_id: typing.Optional[str] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[ValidateTokenResponse]:
-        """
-        Confirm the validity of a Connect token
-
-        Parameters
-        ----------
-        ctok : ConnectToken
-
-        app_id : typing.Optional[str]
-            The app ID to validate against. Required unless account_id or app_override_id identifies the app.
-
-        account_id : typing.Optional[str]
-            An existing account ID to reconnect. Must belong to the app identified by app_id.
-
-        oauth_app_id : typing.Optional[str]
-            The OAuth app ID to validate against (if the token is for an OAuth app)
-
-        app_override_id : typing.Optional[str]
-            An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name.
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[ValidateTokenResponse]
-            connect token validated
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"v1/connect/tokens/{encode_path_param(ctok)}/validate",
-            method="GET",
-            params={
-                "app_id": app_id,
-                "account_id": account_id,
-                "oauth_app_id": oauth_app_id,
-                "app_override_id": app_override_id,
-            },
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    ValidateTokenResponse,
-                    parse_obj_as(
-                        type_=ValidateTokenResponse,  # type: ignore
-                        object_=_response.json(),
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
                     ),
                 )
-                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Any,
+                        parse_obj_as(
+                            type_=typing.Any,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
             if _response.status_code == 429:
                 raise TooManyRequestsError(
                     headers=dict(_response.headers),
