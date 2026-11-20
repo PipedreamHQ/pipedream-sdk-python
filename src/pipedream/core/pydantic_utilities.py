@@ -36,8 +36,8 @@ if TYPE_CHECKING:
 IS_PYDANTIC_V2 = pydantic.VERSION.startswith("2.")
 
 if IS_PYDANTIC_V2:
-    _datetime_adapter = pydantic.TypeAdapter(dt.datetime)  # type: ignore[attr-defined]
-    _date_adapter = pydantic.TypeAdapter(dt.date)  # type: ignore[attr-defined]
+    _datetime_adapter: "pydantic.TypeAdapter[dt.datetime]" = pydantic.TypeAdapter(dt.datetime)  # type: ignore[attr-defined]
+    _date_adapter: "pydantic.TypeAdapter[dt.date]" = pydantic.TypeAdapter(dt.date)  # type: ignore[attr-defined]
 
     def parse_datetime(value: Any) -> dt.datetime:  # type: ignore[misc]
         if isinstance(value, dt.datetime):
@@ -342,7 +342,7 @@ def parse_obj_as(type_: Type[T], object_: Any) -> T:
     else:
         dealiased_object = convert_and_respect_annotation_metadata(object_=object_, annotation=type_, direction="read")
     if IS_PYDANTIC_V2:
-        adapter = pydantic.TypeAdapter(type_)  # type: ignore[attr-defined]
+        adapter: "pydantic.TypeAdapter[T]" = pydantic.TypeAdapter(type_)  # type: ignore[attr-defined]
         return adapter.validate_python(dealiased_object)
     return pydantic.parse_obj_as(type_, dealiased_object)
 
