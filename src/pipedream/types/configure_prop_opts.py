@@ -58,6 +58,11 @@ class ConfigurePropOpts(UniversalBaseModel):
     Search query for filtering options
     """
 
+    platform_version: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Pin a later platform version for the execution runtime. Honored only when strictly later than the current default.
+    """
+
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
     else:

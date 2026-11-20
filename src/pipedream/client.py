@@ -211,7 +211,6 @@ class Client:
                 body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
             )
         self._app_categories: typing.Optional[AppCategoriesClient] = None
-        self._apps: typing.Optional[AppsClient] = None
         self._accounts: typing.Optional[AccountsClient] = None
         self._users: typing.Optional[UsersClient] = None
         self._app_overrides: typing.Optional[AppOverridesClient] = None
@@ -224,9 +223,10 @@ class Client:
         self._projects: typing.Optional[ProjectsClient] = None
         self._file_stash: typing.Optional[FileStashClient] = None
         self._proxy: typing.Optional[ProxyClient] = None
-        self._tokens: typing.Optional[TokensClient] = None
         self._usage: typing.Optional[UsageClient] = None
         self._oauth_tokens: typing.Optional[OauthTokensClient] = None
+        self._apps: typing.Optional[AppsClient] = None
+        self._tokens: typing.Optional[TokensClient] = None
 
     @property
     def app_categories(self):
@@ -235,14 +235,6 @@ class Client:
 
             self._app_categories = AppCategoriesClient(client_wrapper=self._client_wrapper)
         return self._app_categories
-
-    @property
-    def apps(self):
-        if self._apps is None:
-            from .apps.client import AppsClient  # noqa: E402
-
-            self._apps = AppsClient(client_wrapper=self._client_wrapper)
-        return self._apps
 
     @property
     def accounts(self):
@@ -341,14 +333,6 @@ class Client:
         return self._proxy
 
     @property
-    def tokens(self):
-        if self._tokens is None:
-            from .tokens.client import TokensClient  # noqa: E402
-
-            self._tokens = TokensClient(client_wrapper=self._client_wrapper)
-        return self._tokens
-
-    @property
     def usage(self):
         if self._usage is None:
             from .usage.client import UsageClient  # noqa: E402
@@ -363,6 +347,22 @@ class Client:
 
             self._oauth_tokens = OauthTokensClient(client_wrapper=self._client_wrapper)
         return self._oauth_tokens
+
+    @property
+    def apps(self):
+        if self._apps is None:
+            from .apps.client import AppsClient  # noqa: E402
+
+            self._apps = AppsClient(client_wrapper=self._client_wrapper)
+        return self._apps
+
+    @property
+    def tokens(self):
+        if self._tokens is None:
+            from .tokens.client import TokensClient  # noqa: E402
+
+            self._tokens = TokensClient(client_wrapper=self._client_wrapper)
+        return self._tokens
 
 
 def _make_default_async_client(
@@ -558,7 +558,6 @@ class AsyncClient:
                 body="The client must be instantiated with either 'token' or both 'client_id' and 'client_secret'"
             )
         self._app_categories: typing.Optional[AsyncAppCategoriesClient] = None
-        self._apps: typing.Optional[AsyncAppsClient] = None
         self._accounts: typing.Optional[AsyncAccountsClient] = None
         self._users: typing.Optional[AsyncUsersClient] = None
         self._app_overrides: typing.Optional[AsyncAppOverridesClient] = None
@@ -571,9 +570,10 @@ class AsyncClient:
         self._projects: typing.Optional[AsyncProjectsClient] = None
         self._file_stash: typing.Optional[AsyncFileStashClient] = None
         self._proxy: typing.Optional[AsyncProxyClient] = None
-        self._tokens: typing.Optional[AsyncTokensClient] = None
         self._usage: typing.Optional[AsyncUsageClient] = None
         self._oauth_tokens: typing.Optional[AsyncOauthTokensClient] = None
+        self._apps: typing.Optional[AsyncAppsClient] = None
+        self._tokens: typing.Optional[AsyncTokensClient] = None
 
     @property
     def app_categories(self):
@@ -582,14 +582,6 @@ class AsyncClient:
 
             self._app_categories = AsyncAppCategoriesClient(client_wrapper=self._client_wrapper)
         return self._app_categories
-
-    @property
-    def apps(self):
-        if self._apps is None:
-            from .apps.client import AsyncAppsClient  # noqa: E402
-
-            self._apps = AsyncAppsClient(client_wrapper=self._client_wrapper)
-        return self._apps
 
     @property
     def accounts(self):
@@ -688,14 +680,6 @@ class AsyncClient:
         return self._proxy
 
     @property
-    def tokens(self):
-        if self._tokens is None:
-            from .tokens.client import AsyncTokensClient  # noqa: E402
-
-            self._tokens = AsyncTokensClient(client_wrapper=self._client_wrapper)
-        return self._tokens
-
-    @property
     def usage(self):
         if self._usage is None:
             from .usage.client import AsyncUsageClient  # noqa: E402
@@ -710,6 +694,22 @@ class AsyncClient:
 
             self._oauth_tokens = AsyncOauthTokensClient(client_wrapper=self._client_wrapper)
         return self._oauth_tokens
+
+    @property
+    def apps(self):
+        if self._apps is None:
+            from .apps.client import AsyncAppsClient  # noqa: E402
+
+            self._apps = AsyncAppsClient(client_wrapper=self._client_wrapper)
+        return self._apps
+
+    @property
+    def tokens(self):
+        if self._tokens is None:
+            from .tokens.client import AsyncTokensClient  # noqa: E402
+
+            self._tokens = AsyncTokensClient(client_wrapper=self._client_wrapper)
+        return self._tokens
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: PipedreamEnvironment) -> str:
