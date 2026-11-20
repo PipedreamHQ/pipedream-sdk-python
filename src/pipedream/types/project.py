@@ -4,6 +4,7 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from .allowed_email_domains import AllowedEmailDomains
 
 
 class Project(UniversalBaseModel):
@@ -29,6 +30,12 @@ class Project(UniversalBaseModel):
     support_email: typing.Optional[str] = pydantic.Field(default=None)
     """
     Support email configured for the project
+    """
+
+    allowed_email_domains: typing.Optional[AllowedEmailDomains] = None
+    skip_missing_email: typing.Optional[bool] = pydantic.Field(default=None)
+    """
+    Skip this project's domain allowlist when the app does not return an account email. Organization restrictions still apply.
     """
 
     connect_require_key_auth_test: typing.Optional[bool] = pydantic.Field(default=None)
